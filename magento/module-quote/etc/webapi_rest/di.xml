@@ -20,7 +20,4 @@
         <plugin name="updateQuoteStoreId" type="Magento\Quote\Model\Quote\Plugin\UpdateQuoteStoreId" />
         <plugin name="validateQuoteAddress" type="Magento\Quote\Plugin\QuoteAddress" />
     </type>
-    <type name="Magento\Quote\Api\CartRepositoryInterface">
-        <plugin name="quoteValidateOrderId" type="Magento\Quote\Plugin\ValidateQuoteOrigOrder"/>
-    </type>
 </config>

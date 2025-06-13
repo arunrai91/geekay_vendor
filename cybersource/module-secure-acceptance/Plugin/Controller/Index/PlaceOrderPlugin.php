@@ -55,12 +55,15 @@ class PlaceOrderPlugin
     ) {
         try {
             /** @var \Magento\Quote\Model\Quote $quote */
-            $currentQuote = $this->checkoutSession->getQuote();
-            if (!$currentQuote->isEmpty()) {
+            $quote = $this->checkoutSession->getQuote();
+
+            if ($quote->hasItems() || $this->backpostDetector->isBackpost()) {
                 return;
             }
-            $currentQuote = $this->orderToQuote->convertOrderToQuote($order->getId(), $currentQuote);
-            $this->cartRepository->save($currentQuote);
+
+            $quote = $this->orderToQuote->convertOrderToQuote($order->getId(), $quote);
+            $this->cartRepository->save($quote);
+            $this->checkoutSession->setQuoteId($quote->getId());
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
