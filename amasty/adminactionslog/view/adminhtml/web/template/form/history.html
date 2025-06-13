@@ -1,0 +1,53 @@
+<div class="admin__field-complex amaudit-tables-container" css="$data.additionalClasses" attr="'data-index': index">
+    <table class="admin__table-secondary amaudit-secondary-table">
+        <tbody>
+            <tr class="amaudit-tr -dark">
+                <th class="amaudit-th" data-bind="i18n: 'Username:'"></th>
+                <td class="amaudit-td" data-bind="text: $parent.data().username"></td>
+            </tr>
+            <tr>
+                <th class="amaudit-th" data-bind="i18n: 'Full Name:'"></th>
+                <td class="amaudit-td" data-bind="text: $parent.data().full_name"></td>
+            </tr>
+            <tr class="amaudit-tr -dark">
+                <th class="amaudit-th" data-bind="i18n: 'Session Start:'"></th>
+                <td class="amaudit-td" data-bind="text: $parent.data().session_start"></td>
+            </tr>
+            <tr>
+                <th class="amaudit-th" data-bind="i18n: 'Session End:'"></th>
+                <td class="amaudit-td" data-bind="text: $parent.data().session_end"></td>
+            </tr>
+            <tr class="amaudit-tr -dark">
+                <th class="amaudit-th" data-bind="i18n: 'IP Address:'"></th>
+                <td class="amaudit-td" data-bind="text: $parent.data().ip"></td>
+            </tr>
+            <tr>
+                <th class="amaudit-th" data-bind="i18n: 'Location:'"></th>
+                <td class="amaudit-td" data-bind="text: $parent.data().location"></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="admin__table-primary dashboard-data amaudit-table-container -primary">
+        <thead class="amaudit-thead">
+            <tr class="amaudit-tr">
+                <th class="amaudit-th -index">#</th>
+                <th class="amaudit-th" data-bind="i18n: 'Page Name'"></th>
+                <th class="amaudit-th -wide" data-bind="i18n: 'Page URL'"></th>
+                <th class="amaudit-th -duration" data-bind="i18n: 'Stay Duration'"></th>
+            </tr>
+        </thead>
+        <tbody class="amaudit-tbody">
+        <!-- ko foreach: $parent.data().visit_history_details -->
+            <tr>
+                <td class="amaudit-td -index" data-bind="text: $index() + 1"></td>
+                <td class="amaudit-td" data-bind="text: $data.page_name"></td>
+                <td class="amaudit-td -wide -url">
+                    <a data-bind="attr: {href: $data.page_url, title: $data.page_url}, text: $data.page_url"></a>
+                </td>
+                <td class="amaudit-td -duration"
+                    data-bind="text: $parents[1].getDuration($data.stay_duration)"></td>
+            </tr>
+        <!--/ko-->
+        </tbody>
+    </table>
+</div>

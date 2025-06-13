@@ -1,0 +1,115 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Brand for Magento 2
+ */
+/**
+ * @var \Amasty\ShopbyBrand\Block\Catalog\Product\ProductList\MoreFrom $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php
+$class = 'amshopby-morefrom';
+$image = 'am_brand_more_from_image';
+$title = $block->getTitle();
+$items = $block->getItems();
+
+$showAddTo = true;
+$showCart = true;
+$templateType = null;
+$description = false;
+?>
+
+<div class="block <?= /* @noEscape */ $class ?>">
+    <div class="block-title title">
+        <strong id="block-<?= /* @noEscape */ $class ?>-heading" role="heading" aria-level="2">
+            <?= $escaper->escapeHtml($title) ?>
+        </strong>
+    </div>
+    <div class="block-content content" aria-labelledby="block-<?= /* @noEscape */ $class ?>-heading">
+        <div class="products wrapper grid products-grid products-morefrom">
+            <ol class="products list items product-items">
+                <?php foreach ($items as $item): ?>
+                    <li class="item product product-item">
+
+                        <div class="product-item-info">
+                            <?= /* @noEscape */ '<!-- ' . $image . '-->' ?>
+                            <a href="<?= $productUrl = $escaper->escapeUrl($block->getProductUrl($item)) ?>"
+                               aria-label="<?= $escaper->escapeHtmlAttr(__($image)); ?>"
+                               class="product photo product-item-photo">
+                                <?= $block->getImage($item, $image)->toHtml() ?>
+                            </a>
+                            <div class="product details product-item-details">
+                                <strong class="product name product-item-name">
+                                    <a class="product-item-link"
+                                       title="<?= $escaper->escapeHtml($item->getName()) ?>"
+                                       href="<?= /* @noEscape */ $productUrl ?>">
+                                        <?= $escaper->escapeHtml($item->getName()) ?>
+                                    </a>
+                                </strong>
+
+                                <?= /* @noEscape */ $block->getProductPrice($item) ?>
+
+                                <?php if ($showAddTo || $showCart): ?>
+                                    <div class="product actions product-item-actions">
+                                        <?php if ($showCart): ?>
+                                            <div class="actions-primary">
+                                                <?php if ($item->isSaleable()): ?>
+                                                    <?php $postData = $block->getProductPostData($item) ?>
+                                                    <button class="action tocart primary"
+                                                            data-post='<?= /* @noEscape */ $postData ?>'
+                                                            type="button"
+                                                            title="<?= $escaper->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                                        <span><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
+                                                    </button>
+                                                <?php else: ?>
+                                                    <?php if ($item->getIsSalable()): ?>
+                                                        <div class="stock available">
+                                                            <span><?= $escaper->escapeHtml(__('In stock')) ?></span>
+                                                        </div>
+                                                    <?php else: ?>
+                                                        <div class="stock unavailable">
+                                                            <span><?= $escaper->escapeHtml(__('Out of stock')) ?></span>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                                <div data-role="add-to-links" class="actions-secondary">
+                                                    <?php if ($block->getWishlistHelper()->isAllow()): ?>
+                                                        <a href="#"
+                                                           class="action towishlist"
+                                                           title="<?= $escaper->escapeHtml(__('Add to Wish List')); ?>"
+                                                           aria-label="<?= $escaper->escapeHtml(__('Add to Wish List')); ?>"
+                                                           data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($item); ?>'
+                                                           data-action="add-to-wishlist"
+                                                           role="button">
+                                                            <span><?= $escaper->escapeHtml(__('Add to Wish List')) ?></span>
+                                                        </a>
+                                                    <?php endif; ?>
+                                                    <a href="#"
+                                                       class="action tocompare"
+                                                       title="<?= $escaper->escapeHtml(__('Add to Compare')); ?>"
+                                                       aria-label="<?= $escaper->escapeHtml(__('Add to Compare')); ?>"
+                                                       data-post='<?= /* @noEscape */ $block->getCompareHelper()->getPostDataParams($item); ?>'
+                                                       role="button">
+                                                        <span><?= $escaper->escapeHtml(__('Add to Compare')) ?></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <?php if ($showAddTo && ($addToBlock = $block->getChildBlock('addto'))): ?>
+                                            <div class="secondary-addto-links actions-secondary" data-role="add-to-links">
+                                                <?= /* @noEscape */ $addToBlock->setProduct($item)->getChildHtml(); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </li>
+                <?php endforeach ?>
+            </ol>
+        </div>
+    </div>
+</div>

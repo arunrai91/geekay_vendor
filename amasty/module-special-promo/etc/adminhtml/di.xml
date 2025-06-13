@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Base for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amasty\Rules\Block\Adminhtml\System\Config\Information">
+        <arguments>
+            <argument name="suggestModules" xsi:type="array">
+                <item name="special-promotions-hyva" xsi:type="string">Amasty_SpecialPromotionsHyva</item>
+                <item name="special-promotions-hyva-checkout" xsi:type="string">Amasty_SpecialPromotionsHyvaCheckout</item>
+                <item name="special-promo-duration" xsi:type="string">Amasty_RulesDuration</item>
+                <item name="rules-tiered-discount" xsi:type="string">Amasty_RulesTieredDiscount</item>
+                <item name="banners-lite-hyva-compatibility" xsi:type="string">Amasty_BannersLiteHyvaCompatibility</item>
+                <item name="special-promo-conditions" xsi:type="string">Amasty_RulesConditions</item>
+                <item name="special-promo-import-entity" xsi:type="string">Amasty_SpecialPromoImportEntity</item>
+                <item name="special-promo-export-entity" xsi:type="string">Amasty_SpecialPromoExportEntity</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Amasty\Rules\TierDiscountDemoAction" type="Amasty\Base\Ui\Component\Form\PromotionSelectOption">
+        <arguments>
+            <argument name="moduleName" xsi:type="string">Amasty_RulesTieredDiscount</argument>
+            <argument name="label" xsi:type="string">Percent Discount: Buy X (Buy 1 for 10% off,  Buy 2 for 20% off, etc)</argument>
+            <argument name="value" xsi:type="string">tiered_discount_percent</argument>
+            <argument name="link" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:special-promotions#additional_packages_provided_in_composer_suggestions</argument>
+        </arguments>
+    </virtualType>
+    <type name="Amasty\Rules\Model\ActionsResolver">
+        <arguments>
+            <argument name="demoEntities" xsi:type="array">
+                <item name="multi_tiered" xsi:type="array">
+                    <item name="groupName" xsi:type="string">Multiple Tiered Discount</item>
+                    <item name="actions" xsi:type="array">
+                        <item name="tiered_discount" xsi:type="object">Amasty\Rules\TierDiscountDemoAction</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Amasty\Rules\DiscountDropdownPromoFieldset" type="Amasty\Base\Block\Adminhtml\System\Config\Form\Fieldset\PromoFieldset">
+        <arguments>
+            <argument name="moduleName" xsi:type="string">Amasty_SpecialPromotionsDiscountDropdown</argument>
+            <argument name="promoConfig" xsi:type="array">
+                <item name="planType" xsi:type="string">subscribe</item>
+                <item name="infoMessage" xsi:type="string"><![CDATA[The functionality is available as part of an active product subscription or support subscription.
+                To upgrade and obtain functionality please follow the <a href="https://amasty.com/amcustomer/account/products/?utm_source=extension&utm_medium=backend&utm_campaign=subscribe_specialpromotions" target="_blank">link</a>.
+                Then you can find the 'amasty/module-special-promotions-discount-dropdown' package for installation in composer suggest.]]>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

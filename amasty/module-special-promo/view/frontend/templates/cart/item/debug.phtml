@@ -1,0 +1,27 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Base for Magento 2
+ */
+/** @var \Amasty\Rules\Block\Cart\Item\Debug $block */
+/** @var \Magento\Framework\Escaper $escaper */
+$itemsDiscounts = $block->getDiscountDebuggerInformation();
+?>
+
+<?php if ($itemsDiscounts): ?>
+<table>
+    <tr>
+        <td><?= $escaper->escapeHtml(__('Rule Id')) ?></td>
+        <td><?= $escaper->escapeHtml(__('Rule Name')) ?></td>
+        <td><?= $escaper->escapeHtml(__('Discount')) ?></td>
+    </tr>
+    <?php foreach ($itemsDiscounts as $ruleId => $discountData):?>
+        <tr>
+            <td><?= $escaper->escapeHtml($ruleId) ?></td>
+            <td><?= $escaper->escapeHtml($discountData['rule_name']) ?></td>
+            <td><?= $escaper->escapeHtml($discountData['amount']) ?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+<?php endif; ?>

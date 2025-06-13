@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Layered Navigation Base for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="\Magento\Catalog\Model\ResourceModel\Eav\Attribute">
+        <plugin name="Amasty_Shopby::AmshopbyAttributePlugin"
+                type="Amasty\Shopby\Plugin\Catalog\Model\ResourceModel\Eav\Attribute\SaveFilterSettingOnAttributeSave" sortOrder="1"/>
+    </type>
+    <type name="Amasty\Shopby\Controller\Adminhtml\Category\Image\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Magento\Catalog\CategoryImageUpload</argument>
+        </arguments>
+    </type>
+    <type name="Amasty\Shopby\Model\Media\ImageProcessor">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">catalog/tmp/category</argument>
+            <argument name="basePath" xsi:type="string">catalog/category</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amasty\ShopbyBase\Model\FilterSetting\AttributeConfig">
+        <arguments>
+            <argument name="attributeList" xsi:type="array">
+                <item name="all" xsi:type="boolean">true</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Catalog\Block\Adminhtml\Product\Attribute\Edit\Tabs">
+        <plugin name="Amasty_Shopby::AttributeEditTab"
+                type="Amasty\Shopby\Plugin\Catalog\Block\Adminhtml\Product\Attribute\Edit\Tabs"/>
+    </type>
+    <type name="Magento\Catalog\Model\Category">
+        <plugin name="Amasty_Shopby::CategoryThumbnail"
+                type="Amasty\Shopby\Plugin\Catalog\Model\Category"/>
+    </type>
+    <type name="Magento\Catalog\Model\ImageUploader">
+        <plugin name="Amasty_Shopby::fix_magento_bug_with_image_move"
+                type="Amasty\Shopby\Plugin\Catalog\Model\ImageUploaderPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Model\Category\Attribute\Backend\Image">
+        <plugin name="Amasty_Shopby::fix_magento_bug_with_image_save"
+                type="Amasty\Shopby\Plugin\Catalog\Model\Category\Attribute\Backend\ImagePlugin"/>
+    </type>
+
+    <!--Modify Category Form Data start-->
+    <type name="Magento\Catalog\Model\Category\DataProvider">
+        <plugin name="Amasty_Shopby::modify-category-data" type="Amasty\Shopby\Plugin\Catalog\Model\Category\DataProvider\ModifyDataProvider" />
+        <plugin name="Amasty_Shopby::AddAttributesDynamically"
+                type="Amasty\Shopby\Plugin\Catalog\Model\Category\DataProvider"/>
+        <plugin name="Amasty_Shopby::AddPromoLayoutOptions"
+                type="Amasty\Shopby\Plugin\Catalog\Model\Category\DataProvider\AddPromoLayoutOptions" />
+    </type>
+
+    <type name="Amasty\Shopby\Plugin\Catalog\Model\Category\DataProvider\ModifyDataProvider">
+        <arguments>
+            <argument name="pool" xsi:type="object">Amasty\Shopby\Ui\DataProvider\Form\Category\Modifier\Pool</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Amasty\Shopby\Ui\DataProvider\Form\Category\Modifier\Pool" type="Magento\Ui\DataProvider\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="hide_setting" xsi:type="array">
+                    <item name="class" xsi:type="string">Amasty\Shopby\Ui\DataProvider\Form\Category\Modifier\HideItems</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!--Modify Category Form Data end-->
+
+    <virtualType name="Amasty\Shopby\Block\Adminhtml\System\Config\InformationBlocks\SuggestNotification"
+                 type="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Notification">
+        <arguments>
+            <argument name="messageValidator"
+                      xsi:type="object">Amasty\Shopby\Block\Adminhtml\System\Config\InformationBlocks\Validation\SuggestValidator</argument>
+            <argument name="notificationText"
+                      xsi:type="string"><![CDATA[Extra features may be provided by additional packages in the extension's 'suggest' section.
+                Please explore the available suggested packages <a href="https://amasty.com/docs/doku.php?id=magento_2:improved_layered_navigation&utm_source=extension&utm_medium=backend&utm_campaign=suggest_iln#additional_packages_provided_in_composer_suggestions" target="_blank">here</a>.]]>
+            </argument>
+            <argument name="isEscapeNeed" xsi:type="boolean">false</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Amasty\Shopby\Block\Adminhtml\System\Config\InformationBlocks\Validation\SuggestValidator"
+                 type="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Validation\SuggestValidator">
+        <arguments>
+            <argument name="suggestModules" xsi:type="array">
+                <item name="Amasty_ShopbyHyvaCompatibility" xsi:type="string">Amasty_ShopbyHyvaCompatibility</item>
+                <item name="Amasty_ShopByFilterHighlight" xsi:type="string">Amasty_ShopByFilterHighlight</item>
+                <item name="Amasty_ShopByRedirect" xsi:type="string">Amasty_ShopByRedirect</item>
+                <item name="Amasty_ShopbySettingExportEntity" xsi:type="string">Amasty_ShopbySettingExportEntity</item>
+                <item name="Amasty_ShopbySettingImportEntity" xsi:type="string">Amasty_ShopbySettingImportEntity</item>
+                <item name="Amasty_ImprovedLayeredNavigationPageImportEntity"
+                      xsi:type="string">Amasty_ImprovedLayeredNavigationPageImportEntity</item>
+                <item name="Amasty_ImprovedLayeredNavigationPageExportEntity"
+                      xsi:type="string">Amasty_ImprovedLayeredNavigationPageExportEntity</item>
+                <item name="Amasty_ShopbySubscriptionFunctionality"
+                      xsi:type="string">Amasty_ShopbySubscriptionFunctionality</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!--Promo features start-->
+    <virtualType name="PromoCollapsibleTwoColLeftLayout" type="Amasty\Base\Ui\Component\Form\PromotionSelectOption">
+        <arguments>
+            <argument name="moduleName" xsi:type="string">Amasty_ShopbyPremiumSubscriptionFunctionality</argument>
+            <argument name="label" xsi:type="string"
+                      translatable="true">Amasty 2 columns with left bar (for categories)</argument>
+            <argument name="value" xsi:type="string">amshopby-2columns-left-collapsed</argument>
+            <argument name="link" xsi:type="string"><![CDATA[
+                https://amasty.com/amcustomer/account/products/?utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=subscribe_to_unlock
+            ]]></argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PromoCollapsibleTwoColRightLayout" type="Amasty\Base\Ui\Component\Form\PromotionSelectOption">
+        <arguments>
+            <argument name="moduleName" xsi:type="string">Amasty_ShopbyPremiumSubscriptionFunctionality</argument>
+            <argument name="label" xsi:type="string"
+                      translatable="true">Amasty 2 columns with right bar (for categories)</argument>
+            <argument name="value" xsi:type="string">amshopby-2columns-right-collapsed</argument>
+            <argument name="link" xsi:type="string"><![CDATA[
+                https://amasty.com/amcustomer/account/products/?utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=subscribe_to_unlock
+            ]]></argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\Shopby\Plugin\Catalog\Model\Category\DataProvider\AddPromoLayoutOptions">
+        <arguments>
+            <argument name="promoLayoutOptions" xsi:type="array">
+                <item name="amshopby-2columns-left-collapsed" xsi:type="object">PromoCollapsibleTwoColLeftLayout</item>
+                <item name="amshopby-2columns-right-collapsed" xsi:type="object">PromoCollapsibleTwoColRightLayout</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Catalog\Model\Config\Source\LayoutList">
+        <plugin name="Amasty_Shopby::AddPromoLayoutOptionsForConfig"
+                type="Amasty\Shopby\Plugin\Catalog\Model\Config\Source\LayoutList\AddPromoLayoutOptions" />
+    </type>
+    <!--Promo features end-->
+</config>

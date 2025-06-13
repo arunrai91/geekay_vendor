@@ -1,0 +1,33 @@
+//
+//  Product List Component
+//  ____________________________________
+
+//
+//  Common
+//  ------------------------------------
+
+& when (@media-common = true) {
+    .page-header .amsearch-wrapper-block .product-item .product-item-link {
+        display: block;
+    }
+
+    .amsearch-products-section.-grid {
+        .product-item [data-role='priceBox'] span {
+            padding: 0;
+        }
+
+        .product-item .old-price {
+            flex-basis: auto;
+        }
+    }
+
+    .amsearch-products-section.-list .product-item .product-item-details {
+        flex: auto;
+    }
+
+    .amsearch-wrapper-block .product-item .product-item-details > *:not(:last-child) {
+        margin: 0;
+        max-height: initial;
+    }
+}
+

@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Base for Magento 2 (System)
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Amasty_Shopby:etc/config.xsd">
+    <!-- Mage245FixInstall Validation -->
+    <virtualType name="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Mage245FixInstall"
+                 type="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Notification">
+        <arguments>
+            <argument name="messageValidator" xsi:type="object">Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Validation\Mage245Fix</argument>
+            <argument name="notificationText" xsi:type="string" translate="true">
+                Enable the module-mage-2.4.5-fix module for the extension to function correctly.
+                Please, run the following command in the SSH: composer require amasty/module-mage-2.4.5-fix
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Mage245FixUninstall Validation -->
+    <virtualType name="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Mage245FixUninstall"
+                 type="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Notification">
+        <arguments>
+            <argument name="messageValidator" xsi:type="object">Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Validation\Mage245FixUninstall</argument>
+            <argument name="notificationText" xsi:type="string" translate="true">
+                Considering your current Magento version, please disable the module-mage-2.4.5-fix module to
+                prevent frontend issues, as it is only compatible with version 2.4.5. Please, run the following command
+                in the SSH: php bin/magento module:disable Amasty_Mage245Fix
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Validation\Mage245FixUninstall"
+                 type="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Validation\Mage245Fix">
+        <arguments>
+            <argument name="enableInversionCondition" xsi:type="boolean">true</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Amasty_ShopByLiveSearch Validation -->
+    <virtualType name="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\ShopByLiveSearch"
+                 type="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Notification">
+        <arguments>
+            <argument name="messageValidator" xsi:type="object">Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Validation\ShopByLiveSearch</argument>
+            <argument name="notificationText" xsi:type="string" translate="true">
+                Enable the module-shop-by-live-search module to activate Live Search and Improved Layered Navigation integration.
+                Please, run the following command in the SSH: composer require amasty/module-shop-by-live-search
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Amasty_ShopByLiveSearchRootCategory Validation -->
+    <virtualType name="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\ShopByLiveSearchCategory"
+                 type="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Notification">
+        <arguments>
+            <argument name="messageValidator" xsi:type="object">Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Validation\ShopByLiveSearchCategory</argument>
+            <argument name="notificationText" xsi:type="string" translate="true">
+                Enable the module-shopby-livesearch-root-category module to activate Live Search and Improved Layered Navigation integration.
+                Please, run the following command in the SSH: composer require amasty/module-shopby-livesearch-root-category
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Validation\ShopByLiveSearchCategory"
+                 type="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Validation\ShopByLiveSearch">
+        <arguments>
+            <argument name="amShopbyLiveSearchModule" xsi:type="string">Amasty_ShopbyLivesearchRootCategory</argument>
+        </arguments>
+    </virtualType>
+</config>

@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amasty\Sorting\Model\Config\Backend\SimpleText">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="escaper" xsi:type="object">Magento\Framework\Escaper</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="RelevanceRuleCollection" type="Amasty\Sorting\Model\Di\Wrapper">
+        <arguments>
+            <argument name="name" xsi:type="string">Amasty\ElasticSearch\Model\ResourceModel\RelevanceRule\Collection</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\Sorting\Block\Adminhtml\System\Config\SortingNotice">
+        <arguments>
+            <argument name="ruleCollection" xsi:type="object">RelevanceRuleCollection</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Sorting\Model\Config\Backend\GlobalSorting">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="method_provider" xsi:type="object">Amasty\Sorting\Model\MethodProvider</item>
+                <item name="attribute_repository"
+                      xsi:type="object">Magento\Catalog\Api\ProductAttributeRepositoryInterface</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="NonCacheableInventoryResource" type="Amasty\Sorting\Model\ResourceModel\Inventory">
+        <arguments>
+            <argument name="isCacheable" xsi:type="boolean">false</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\Sorting\Model\Elasticsearch\Adapter\DataMapper\Stock">
+        <arguments>
+            <argument name="inventory" xsi:type="object">NonCacheableInventoryResource</argument>
+            <argument name="getQty" xsi:type="object">Amasty\Sorting\Model\Inventory\GetQtyInstantly</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="MultiStore" type="Amasty\Base\Block\Adminhtml\System\Config\Form\Field\Promo\PromoField">
+        <arguments>
+            <argument name="moduleName" xsi:type="string">Amasty_ImprovedSortingSubscriptionFunctionality</argument>
+            <argument name="promoConfig" xsi:type="array">
+                <item name="promoLink" xsi:type="string">https://amasty.com/amcustomer/account/products/?utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=subscribe_sorting</item>
+                <item name="comment" xsi:type="string">
+                    <![CDATA[The functionality is available as a part of an active product subscription or support subscription.
+                    To upgrade and obtain functionality, please follow the <a href="https://amasty.com/amcustomer/account/products/?utm_source=extension&utm_medium=backend&utm_campaign=subscribe_sorting"
+                    target="_blank">link</a>. Then you can find the 'amasty/module-improved-sorting-subscription-functionality'
+                    package for installation in composer suggest.]]>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="StockQuantity" type="Amasty\Base\Block\Adminhtml\System\Config\Form\Field\Promo\PromoField">
+        <arguments>
+            <argument name="moduleName" xsi:type="string">Amasty_SortingByQty</argument>
+            <argument name="promoConfig" xsi:type="array">
+                <item name="promoLink" xsi:type="string">https://amasty.com/amcustomer/account/products/?utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=subscribe_sorting</item>
+                <item name="comment" xsi:type="string">
+                    <![CDATA[The functionality is available as a part of an active product subscription or support subscription.
+                    To upgrade and obtain functionality, please follow the <a href="https://amasty.com/amcustomer/account/products/?utm_source=extension&utm_medium=backend&utm_campaign=subscribe_sorting"
+                    target="_blank">link</a>. Then you can find the 'amasty/module-sorting-by-qty'
+                    package for installation in composer suggest.]]>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

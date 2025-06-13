@@ -1,0 +1,27 @@
+<div class="data-grid-cell-content">
+    <div class="amfeed-file-content">
+        <!-- ko if: !!$row()?.download_link -->
+            <a class="amfeed-link amasty-copy-on-clipboard-text amfeed-ellipsis-overflow"
+               target="_blank"
+               data-bind="
+                  attr: { href: $row().download_link },
+                  text: $row().filename
+               "></a>
+
+                <button class="amfeed-button amasty-copy-on-clipboard-button"
+                        data-amfeed-tooltip-trigger="trigger"></button>
+                <div tooltip="
+                        trigger: '[data-amfeed-tooltip-trigger]',
+                        action: 'hover',
+                        center: true,
+                        position: 'right'
+                ">
+                    <span class="amfeed-tooltip-content" data-bind="i18n: 'Copy Link'"></span>
+                </div>
+        <!-- /ko -->
+
+        <!-- ko if: !$row()?.download_link -->
+            <div class="amfeed-ellipsis-overflow" html="$col.getLabelUnsanitizedHtml($row())"></div>
+        <!-- /ko -->
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Seo for Magento 2 (System)
+ */
+/** @var \Amasty\ShopbySeo\Block\System\Config\SeparatorChecker $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<div id="am_checker_message" style="display: none;">
+    <div class="message message-warning warning">
+        <div><?= $escaper->escapeHtml(__("Using the same value for option separation and to replace special characters is outdated and may cause issues.")); ?></div>
+    </div>
+    <div class="example">
+        <p><?= $escaper->escapeHtml(__("If there are complex options like:'red-white', there will be a problem with single 'red' and 'white' options.")); ?></p>
+        <p><?= $escaper->escapeHtml(__("In some cases such options will not be parsed by SEO URL router.")); ?></p>
+        <p><?= $escaper->escapeHtml(__("We strongly recommend not to use the same symbol for option separation and to replace special characters.")); ?></p>
+        <a href="<?= $escaper->escapeUrl($block->getUserGuideUrl()); ?>"><?= $escaper->escapeHtml(__('See more cases in the User Guide')); ?></a>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Amasty_ShopbySeo/js/checker": {}
+        }
+    }
+</script>

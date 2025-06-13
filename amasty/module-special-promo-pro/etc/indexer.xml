@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Pro for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="amasty_amrules_purchase_history_index" view_id="amasty_amrules_purchase_history_index"
+             class="Amasty\RulesPro\Model\Indexer\PurchaseHistory">
+        <title translate="true">Amasty: Special Promotions - Purchase History Indexer</title>
+        <description translate="true">Indexed completed orders</description>
+        <saveHandler class="Amasty\RulesPro\Model\Indexer\PurchaseHistory\IndexerHandler"/>
+        <structure class="Amasty\RulesPro\Model\Indexer\PurchaseHistory\IndexStructure"/>
+    </indexer>
+</config>

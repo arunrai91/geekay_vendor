@@ -1,0 +1,23 @@
+{
+    "amasty_amrules_rule": {
+        "column": {
+            "entity_id": true,
+            "salesrule_id": true,
+            "eachm": true,
+            "priceselector": true,
+            "promo_cats": true,
+            "promo_skus": true,
+            "nqty": true,
+            "skip_rule": true,
+            "max_discount": true,
+            "apply_discount_to": true,
+            "use_for": true
+        },
+        "index": {
+            "AMASTY_AMRULES_RULE_SALESRULE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

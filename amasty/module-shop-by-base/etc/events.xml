@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Base for Magento 2 (System)
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="amshopby_filter_setting_load_after">
+        <observer name="amshopby_filter_setting_set_category_data" instance="Amasty\ShopbyBase\Observer\SetCategoryFilterSettingData"/>
+    </event>
+</config>

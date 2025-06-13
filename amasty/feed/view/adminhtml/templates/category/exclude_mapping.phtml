@@ -1,0 +1,89 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Product Feed for Magento 2
+ */
+/** @var \Amasty\Feed\Block\Adminhtml\Category\Edit\Tab\ExcludeMapping $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Magento\Framework\Data\Form\Element\AbstractElement $element */
+$element = $block->getElement();
+$value = $element->getValue();
+$htmlId = $element->getHtmlId();
+?>
+<div class="field" id="attribute-<?= $escaper->escapeHtml($htmlId) ?>-container">
+    <label class="label"><?= $escaper->escapeHtml($element->getLabel()); ?></label>
+    <a href="#" id="select_deselect_all" onclick="mappingControl.selectDeselectAll()">
+        <?= $escaper->escapeHtml(__('Select All / Deselect All')) ?>
+    </a>
+    <div class="control">
+        <ul class="amfeed-exclude-categories">
+            <?php foreach ($block->getCategoriesList() as $category): ?>
+                <li class="amfeed-category" style="padding-left: <?= ((int)$category['level'] * 30) ?>px;">
+                    <input class="amfeed-checkbox"
+                           data-amfeed-js="category-<?= $escaper->escapeHtml($category['id']) ?>"
+                           type="checkbox"
+                           title="<?= $escaper->escapeHtml(__('Ignore category')) ?>"
+                           name="mapping[<?= $escaper->escapeHtml($category['id']) ?>][skip]"
+                           value="1"
+                           id="exclude-category-<?= $escaper->escapeHtml($category['id']) ?>"
+                        <?php if (!empty($value[$category['id']]['skip'])): ?>
+                            checked="checked"
+                        <?php endif; ?>
+                           onclick="mappingControl.disableCategory(this)"/>
+                    <label class="amfeed-label" for="exclude-category-<?= $escaper->escapeHtml($category['id']) ?>">
+                        <?= $escaper->escapeHtml($category['name']); ?>
+                    </label>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
+<script>
+    require([ 'jquery', 'underscore', 'Amasty_Feed/js/action/serializeObject' ], function ($, _, SerializeObject) {
+        $('#edit_form').on('afterValidate.beforeSubmit', function () {
+            let $form = $(this),
+                formData = SerializeObject($form),
+                mappingData = formData.mapping,
+                input = document.createElement('input');
+
+            _.each(mappingData, function (data, categoryId) {
+                if (data.skip) {
+                    delete mappingData[categoryId].name;
+                } else if (!data.name) {
+                    delete mappingData[categoryId];
+                }
+
+                $('[name="mapping[' + categoryId + '][skip]"], [name="mapping[' + categoryId + '][name]"]')
+                    .prop('disabled', true);
+            });
+
+            input.type = 'hidden';
+            input.name = 'mapping';
+            input.value = JSON.stringify(mappingData);
+
+            $form.append(input);
+        });
+        window.mappingControl = {
+            disableCategory: function (elem) {
+                var input = $('[data-amfeed-js="amfeed-taxonomy-input"].' + elem.getAttribute('data-amfeed-js'));
+                if (elem.checked) {
+                    input.parents('[data-amfeed-js="category-item"]').hide();
+                    input.removeClass('required-entry _required');
+                } else {
+                    input.parents('[data-amfeed-js="category-item"]').show();
+                    input.addClass('required-entry _required');
+                }
+            },
+            selectDeselectAll: function () {
+                var selector = $('.amfeed-exclude-categories [type="checkbox"]'),
+                    state = !!(selector.first().prop('checked'));
+
+                $.each(selector, function (key, element) {
+                    $(element).prop('checked', !state);
+                    mappingControl.disableCategory(element);
+                });
+            }
+        };
+    });
+</script>

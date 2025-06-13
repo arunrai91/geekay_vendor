@@ -1,0 +1,35 @@
+//
+//  Amasty Shop by Brand Widget Page Tooltip
+//  ______________________________________________
+
+//
+//  Variables
+//  _____________________________________________
+
+@amshopby-widget__tooltip__bg-color: rgba(49, 48, 43, .8);
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    [class*='adminhtml-widget'] .admin__field:has([name*='[brands_display]']) {
+        display: flex;
+
+        .tooltip {
+            /* phpcs:disable Magento2.Less.ColonSpacing.AfterNewline */
+            .lib-tooltip(
+                @_tooltip-position: top,
+                @_tooltip-color: @color-white,
+                @_tooltip-background: @amshopby-widget__tooltip__bg-color,
+                @_tooltip-border-radius: 5px,
+                @_tooltip-min-width: 250px
+            );
+            /* phpcs:enable Magento2.Less.ColonSpacing.AfterNewline */
+
+            .tooltip-content {
+                margin-left: 9px;
+            }
+        }
+    }
+}

@@ -1,0 +1,135 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Brand for Magento 2
+ */
+
+namespace Amasty\ShopbyBrand\Test\Unit\Controller;
+
+use Amasty\ShopbyBrand\Controller\Router;
+use Amasty\ShopbyBrand\Model\ConfigProvider;
+use Amasty\ShopbyBrand\Model\UrlParser\MatchBrandParams;
+use Amasty\ShopbyBrand\Test\Unit\Traits;
+
+/**
+ * Class RouterTest
+ *
+ * @see Router
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * phpcs:ignoreFile
+ */
+class RouterTest extends \PHPUnit\Framework\TestCase
+{
+    use Traits\ObjectManagerTrait;
+    use Traits\ReflectionTrait;
+
+    public const BRAND_PATH_IDENTIFIER = '/test';
+
+    public const BRAND_URL_KEY = 'test';
+
+    public const BRAND_ATR_CODE = 'batr';
+
+    public const BRAND_ALIASES = [
+        '1' => 'test'
+    ];
+
+    /**
+     * @var Router
+     */
+    private $router;
+
+    /**
+     * @var \Amasty\ShopbyBrand\Helper\Data $brandHelper
+     */
+    private $brandHelper;
+
+    /**
+     * @var \Magento\Framework\App\ActionFactory $actionFactory
+     */
+    private $actionFactory;
+
+    public function setup(): void
+    {
+        $this->brandHelper = $this->createMock(\Amasty\ShopbyBrand\Helper\Data::class);
+        $this->brandHelper->expects($this->any())->method('getBrandUrlKey')
+            ->will($this->returnValue(self::BRAND_URL_KEY));
+        $this->brandHelper->expects($this->any())->method('getBrandAttributeCode')
+            ->will($this->returnValue(self::BRAND_ATR_CODE));
+        $this->brandHelper->expects($this->any())->method('getBrandAliases')
+            ->will($this->returnValue(self::BRAND_ALIASES));
+
+        $permissionHelper = $this->createMock(\Amasty\ShopbyBase\Helper\PermissionHelper::class);
+        $permissionHelper->expects($this->any())->method('checkPermissions')
+            ->will($this->returnValue(true));
+
+        $this->actionFactory = $this->createMock(\Magento\Framework\App\ActionFactory::class);
+
+        $configProvider = $this->createMock(ConfigProvider::class);
+        $configProvider->expects($this->any())->method('getBrandAttributeCode')
+            ->will($this->returnValue(self::BRAND_ATR_CODE));
+        $matchBrandParams = new MatchBrandParams($this->brandHelper, $configProvider);
+
+        $this->router = $this->getObjectManager()->getObject(
+            Router::class,
+            [
+                'brandCode' => self::BRAND_ATR_CODE,
+                'permissionHelper' => $permissionHelper,
+                'actionFactory' => $this->actionFactory,
+                'matchBrandParams' => $matchBrandParams
+            ]
+        );
+        $this->setProperty($this->router, 'brandHelper', $this->brandHelper);
+    }
+
+    /**
+     * @covers Router::match
+     */
+    public function testMatch()
+    {
+        $request = $this->getObjectManager()->getObject(
+            \Magento\Framework\App\Request\Http::class,
+            [
+                'pathInfo' => self::BRAND_PATH_IDENTIFIER
+            ]
+        );
+        $this->actionFactory->expects($this->any())->method('create')
+        ->will($this->returnValue($this->createMock(\Magento\Framework\App\Action\Forward::class)));
+        $result = $this->invokeMethod($this->router, 'match', [$request]);
+
+        $this->assertInstanceOf(\Magento\Framework\App\Action\Forward::class, $result);
+
+        $request->setPathInfo(self::BRAND_PATH_IDENTIFIER . '2');
+        $result = $this->invokeMethod($this->router, 'match', [$request]);
+
+        $this->assertEquals(null, $result);
+    }
+
+    /**
+     * @covers Router::matchBrandParams
+     *
+     * @dataProvider brandPathProvider
+     */
+    public function testMatchBrandParams($path, $resArr)
+    {
+        $result = $this->invokeMethod(
+            $this->router,
+            'matchBrandParams',
+            [$path]
+        );
+        $this->assertEquals($resArr, $result);
+    }
+
+    /**
+     * Data provider for testMatchBrandParams
+     * @return array
+     */
+    public function brandPathProvider()
+    {
+        return [
+            ['/test', ['batr' => 1]],
+            ['/test2', []]
+        ];
+    }
+}

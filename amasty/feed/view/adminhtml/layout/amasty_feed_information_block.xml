@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Product Feed for Magento 2
+ */-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="aminfotab.basic">
+            <block class="Amasty\Feed\Block\Adminhtml\System\Config\SuggestNotification"
+                   name="aminfotab.feed.notice"
+                   after="aminfotab.version"/>
+        </referenceBlock>
+    </body>
+</page>

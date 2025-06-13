@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Sorting for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amasty\Xsearch\Block\Search\Product">
+        <plugin name="Amasty_Sorting::AddSortOrders"
+                type="Amasty\Sorting\Plugin\Xsearch\Block\Search\Product\AddSortOrders"/>
+    </type>
+    <type name="Amasty\Sorting\Plugin\Xsearch\Block\Search\Product\AddSortOrders">
+        <arguments>
+            <argument name="getDefaultSortOrders"
+                      xsi:type="object">Amasty\Sorting\Model\Method\GetAllSortOrders</argument>
+        </arguments>
+    </type>
+    <virtualType name="Amasty\Sorting\Model\Method\GetAllSortOrders"
+                 type="Amasty\Sorting\Model\Method\GetDefaultSortOrders">
+        <arguments>
+            <argument name="withHighOrders" xsi:type="boolean">true</argument>
+        </arguments>
+    </virtualType>
+</config>

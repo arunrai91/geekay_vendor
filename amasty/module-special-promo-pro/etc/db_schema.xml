@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Pro for Magento 2
+ */-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="amasty_amrules_cache_queue" resource="default" engine="innodb" comment="Queue">
+    <column xsi:type="int" name="queue_id" padding="10" unsigned="true" nullable="false" identity="true"
+            comment="Queue Id Column"/>
+    <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false" identity="false"
+            comment="Customer Id Column"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="queue_id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="AMASTY_AMRULES_CACHE_QUEUE_CUSTOMER_ID">
+      <column name="customer_id" />
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="AMASTY_AMRULES_CACHE_QUEUE_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="amasty_amrules_cache_queue" column="customer_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+  </table>
+  <table name="amasty_amrules_usage_limit" resource="default" engine="innodb" comment="amasty_amrules_usage_limit">
+    <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+    <column xsi:type="int" name="salesrule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Salesrule_id"/>
+    <column xsi:type="int" name="limit" padding="10" unsigned="true" nullable="false" identity="false" default="0" comment="Limit"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+    </constraint>
+    <index referenceId="AMASTY_AMRULES_USAGE_LIMIT_SALESRULE_ID" indexType="btree">
+      <column name="salesrule_id"/>
+    </index>
+  </table>
+  <table name="amasty_amrules_usage_counter" resource="default" engine="innodb" comment="amasty_amrules_usage_counter">
+    <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+    <column xsi:type="int" name="salesrule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Salesrule_id"/>
+    <column xsi:type="int" name="count" padding="10" unsigned="true" nullable="false" identity="false" default="0" comment="Count"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+      <column name="salesrule_id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="AMASTY_AMRULES_USAGE_COUNTER_SALESRULE_ID_SALESRULE_RULE_ID" table="amasty_amrules_usage_counter" column="salesrule_id" referenceTable="salesrule" referenceColumn="rule_id" onDelete="CASCADE"/>
+    <index referenceId="AMASTY_AMRULES_USAGE_COUNTER_SALESRULE_ID" indexType="btree">
+      <column name="salesrule_id"/>
+    </index>
+  </table>
+</schema>

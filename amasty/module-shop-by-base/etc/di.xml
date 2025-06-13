@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Base for Magento 2 (System)
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Amasty_Shopby:etc/config.xsd">
+    <preference for="Amasty\ShopbyBase\Api\Data\FilterSettingRepositoryInterface"
+                type="Amasty\ShopbyBase\Model\FilterSettingRepository" />
+    <preference for="Amasty\ShopbyBase\Api\Data\OptionSettingRepositoryInterface"
+                type="Amasty\ShopbyBase\Model\OptionSettingRepository" />
+    <preference for="Amasty\ShopbyBase\Api\Data\FilterSettingInterface" type="Amasty\ShopbyBase\Model\FilterSetting" />
+    <preference for="Amasty\ShopbyBase\Api\Data\OptionSettingInterface" type="Amasty\ShopbyBase\Model\OptionSetting" />
+    <preference for="Amasty\ShopbyBase\Api\UrlBuilderInterface" type="Amasty\ShopbyBase\Model\UrlBuilder" />
+
+    <type name="Amasty\ShopbyBase\Model\Di\Wrapper">
+        <arguments>
+            <argument name="name" xsi:type="string">Magento\CatalogPermissions\Model\Permission\Index</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\ShopbyBase\Model\FilterDataLoader">
+        <arguments>
+            <argument name="adapters" xsi:type="array">
+                <item name="attribute" sortOrder="10" xsi:type="object">Amasty\ShopbyBase\Model\FilterDataLoader\Attribute</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="\Magento\Catalog\Api\ProductAttributeRepositoryInterface">
+        <plugin name="Amasty_ShopbyBase::setExtensionAttributesForGetMethod"
+                type="Amasty\ShopbyBase\Plugin\Catalog\Api\ProductAttributeRepositoryInterface\SetExtensionAttributes"/>
+    </type>
+
+    <type name="\Magento\Catalog\Api\ProductAttributeRepositoryInterface">
+        <plugin name="Amasty_ShopbyBase::setExtensionAttributesForGetListMethod"
+                type="Amasty\ShopbyBase\Plugin\Catalog\Api\ProductAttributeRepositoryInterface\SetListExtensionAttributes"/>
+    </type>
+
+    <type name="\Magento\Catalog\Api\ProductAttributeRepositoryInterface">
+        <plugin name="Amasty_ShopbyBase::saveExtensionAttributesForRepository"
+                type="Amasty\ShopbyBase\Plugin\Catalog\Api\ProductAttributeRepositoryInterface\SaveExtensionAttributes"/>
+    </type>
+
+    <type name="\Magento\Catalog\Api\Data\ProductAttributeInterface">
+        <plugin name="Amasty_ShopbyBase::saveExtensionAttributesForModel"
+                type="Amasty\ShopbyBase\Plugin\Catalog\Api\Data\ProductAttributeInterface\SaveExtensionAttributes"/>
+    </type>
+
+    <type name="\Magento\Catalog\Model\Layer\Search\FilterableAttributeList">
+        <plugin name="Amasty_ShopbyBase::loadExtensionAttributesForList"
+                type="Amasty\ShopbyBase\Plugin\Catalog\Model\Layer\FilterableAttributeListInterface\LoadExtensionAttributes"/>
+    </type>
+
+    <!--Add possibility for apply patches before DS-->
+    <type name="Amasty\Base\Plugin\Setup\Model\DeclarationInstaller\ApplyPatchesBeforeDeclarativeSchema">
+        <arguments>
+            <argument name="moduleNames" xsi:type="array">
+                <item name="Amasty_ShopbyBase" xsi:type="string">Amasty_ShopbyBase</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

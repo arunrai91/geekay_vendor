@@ -1,0 +1,27 @@
+<table class="admin__table-primary dashboard-data amaudit-table-container -log -primary">
+    <thead class="amaudit-thead">
+        <tr class="amaudit-tr">
+            <th class="amaudit-th" data-bind="i18n: 'Name'"></th>
+            <th class="amaudit-th -wide" data-bind="i18n: 'Old Value'"></th>
+            <th class="amaudit-th -wide" data-bind="i18n: 'New Value'"></th>
+        </tr>
+    </thead>
+    <!-- ko ifnot: $data.messages().isError -->
+        <tbody class="amaudit-tbody">
+            <!-- ko if: $data.data().length -->
+                <!-- ko foreach: $data.data -->
+                    <tr class="amaudit-tr">
+                        <td class="amaudit-td amaudit-title" data-bind="text: $data.name"></td>
+                        <td class="amaudit-td -wide"><pre class="amaudit-pre" data-bind="html: $data.old_value"></pre></td>
+                        <td class="amaudit-td -wide"><pre class="amaudit-pre" data-bind="html: $data.new_value"></pre></td>
+                    </tr>
+                <!--/ko-->
+            <!--/ko-->
+            <!-- ko if: $data.type === 'delete' -->
+                <tr class="amaudit-tr">
+                    <td class="amaudit-td -solid" colspan="3" data-bind="i18n: 'The item has been deleted.'"></td>
+                </tr>
+            <!-- /ko -->
+        </tbody>
+    <!-- /ko -->
+</table>

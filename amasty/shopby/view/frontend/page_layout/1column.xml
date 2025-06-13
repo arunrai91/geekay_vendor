@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Layered Navigation Base for Magento 2
+ */-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
+    <move element="catalogsearch.leftnav" destination="content.top" before="-"/>
+    <referenceContainer name="content">
+        <!-- here is needed use display="false", since if you use remove,
+        the block will be removed for the rest of the layouts (2columns-left for example) -->
+        <referenceBlock name="amasty.shopby.applybutton.topnav" display="false"/>
+        <referenceBlock name="amshopby.catalog.topnav" display="false"/>
+    </referenceContainer>
+</layout>

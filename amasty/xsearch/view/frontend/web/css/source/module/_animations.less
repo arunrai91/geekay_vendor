@@ -1,0 +1,20 @@
+//
+//  Animations Descriptions
+//  ______________________________________________
+
+.amsearch-keyframes(amsearch-animation__fadeIn, {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+});
+
+.amsearch-animation__fadeIn(
+    @delay: .3
+) {
+    -webkit-animation: ~'amsearch-animation__fadeIn @{delay}s forwards';
+    animation: ~'amsearch-animation__fadeIn @{delay}s forwards';
+}

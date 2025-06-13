@@ -1,0 +1,27 @@
+//
+//  Amasty Promotion Config Field
+//  ______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .admin__field {
+        .admin__field-label.ampromo-field-label-container {
+            &:before {
+                content: none;
+            }
+        }
+
+        .ampromo-config-content-container {
+            color: @color-gray19;
+            line-height: 1.9rem;
+        }
+
+        .ampromo-config-notification-message {
+            line-height: 1.2rem;
+            margin-top: .5rem;
+        }
+    }
+}

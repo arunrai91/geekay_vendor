@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Admin Actions Log for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="amaudit" translate="label" type="text" sortOrder="10401" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Admin Actions Log</label>
+            <tab>amasty</tab>
+            <resource>Amasty_AdminActionsLog::amaudit_settings</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="log_enable_visit_history" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Page Visit History</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="geolocation_enable" translate="label tooltip" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Geolocation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_model>Amasty\AdminActionsLog\Block\Adminhtml\System\Config\Form\Geolocation</frontend_model>
+                    <tooltip>If the field is inactive, it means that Geo IP Date was not downloaded. Please navigate to Stores > Configuration > Amasty Extensions > Geo IP Data and download the data.</tooltip>
+                </field>
+                <field id="restore_popup_message" translate="label comment" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Restore Settings Warning Text</label>
+                </field>
+                <field id="log_all_admins" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Actions For All Admin Users</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="exclude_logging" translate="label comment" type="multiselect" sortOrder="45" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Exclude Entities from Logging</label>
+                    <frontend_model>AdminActionsLogExcludeLoggingPromo</frontend_model>
+                    <source_model>Amasty\AdminActionsLog\Model\OptionSource\ExcludeEntityType</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+                <field id="exclude_action_logging" translate="label comment" type="multiselect" sortOrder="46" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Exclude Actions from Logging</label>
+                    <frontend_model>AdminActionsLogExcludeLoggingPromo</frontend_model>
+                    <source_model>Amasty\AdminActionsLog\Model\OptionSource\LogEntryTypes</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+                <field id="log_admin_users" translate="label" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Users To Log Actions For</label>
+                    <source_model>Amasty\AdminActionsLog\Model\OptionSource\Users</source_model>
+                    <depends>
+                        <field id="log_all_admins">0</field>
+                    </depends>
+                </field>
+                <group id="auto_cleaning" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Auto-Cleaning</label>
+                    <field id="actions_log_cleaning" translate="label tooltip" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Actions Log Auto-Cleaning</label>
+                        <tooltip>The records that were saved for a longer period than the specified below will be automatically removed from Actions Log.</tooltip>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="actions_log_period" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Auto-Cleaning Period in Days</label>
+                        <tooltip>The records will be automatically removed after the specified period of time.</tooltip>
+                        <validate>required-entry validate-number validate-greater-than-zero validate-digits</validate>
+                        <depends>
+                            <field id="actions_log_cleaning">1</field>
+                        </depends>
+                    </field>
+                    <field id="login_attempts_log_cleaning" translate="label tooltip" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Login Attempts Auto-Cleaning</label>
+                        <tooltip>The records that were saved for a longer period than the specified below will be automatically removed from Login Attempts Log.</tooltip>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="login_attempts_log_period" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Auto-Cleaning Period in Days</label>
+                        <tooltip>The records will be automatically removed after the specified period of time.</tooltip>
+                        <validate>required-entry validate-number validate-greater-than-zero validate-digits</validate>
+                        <depends>
+                            <field id="login_attempts_log_cleaning">1</field>
+                        </depends>
+                    </field>
+                    <field id="visit_history_log_cleaning" translate="label tooltip" type="select" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Visit History Log Auto-Cleaning</label>
+                        <tooltip>The records that were saved for a longer period than the specified below will be automatically removed from Page Visit History.</tooltip>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="visit_history_log_period" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Auto-Cleaning Period in Days</label>
+                        <tooltip>The records will be automatically removed after the specified period of time.</tooltip>
+                        <validate>required-entry validate-number validate-greater-than-zero validate-digits</validate>
+                        <depends>
+                            <field id="visit_history_log_cleaning">1</field>
+                        </depends>
+                    </field>
+                </group>
+            </group>
+            <group id="email_notifications" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email Notifications</label>
+                <field id="successful_log_mailing_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Successful Logins To Admin</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="successful_log_mailing_identity" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="successful_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="successful_log_mailing_template" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Select Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="successful_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="successful_log_mailing_send_to_mail" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send to Email(s)</label>
+                    <frontend_model>Amasty\AdminActionsLog\Block\Adminhtml\System\Config\Form\Email</frontend_model>
+                    <depends>
+                        <field id="successful_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="unsuccessful_log_mailing_enabled" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Unsuccessful Logins To Admin</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="unsuccessful_log_mailing_number_attempts" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Number of Unsuccessful Login Attempts</label>
+                    <tooltip>Enter the number of login attempts before the email with the unsuccessful audit log is sent.</tooltip>
+                    <validate>required-entry validate-number validate-greater-than-zero</validate>
+                    <depends>
+                        <field id="unsuccessful_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="unsuccessful_log_mailing_identity" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="unsuccessful_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="unsuccessful_log_mailing_template" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Select Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="unsuccessful_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="unsuccessful_log_mailing_send_to_mail" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send to Email(s)</label>
+                    <frontend_model>Amasty\AdminActionsLog\Block\Adminhtml\System\Config\Form\Email</frontend_model>
+                    <depends>
+                        <field id="unsuccessful_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="suspicious_log_mailing_enabled" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Suspicious Logins To Admin</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="suspicious_log_mailing_if_logged_in" translate="label" type="multiselect" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Suspicious if Logged In</label>
+                    <source_model>Amasty\AdminActionsLog\Model\OptionSource\LoggedInWith</source_model>
+                    <depends>
+                        <field id="suspicious_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="suspicious_log_mailing_identity" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="suspicious_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="suspicious_log_mailing_template" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Select Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="suspicious_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="suspicious_log_mailing_send_to_mail" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send to Email(s)</label>
+                    <frontend_model>Amasty\AdminActionsLog\Block\Adminhtml\System\Config\Form\Email</frontend_model>
+                    <depends>
+                        <field id="suspicious_log_mailing_enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

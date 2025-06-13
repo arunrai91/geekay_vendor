@@ -1,0 +1,19 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var array $product
+ */
+
+$product = $block->getData('product');
+?>
+
+<span class="amsearch-sku-block">
+    <b class="amsearch-title"><?= $escaper->escapeHtml(__('SKU')); ?>:</b>
+    <?= /* @noEscape */ $product['sku'] ?>
+</span>

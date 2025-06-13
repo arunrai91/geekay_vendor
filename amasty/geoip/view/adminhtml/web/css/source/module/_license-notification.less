@@ -1,0 +1,24 @@
+//
+//  Geo Ip License Notification Styles
+//  ____________________________________________
+
+//
+//  Common
+//  --------------------------------------------
+& when (@media-common = true) {
+    .message-system._active .message-system-list .message:has(.amgeoip-license-message-container) {
+        &:before {
+            content: @icon-error__content;
+        }
+
+        .amgeoip-license-message-container {
+            display: flex;
+            gap: 7rem;
+        }
+
+        .amgeoip-license-message-dismiss {
+            align-items: center;
+            display: flex;
+        }
+    }
+}

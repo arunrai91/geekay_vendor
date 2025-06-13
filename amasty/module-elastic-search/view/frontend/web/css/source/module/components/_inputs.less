@@ -1,0 +1,35 @@
+//
+//  Further Component Styles
+//  ______________________________________________
+
+//
+//  Colors
+//  ----------------------------------------------
+
+@amelsearch-input__color__primary: @amelsearch-color__primary;
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amelsearch-input {
+        & {
+            border: 1px solid #ccc;
+            color: #333;
+            font-weight: 400;
+            padding: 10px 5px;
+            transition: .3s;
+        }
+
+        ::placeholder {
+            color: #ccc;
+        }
+
+        &:hover:not([disabled]),
+        &:focus:not([disabled]) {
+            border-color: @amelsearch-input__color__primary;
+            box-shadow: none;
+        }
+    }
+}

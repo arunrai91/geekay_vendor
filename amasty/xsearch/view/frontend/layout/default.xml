@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Amasty_Base::vendor/slick/amslick.min.css"/>
+    </head>
+    <body>
+        <referenceBlock name="top.search" template="Amasty_Xsearch::components/search.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">
+                    Amasty\Xsearch\ViewModel\FormMiniData
+                </argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="header-wrapper">
+            <block class="Magento\Backend\Block\Template"
+                   after="minicart"
+                   template="Amasty_Xsearch::full_width/loupe_trigger.phtml"
+                   name="amsearch.full_with.trigger">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Amasty\Xsearch\ViewModel\FormMiniData
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="main">
+            <block class="Magento\Backend\Block\Template"
+                   template="Amasty_Xsearch::components/overlay.phtml"
+                   name="amsearch.overlay.section"/>
+            <block class="Magento\Backend\Block\Template"
+                   template="Amasty_Xsearch::widgets/wrapper.phtml"
+                   name="amsearch.widgets.section">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Amasty\Xsearch\ViewModel\FormMiniData
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

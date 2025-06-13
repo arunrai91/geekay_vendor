@@ -1,0 +1,29 @@
+{
+    "name": "amasty/module-elastic-search",
+    "description": "Elastic Search Module by Amasty",
+    "require": {
+        "php": ">=7.3.0",
+        "amasty/base": ">=1.18.0",
+        "amasty/xsearch": ">=1.22.0",
+        "amasty/cron-schedule-list": "*"
+    },
+    "suggest": {
+        "amasty/module-elastic-search-graphql": "Install module-elastic-search-graphql module to activate Graphql and Elastic Search",
+        "amasty/module-meta-tags-to-elastic-search": "Install meta-tags-to-elastic-search module to activate Amasty Meta Tags and Elastic Search compatibility",
+        "amasty/module-elastic-search-mftf-3": "Install elastic-search-mftf-3 module to be able to run ElasticSearch MFTF tests for Magento 2.4.0+ version",
+        "amasty/module-elasticsearch-catalog-permissions": "Install module-elasticsearch-catalog-permissions if you want elastic to work properly with Adobe Commerce Shared Catalogs"
+    },
+    "type": "magento2-module",
+    "version": "2.3.1",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\ElasticSearch\\": ""
+        }
+    }
+}

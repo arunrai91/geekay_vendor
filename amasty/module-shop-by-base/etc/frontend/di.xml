@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Base for Magento 2 (System)
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="\Magento\Catalog\Block\Category\View">
+        <plugin name="Amasty_ShopbyBase::catalogCategoryView"
+                type="Amasty\ShopbyBase\Plugin\Catalog\Block\Category\View" sortOrder="100"/>
+    </type>
+
+    <type name="\Magento\Catalog\Model\Category\Image">
+        <plugin name="Amasty_ShopbyBase::catalogCategory"
+                type="Amasty\ShopbyBase\Plugin\Catalog\Model\Category" sortOrder="100"/>
+    </type>
+
+    <type name="\Magento\Catalog\Model\Category">
+        <plugin name="Amasty_ShopbyBase::catalogCategoryImage"
+                type="Amasty\ShopbyBase\Plugin\Catalog\Model\Category" sortOrder="100"/>
+    </type>
+
+    <type name="\Magento\Catalog\Model\Category\Image">
+        <plugin name="Amasty_ShopbyBase::customizeCategoryImage"
+                type="Amasty\ShopbyBase\Plugin\Catalog\Model\Category\ImagePlugin" sortOrder="100"/>
+    </type>
+
+    <type name="Magento\Framework\View\Page\Title">
+        <plugin name="Amasty_ShopbyBase::pageTitlePlugin" type="Amasty\ShopbyBase\Plugin\View\Page\Title"/>
+    </type>
+
+    <type name="Amasty\ShopbyBase\Model\UrlBuilder">
+        <arguments>
+            <argument name="urlAdapters" xsi:type="array">
+                <item name="base" xsi:type="array">
+                    <item name="adapter" xsi:type="object">\Amasty\ShopbyBase\Model\UrlBuilder\Adapter</item>
+                    <item name="sort_order" xsi:type="string">100</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Search\Request">
+        <plugin name="Amasty_Shopby::undefinedSearchFix" type="Amasty\ShopbyBase\Plugin\Framework\Search\RequestPlugin" />
+    </type>
+
+    <virtualType name="replacedDataFromAmastyMetaModuleForShopby" type="Amasty\ShopbyBase\Model\Di\Wrapper">
+        <arguments>
+            <argument name="name" xsi:type="string">Amasty\Meta\Model\Meta\ReplacedData</argument>
+            <argument name="getShared" xsi:type="boolean">true</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\ShopbyBase\Model\Meta\GetReplacedMetaData">
+        <arguments>
+            <argument name="replacedMetaData" xsi:type="object">replacedDataFromAmastyMetaModuleForShopby</argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package GeoIP Data for Magento 2 (System)
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="amgeoip">
+        <job name="amasty_geoip_clear_ip_logs" instance="Amasty\Geoip\Cron\ClearIpLogs" method="execute">
+            <schedule>0 0 * * *</schedule>
+        </job>
+        <job name="amasty_geoip_sync_db" instance="Amasty\Geoip\Cron\SyncDb" method="execute">
+            <config_path>amgeoip/refresh_ip_database/cron_schedule</config_path>
+        </job>
+    </group>
+</config>

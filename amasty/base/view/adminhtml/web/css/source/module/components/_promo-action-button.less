@@ -1,0 +1,61 @@
+//
+//  Amasty Promotion Action Button
+//  ______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .page-main-actions .page-actions .page-actions-buttons {
+        .amasty-promotion-action-button {
+            align-items: center;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            line-height: 1.1;
+            padding-bottom: .5rem;
+            padding-top: .5rem;
+            text-align: left;
+            width: min-content;
+
+            & span {
+                width: max-content;
+            }
+        }
+
+        .amasty-promotion-action-button:before {
+            grid-row: span 2;
+            width: 3rem;
+        }
+
+        .amasty-promotion-action-button.subscribe-to-unlock:before {
+            content: url('@{baseDir}Amasty_Base/images/components/promotion-action/locked.svg');
+        }
+
+        .amasty-promotion-action-button.primary.subscribe-to-unlock:before {
+            content: url('@{baseDir}Amasty_Base/images/components/promotion-action/locked-primary.svg');
+        }
+
+        .amasty-promotion-action-button.upgrade-your-plan:before {
+            content: url('@{baseDir}Amasty_Base/images/components/promotion-action/upgrade.svg');
+        }
+
+        .amasty-promotion-action-button.primary.upgrade-your-plan:before {
+            content: url('@{baseDir}Amasty_Base/images/components/promotion-action/upgrade-primary.svg');
+        }
+
+        .amasty-promotion-action-button:after {
+            font-size: 1.2rem;
+            font-weight: 400;
+            width: max-content;
+        }
+
+        .amasty-promotion-action-button.subscribe-to-unlock:after {
+            content: 'Subscribe to Unlock';
+        }
+
+        .amasty-promotion-action-button.upgrade-your-plan:after {
+            content: 'Upgrade Your Plan';
+        }
+    }
+}

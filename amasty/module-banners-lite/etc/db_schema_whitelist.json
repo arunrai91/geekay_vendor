@@ -1,0 +1,60 @@
+{
+    "amasty_banners_lite_banner_data": {
+        "column": {
+            "entity_id": true,
+            "salesrule_id": true,
+            "banner_type": true,
+            "banner_image": true,
+            "banner_alt": true,
+            "banner_hover_text": true,
+            "banner_link": true
+        },
+        "index": {
+            "AMASTY_BANNERS_LITE_BANNER_DATA_SALESRULE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "amasty_banners_lite_rule": {
+        "column": {
+            "entity_id": true,
+            "salesrule_id": true,
+            "show_banner_for": true
+        },
+        "index": {
+            "AMASTY_BANNERS_LITE_RULE_SALESRULE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "amasty_banners_lite_rule_categories": {
+        "column": {
+            "entity_id": true,
+            "banner_product_categories": true
+        },
+        "index": {
+            "AMASTY_BANNERS_LITE_RULE_CATEGORIES_ENTITY_ID": true,
+            "AMASTY_BANNERS_LITE_RULE_CATEGORIES_BANNER_PRD_CATEGORIES": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_6F7E1C9C26B25C3572E1D2F463D5E2CC": true
+        }
+    },
+    "amasty_banners_lite_rule_sku": {
+        "column": {
+            "entity_id": true,
+            "banner_product_sku": true
+        },
+        "index": {
+            "AMASTY_BANNERS_LITE_RULE_SKU_ENTITY_ID": true,
+            "AMASTY_BANNERS_LITE_RULE_SKU_BANNER_PRODUCT_SKU": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_0F6299AFC88F2A65EB2DD5DA827392C7": true
+        }
+    }
+}

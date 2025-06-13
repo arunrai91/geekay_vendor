@@ -1,0 +1,53 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Layered Navigation Base for Magento 2
+ */
+/** @var \Amasty\Shopby\Block\Navigation\Widget\HideMoreOptions $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+use Amasty\Shopby\Model\Source\DisplayMode;
+
+$dataAmJsAttribute = 'data-am-js=%s';
+$dataTextMore = __('Show (%1) more', '<span class="am-counter" data-am-counter="counter"></span>');
+
+if ($block->getIsState()) {
+    $buttonSelector = sprintf($dataAmJsAttribute, 'show-more_button_state');
+    $itemSelector = '[' . sprintf($dataAmJsAttribute, 'shopby-container') . ']';
+    $numberUnfoldedOptions = $block->getUnfoldedOptions();
+    $isModeDropdown = false;
+    $filterCode = '';
+} else {
+    $filterSetting = $block->getFilterSetting();
+    $isModeDropdown = $filterSetting->getDisplayMode() == DisplayMode::MODE_DROPDOWN;
+    $filterCode = $escaper->escapeHtml($filterSetting->getAttributeCode());
+    $buttonSelector = sprintf($dataAmJsAttribute, 'am-filter-items-' . $filterCode . '-show-more');
+    $itemSelector = '.am-filter-items-' . $filterCode;
+    $numberUnfoldedOptions = $filterSetting->getNumberUnfoldedOptions();
+}
+?>
+
+<?php if (!$isModeDropdown): ?>
+    <button class="am-show-more"
+        title="<?= $escaper->escapeHtml(__('Show more')) ?>" <?= $escaper->escapeHtml($buttonSelector) ?>
+        data-text-more="<?= $escaper->escapeHtml($dataTextMore) ?>"
+        data-text-less="<?= $escaper->escapeHtml(__('Less'))?>"
+        aria-controls="am-ranges-<?= $escaper->escapeHtmlAttr($filterCode)?>"
+        aria-expanded="true"
+        data-is-hide="false">
+        <?= $escaper->escapeHtml(__('Less')) ?>
+    </button>
+
+    <script type="text/x-magento-init">
+        {
+            "<?= /* @noEscape */ $itemSelector ?>": {
+                "amShopbyFilterHideMoreOptions": {
+                    "numberUnfoldedOptions": <?= $escaper->escapeHtml($numberUnfoldedOptions) ?>,
+                    "buttonSelector": "[<?= /* @noEscape */ $buttonSelector ?>]",
+                    "isState": "<?= /* @noEscape */ $block->getIsState() ?>"
+                }
+            }
+        }
+    </script>
+<?php endif; ?>

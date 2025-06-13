@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Base for Magento 2 (System)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <!-- setup_version is not a module version -->
+    <module name="Amasty_ShopbyBase" setup_version="2.13.13">
+        <sequence>
+            <module name="Amasty_Base"/>
+            <module name="Amasty_LibSwiperJs"/>
+            <module name="Magento_Cms"/>
+            <module name="Magento_Catalog"/>
+        </sequence>
+    </module>
+</config>

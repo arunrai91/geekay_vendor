@@ -1,0 +1,78 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\BannersLite\Api\Data\BannerInterface" type="Amasty\BannersLite\Model\Banner" />
+    <preference for="Amasty\BannersLite\Api\BannerRepositoryInterface" type="Amasty\BannersLite\Model\BannerRepository" />
+    <preference for="Amasty\BannersLite\Api\Data\BannerRuleInterface" type="Amasty\BannersLite\Model\BannerRule" />
+    <preference for="Amasty\BannersLite\Api\BannerRuleRepositoryInterface" type="Amasty\BannersLite\Model\BannerRuleRepository" />
+    <preference for="Amasty\BannersLite\Api\Data\FileContentInterface" type="Amasty\BannersLite\Model\Webapi\FileContent" />
+    <preference for="Amasty\BannersLite\Api\UploadFileInterface" type="Amasty\BannersLite\Model\Webapi\UploadFile" />
+
+    <type name="Amasty\BannersLite\Model\BannerImageUpload">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="const">\Amasty\BannersLite\Model\ImageProcessor::BANNERS_MEDIA_TMP_PATH</argument>
+            <argument name="basePath" xsi:type="const">\Amasty\BannersLite\Model\ImageProcessor::BANNERS_MEDIA_PATH</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\BannersLite\Model\Cache">
+        <arguments>
+            <argument name="config" xsi:type="object">Magento\PageCache\Model\Config\Proxy</argument>
+            <argument name="purgeCache" xsi:type="object">Magento\CacheInvalidate\Model\PurgeCache\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\SalesRule\Model\Rule\DataProvider">
+        <plugin name="amastyBannersLiteDataProvider" type="Amasty\BannersLite\Plugin\SalesRule\Model\DataProviderPlugin"/>
+    </type>
+    <type name="Magento\Framework\Model\ResourceModel\Db\VersionControl\Metadata">
+        <plugin name="Amasty_BannersLite::ModifyMetadata"
+                type="Amasty\BannersLite\Plugin\Framework\Model\ResourceModel\Db\VersionControl\ModifyBannerMetadataPlugin"/>
+    </type>
+
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Magento\SalesRule\Api\Data\RuleInterface" xsi:type="array">
+                    <item name="create" xsi:type="array">
+                        <item name="create_promo_banners_lite" xsi:type="string">Amasty\BannersLite\Model\SalesRule\SaveHandler</item>
+                    </item>
+                    <item name="update" xsi:type="array">
+                        <item name="update_promo_banners_lite" xsi:type="string">Amasty\BannersLite\Model\SalesRule\SaveHandler</item>
+                    </item>
+                    <item name="read" xsi:type="array">
+                        <item name="read_promo_banners_lite" xsi:type="string">Amasty\BannersLite\Model\SalesRule\ReadHandler</item>
+                    </item>
+                    <item name="delete" xsi:type="array">
+                        <item name="delete_promo_banners_lite" xsi:type="string">Amasty\BannersLite\Model\SalesRule\DeleteHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="AmastyBannersLiteRuleRelationsComposite" type="Magento\Framework\Model\ResourceModel\Db\VersionControl\RelationComposite">
+        <arguments>
+            <argument name="relationProcessors" xsi:type="array">
+                <item name="categories" xsi:type="object">Amasty\BannersLite\Model\ResourceModel\Rule\Relation\CategoriesProcessor</item>
+                <item name="product_sku" xsi:type="object">Amasty\BannersLite\Model\ResourceModel\Rule\Relation\ProductSkuProcessor</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Amasty\BannersLite\Model\ResourceModel\BannerRule">
+        <arguments>
+            <argument name="entityRelationComposite" xsi:type="object">AmastyBannersLiteRuleRelationsComposite</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Base\Plugin\Setup\Model\DeclarationInstaller\ApplyPatchesBeforeDeclarativeSchema">
+        <arguments>
+            <argument name="moduleNames" xsi:type="array">
+                <item name="amasty_banners_lite" xsi:type="string">Amasty_BannersLite</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

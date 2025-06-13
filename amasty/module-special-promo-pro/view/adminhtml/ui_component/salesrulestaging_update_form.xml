@@ -1,0 +1,44 @@
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="rule_information">
+        <field name="amrulesrule[rule_limit]">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Global Uses Limit</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="dataScope" xsi:type="string">extension_attributes.limit</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-zero-or-greater" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="tooltip" xsi:type="array">
+                        <item name="description" xsi:type="string" translate="true">
+                            Takes into account any Orders made by any Customers using this Cart Price Rule.
+                            Modifying Global Uses Limit does not reset this rule's Current Uses amount.
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="amrulesrule[rule_count]">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Current Uses</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="dataScope" xsi:type="string">extension_attributes.count</item>
+                    <item name="sortOrder" xsi:type="number">4</item>
+                    <item name="tooltip" xsi:type="array">
+                        <item name="description" xsi:type="string" translate="true">
+                            Once Current Uses would reach or exceed Global Uses Limit, this Cart Price Rule will stop affecting customers' new Orders.
+                            Please keep in mind that Orders which were created prior to installing/updating Special Promotions to v2.8.0 can't be taken into account for this counter.
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

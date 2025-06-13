@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amasty\Xsearch\Block\Adminhtml\System\Config\Form\Field\AbstractField">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="module_manager" xsi:type="object">Magento\Framework\Module\Manager</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Search\Block\Adminhtml\Term\Edit\Form">
+        <plugin name="Amasty_Xsearch::ExtendTermFrom"
+                type="Amasty\Xsearch\Plugin\Search\Block\Adminhtml\Term\Edit\FormPlugin" sortOrder="1" />
+    </type>
+
+    <type name="Magento\Search\Model\Query">
+        <plugin name="Amasty_Xsearch::ExtendRelatedQueries"
+                type="Amasty\Xsearch\Plugin\Search\Model\QueryBackendPlugin" sortOrder="1" />
+    </type>
+
+    <type name="Magento\PageBuilder\Model\Stage\Preview">
+        <plugin name="Amasty_Xsearch::fix-ee-234-image-factory-bug"
+                type="Amasty\Xsearch\Plugin\PageBuilder\Model\Stage\Preview" sortOrder="1" />
+    </type>
+
+    <virtualType name="XsearchMultiStorePromo"
+                 type="Amasty\Base\Block\Adminhtml\System\Config\Form\Field\Promo\PromoField">
+        <arguments>
+            <argument name="moduleName" xsi:type="string">Amasty_AdvancedSearchMultiStore</argument>
+            <argument name="promoConfig" xsi:type="array">
+                <item name="comment"
+                      xsi:type="string"><![CDATA[The functionality is available as part of an active product subscription or support subscription.
+                    To upgrade and obtain functionality, please follow the <a href="https://amasty.com/amcustomer/account/products/?utm_source=extension&utm_medium=backend&utm_campaign=subscribe_advancedsearch" target="_blank">link</a>.
+                    Then you can find the 'amasty/module-advanced-search-multi-store' package for installation in composer suggest.]]></item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\Xsearch\ViewModel\SuggestNotificationViewModel">
+        <arguments>
+            <argument name="suggestModules" xsi:type="array">
+                <item name="elastic_search" xsi:type="string">Amasty_ElasticSearch</item>
+                <item name="elastic_search_graphql" xsi:type="string">Amasty_ElasticSearchGraphQl</item>
+                <item name="xsearch_hyva_compatibility" xsi:type="string">Amasty_XsearchHyvaCompatibility</item>
+                <item name="search_rate_limiter" xsi:type="string">Amasty_SearchRateLimiter</item>
+                <item name="advanced_search_subscription_functionality" xsi:type="string">Amasty_XsearchSubscriptionFunctionality</item>
+                <item name="advanced_search_multi_store" xsi:type="string">Amasty_AdvancedSearchMultiStore</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

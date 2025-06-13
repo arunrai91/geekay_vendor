@@ -1,0 +1,20 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Abandoned Cart Email Base for Magento 2
+ */
+/** @var \Amasty\Acart\Block\GrabEmail $block */
+?>
+<?php if ($block->isGrabbingAllowed()): ?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Amasty_Acart/js/grabemail": {
+                "isNeedLogEmail" : "<?= /* @noEscape */ (int)$block->isNeedLogEmail() ?>",
+                "grabEmailUrl": "<?= $block->escapeUrl($block->getGrabUrl()) ?>"
+            }
+        }
+    }
+</script>
+<?php endif; ?>

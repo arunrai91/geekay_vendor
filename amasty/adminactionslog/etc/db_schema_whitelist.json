@@ -1,0 +1,110 @@
+{
+    "amasty_audit_log_entry": {
+        "column": {
+            "id": true,
+            "date": true,
+            "username": true,
+            "type": true,
+            "category": true,
+            "category_name": true,
+            "parameter_name": true,
+            "element_id": true,
+            "view_element_id": true,
+            "item": true,
+            "ip": true,
+            "store_id": true,
+            "additional_data": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "amasty_audit_log_details": {
+        "column": {
+            "id": true,
+            "log_id": true,
+            "name": true,
+            "old_value": true,
+            "new_value": true,
+            "model": true
+        },
+        "index": {
+            "AMASTY_AUDIT_LOG_DETAILS_LOG_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "AMASTY_AUDIT_LOG_DETAILS_LOG_ID_AMASTY_AUDIT_LOG_ENTRY_ID": true
+        }
+    },
+    "amasty_audit_active_sessions": {
+        "column": {
+            "id": true,
+            "session_id": true,
+            "username": true,
+            "full_name": true,
+            "ip": true,
+            "session_start": true,
+            "recent_activity": true,
+            "location": true,
+            "country_id": true,
+            "admin_session_info_id": true,
+            "user_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "AMASTY_AUDIT_ACTIVE_SESSIONS_USER_ID": true
+        }
+    },
+    "amasty_audit_visit_entry": {
+        "column": {
+            "id": true,
+            "username": true,
+            "full_name": true,
+            "session_start": true,
+            "session_end": true,
+            "ip": true,
+            "location": true,
+            "session_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "amasty_audit_visit_details": {
+        "column": {
+            "id": true,
+            "visit_id": true,
+            "page_name": true,
+            "page_url": true,
+            "stay_duration": true,
+            "session_id": true
+        },
+        "index": {
+            "AMASTY_AUDIT_VISIT_DETAILS_VISIT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "AMASTY_AUDIT_VISIT_DETAILS_VISIT_ID_AMASTY_AUDIT_VISIT_ENTRY_ID": true
+        }
+    },
+    "amasty_audit_login_attempts": {
+        "column": {
+            "id": true,
+            "date_time": true,
+            "date": true,
+            "username": true,
+            "name": true,
+            "full_name": true,
+            "ip": true,
+            "status": true,
+            "location": true,
+            "country_id": true,
+            "user_agent": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

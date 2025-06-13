@@ -1,0 +1,28 @@
+{
+    "name": "amasty/module-special-promo",
+    "description": "Special Promotions by Amasty",
+    "require": {
+        "php": ">=7.3",
+        "amasty/base": ">=1.18.0",
+        "amasty/module-banners-lite": ">=1.2.1",
+        "amasty/rgrid": "*"
+    },
+    "suggest": {
+        "amasty/module-special-promo-mftf-3": "Install module-special-promo-mftf-3 module to be able to run Special Promotions MFTF tests for Magento 2.4.0+ version.",
+        "amasty/module-mage-2.4.7-fix": "Install this module if you have a problem with extension on Magento 2.4.7 version",
+        "amasty/module-graphql-application-server-compatibility": "Install this package for compatibility with GraphQL Application Server."
+    },
+    "type": "magento2-module",
+    "version": "2.16.0",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\Rules\\": ""
+        }
+    }
+}

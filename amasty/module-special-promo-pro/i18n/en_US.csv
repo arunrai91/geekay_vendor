@@ -1,0 +1,47 @@
+"Could not save the queue: %1","Could not save the queue: %1"
+"Customer ID","Customer ID"
+"Membership Days","Membership Days"
+"Number of Completed Orders","Number of Completed Orders"
+"Total Sales Amount","Total Sales Amount"
+"Average Order Value","Average Order Value"
+"Number of Placed Orders","Number of Placed Orders"
+is,is
+"is not","is not"
+"equals or greater than","equals or greater than"
+"equals or less than","equals or less than"
+"greater than","greater than"
+"less than","less than"
+"is one of","is one of"
+"is not one of","is not one of"
+"Please choose condition","Please choose condition"
+"Order State","Order State"
+"Period after order was placed","Period after order was placed"
+"If %1 %2 %3 for a subselection of items in cart matching %4 of these conditions:","If %1 %2 %3 for a subselection of items in cart matching %4 of these conditions:"
+"Orders Subselection","Orders Subselection"
+"The maximum number of times the discount can be applied. Examples: •if your promotion is set 
+                to apply a discount on each second product in the cart and you set this 
+                to '2' the discount will be applied only twice even if a customer has 5 or more items in the cart.
+                •if you want to apply a discount on the only product (Action = The Most Expensive/The Cheapest, 
+                also Buy 1 get 1 free) set the value to '1'.","The maximum number of times the discount can be applied. Examples: •if your promotion is set 
+                to apply a discount on each second product in the cart and you set this 
+                to '2' the discount will be applied only twice even if a customer has 5 or more items in the cart.
+                •if you want to apply a discount on the only product (Action = The Most Expensive/The Cheapest, 
+                also Buy 1 get 1 free) set the value to '1'."
+"Amasty: Special Promotions - Purchase History Indexer","Amasty: Special Promotions - Purchase History Indexer"
+"Indexed completed orders","Indexed completed orders"
+"Global Uses Limit","Global Uses Limit"
+"
+                            Takes into account any Orders made by any Customers using this Cart Price Rule.
+                            Modifying Global Uses Limit does not reset this rule's Current Uses amount.
+                        ","
+                            Takes into account any Orders made by any Customers using this Cart Price Rule.
+                            Modifying Global Uses Limit does not reset this rule's Current Uses amount.
+                        "
+"Current Uses","Current Uses"
+"
+                            Once Current Uses would reach or exceed Global Uses Limit, this Cart Price Rule will stop affecting customers' new Orders.
+                            Please keep in mind that Orders which were created prior to installing/updating Special Promotions to v2.8.0 can't be taken into account for this counter.
+                        ","
+                            Once Current Uses would reach or exceed Global Uses Limit, this Cart Price Rule will stop affecting customers' new Orders.
+                            Please keep in mind that Orders which were created prior to installing/updating Special Promotions to v2.8.0 can't be taken into account for this counter.
+                        "

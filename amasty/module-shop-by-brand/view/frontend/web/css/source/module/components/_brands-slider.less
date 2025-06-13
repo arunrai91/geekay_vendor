@@ -1,0 +1,41 @@
+//
+//  Shop by Brand Slider
+//  ______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .ambrands-slider.amslider {
+        .ambrands-slide-link {
+            display: flex;
+            width: 100%;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+
+        .brand-swiper-slide.swiper-slide {
+            padding: .4rem;
+
+            .ambrands-empty {
+                color: @color-gray55;
+            }
+        }
+
+        .swiper-pagination-bullets .swiper-pagination-bullet {
+            margin: .8rem 1rem;
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            background-color: @color-sky-blue1;
+
+            &:focus {
+                .lib-css(box-shadow, 0 0 4px 3px @focus__color);
+            }
+        }
+    }
+}

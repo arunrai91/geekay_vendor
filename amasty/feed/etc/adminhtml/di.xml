@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Product Feed for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\GroupedProduct\Pricing\Price\FinalPrice">
+        <plugin name="Amasty_Feed::FinalPrice" type="Amasty\Feed\Plugin\FinalPrice" />
+    </type>
+
+    <type name="Magento\Catalog\Model\ResourceModel\Product">
+        <plugin name="apply_amasty_feed_rules_after_product_save" type="Amasty\Feed\Plugin\Indexer\Product\Save\ApplyRules"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Action">
+        <plugin name="apply_amasty_feed_rules_after_product_mass_action" type="Amasty\Feed\Plugin\Indexer\Action"/>
+    </type>
+
+    <virtualType name="PromotionSelectFeedTemplates" type="Amasty\Feed\Ui\Component\Form\PromotionSelectOptionSource">
+        <arguments>
+            <argument name="promoModuleName" xsi:type="string">Amasty_ProductFeedTemplates</argument>
+            <argument name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:product_feed#additional_packages_provided_in_composer_suggestions</argument>
+            <argument name="origOptionSource" xsi:type="object">Amasty\Feed\Ui\Component\Form\Wizard\TemplateOptions</argument>
+            <argument name="promoOptions" xsi:type="array">
+                <item name="ebay_product_xml" xsi:type="array">
+                    <item name="value" xsi:type="string">ebay_product_xml</item>
+                    <item name="label" xsi:type="string">eBay Product XML</item>
+                </item>
+                <item name="ebay_product_csv" xsi:type="array">
+                    <item name="value" xsi:type="string">ebay_product_csv</item>
+                    <item name="label" xsi:type="string">eBay Product CSV</item>
+                </item>
+                <item name="ebay_inventory_xml" xsi:type="array">
+                    <item name="value" xsi:type="string">ebay_inventory_xml</item>
+                    <item name="label" xsi:type="string">eBay Inventory XML</item>
+                </item>
+                <item name="ebay_inventory_csv" xsi:type="array">
+                    <item name="value" xsi:type="string">ebay_inventory_csv</item>
+                    <item name="label" xsi:type="string">eBay Inventory CSV</item>
+                </item>
+                <item name="instagram_catalog_xml" xsi:type="array">
+                    <item name="value" xsi:type="string">instagram_catalog_xml</item>
+                    <item name="label" xsi:type="string">Instagram Catalog XML</item>
+                </item>
+                <item name="instagram_catalog_csv" xsi:type="array">
+                    <item name="value" xsi:type="string">instagram_catalog_csv</item>
+                    <item name="label" xsi:type="string">Instagram Catalog CSV</item>
+                </item>
+                <item name="tiktok_xml" xsi:type="array">
+                    <item name="value" xsi:type="string">tiktok_xml</item>
+                    <item name="label" xsi:type="string">TikTok XML</item>
+                </item>
+                <item name="tiktok_csv" xsi:type="array">
+                    <item name="value" xsi:type="string">tiktok_csv</item>
+                    <item name="label" xsi:type="string">TikTok CSV</item>
+                </item>
+                <item name="pinterest_xml" xsi:type="array">
+                    <item name="value" xsi:type="string">pinterest_xml</item>
+                    <item name="label" xsi:type="string">Pinterest XML</item>
+                </item>
+                <item name="pinterest_csv" xsi:type="array">
+                    <item name="value" xsi:type="string">pinterest_csv</item>
+                    <item name="label" xsi:type="string">Pinterest CSV</item>
+                </item>
+                <item name="facebook_xml" xsi:type="array">
+                    <item name="value" xsi:type="string">facebook_xml</item>
+                    <item name="label" xsi:type="string">Facebook XML</item>
+                </item>
+                <item name="facebook_csv" xsi:type="array">
+                    <item name="value" xsi:type="string">facebook_csv</item>
+                    <item name="label" xsi:type="string">Facebook CSV</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\Feed\Block\Adminhtml\System\Config\SuggestNotification">
+        <arguments>
+            <argument name="suggestModules" xsi:type="array">
+                <item name="product_feed_msi" xsi:type="string">Amasty_ProductFeedMsi</item>
+                <item name="product_feed_templates" xsi:type="string">Amasty_ProductFeedTemplates</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

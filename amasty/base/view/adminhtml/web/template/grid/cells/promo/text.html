@@ -1,0 +1,7 @@
+<!-- ko ifnot: Object.hasOwn($row(), $col?.index) -->
+    <!-- ko template: { name: 'Amasty_Base/grid/cells/promo/badge', data: $col?.promoData ?? {} } --><!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if: Object.hasOwn($row(), $col?.index) -->
+<div class="data-grid-cell-content" text="$col.getLabel($row())"></div>
+<!-- /ko -->

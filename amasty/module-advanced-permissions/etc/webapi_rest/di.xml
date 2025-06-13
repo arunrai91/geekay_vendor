@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Permissions for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="Amasty_Rolepermissions::restrictProductAccess"
+                type="Amasty\Rolepermissions\Plugin\Catalog\Model\Product\RestrictAccess"/>
+    </type>
+
+    <type name="Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection">
+        <plugin name="Amasty_Rolepermissions::restrictAccessCollection"
+                type="Amasty\Rolepermissions\Plugin\Framework\Model\ResourceModel\Db\Collection\AbstractCollection\RestrictAccess"/>
+    </type>
+    <type name="Amasty\Rolepermissions\Model\Authorization\GetCurrentUserFromContext">
+        <plugin name="Amasty_Rolepermissions::SkipGetCurrentUserFromContext"
+                type="Amasty\Rolepermissions\Plugin\Model\Authorization\SkipGetCurrentUserFromContext"/>
+    </type>
+</config>

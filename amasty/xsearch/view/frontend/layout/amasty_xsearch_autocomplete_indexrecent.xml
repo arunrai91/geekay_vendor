@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <update handle="formkey"/>
+    <container name="root">
+        <block name="amsearch_preload_block" template="Amasty_Xsearch::preload/wrapper.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">
+                    Amasty\Xsearch\ViewModel\Preload\Sidebar
+                </argument>
+            </arguments>
+            <block name="amsearch_configurable_renderer" template="Amasty_Xsearch::preload/configurable_renderer.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Amasty\Xsearch\ViewModel\Preload\MainPanel
+                    </argument>
+                </arguments>
+            </block>
+        </block>
+    </container>
+</page>

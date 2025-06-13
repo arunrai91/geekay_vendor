@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Automatic Related Products for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\Mostviewed\Model\Customer\CustomerGroupContextInterface"
+                type="Amasty\Mostviewed\Model\Customer\WebApi\CustomerGroupContext"/>
+
+    <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">
+        <plugin name="Amasty_Mostviewed::InitializeCustomerGroupId"
+                type="Amasty\Mostviewed\Plugin\Checkout\Api\ShippingInformationManagementInterface\InitializeCustomerGroupId"/>
+    </type>
+    <type name="Magento\Quote\Api\CartTotalRepositoryInterface">
+        <plugin name="Amasty_Mostviewed::InitializeCustomerGroupId"
+                type="Amasty\Mostviewed\Plugin\Quote\Api\CartTotalRepositoryInterface\InitializeCustomerGroupId"/>
+    </type>
+    <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
+        <plugin name="Amasty_Mostviewed::InitializeCustomerGroupId"
+                type="Amasty\Mostviewed\Plugin\Checkout\Api\PaymentInformationManagementInterface\InitializeCustomerGroupId"/>
+    </type>
+    <type name="Magento\SalesRule\Model\Quote\Discount">
+        <plugin name="Amasty_Mostviewed::InitializeCustomerGroupId"
+                type="Amasty\Mostviewed\Plugin\SalesRule\Model\Quote\Discount\InitializeCustomerGroupId" sortOrder="5"/>
+    </type>
+</config>

@@ -1,0 +1,39 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var Amasty\Xsearch\Block\Adminhtml\Analytics\Wanted\QueryList $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<div class="amxsearch-2column">
+    <p class="amxsearch-title"><?= $escaper->escapeHtml(__('Most Wanted Search Terms')); ?></p>
+
+    <table class="amxsearch-table">
+        <thead class="amxsearch-thead">
+        <tr>
+            <th class="amxsearch-cell"><?= $escaper->escapeHtml(__('Search Query')); ?></th>
+            <th class="amxsearch-cell"><?= $escaper->escapeHtml(__('Total Searches')); ?></th>
+            <th class="amxsearch-cell"><?= $escaper->escapeHtml(__('Users')); ?></th>
+            <th class="amxsearch-cell"><?= $escaper->escapeHtml(__('Engagement')); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($block->getWantedQueries() as $query): ?>
+            <tr class="amxsearch-row">
+                <td class="amxsearch-cell"><?= $escaper->escapeHtml($query->getQueryText()); ?></td>
+                <td class="amxsearch-cell"><?= (int)$query->getTotalSearches(); ?></td>
+                <td class="amxsearch-cell"><?= (int)$query->getUserKey(); ?></td>
+                <td class="amxsearch-cell"><?= (float)$query->getProductClick(); ?>%</td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <a href="<?= $escaper->escapeUrl($block->getMoreUrl()) ?>"
+       class="amxsearch-more-link"
+       title="<?= $block->escapeHtml(__('View more')); ?>"
+       target="_blank"><?= $block->escapeHtml(__('View more')); ?></a>
+</div>

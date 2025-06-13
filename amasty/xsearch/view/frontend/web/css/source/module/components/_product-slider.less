@@ -1,0 +1,126 @@
+//
+//  Slick Slider Extend
+//  _____________________________________
+
+//
+//  Imports
+//  -------------------------------------
+
+@import '../_mixins';
+
+//
+//  Variables
+//  -------------------------------------
+
+@amsearch-slider-arrow: #fff url('data:image/svg+xml;base64, PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTkiIHZpZXdCb3g9IjAgMCAxMSAxOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwLjU0NTQgOS4zNzY2OEwyLjE5ODk1IDAuNDA5MThMMC43NDIyNjEgMS44NDg5Mkw3Ljc1MDEzIDkuMzc2NjhMMC41NDU0MSAxNy4xNTEzTDEuOTYyNzMgMTguNTkxTDEwLjA3MyA5LjkxMTQ0TDEwLjU0NTQgOS4zNzY2OFoiIGZpbGw9IiM5OTk5OTkiLz4KPC9zdmc+Cg==') center no-repeat;
+@amsearch-slider-dots__size: 6px;
+@amsearch-slider-dots__color__active: #ff5502;
+
+//
+//  Common
+//  -------------------------------------
+
+& when (@media-common = true) {
+    .amsearch-slider-section {
+        & {
+            box-sizing: border-box;
+            display: flex;
+        }
+
+        .amsearch-item {
+            &:hover,
+            &.selected {
+                background-color: transparent;
+            }
+
+            .amsearch-image {
+                display: block;
+                pointer-events: auto;
+                width: 100%;
+            }
+        }
+
+        &.slick-slider {
+            padding: 0;
+        }
+
+        .slick-dots {
+            & {
+                background: inherit;
+                border: none;
+                top: 100%;
+            }
+
+            > li[role='presentation'] {
+                & {
+                    align-items: center;
+                    border: none;
+                    display: inline-flex;
+                    height: @amsearch-slider-dots__size;
+                    justify-content: center;
+                    margin: 0 6px;
+                    padding: 0;
+                    text-align: inherit;
+                    white-space: inherit;
+                    width: @amsearch-slider-dots__size;
+                }
+
+                &:hover,
+                &.selected {
+                    background: inherit;
+                }
+
+                &.slick-active button {
+                    background: @amsearch-slider-dots__color__active;
+                    border-color: @amsearch-slider-dots__color__active;
+                }
+            }
+
+            > li[role='presentation'] button {
+                & {
+                    background: @color-white;
+                    border: 1px solid @amsearch-border__color;
+                    border-radius: 100%;
+                    height: 100%;
+                    padding: 0;
+                    width: 100%;
+                }
+
+                &:before {
+                    content: none;
+                }
+            }
+        }
+
+        button.slick-arrow {
+            background: @amsearch-slider-arrow !important; // Slick slider already has an important directive here. Override
+            border-radius: 0;
+            bottom: 0;
+            height: @amsearch-slider-arrow__size;
+            margin: auto 0;
+            top: 0;
+            width: @amsearch-slider-arrow__size;
+            z-index: 2;
+        }
+
+        button.slick-arrow:focus {
+            box-shadow: 0 0 3px 1px @color-blue3;
+        }
+    }
+}
+
+//
+//  Desktop
+//  --------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .amsearch-slider-section {
+        & {
+            max-width: 575px;
+        }
+
+        &.slick-slider {
+            padding: 0 40px;
+        }
+    }
+}

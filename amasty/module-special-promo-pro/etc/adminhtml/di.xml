@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Pro for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <virtualType name="Amasty\RulesPro\Export\Config\DemoEntityConfig" type="Amasty\ExportCore\Export\Config\DemoEntityConfig">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_code" xsi:type="string">amrules_rule</item>
+                <item name="name" xsi:type="string">Special Promo Rule Entity</item>
+                <item name="group" xsi:type="string">Cart Price Rule</item>
+                <item name="is_hidden_in_lists" xsi:type="boolean">false</item>
+                <item name="additional_data" xsi:type="array">
+                    <item name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:special-promotions#additional_packages_provided_in_composer_suggestions</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Amasty\ExportCore\Export\Config\DemoEntitiesPool">
+        <arguments>
+            <argument name="demoEntities" xsi:type="array">
+                <item name="amrules_rule" xsi:type="object">Amasty\RulesPro\Export\Config\DemoEntityConfig</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Amasty\RulesPro\Import\Config\DemoEntityConfig" type="Amasty\ImportCore\Import\Config\DemoEntityConfig">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_code" xsi:type="string">amrules_rule</item>
+                <item name="name" xsi:type="string">Special Promo Rule Entity</item>
+                <item name="group" xsi:type="string">Cart Price Rule</item>
+                <item name="is_hidden_in_lists" xsi:type="boolean">false</item>
+                <item name="additional_data" xsi:type="array">
+                    <item name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:special-promotions#additional_packages_provided_in_composer_suggestions</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Amasty\ImportCore\Import\Config\DemoEntitiesPool">
+        <arguments>
+            <argument name="demoEntities" xsi:type="array">
+                <item name="amrules_rule" xsi:type="object">Amasty\RulesPro\Import\Config\DemoEntityConfig</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

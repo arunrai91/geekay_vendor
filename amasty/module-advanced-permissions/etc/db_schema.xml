@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Permissions for Magento 2
+ */-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="amasty_amrolepermissions_rule" resource="default" engine="innodb" comment="Amasty Advanced Permissions Rule Table">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Id"/>
+    <column xsi:type="int" name="role_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Role_id"/>
+    <column xsi:type="smallint" name="limit_orders" padding="6" unsigned="false" nullable="false" identity="false" comment="Limit_orders"/>
+    <column xsi:type="smallint" name="limit_invoices" padding="6" unsigned="false" nullable="false" identity="false" comment="Limit_invoices"/>
+    <column xsi:type="smallint" name="limit_shipments" padding="6" unsigned="false" nullable="false" identity="false" comment="Limit_shipments"/>
+    <column xsi:type="smallint" name="limit_memos" padding="6" unsigned="false" nullable="false" identity="false" comment="Limit_memos"/>
+    <column xsi:type="smallint" name="product_access_mode" padding="6" unsigned="false" nullable="false" identity="false" default="0" comment="Product Access Mode"/>
+    <column xsi:type="smallint" name="category_access_mode" padding="6" unsigned="false" nullable="false" identity="false" default="0" comment="Category Access Mode"/>
+    <column xsi:type="smallint" name="scope_access_mode" padding="6" unsigned="false" nullable="false" identity="false" default="0" comment="Website Storeview Scope Access Mode"/>
+    <column xsi:type="smallint" name="attribute_access_mode" padding="6" unsigned="false" nullable="false" identity="false" default="0" comment="Attribute Access Mode"/>
+    <column xsi:type="smallint" name="limit_pgrid_extra" padding="6" unsigned="false" nullable="false" identity="false" comment="Limit Amasty Product Grid Extra Columns"/>
+    <column xsi:type="smallint" name="role_access_mode" padding="6" unsigned="false" nullable="false" identity="false" default="0" comment="Admin Role Access Mode"/>
+    <column xsi:type="smallint" name="limit_product_sources_management" padding="6" unsigned="false" nullable="false" identity="false" comment="Restrict Access To Product Sources Data"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="AMASTY_AMROLEPERMISSIONS_RULE_ROLE_ID_AUTHORIZATION_ROLE_ROLE_ID" table="amasty_amrolepermissions_rule" column="role_id" referenceTable="authorization_role" referenceColumn="role_id" onDelete="CASCADE"/>
+    <index referenceId="AMASTY_AMROLEPERMISSIONS_RULE_ROLE_ID" indexType="btree">
+      <column name="role_id"/>
+    </index>
+  </table>
+  <table name="amasty_amrolepermissions_rule_product" resource="default" engine="innodb" comment="Amasty Advanced Permissions Rule Product Relation Table">
+    <column xsi:type="int" name="rule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Rule Id"/>
+    <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Catalog Product ID"/>
+      <constraint xsi:type="primary" referenceId="PRIMARY">
+          <column name="rule_id"/>
+          <column name="product_id"/>
+      </constraint>
+    <constraint xsi:type="foreign" referenceId="FK_74D1C612B68D9E90A5A4C5383885BA81" table="amasty_amrolepermissions_rule_product" column="rule_id" referenceTable="amasty_amrolepermissions_rule" referenceColumn="id" onDelete="CASCADE"/>
+    <index referenceId="AMASTY_AMROLEPERMISSIONS_RULE_PRODUCT_RULE_ID" indexType="btree">
+      <column name="rule_id"/>
+    </index>
+  </table>
+  <table name="amasty_amrolepermissions_rule_category" resource="default" engine="innodb" comment="Amasty Advanced Permissions Rule Category Relation Table">
+    <column xsi:type="int" name="rule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Rule Id"/>
+    <column xsi:type="int" name="category_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Catalog Category ID"/>
+      <constraint xsi:type="primary" referenceId="PRIMARY">
+          <column name="rule_id"/>
+          <column name="category_id"/>
+      </constraint>
+    <constraint xsi:type="foreign" referenceId="FK_41C9FF6173944898FD0A01BD534BDBF7" table="amasty_amrolepermissions_rule_category" column="rule_id" referenceTable="amasty_amrolepermissions_rule" referenceColumn="id" onDelete="CASCADE"/>
+    <index referenceId="AMASTY_AMROLEPERMISSIONS_RULE_CATEGORY_RULE_ID" indexType="btree">
+      <column name="rule_id"/>
+    </index>
+  </table>
+  <table name="amasty_amrolepermissions_rule_website" resource="default" engine="innodb" comment="Amasty Advanced Permissions Rule Website Relation Table">
+    <column xsi:type="int" name="rule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Rule Id"/>
+    <column xsi:type="int" name="website_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Website ID"/>
+      <constraint xsi:type="primary" referenceId="PRIMARY">
+          <column name="rule_id"/>
+          <column name="website_id"/>
+      </constraint>
+      <constraint xsi:type="foreign" referenceId="FK_0813EFA0D5A52564B9BF95CE1E0A000F" table="amasty_amrolepermissions_rule_website" column="rule_id" referenceTable="amasty_amrolepermissions_rule" referenceColumn="id" onDelete="CASCADE"/>
+    <index referenceId="AMASTY_AMROLEPERMISSIONS_RULE_WEBSITE_RULE_ID" indexType="btree">
+      <column name="rule_id"/>
+    </index>
+  </table>
+  <table name="amasty_amrolepermissions_rule_storeview" resource="default" engine="innodb" comment="Amasty Advanced Permissions Rule Storeview Relation Table">
+    <column xsi:type="int" name="rule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Rule Id"/>
+    <column xsi:type="int" name="storeview_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Store View ID"/>
+      <constraint xsi:type="primary" referenceId="PRIMARY">
+          <column name="rule_id"/>
+          <column name="storeview_id"/>
+      </constraint>
+    <constraint xsi:type="foreign" referenceId="FK_D1B0035A7B20238360669DAC14F968B5" table="amasty_amrolepermissions_rule_storeview" column="rule_id" referenceTable="amasty_amrolepermissions_rule" referenceColumn="id" onDelete="CASCADE"/>
+    <index referenceId="AMASTY_AMROLEPERMISSIONS_RULE_STOREVIEW_RULE_ID" indexType="btree">
+      <column name="rule_id"/>
+    </index>
+  </table>
+  <table name="amasty_amrolepermissions_rule_attribute" resource="default" engine="innodb" comment="Amasty Advanced Permissions Rule Attribute Relation Table">
+    <column xsi:type="int" name="rule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Rule Id"/>
+    <column xsi:type="int" name="attribute_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Website ID"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="rule_id"/>
+      <column name="attribute_id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="FK_4BFDD403EBA80E77BB4D6666CB308D71" table="amasty_amrolepermissions_rule_attribute" column="rule_id" referenceTable="amasty_amrolepermissions_rule" referenceColumn="id" onDelete="CASCADE"/>
+    <index referenceId="AMASTY_AMROLEPERMISSIONS_RULE_ATTRIBUTE_RULE_ID" indexType="btree">
+      <column name="rule_id"/>
+    </index>
+  </table>
+  <table name="amasty_amrolepermissions_rule_role" resource="default" engine="innodb" comment="Amasty Advanced Permissions Rule Role Relation Table">
+    <column xsi:type="int" name="rule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Rule Id"/>
+    <column xsi:type="int" name="role_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Allowed Admin Role ID"/>
+      <constraint xsi:type="primary" referenceId="PRIMARY">
+          <column name="rule_id"/>
+          <column name="role_id"/>
+      </constraint>
+    <constraint xsi:type="foreign" referenceId="FK_310415DC3CC4DD293FD4546B7800263B" table="amasty_amrolepermissions_rule_role" column="rule_id" referenceTable="amasty_amrolepermissions_rule" referenceColumn="id" onDelete="CASCADE"/>
+    <index referenceId="AMASTY_AMROLEPERMISSIONS_RULE_ROLE_RULE_ID" indexType="btree">
+      <column name="rule_id"/>
+    </index>
+  </table>
+</schema>

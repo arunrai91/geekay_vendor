@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Elastic Search Base for Magento 2
+ */-->
+
+<requests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:framework:Search/etc/search_request.xsd">
+    <request query="quick_search_container" index="catalogsearch_fulltext">
+        <queries>
+            <query xsi:type="boolQuery" name="quick_search_container">
+                <queryReference clause="must" ref="amasty_entity_ids"/>
+            </query>
+            <query xsi:type="filteredQuery" name="amasty_entity_ids">
+                <filterReference clause="must" ref="amasty_entity_ids_filter"/>
+            </query>
+        </queries>
+        <filters>
+            <filter xsi:type="termFilter" name="amasty_entity_ids_filter"
+                    field="entity_id" value="$amasty_entity_ids$"/>
+        </filters>
+    </request>
+</requests>

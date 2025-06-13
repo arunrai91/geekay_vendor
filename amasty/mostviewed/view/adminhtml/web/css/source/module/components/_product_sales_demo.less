@@ -1,0 +1,38 @@
+//
+//  Product Sales Demo styles
+//  _______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .product-sales-demo {
+        & {
+            background: url('@{baseDir}Amasty_Mostviewed/images/product_sales_demo.png') no-repeat center, linear-gradient(transparent, @color-white);
+            background-blend-mode: color;
+            background-size: contain;
+            margin-top: 3rem;
+            padding-bottom: 70rem;
+            position: relative;
+        }
+
+        .product-sales-demo-link {
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .product-sales-demo-action {
+            & {
+                align-items: center;
+                display: flex;
+            }
+
+            > img {
+                padding: .5rem;
+            }
+        }
+    }
+}

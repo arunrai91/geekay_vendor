@@ -1,0 +1,18 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Elastic Search Base for Magento 2
+ */
+/**
+ * @var \Amasty\ElasticSearch\Block\Adminhtml\System\Config\ConnectionChecker $block
+ */
+?>
+<button class="scalable"
+        type="button"
+        id="<?= $block->getHtmlId() ?>"
+        data-mage-init='{"Amasty_ElasticSearch/js/connectionchecker":<?= /* @noEscape */ $block->getJsonConfig();?>}'>
+    <span id="<?= $block->getHtmlId() ?>_result">
+        <?= $block->escapeHtml($block->getButtonLabel()) ?>
+    </span>
+</button>

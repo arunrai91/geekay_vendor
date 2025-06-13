@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Base for Magento 2
+ */-->
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="actions">
+        <field name="simple_action"
+               component="Amasty_Base/js/form/element/ui-promotion-select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="showCheckbox" xsi:type="boolean">false</item>
+                    <item name="multiple" xsi:type="boolean">false</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="notice" xsi:type="string" translate="true">Please, change the priority of this rule to 0. If more than one rule has priority 0, the discount can be calculated incorrectly</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>Amasty_Rules/grid/filters/elements/ui-promo-select</elementTmpl>
+            </settings>
+        </field>
+        <field name="amrulesrule[max_discount]">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Max Amount of Discount</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="dataScope" xsi:type="string">extension_attributes.amrules.max_discount</item>
+                    <item name="sortOrder" xsi:type="number">11</item>
+                </item>
+            </argument>
+        </field>
+        <field name="amrulesrule[eachm]">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">After N</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="dataScope" xsi:type="string">extension_attributes.amrules.eachm</item>
+                    <item name="sortOrder" xsi:type="number">13</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-greater-than-zero" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="discount_step">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="notice" xsi:type="string" translate="true">For the rule `Buy 2X, get 5Y` it is 2</item>
+                    <item name="sortOrder" xsi:type="number">16</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-greater-than-zero" xsi:type="boolean">true</item>
+                        <item name="validate-no-empty" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="amrulesrule[nqty]">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Number of Y Products</item>
+                    <item name="notice" xsi:type="string" translate="true">For the rule `Buy 2X, get 5Y` it is 5</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="dataScope" xsi:type="string">extension_attributes.amrules.nqty</item>
+                    <item name="sortOrder" xsi:type="number">19</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-greater-than-zero" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="amrulesrule[apply_discount_to]" formElement="select" sortOrder="21">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">sales_rule</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">At first apply discount to</label>
+                <dataType>number</dataType>
+                <dataScope>extension_attributes.amrules.apply_discount_to</dataScope>
+                <tooltip>
+                    <description translate="true"><![CDATA[While operating, the setting sorts the products meeting
+                    the conditions of the rule from the cheapest to the most expensive or vice versa depending on
+                    the selected option. Then it provides a discount to each Nth item from this chain. <br><br>
+                    For example, the setting is set to the ‘cheapest products’. A customer adds products
+                    with the following prices: 78, 34, 56, 24, 44, 47. The setting sorts the products from the cheapest
+                    to the most expensive: 24, 34, 44, 47, 56, 78. If we provide a discount, for instance,
+                    to each 2nd item, the discount will be granted to these products: 34, 47, 78.]]></description>
+                </tooltip>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="0" xsi:type="array">
+                                <item name="value" xsi:type="string">asc</item>
+                                <item name="label" xsi:type="string" translate="true">Cheapest products</item>
+                            </option>
+                            <option name="1" xsi:type="array">
+                                <item name="value" xsi:type="string">desc</item>
+                                <item name="label" xsi:type="string" translate="true">Most expensive products</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="amrulesrule[use_for]">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Use For</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="dataScope" xsi:type="string">extension_attributes.amrules.use_for</item>
+                    <item name="options" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="value" xsi:type="string">0</item>
+                            <item name="label" xsi:type="string" translate="true">All Products in Shopping Cart</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="value" xsi:type="string">1</item>
+                            <item name="label" xsi:type="string" translate="true">The Same Product in Shopping Cart</item>
+                        </item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">31</item>
+                </item>
+            </argument>
+        </field>
+        <field name="amrulesrule[priceselector]" formElement="select" sortOrder="23">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">sales_rule</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Calculate Discount Based On</label>
+                <dataType>number</dataType>
+                <dataScope>extension_attributes.amrules.priceselector</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Amasty\Rules\Ui\Form\Rule\CalculateDiscountBasedOnOptions"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="amrulesrule[general_skip_settings]" sortOrder="25" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="default" xsi:type="string">1</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Use General Skip Settings</label>
+                <dataScope>extension_attributes.amrules.general_skip_settings</dataScope>
+                <switcherConfig>
+                    <enabled>true</enabled>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>sales_rule_form.sales_rule_form.actions.amrulesrule[skip_rule]</target>
+                                    <callback>disable</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">false</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>sales_rule_form.sales_rule_form.actions.amrulesrule[skip_rule]</target>
+                                    <callback>enable</callback>
+                                    <params>
+                                        <param name="0" xsi:type="boolean">true</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="amrulesrule[skip_rule]" formElement="multiselect" sortOrder="27">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">sales_rule</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>number</dataType>
+                <label translate="true">Skip Items with:</label>
+                <dataScope>extension_attributes.amrules.skip_rule</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Amasty\Rules\Ui\Form\Rule\SkipItemsWithOptions"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <field name="apply_to_shipping">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">29</item>
+                </item>
+            </argument>
+        </field>
+        <field name="stop_rules_processing">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">31</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="simple_free_shipping">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">85</item>
+                </item>
+            </argument>
+        </field>
+        <fieldset name="promo_items">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Define Y product (X and Y are different products not in the same category)</item>
+                    <item name="collapsible" xsi:type="boolean">false</item>
+                    <item name="sortOrder" xsi:type="number">90</item>
+                </item>
+            </argument>
+            <field name="amrulesrule[promo_skus]">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Promo SKU</item>
+                        <item name="notice" xsi:type="string" translate="true">Comma separated list of the SKUs. You can indicate child products SKUs of a Configurable or Grouped products and SKUs of a Bundle product in this field.</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="formElement" xsi:type="string">textarea</item>
+                        <item name="source" xsi:type="string">sales_rule</item>
+                        <item name="dataScope" xsi:type="string">extension_attributes.amrules.promo_skus</item>
+                        <item name="sortOrder" xsi:type="number">25</item>
+                        <item name="tooltip" xsi:type="array">
+                            <item name="description" xsi:type="string" translate="true">To make up a product set, items with these SKUs must be added to the cart</item>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+            <field name="amrulesrule[promo_cats]">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Promo Categories</item>
+                        <item name="notice" xsi:type="string" translate="true">Comma separated list of the category ids</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="formElement" xsi:type="string">input</item>
+                        <item name="source" xsi:type="string">sales_rule</item>
+                        <item name="dataScope" xsi:type="string">extension_attributes.amrules.promo_cats</item>
+                        <item name="sortOrder" xsi:type="number">26</item>
+                        <item name="tooltip" xsi:type="array">
+                            <item name="description" xsi:type="string" translate="true">To make up a product set, items from these categories must be added to the cart. If you have two or more products from the same category, the cheapest is considered as item of the product set.</item>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+        </fieldset>
+    </fieldset>
+    <fieldset name="rule_information">
+        <field name="amrulesrule[show_coupon_in_dropdown]" template="Amasty_Base/form/promo-field">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="isPromo" xsi:type="boolean">true</item>
+                    <item name="promoLink" xsi:type="string"><![CDATA[https://amasty.com/amcustomer/account/products/?utm_source=extension&utm_medium=backend&utm_campaign=subscribe_specialpromotions]]></item>
+                    <item name="label" xsi:type="string" translate="true">Show Coupon Codes in the Discount Dropdown</item>
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="formElement" xsi:type="string">checkbox</item>
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="dataScope" xsi:type="string">extension_attributes.show_coupon_in_dropdown</item>
+                    <item name="sortOrder" xsi:type="number">8</item>
+                    <item name="prefer" xsi:type="string">toggle</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="notice" xsi:type="string" translate="true">Please note that enabling this setting will display all rule codes, including autogenerated ones, on the Cart and Checkout pages when selecting 'Apply Coupon Code.'</item>
+                    <item name="valueMap" xsi:type="array">
+                        <item name="true" xsi:type="string">1</item>
+                        <item name="false" xsi:type="string">0</item>
+                    </item>
+                    <item name="default" xsi:type="string">0</item>
+                </item>
+            </argument>
+        </field>
+        <field name="coupon_type">
+            <settings>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="3">
+                                    <target>
+                                        sales_rule_form.sales_rule_form.rule_information.amrulesrule[show_coupon_in_dropdown]
+                                    </target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>2</value>
+                            <actions>
+                                <action name="3">
+                                    <target>
+                                        sales_rule_form.sales_rule_form.rule_information.amrulesrule[show_coupon_in_dropdown]
+                                    </target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>3</value>
+                            <actions>
+                                <action name="3">
+                                    <target>
+                                        sales_rule_form.sales_rule_form.rule_information.amrulesrule[show_coupon_in_dropdown]
+                                    </target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                </switcherConfig>
+            </settings>
+        </field>
+    </fieldset>
+</form>

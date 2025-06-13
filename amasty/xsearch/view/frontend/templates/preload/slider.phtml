@@ -1,0 +1,131 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+// phpcs:ignoreFile
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Amasty\Xsearch\ViewModel\Slider $viewModel
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$viewModel = $block->getViewModel();
+$slidesToShow = $viewModel->isFullScreenEnabled() ? 5 : 3;
+$isSlider = count($viewModel->getProducts()) > 3;
+?>
+
+<?php if ($viewModel->isCanRender()): ?>
+    <section class="amsearch-products-section -grid <?= /* @noEscape */ $isSlider ? '-slider' : '' ?>">
+        <?= /* @noEscape */ $block->fetchView($block->getTemplateFile('Amasty_Xsearch::components/header.phtml')) ?>
+
+        <?php /** @var \Magento\Catalog\Model\Product $product * */ ?>
+        <section class="amsearch-slider-section"
+                 data-mage-init='{"amsearchProductItemInit": {}}'
+                 data-bind="mageInit: {
+                    'amsearchProductSlider': {
+                        productsCount: <?= count($viewModel->getProducts()) ?>,
+                        observer: opened,
+                        sliderOptions: {
+                            slidesToShow: <?= /* @noEscape */ $slidesToShow ?>,
+                            slidesToScroll: <?= /* @noEscape */ $slidesToShow ?>
+                        }
+                    }
+                 }">
+            <?php foreach ($viewModel->getProducts() as $product): ?>
+                <div class="amsearch-item product-item"
+                     data-click-url="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
+                    <a class="amsearch-image"
+                       title="<?= $escaper->escapeHtmlAttr($product->getName()) ?>>"
+                       href="<?= $escaper->escapeHtmlAttr($product->getProductUrl()) ?>">
+                        <?= /* @noEscape */ $viewModel->getImageHtml($product) ?>
+                    </a>
+
+                    <section class="amsearch-description product details product-item-details">
+                        <a class="amsearch-link product-item-link"
+                           href="<?= $escaper->escapeHtmlAttr($product->getProductUrl()) ?>"
+                           title="<?= $escaper->escapeHtmlAttr($product->getName()) ?>">
+                            <?= $escaper->escapeHtml($product->getName()) ?>
+                        </a>
+
+                        <?= /* @noEscape */ $viewModel->getReviewsHtml($product) ?>
+
+                        <?php if (isset($product['sku']) && $viewModel->isShowSku()): ?>
+                            <?= /* @noEscape */ $block->setData('product', $product)->fetchView($block->getTemplateFile('Amasty_Xsearch::components/sku.phtml')) ?>
+                        <?php endif; ?>
+
+                        <div class="amsearch-wrapper-inner">
+                            <?= /* @noEscape */ $viewModel->getProductPriceHtml($product) ?>
+                            <div class="product actions product-item-actions"
+                                 item-actions="1"
+                                 data-amsearch-js="product-item">
+                                <div class="actions-primary">
+                                    <?php if ($product->isSalable()): ?>
+                                        <?php if ($viewModel->isAddToCartEnabled($product)): ?>
+                                            <form class="amasty-xsearch-form"
+                                                  data-role="tocart-form"
+                                                  action="<?= $escaper->escapeUrl($viewModel->getAddToCartUrl($product)) ?>"
+                                                  method="post">
+                                                <input type="hidden" name="product"
+                                                       value="<?= (int)$product->getId() ?>">
+                                                <?php if ($viewModel->isRedirectToCart()): ?>
+                                                    <input type="hidden" name="return_url"
+                                                           value="<?= $escaper->escapeUrl($viewModel->getAddToCartPostParams($product)['data']['return_url']) ?>">
+                                                <?php endif; ?>
+                                                <input type="hidden"
+                                                       name="uenc"
+                                                       value="<?= $escaper->escapeHtml($viewModel->getAddToCartPostParams($product)['data']['uenc']) ?>">
+                                                <input name="form_key"
+                                                       type="hidden"
+                                                       value="<?= $escaper->escapeHtml($viewModel->getFormKey()) ?>"/>
+                                                <button type="submit"
+                                                        title="<?= $escaper->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                                        class="action tocart primary">
+                                                    <span><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <?php if ($product->getIsSalable()): ?>
+                                            <div class="stock available">
+                                                <span><?= $escaper->escapeHtml(__('In stock')) ?></span>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="stock unavailable">
+                                                <span><?= $escaper->escapeHtml(__('Out of stock')) ?></span>
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div data-role="add-to-links" class="actions-secondary">
+                                    <?php if ($viewModel->isWishlistAllowed($product)): ?>
+                                        <a href="#"
+                                           class="amsearch-button -clear -wishlist -icon"
+                                           title="<?= $escaper->escapeHtmlAttr(__('Add to Wish List')) ?>"
+                                           aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Wish List')) ?>"
+                                           data-post='<?= $escaper->escapeHtml($viewModel->getAddToWishlistPostParams($product)); ?>'
+                                           data-action="add-to-wishlist"
+                                           role="button">
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <?php if ($viewModel->isCompareAllowed($product)): ?>
+                                        <a href="#"
+                                           class="amsearch-button -clear -compare -icon"
+                                           title="<?= $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
+                                           aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
+                                           data-post='<?= $escaper->escapeHtml($viewModel->getAddToCompareParams($product)) ?>'
+                                           role="button">
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            <?php endforeach; ?>
+        </section>
+    </section>
+<?php endif; ?>

@@ -1,0 +1,43 @@
+parameters:
+    checkExplicitMixedMissingReturn: true
+    checkPhpDocMissingReturn: true
+    scanDirectories:
+        - %rootDir%/../../../dev/tests/static/framework/tests/unit/testsuite/Magento
+        - %rootDir%/../../../dev/tests/integration/framework/tests/unit/testsuite/Magento
+        - %rootDir%/../../../dev/tests/api-functional/_files/Magento
+    bootstrapFiles:
+        - %rootDir%/../../../dev/tests/static/framework/autoload.php
+        - %rootDir%/../../../dev/tests/integration/framework/autoload.php
+        - %rootDir%/../../../dev/tests/api-functional/framework/autoload.php
+        - %rootDir%/../../../dev/tests/setup-integration/framework/autoload.php
+        - %rootDir%/../../../dev/tests/static/framework/Magento/PhpStan/autoload.php
+    ignoreErrors:
+        -
+            message: '#^.*AdditionalFieldMapperInterface not found.*#'
+            paths:
+                - Model/Elasticsearch/Adapter/*
+        -
+            message: '#^.*Collection not found.*#'
+            paths:
+                - Plugin/Catalog/Product/ProductList/*
+        -
+            message: '#^.*Select referenced with incorrect case.*#'
+            paths:
+                - Model/ResourceModel/Method/*
+        -
+            message: '#^Access to constant MAIN_TABLE on an unknown class Amasty\\Yotpo\\Model\\ResourceModel\\YotpoReview.#'
+            paths:
+                - Model/ResourceModel/Method/*
+        -
+            message: '#^Parameter.*has invalid type Amasty\\Xsearch\\.*\.#'
+            paths:
+                - Plugin/Xsearch*
+services:
+    -
+        class: Magento\PhpStan\Reflection\Php\DataObjectClassReflectionExtension
+        tags: {phpstan.broker.methodsClassReflectionExtension: {priority: 100}}
+
+    errorFormatter.filtered:
+        class: Magento\PhpStan\Formatters\FilteredErrorFormatter
+        arguments:
+            tableErrorFormatter: @errorFormatter.table

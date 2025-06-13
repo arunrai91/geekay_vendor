@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="aminfotab.basic">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="aminfotab.xsearch.suggest"
+                   template="Amasty_Xsearch::system/config/suggest_notification.phtml"
+                   after="aminfotab.version">
+                <arguments>
+                    <argument name="viewModel"
+                              xsi:type="object">Amasty\Xsearch\ViewModel\SuggestNotificationViewModel</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

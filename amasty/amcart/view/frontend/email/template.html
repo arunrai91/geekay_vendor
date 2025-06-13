@@ -1,0 +1,157 @@
+<!--@subject {{var store.getFrontendName()}}: Items in your shopping bag  @-->
+<!--@vars
+{"var store.getFrontendName()":"Store Name",
+"var unsubscribeUrl":"Unsubscribe Url",
+"var placeOrderUrl":"Place Order Url",
+"var checkoutUrl":"Checkout Url",
+"var quote.getDiscount()":"Quote Discount",
+"var numberQuoteVisibleItems | raw":"Number Quote Visible Items",
+"var abandonedProductLimit":"Abandoned Product Limit",
+"var abandonedProductLimitEqualOne":"Abandoned Product Limit Equal One",
+"var quoteId":"Quote Id",
+"var quoteCustomerId":"Quote Customer Id",
+"var formattedQuoteTax | raw":"Formatted Quote Tax",
+"var formattedShippingAmount | raw":"Shipping Amount",
+"var store_phone":"Store Phone",
+"var store_email":"Store Email",
+"var history.getSalesRuleCoupon()":"Coupon Code",
+"var couponExpirationDate":"Coupon Expiration Date",
+"var abandonmentDateWithTime | raw":"Abandonment Date With Time",
+"var abandonmentDate | raw":"Abandonment Date",
+"var ruleQuote.getCustomerEmail()":"Customer Email",
+"var ruleQuote.getCustomerPhone()":"Customer Phone",
+"var ruleQuote.getCustomerFirstname()":"First Name",
+"var ruleQuote.getCustomerLastname()":"Last Name",
+"var quote.getCustomerMiddlename()":"Middle Name",
+"var quote.getCustomerSuffix()":"Suffix",
+"var formattedSubtotal | raw":"Subtotal",
+"var formattedDiscount | raw":"Discount",
+"var formattedSubtotalWithDiscount | raw":"Subtotal With Discount",
+"var formattedGrandTotal | raw":"Grand Total",
+"var customerIsGuest":"Customer Is Guest",
+"var quote.getTax()":"Product tax",
+"var isCustomerDetailsEnabled":"Show Customer Contact Details",
+"layout area=\"frontend\" handle=\"amasty_acart_email\" quoteId=$quoteId quoteCustomerId=$quoteCustomerId mode=list showImage=yes showConfigurableImage=no showPrice=yes priceFormat=excludeTax showDescription=yes optionList=yes showSKU=no showQty=no":"Quote Products",
+"layout area=\"frontend\" handle=\"amasty_acart_email_related\" quoteId=$quoteId quoteCustomerId=$quoteCustomerId mode=list showImage=yes showConfigurableImage=no showPrice=yes priceFormat=excludeTax showDescription=yes optionList=yes showSKU=no":"Related Products",
+"layout area=\"frontend\" handle=\"amasty_acart_email_crosssell\" quoteId=$quoteId quoteCustomerId=$quoteCustomerId mode=list showImage=yes showConfigurableImage=no showPrice=yes priceFormat=excludeTax showDescription=yes optionList=yes showSKU=no":"Cross-Sell Products",
+"layout area=\"frontend\" handle=\"amasty_acart_email_upsell\" quoteId=$quoteId quoteCustomerId=$quoteCustomerId mode=list showImage=yes showConfigurableImage=no showPrice=yes priceFormat=excludeTax showDescription=yes optionList=yes showSKU=no":"Up-Sell Products",
+"layout area=\"frontend\" handle=\"amasty_acart_email_wishlist\" quoteId=$quoteId quoteCustomerId=$quoteCustomerId mode=list showImage=yes showConfigurableImage=no showPrice=yes priceFormat=excludeTax showDescription=yes optionList=yes showSKU=no":"WishList Products"
+}
+@-->
+{{template config_path="design/email/header_template"}}
+<ul class="acart-content-block">
+    <li class="acart-header-block">
+        {{if isCustomerDetailsEnabled}}
+        {{layout
+        handle="amasty_acart_customer_info"
+        customer_firstname=$ruleQuote.getCustomerFirstname()
+        customer_lastname=$ruleQuote.getCustomerLastname()
+        customer_email=$ruleQuote.getCustomerEmail()
+        customer_phone=$ruleQuote.getCustomerPhone()
+        }}
+        {{/if}}
+        <span class="acart-header">
+            {{if customerIsGuest}}
+                {{trans "Hello,"}}
+            {{else}}
+                {{trans "Dear %firstName %lastName,"
+                firstName=$ruleQuote.getCustomerFirstname()
+                lastName=$ruleQuote.getCustomerLastname()}}
+            {{/if}}
+        </span>
+        <span class="acart-description">
+            {{trans "You have"}} <b>{{var numberQuoteVisibleItems | raw}} {{trans " item(s)"}}</b> {{trans " in your shopping bag."}}
+            {{depend quote.getDiscount()}}
+                {{trans "Get them with discount!"}}
+            {{/depend}}
+            {{depend abandonedProductLimit}}<br>
+                {{if abandonedProductLimitEqualOne}}
+                    {{trans "Here is one of them:"}}
+                {{else}}
+                    {{trans "Here are some of them:"}}
+                {{/if}}
+            {{/depend}}
+        </span>
+    </li>
+    {{depend history.getSalesRuleCoupon()}}
+    <li class="acart-coupon-block">
+        {{trans "Save money with coupon code: <b>%coupon</b>" coupon=$history.getSalesRuleCoupon() | raw }}<br>
+        {{if couponExpirationDate}}
+        {{trans "Coupon expiration date: <b>%expiration_date</b> " expiration_date=$couponExpirationDate | raw }}<br>
+        {{/if}}
+    </li>
+    {{/depend}}
+    <li>
+        {{layout
+            handle="amasty_acart_email"
+            quoteId=$quoteId
+            quoteCustomerId=$quoteCustomerId
+            mode=list
+            showImage=yes
+            showConfigurableImage=no
+            showPrice=yes
+            priceFormat=excludeTax
+            showDescription=yes
+            optionList=yes
+            showSKU=no
+            showQty=no
+        }}
+    </li>
+    <li class="acart-subtotal-block">
+        <table class="acart-table">
+            <tr>
+                <td class="acart-label">{{trans "Subtotal"}}:</td>
+                <td class="acart-value">
+                    {{var formattedSubtotal | raw}}
+                </td>
+            </tr>
+            {{if formattedQuoteTax}}
+                <tr>
+                    <td class="acart-label">{{trans "Tax"}}:</td>
+                    <td class="acart-value">{{var formattedQuoteTax | raw}}</td>
+                </tr>
+            {{/if}}
+            {{if formattedShippingAmount}}
+                <tr>
+                    <td class="acart-label">{{trans "Shipping"}}:</td>
+                    <td class="acart-value">{{var formattedShippingAmount | raw}}</td>
+                </tr>
+            {{/if}}
+            {{if quote.getDiscount()}}
+                <tr>
+                    <td class="acart-label">{{trans "Discount"}}:</td>
+                    <td class="acart-value">{{var formattedDiscount | raw}}</td>
+                </tr>
+            {{/if}}
+            <tr class="acart-total">
+                <td class="acart-label">{{trans "Total"}}:</td>
+                <td class="acart-value">{{var formattedGrandTotal | raw}}</td>
+            </tr>
+        </table>
+    </li>
+    <li>
+        <a class="acart-link -checkout" href="{{var placeOrderUrl}}">
+            {{trans "Go to Checkout"}}
+        </a>
+        <div class="acart-label forwarding">{{trans "Be aware and avoid forwarding this email, as it could potentially grant unauthorized access to your account. "}}</div>
+    </li>
+</ul>
+<div class="acart-footer-block">
+    <p class="acart-contacts">
+        <span class="acart-phone">
+            <img src="{{view url='Amasty_Acart/images/phone.png'}}" alt="{{trans 'Phone'}}" />
+            {{var store_phone}}
+        </span>
+
+        <span class="acart-mail">
+            <img src="{{view url='Amasty_Acart/images/mail.png'}}" alt="{{trans 'Message'}}" />
+            {{var store_email}}
+        </span>
+    </p>
+    <p class="acart-copyright">
+        {{config path="general/store_information/name"}} {{config path="general/store_information/street_line1"}} {{config path="general/store_information/city"}}
+    </p>
+    <a href="{{var unsubscribeUrl}}">
+        {{trans "Unsubscribe"}}
+    </a>
+</div>

@@ -1,0 +1,27 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Layered Navigation Base for Magento 2
+ */
+/** @var \Amasty\ShopbyBase\Model\FilterSetting $filterCode */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+
+<div class="amshopby-search-box">
+    <input type="text"
+           class="am-search-box-<?= $escaper->escapeHtml($filterCode) ?>"
+           aria-label="<?= $escaper->escapeHtmlAttr(__('Search')) ?>"
+           placeholder="<?= $escaper->escapeHtmlAttr(__('Search')) ?>" />
+</div>
+
+<script type="text/x-magento-init">
+            {
+                ".am-search-box-<?= $escaper->escapeHtml($filterCode)?>": {
+                    "amShopbyFilterSearch": {
+                        "highlightTemplate": "<span class='amshopby-highlighted'>$&</span>",
+                        "itemsSelector": ".am-filter-items-<?= $escaper->escapeHtml($filterCode) ?>"
+                    }
+                }
+            }
+</script>

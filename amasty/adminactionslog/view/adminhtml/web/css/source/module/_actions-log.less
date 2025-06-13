@@ -1,0 +1,66 @@
+//
+//  Amasty Actions Log Page
+//  ____________________________________________
+
+//
+//  Variables
+//  _____________________________________________
+
+@amaudit-edit-icon__background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMC4wOSAwTDguNzI3IDEuMzczbDEuOTEgMS45MkwxMiAxLjkyMSAxMC4wOSAwek0xLjM2IDguNzg0bDEuOTEgMS45MiA2LjU0OC02LjU4Ny0xLjkwOS0xLjkyLTYuNTUgNi41ODd6TTAgMTJsMi4zMTMtLjYxTC42MDkgOS42NzMgMCAxMnoiIGZpbGw9IiNBRjhBNzMiLz48L3N2Zz4=') no-repeat center;
+@amaudit-new-icon__background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMS45ODkgNC41NTVhLjIzNi4yMzYgMCAwMC0uMjIyLS4xNjhINy41MzJMNi4yMjIuMTY4QS4yMzUuMjM1IDAgMDA2IDBjLS4xIDAtLjE5LjA2OS0uMjIxLjE2OEw0LjQ2IDQuMzg3SC4yMzNhLjIzMy4yMzMgMCAwMC0uMjIyLjE2OGMtLjAzLjEuMDAzLjIxLjA4NC4yNzNsMy40MjIgMi42MS0xLjMxOSA0LjI0M2MtLjAzLjEuMDAzLjIxLjA4NS4yNzIuMDguMDYyLjE5Mi4wNjIuMjczIDBMNiA5LjMzNGwzLjQzNiAyLjYxOWEuMjIyLjIyMiAwIDAwLjI3MyAwIC4yNS4yNSAwIDAwLjA4Ni0uMjcyTDguNDc2IDcuNDM5bDMuNDI5LTIuNjFhLjI1My4yNTMgMCAwMC4wODQtLjI3NHoiIGZpbGw9IiNDRTk0RjMiLz48L3N2Zz4=') no-repeat center;
+@amaudit-cache-icon__background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTMuODUyIDUuMDk3YS41ODQuNTg0IDAgMDEtLjE5NC0uNzdsLjM5NS0uNzI3YS41MjcuNTI3IDAgMDEuNjU3LS4yNWwyLjI4OC45NWMuMjAzLjA5LjQzNS0uMDE5LjUyLS4yMzRMOC42ODIgMS4xMkExLjc3NiAxLjc3NiAwIDAxOS43MTIuMDk2Yy40NjgtLjE2NS45OC0uMTIgMS40MTcuMTQ5LjQzNy4yNjcuNzMuNzE0LjgyOSAxLjIyNi4xLjUxMi0uMDE2IDEuMDQyLS4zMjEgMS40NTdMOS44MTIgNS40N2EuNDQyLjQ0MiAwIDAwLjA3LjU5NGwxLjkyIDEuNjI2Yy4yMDQuMTc2LjI2LjQ3Ny4xMjMuNzI4bC0uMzk1LjcyN2EuNTE3LjUxNyAwIDAxLS43MjcuMjA2bC02Ljk1LTQuMjU0em02Ljc3LTMuODkzYS42NzguNjc4IDAgMDAtLjk1MS4yN2MtLjE5MS4zNTEtLjA3Ni44MDYuMjU1IDEuMDA4LjMzLjIwMy43Ni4wODEuOTUtLjI3YS43MzguNzM4IDAgMDAtLjI1NC0xLjAwOHpNLjQ5MyA4LjYwNEMxLjY0IDcuOTcxIDIuNjMgNi45MDYgMy4zNDkgNS45OTJsNi45NzQgNC4yNjljLS40MyAxLjEwNy0xLjM5NiAyLjczNy0yLjM1MyAzLjY1NWEuMzEuMzEgMCAwMS0uMzgxLjAzNGwtMS4wMTctLjYyMmEuNDMzLjQzMyAwIDAxLS4xOS0uNDMzbC4yNjktMS4zOWMuMDE3LS4wOS0uMDktLjE1NS0uMTU0LS4wOTRsLTEgLjk0MWEuMzgxLjM4MSAwIDAxLS40NS4wNDNsLTEuMjI5LS43NTJhLjQzMy40MzMgMCAwMS0uMTktLjQzNGwuMTkzLTEuMDE4Yy4wMTctLjA5LS4wOS0uMTU1LS4xNTQtLjA5NWwtLjcyNC42OTNhLjM4MS4zODEgMCAwMS0uNDQ5LjA0M0wuMTkgOS40MjJjLS4yNi0uMTYtLjI1LS41NTUuMDE1LS42OTNsLjI4OS0uMTI1eiIgZmlsbD0iI0U3Q0E3RiIvPjwvc3ZnPg==') no-repeat center;
+@amaudit-delete-icon__background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0wIDEuNjU3TDMuMzQzIDUgMCA4LjM0NCAxLjY1NiAxMCA1IDYuNjU2IDguMzQzIDEwIDEwIDguMzQ0IDYuNjU2IDUgMTAgMS42NTcgOC4zNDMgMCA1IDMuMzQ0IDEuNjU2IDAgMCAxLjY1NyIgZmlsbD0iI0YxQjZCOSIvPjwvc3ZnPg==') no-repeat center;
+@amaudit-export-icon__background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMC4zODcgNy44Mzh2Mi42MDFIMS42MTNWNy44MzhIMFYxMmgxMlY3LjgzOGgtMS42MTN6TTYgOC4zMjVsNC4yMzUtNC4xNjNINy41ODhWMEg0LjQxMnY0LjE2M0gxLjc2NUw2IDguMzI2eiIgZmlsbD0iIzdCRTA5OCIvPjwvc3ZnPg==') no-repeat center;
+@amaudit-restore-icon__background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02LjAwNCAwYTUuOTc0IDUuOTc0IDAgMDAtNC4yNCAxLjc2MkwxIDEgMCA1LjI1IDQgNCAyLjgzNyAyLjgzNUE0LjQ0IDQuNDQgMCAwMTYuMDA0IDEuNSA0LjUwNSA0LjUwNSAwIDAxMTAuNTA3IDZjMCAyLjQ4Mi0yLjAyIDQuNS00LjUwMyA0LjVhNC40OTYgNC40OTYgMCAwMS00LjI0LTNILjIwM2E1Ljk5IDUuOTkgMCAwMDUuOCA0LjVBNS45OTQgNS45OTQgMCAwMDEyIDZjMC0zLjMxNS0yLjY4LTYtNS45OTYtNnpNNi41IDNhLjUuNSAwIDAxLjUuNXYzLjA0NGEuNzYuNzYgMCAwMS0uNDAyLjY3TDMuOTI0IDguNjRhLjQ5Ny40OTcgMCAxMS0uNDYzLS44OEw2IDYuNDM4VjMuNWEuNS41IDAgMDEuNS0uNXoiIGZpbGw9IiM3NzlCRkEiLz48L3N2Zz4=') no-repeat center;
+
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amaudit-actionslog-index .data-grid-cell-content {
+        &.-type {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        &.-type:before {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            content: '';
+            transform: translateY(-50%);
+        }
+
+        &.-edit:before {
+            background: @amaudit-edit-icon__background;
+        }
+
+        &.-new:before {
+            background: @amaudit-new-icon__background;
+        }
+
+        &.-cache:before {
+            background: @amaudit-cache-icon__background;
+        }
+
+        &.-delete:before {
+            background: @amaudit-delete-icon__background;
+        }
+
+        &.-export:before {
+            background: @amaudit-export-icon__background;
+        }
+
+        &.-restore:before {
+            background: @amaudit-restore-icon__background;
+        }
+    }
+
+    .amaudit-log-modal .amaudit-table-container.-primary {
+        max-width: 100%;
+    }
+}

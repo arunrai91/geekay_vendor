@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Admin Actions Log for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amaudit>
+            <general>
+                <log_enable_visit_history>1</log_enable_visit_history>
+                <restore_popup_message>Please be careful when restoring changes. It's recommended to have a backup before running restore process.</restore_popup_message>
+                <log_all_admins>1</log_all_admins>
+                <auto_cleaning>
+                    <actions_log_cleaning>1</actions_log_cleaning>
+                    <actions_log_period>90</actions_log_period>
+                    <login_attempts_log_cleaning>1</login_attempts_log_cleaning>
+                    <login_attempts_log_period>90</login_attempts_log_period>
+                    <visit_history_log_cleaning>1</visit_history_log_cleaning>
+                    <visit_history_log_period>90</visit_history_log_period>
+                </auto_cleaning>
+            </general>
+            <email_notifications>
+                <successful_log_mailing_enabled>0</successful_log_mailing_enabled>
+                <successful_log_mailing_identity>general</successful_log_mailing_identity>
+                <successful_log_mailing_template>amaudit_email_notifications_successful_log_mailing_template</successful_log_mailing_template>
+                <successful_log_mailing_send_to_mail>email@example.com</successful_log_mailing_send_to_mail>
+                <unsuccessful_log_mailing_enabled>0</unsuccessful_log_mailing_enabled>
+                <unsuccessful_log_mailing_identity>general</unsuccessful_log_mailing_identity>
+                <unsuccessful_log_mailing_template>amaudit_email_notifications_unsuccessful_log_mailing_template</unsuccessful_log_mailing_template>
+                <unsuccessful_log_mailing_send_to_mail>email@example.com</unsuccessful_log_mailing_send_to_mail>
+                <unsuccessful_log_mailing_number_attempts>5</unsuccessful_log_mailing_number_attempts>
+                <suspicious_log_mailing_enabled>0</suspicious_log_mailing_enabled>
+                <suspicious_log_mailing_if_logged_in>new_device,new_ip</suspicious_log_mailing_if_logged_in>
+                <suspicious_log_mailing_identity>general</suspicious_log_mailing_identity>
+                <suspicious_log_mailing_template>amaudit_email_notifications_suspicious_log_mailing_template</suspicious_log_mailing_template>
+                <suspicious_log_mailing_send_to_mail>email@example.com</suspicious_log_mailing_send_to_mail>
+            </email_notifications>
+        </amaudit>
+    </default>
+</config>

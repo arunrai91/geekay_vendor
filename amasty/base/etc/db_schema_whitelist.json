@@ -1,0 +1,43 @@
+{
+    "amasty_base_instance_data": {
+        "column": {
+            "id": true,
+            "code": true,
+            "value": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "AMASTY_BASE_INSTANCE_DATA_CODE": true
+        }
+    },
+    "amasty_base_schedule": {
+        "column": {
+            "id": true,
+            "code": true,
+            "last_send_date": true,
+            "time_intervals": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "AMASTY_BASE_SCHEDULE_CODE": true
+        }
+    },
+    "amasty_base_instance_hash": {
+        "column": {
+            "id": true,
+            "code": true,
+            "value": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "AMASTY_BASE_INSTANCE_HASH_CODE": true
+        }
+    }
+}

@@ -1,0 +1,104 @@
+{
+    "amasty_amrolepermissions_rule": {
+        "column": {
+            "id": true,
+            "role_id": true,
+            "limit_orders": true,
+            "limit_invoices": true,
+            "limit_shipments": true,
+            "limit_memos": true,
+            "product_access_mode": true,
+            "category_access_mode": true,
+            "scope_access_mode": true,
+            "attribute_access_mode": true,
+            "limit_pgrid_extra": true,
+            "limit_product_sources_management": true,
+            "role_access_mode": true
+        },
+        "index": {
+            "AMASTY_AMROLEPERMISSIONS_RULE_ROLE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "AMASTY_AMROLEPERMISSIONS_RULE_ROLE_ID_AUTHORIZATION_ROLE_ROLE_ID": true
+        }
+    },
+    "amasty_amrolepermissions_rule_product": {
+        "column": {
+            "rule_id": true,
+            "product_id": true
+        },
+        "index": {
+            "AMASTY_AMROLEPERMISSIONS_RULE_PRODUCT_RULE_ID": true
+        },
+        "constraint": {
+            "FK_74D1C612B68D9E90A5A4C5383885BA81": true,
+            "PRIMARY": true
+        }
+    },
+    "amasty_amrolepermissions_rule_category": {
+        "column": {
+            "rule_id": true,
+            "category_id": true
+        },
+        "index": {
+            "AMASTY_AMROLEPERMISSIONS_RULE_CATEGORY_RULE_ID": true
+        },
+        "constraint": {
+            "FK_41C9FF6173944898FD0A01BD534BDBF7": true,
+            "PRIMARY": true
+        }
+    },
+    "amasty_amrolepermissions_rule_website": {
+        "column": {
+            "rule_id": true,
+            "website_id": true
+        },
+        "index": {
+            "AMASTY_AMROLEPERMISSIONS_RULE_WEBSITE_RULE_ID": true
+        },
+        "constraint": {
+            "FK_0813EFA0D5A52564B9BF95CE1E0A000F": true,
+            "PRIMARY": true
+        }
+    },
+    "amasty_amrolepermissions_rule_storeview": {
+        "column": {
+            "rule_id": true,
+            "storeview_id": true
+        },
+        "index": {
+            "AMASTY_AMROLEPERMISSIONS_RULE_STOREVIEW_RULE_ID": true
+        },
+        "constraint": {
+            "FK_D1B0035A7B20238360669DAC14F968B5": true,
+            "PRIMARY": true
+        }
+    },
+    "amasty_amrolepermissions_rule_attribute": {
+        "column": {
+            "rule_id": true,
+            "attribute_id": true
+        },
+        "index": {
+            "AMASTY_AMROLEPERMISSIONS_RULE_ATTRIBUTE_RULE_ID": true
+        },
+        "constraint": {
+            "FK_4BFDD403EBA80E77BB4D6666CB308D71": true,
+            "PRIMARY": true
+        }
+    },
+    "amasty_amrolepermissions_rule_role": {
+        "column": {
+            "rule_id": true,
+            "role_id": true
+        },
+        "index": {
+            "AMASTY_AMROLEPERMISSIONS_RULE_ROLE_RULE_ID": true
+        },
+        "constraint": {
+            "FK_310415DC3CC4DD293FD4546B7800263B": true,
+            "PRIMARY": true
+        }
+    }
+}

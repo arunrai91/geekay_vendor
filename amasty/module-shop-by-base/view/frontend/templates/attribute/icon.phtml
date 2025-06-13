@@ -1,0 +1,67 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Base for Magento 2 (System)
+ */
+
+use Amasty\ShopbyBase\Model\OptionSetting;
+use \Amasty\ShopbyBase\ViewModel\OptionProcessorInterface;
+
+/**
+ * @var \Amasty\ShopbyBase\Block\Product\AttributeIcon $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$optionsData = $block->getOptionsData();
+?>
+
+<?php foreach ($optionsData as $setting): ?>
+    <?php
+        $title = $block->stripTags($setting[OptionProcessorInterface::TITLE]);
+        $alt = $block->stripTags($setting[OptionSetting::SMALL_IMAGE_ALT]) ?: $title;
+    ?>
+    <?php if ($block->isShowBrandLink($setting)): ?>
+        <div class="amshopby-option-link">
+            <?php if ($setting[OptionProcessorInterface::DISPLAY_TITLE] ?? false): ?>
+                <div class="brand-title">
+                    <a href="<?= $escaper->escapeUrl($setting[OptionProcessorInterface::LINK_URL]); ?>" class="amshopby-brand-title-link">
+                        <?= /* @noEscape */ strtoupper($setting[OptionProcessorInterface::TITLE]);?>
+                    </a>
+                </div>
+            <?php endif; ?>
+            <?php if ($setting[OptionProcessorInterface::LINK_URL] && !empty($setting[OptionProcessorInterface::IMAGE_URL])): ?>
+                <a href="<?= $escaper->escapeUrl($setting[OptionProcessorInterface::LINK_URL]); ?>"
+                   title="<?= $escaper->escapeHtmlAttr($title); ?>"
+                   aria-label="<?= $escaper->escapeHtmlAttr($title); ?>"
+                    <?= /* @noEscape */ $setting[OptionProcessorInterface::TOOLTIP_JS] ?? '' ?>
+                >
+                    <img title="<?= $escaper->escapeHtmlAttr($title); ?>"
+                        alt="<?= $escaper->escapeHtmlAttr($alt); ?>"
+                        src="<?= $escaper->escapeUrl($setting[OptionProcessorInterface::IMAGE_URL]) ?>"/>
+                </a>
+            <?php endif; ?>
+            <?php if (!empty($setting[OptionProcessorInterface::SHORT_DESCRIPTION])): ?>
+                <span class="link-short-description">
+                        <?= /* @noEscape */ $setting[OptionProcessorInterface::SHORT_DESCRIPTION];?>
+                <span>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+<?php endforeach; ?>
+
+<script type="text/x-magento-init">
+     {
+         ".amshopby-option-link [data-amshopby-js='brand-tooltip']": {
+             "amShopbyTooltipInit": {
+                "additionalClasses": "-no-double",
+                "position": {
+                    "my": "left bottom-10",
+                    "at": "left top",
+                    "collision": "flipfit flip"
+                },
+                "selector": "a"
+             }
+         }
+     }
+</script>

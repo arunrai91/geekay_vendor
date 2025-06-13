@@ -1,0 +1,41 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var Amasty\Xsearch\Block\Adminhtml\Analytics\Activity\QueryList $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<div class="amxsearch-2column">
+    <p class="amxsearch-title"><?= $escaper->escapeHtml(__('Recent Activity (Search Volume)')); ?></p>
+
+    <table class="amxsearch-table">
+        <thead class="amxsearch-thead">
+        <tr>
+            <th class="amxsearch-cell"><?= $escaper->escapeHtml(__('Total Searches')); ?></th>
+            <th class="amxsearch-cell"><?= $escaper->escapeHtml(__('Unique Searches')); ?></th>
+            <th class="amxsearch-cell"><?= $escaper->escapeHtml(__('Users')); ?></th>
+            <th class="amxsearch-cell"><?= $escaper->escapeHtml(__('Engagement')); ?></th>
+            <th class="amxsearch-cell"><?= $escaper->escapeHtml(__('Date & Time')); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($block->getLastSearches() as $query): ?>
+            <tr class="amxsearch-row">
+                <td class="amxsearch-cell"><?= $escaper->escapeHtml($query->getPopularity()); ?></td>
+                <td class="amxsearch-cell"><?= (int)$query->getUniqueQuery(); ?></td>
+                <td class="amxsearch-cell"><?= (int)$query->getUniqueUser(); ?></td>
+                <td class="amxsearch-cell"><?= (float)$query->getProductClick(); ?>%</td>
+                <td class="amxsearch-cell"><?= $escaper->escapeHtml($query->getCreatedAt()); ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <a href="<?= $escaper->escapeUrl($block->getMoreUrl()) ?>"
+       class="amxsearch-more-link"
+       title="<?= $block->escapeHtml(__('View more')) ?>"
+       target="_blank"><?= $block->escapeHtml(__('View more')) ?></a>
+</div>

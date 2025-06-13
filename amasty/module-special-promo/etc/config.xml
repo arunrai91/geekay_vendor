@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Base for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amrules>
+            <general>
+                <show_empty_discount>1</show_empty_discount>
+            </general>
+            <skip_price>
+                <skip_special_price>1</skip_special_price>
+            </skip_price>
+            <discount_breakdown>
+                <enable>1</enable>
+            </discount_breakdown>
+            <discount_dropdown>
+                <enabled>0</enabled>
+                <add_rule_name>1</add_rule_name>
+                <add_rule_description>0</add_rule_description>
+                <add_rule_date>1</add_rule_date>
+            </discount_dropdown>
+        </amrules>
+    </default>
+</config>

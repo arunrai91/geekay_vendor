@@ -1,0 +1,31 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * Amasty Search Overlay Component
+ */
+?>
+
+<section class="amsearch-overlay-block"
+         data-bind="
+            scope: 'index = amsearch_overlay_section',
+            mageInit: {
+                'Magento_Ui/js/core/app': {
+                    components: {
+                        'amsearch_overlay_section': {
+                            component: 'Amasty_Xsearch/js/components/overlay'
+                        }
+                    }
+                }
+            }">
+    <div class="amsearch-overlay"
+         data-bind="
+            event: {
+                click: hide
+            },
+            afterRender: initNode">
+    </div>
+</section>

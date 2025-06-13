@@ -1,0 +1,22 @@
+{
+    "name": "amasty/shopby-seo",
+    "description": "Improved Layered Navigation by Amasty - SEO sub-module",
+    "require": {
+        "php": ">=7.3.0",
+        "amasty/base": ">=1.17.0",
+        "amasty/module-shop-by-base": ">=2.17.0"
+    },
+    "type": "magento2-module",
+    "version": "2.16.0",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\ShopbySeo\\": ""
+        }
+    }
+}

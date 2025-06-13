@@ -1,0 +1,43 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var Template $block
+ * @var FormMiniData $viewModel
+ * @var Escaper $escaper
+ */
+
+use Amasty\Xsearch\ViewModel\FormMiniData;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+$viewModel = $block->getViewModel();
+?>
+
+<?php if ($viewModel->isFullScreenEnabled()): ?>
+    <!-- ko scope: 'index = amsearch_loupe_trigger' -->
+        <button class="amsearch-button -icon -loupe -loupe-trigger -clear"
+                data-bind="
+                    event: {
+                        click: toggle
+                    }">
+        </button>
+    <!-- /ko -->
+<script type="text/x-magento-init">
+    {
+        ".amsearch-button.-loupe-trigger": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "amsearch_loupe_trigger": {
+                        "component": "Amasty_Xsearch/js/components/loupe-trigger"
+                    }
+                }
+            }
+        }
+    }
+</script>
+<?php endif; ?>
+

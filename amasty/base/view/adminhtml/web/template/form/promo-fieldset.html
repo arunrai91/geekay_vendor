@@ -1,0 +1,35 @@
+<div class="fieldset-wrapper"
+     css="$data.additionalClasses"
+     attr="'data-level': $data.level, 'data-index': index"
+     data-bind="visible: $data.visible === undefined ? true: $data.visible">
+    <div class="fieldset-wrapper-title"
+         attr="tabindex: !collapsible ? -1 : 0,
+               'data-state-collapsible': collapsible ? opened() ? 'open' : 'closed' : null"
+         click="toggleOpened"
+         keyboard="13: toggleOpened"
+         if="label">
+        <div css="'admin__collapsible-title': collapsible,
+                      title: !collapsible,
+                      '_changed': changed,
+                      '_loading': loading,
+                      '_error': error">
+            <span class="ampromo-config-icon fieldset-icon" if="isPromo"
+                  data-bind="
+                    style: {
+                        backgroundColor: $data.getBackgroundColor(),
+                        backgroundImage: `url(${require.toUrl($data.getIconUrl())})`
+                        }"></span>
+            <span translate="label"></span>
+            <span class="ampromo-config-fieldset-notification-message" if="isPromo"
+                  data-bind="text: $data.getPromoText()"></span>
+        </div>
+    </div>
+    <div class="admin__fieldset-wrapper-content"
+         css="'admin__collapsible-content': collapsible, '_show': opened, '_hide': !opened()">
+        <div class="message message-info" if="isPromo && !!message" data-bind="html: message"></div>
+        <fieldset
+                if="opened() || _wasOpened || initializeFieldsetDataByDefault"
+                class="admin__fieldset"
+                each="data: elems, as: 'element'" render=""></fieldset>
+    </div>
+</div>

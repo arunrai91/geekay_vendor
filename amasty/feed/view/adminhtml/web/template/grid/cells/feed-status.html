@@ -1,0 +1,6 @@
+<div class="data-grid-cell-content">
+    <div class="amfeed-status-badge"
+         data-bind="class: 'amfeed-status-badge-' + $row()?.status_label?.toLowerCase()">
+        <span data-bind="text: $t($row()?.status_label ?? '')"></span>
+    </div>
+</div>

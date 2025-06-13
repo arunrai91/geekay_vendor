@@ -1,0 +1,73 @@
+//
+//  Further Component Styles
+//  ______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amelsearch-further-section {
+        & {
+            display: none;
+            margin: 0 0 40px;
+        }
+
+        .amelsearch-label {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 @amelsearch__indent__l;
+        }
+
+        .amelsearch-form-section {
+            align-content: center;
+            align-items: center;
+            display: inline-flex;
+            max-width: 362px;
+            position: relative;
+            width: 100%;
+        }
+
+        .amelsearch-button.-loupe,
+        .amelsearch-button.-close {
+            height: 100%;
+            margin: auto 0;
+            position: absolute;
+            right: 85px;
+        }
+
+        .amelsearch-form-section.-focused {
+            .amelsearch-input {
+                padding-left: 33px;
+            }
+
+            .amelsearch-button.-loupe {
+                bottom: 0;
+                left: 10px;
+                right: auto;
+                top: 0;
+            }
+        }
+
+        .amelsearch-input {
+            border-radius: 20px;
+        }
+
+        .amelsearch-button.-primary {
+            height: 100%;
+            position: absolute;
+            right: 0;
+        }
+    }
+}
+
+//
+//  Mobile
+//  ---------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .amelsearch-further-section {
+        display: block;
+    }
+}

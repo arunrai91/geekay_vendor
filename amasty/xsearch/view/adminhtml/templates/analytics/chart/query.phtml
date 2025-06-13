@@ -1,0 +1,58 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var Amasty\Xsearch\Block\Adminhtml\Analytics\Chart\Query $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<div id="search_analytics"
+     class="analytics-chart"
+     data-mage-init='{
+         "amSearchAnalytics": {
+            "popularity": "<?= $escaper->escapeJs($block->getTotal('popularity')) ?>",
+            "unique_query": "<?= $escaper->escapeJs($block->getTotal('unique_query')) ?>",
+            "unique_user": "<?= $escaper->escapeJs($block->getTotal('unique_user')) ?>",
+            "product_click": "<?= $escaper->escapeJs($block->getTotal('product_click')) ?>",
+            "title": "<?= $escaper->escapeJs($block->getTitle()) ?>",
+            "data": <?= $escaper->escapeHtml($block->getAnalyticsData()) ?>
+         }
+     }'>
+</div>
+<div class="amxsearch-legend-wrap">
+    <div class="amxsearch-item">
+        <div class="amxsearch-total -popularity">
+            <?= $escaper->escapeHtml($block->getTotal('popularity')) ?>
+        </div>
+        <p class="amxsearch-label">
+            <?= $escaper->escapeHtml(__('Total Searches')); ?>
+        </p>
+    </div>
+    <div class="amxsearch-item">
+        <div class="amxsearch-total -unique_query">
+            <?= $escaper->escapeHtml($block->getTotal('unique_query')) ?>
+        </div>
+        <p class="amxsearch-label">
+            <?= $escaper->escapeHtml(__('Unique Searches')); ?>
+        </p>
+    </div>
+    <div class="amxsearch-item">
+        <div class="amxsearch-total -users">
+            <?= $escaper->escapeHtml($block->getTotal('unique_user')) ?>
+        </div>
+        <p class="amxsearch-label">
+            <?= $escaper->escapeHtml(__('Users')); ?>
+        </p>
+    </div>
+    <div class="amxsearch-item">
+        <div class="amxsearch-total -product_click">
+            <?= $escaper->escapeHtml($block->getTotal('product_click')) ?>%
+        </div>
+        <p class="amxsearch-label">
+            <?= $escaper->escapeHtml(__('Engagement')); ?>
+        </p>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div id="externaljs">
+</div>
+<script type="text/javascript">
+require(['jquery','Magento_Ui/js/model/messageList'], function($,globalMessageList) {
+    $(document).ready(function() {
+        var data = '';
+        var flexjs = "<?php echo $this->getUrl('cybersource/microform/tokenRequest') ?>";
+        $.ajax({
+            url: flexjs,
+            type: 'POST',
+            data: $.extend({}, data, {form_key: $("input[name='form_key']").val()}),
+            success: function(response) {
+                console.log(response);
+                $('#externaljs').replaceWith('<div id="externaljs"><script>require.config({ paths: { "flex-microform": "' + response.clientLibrary.replace(".js", "") + '" }, shim: { "flex-microform": { exports: "Flex" } } });<\/script></div>');
+                $('#externaljs').append(
+                $('<input>', {
+                    type: 'hidden',
+                    name: 'clientLibrary',
+                    value: response.clientLibrary
+                }),
+                $('<input>', {
+                    type: 'hidden',
+                    name: 'clientLibraryIntegrity',
+                    value: response.clientLibraryIntegrity
+                })
+            );
+            }
+        }).then(
+            function (response) {
+                if (!response.success) {
+                    globalMessageList.addErrorMessage({message: response.error_msg});
+                    return;
+                }
+            }
+        );
+    });
+});
+</script>

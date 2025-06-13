@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Base for Magento 2
+ */-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="amasty_amrules_rule" resource="default" engine="innodb" comment="Amasty Promotions Rules Table">
+    <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+    <column xsi:type="int" name="salesrule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Salesrule Entity Id"/>
+    <column xsi:type="int" name="eachm" nullable="false" comment="Each M Product"/>
+    <column xsi:type="smallint" name="priceselector" padding="6" unsigned="false" nullable="false" identity="false" comment="Price Base On"/>
+    <column xsi:type="text" name="promo_cats" nullable="false" comment="Additional Y cats"/>
+    <column xsi:type="text" name="promo_skus" nullable="false" comment="Additional Y skus"/>
+    <column xsi:type="int" name="nqty" nullable="false" comment="N Qty"/>
+    <column xsi:type="boolean" name="general_skip_settings" nullable="false" comment="Use General Skip Settings"/>
+    <column xsi:type="varchar" name="skip_rule" nullable="false" comment="Skip Rule"/>
+    <column xsi:type="float" name="max_discount" nullable="false" comment="Max Discount Amount"/>
+    <column xsi:type="varchar" name="apply_discount_to" nullable="false" length="4" comment="Apply Discount To"/>
+    <column xsi:type="smallint" name="use_for" padding="4" unsigned="false" nullable="false" identity="false" comment="Use"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+    </constraint>
+    <index referenceId="AMASTY_AMRULES_RULE_SALESRULE_ID" indexType="btree">
+      <column name="salesrule_id"/>
+    </index>
+  </table>
+</schema>

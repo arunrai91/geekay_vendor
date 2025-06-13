@@ -1,0 +1,43 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Layered Navigation Base for Magento 2
+ */
+/**
+ * @var $block \Amasty\Shopby\Block\Adminhtml\System\Config\Field\Renderer\SliderColor
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+
+<section class="amshopby-slider-settings -color"
+         data-bind="
+            scope: 'amshopby_slider_settings',
+                mageInit: {
+                    'Magento_Ui/js/core/app': {
+                        components: {
+                            'amshopby_slider_settings': {
+                                component: 'Amasty_Shopby/js/components/slider-settings',
+                                default: {
+                                    style: '<?= $escaper->escapeHtml($block->getSliderStyle()) ?>',
+                                    color: '<?= $escaper->escapeHtml($block->getSliderColor()) ?>',
+                                    options: <?= $escaper->escapeHtml($block->getSliderStyleOptions()) ?>
+                                }
+                        }
+                    }
+                }
+            }">
+    <input name="groups[slider][fields][slider_color][value]"
+           class="input-text admin__control-text"
+           type="text"
+           data-bind="
+               afterRender: function (node) {
+                    initColorPicker(node);
+               },
+               style: {
+                    backgroundColor: color
+               },
+               attr: {
+                   value: color
+               }">
+</section>

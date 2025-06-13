@@ -1,0 +1,62 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Amasty\Xsearch\ViewModel\FormMiniData $viewModel
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$viewModel = $block->getViewModel();
+$options = $viewModel->getOptions();
+$isBaseSearch = $block->getNameInLayout() === 'top.search';
+$wrapperId = $isBaseSearch ? 'amsearch_wrapper' : 'amsearch_wrapper_' . uniqid();
+$colorSettings = $viewModel->getColorSettings();
+?>
+
+<section class="amsearch-wrapper-block"
+         data-amsearch-wrapper="block"
+         data-bind="
+            scope: '<?= /* @noEscape */ $wrapperId ?>',
+            mageInit: {
+                'Magento_Ui/js/core/app': {
+                    components: {
+                        <?= /* @noEscape */ $wrapperId ?>: {
+                            component: 'Amasty_Xsearch/js/wrapper',
+                            data: <?= $escaper->escapeHtml($options) ?>
+                        }
+                    }
+                }
+            }">
+    <div class="amsearch-form-block"
+          data-bind="
+              style: {
+                    width: resized() ? data.width + 'px' : ''
+              },
+              css: {
+                '-opened': opened
+              },
+              afterRender: initCssVariables">
+        <?php if ($viewModel->isFullScreenEnabled() && $isBaseSearch): ?>
+            <label class="amsearch-full_width-title" data-bind="i18n: 'Search'"></label>
+        <?php endif; ?>
+        <?= /* @noEscape */ $block->fetchView($block->getTemplateFile('Amasty_Xsearch::search/input.phtml')) ?>
+        <?= /* @noEscape */ $block->fetchView($block->getTemplateFile('Amasty_Xsearch::components/search_button.phtml')) ?>
+        <?= /* @noEscape */ $block->fetchView($block->getTemplateFile('Amasty_Xsearch::components/results.phtml')) ?>
+    </div>
+    <?php if ($viewModel->isFullScreenEnabled()): ?>
+        <button class="amsearch-button -full-close"
+                style="display: none;"
+                title="<?= $escaper->escapeHtmlAttr(__('Close')) ?>"
+                data-bind="
+                    event: {
+                        click: close
+                    },
+                    visible: opened">
+        </button>
+    <?php endif; ?>
+    <div class="focusable-trap" data-bind="event: { focusin: close }" tabindex="0"></div>
+</section>

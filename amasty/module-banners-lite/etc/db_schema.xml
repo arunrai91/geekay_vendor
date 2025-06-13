@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Banners Lite for Magento 2 (System)
+ */-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="amasty_banners_lite_banner_data" resource="default" engine="innodb" comment="Amasty Promo Banners Lite Banner Data Table">
+    <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+    <column xsi:type="int" name="salesrule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Salesrule Entity Id"/>
+    <column xsi:type="int" name="banner_type" padding="11" unsigned="false" nullable="false" identity="false" default="0" comment="Banner Type"/>
+    <column xsi:type="text" name="banner_image" nullable="true" comment="Banner Image"/>
+    <column xsi:type="varchar" name="banner_alt" nullable="true" length="255" comment="Banner Alt"/>
+    <column xsi:type="varchar" name="banner_hover_text" nullable="true" length="255" comment="Banner Hover Text"/>
+    <column xsi:type="varchar" name="banner_link" nullable="true" length="255" comment="Banner Link"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+    </constraint>
+    <index referenceId="AMASTY_BANNERS_LITE_BANNER_DATA_SALESRULE_ID" indexType="btree">
+      <column name="salesrule_id"/>
+    </index>
+  </table>
+  <table name="amasty_banners_lite_rule" resource="default" engine="innodb" comment="Amasty Promo Banners Lite Rule">
+    <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+    <column xsi:type="int" name="salesrule_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Salesrule Entity Id"/>
+    <column xsi:type="int" name="show_banner_for" padding="11" unsigned="false" nullable="true" identity="false" comment="Banner Alt"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+    </constraint>
+    <index referenceId="AMASTY_BANNERS_LITE_RULE_SALESRULE_ID" indexType="btree">
+      <column name="salesrule_id"/>
+    </index>
+  </table>
+  <table name="amasty_banners_lite_rule_categories" resource="default" engine="innodb" comment="Amasty Promo Banners Lite Rule Categories">
+    <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Banner Rule Entity ID"/>
+    <column xsi:type="varchar" name="banner_product_categories" nullable="false" length="255" comment="Banner Categories"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+      <column name="banner_product_categories"/>
+    </constraint>
+    <index referenceId="AMASTY_BANNERS_LITE_RULE_CATEGORIES_ENTITY_ID" indexType="btree">
+      <column name="entity_id"/>
+    </index>
+    <index referenceId="AMASTY_BANNERS_LITE_RULE_CATEGORIES_BANNER_PRD_CATEGORIES" indexType="btree">
+      <column name="banner_product_categories"/>
+    </index>
+    <constraint xsi:type="foreign" referenceId="FK_6F7E1C9C26B25C3572E1D2F463D5E2CC" table="amasty_banners_lite_rule_categories" column="entity_id" referenceTable="amasty_banners_lite_rule" referenceColumn="entity_id" onDelete="CASCADE"/>
+  </table>
+  <table name="amasty_banners_lite_rule_sku" resource="default" engine="innodb" comment="Amasty Promo Banners Lite Rule Product SKUs">
+    <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Banner Rule Entity ID"/>
+    <column xsi:type="varchar" name="banner_product_sku" nullable="false" length="255" comment="Banner Product SKUs"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+      <column name="banner_product_sku"/>
+    </constraint>
+    <index referenceId="AMASTY_BANNERS_LITE_RULE_SKU_ENTITY_ID" indexType="btree">
+      <column name="entity_id"/>
+    </index>
+    <index referenceId="AMASTY_BANNERS_LITE_RULE_SKU_BANNER_PRODUCT_SKU" indexType="btree">
+      <column name="banner_product_sku"/>
+    </index>
+    <constraint xsi:type="foreign" referenceId="FK_0F6299AFC88F2A65EB2DD5DA827392C7" table="amasty_banners_lite_rule_sku" column="entity_id" referenceTable="amasty_banners_lite_rule" referenceColumn="entity_id" onDelete="CASCADE"/>
+  </table>
+</schema>

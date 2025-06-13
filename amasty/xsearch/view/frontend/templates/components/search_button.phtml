@@ -1,0 +1,43 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Amasty\Xsearch\ViewModel\FormMiniData $viewModel
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$viewModel = $block->getViewModel();
+$colorSettings = $viewModel->getColorSettings();
+?>
+
+<?php if ($viewModel->isDisplaySearchButton()): ?>
+    <button class="amsearch-button -primary -search -disabled"
+            type="submit"
+            title="<?= $escaper->escapeHtmlAttr(__('Search')) ?>"
+            data-bind="
+                attr: {
+                    tabindex: readyForSearch() ? '0' : '-1'
+                },
+                event: {
+                    click: search
+                },
+                css: {
+                    '-disabled': !readyForSearch()
+                },
+                enable: readyForSearch()">
+        <?= $escaper->escapeHtml(__('Search')) ?>
+    </button>
+
+    <?php if ($colorSettings): ?>
+        <style>
+            :root {
+                --amsearch-color-search_button: #<?= /* @noEscape */ $colorSettings['search_button'] ?>;
+                --amsearch-color-search_button_text: #<?= /* @noEscape */ $colorSettings['search_button_text'] ?>;
+            }
+        </style>
+    <?php endif; ?>
+<?php endif; ?>

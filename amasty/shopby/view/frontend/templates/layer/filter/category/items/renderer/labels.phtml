@@ -1,0 +1,128 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Layered Navigation Base for Magento 2
+ */
+/** @var \Amasty\ShopbyBase\Model\FilterSetting $filterSetting */
+/** @var \Amasty\Shopby\Model\Layer\Filter\Item $filterItem */
+/** @var \Amasty\Shopby\Block\Navigation\FilterRenderer\Category $block */
+/** @var \Amasty\Shopby\Model\Layer\Filter\CategoryItems $filterItems */
+/** @var \Magento\Framework\Escaper $escaper */
+
+$filterItems = $block->getFilter()->getItems();
+$categoryHelper = $block->getCategoryHelper();
+$filterSetting = $block->getFilterSetting();
+$filterSubcategoriesView = $block->isFolding();
+$filterSubcategoriesType = $filterSubcategoriesView
+    ? 'labelsFolding'
+    : 'flyOut';
+$filterFoldingClass = $filterSubcategoriesView ? '-folding' : '';
+$isParent = $block->isParent($filterItems, $block->getPath());
+$showProductQuantities = $filterSetting->getShowProductQuantities();
+
+$filterPathItems = $filterItems->getItems($block->getPath());
+
+if (count($filterPathItems)):
+    foreach ($filterPathItems as $filterItem):
+        $currentPath = ($block->getPath() ?: $filterItems->getStartPath()) . '/'
+            . $filterItem->getValueString();
+        $isExpandByClick = $block->isExpandByClick($currentPath);
+        $filterItemsCount = $filterItems->getItemsCount($currentPath);
+        $filterCount = $filterItem->getCount();
+        $escapedOptionLabel = $escaper->escapeHtmlAttr($filterItem->getOptionLabel());
+
+        $wrapperClasses = '';
+
+        if (!$filterCount) {
+            $wrapperClasses .= ' -empty-value';
+        }
+
+        if ($filterItemsCount) {
+            $wrapperClasses .= ' -is-collapsible';
+        }
+
+        if ($isExpandByClick) {
+            $wrapperClasses .= ' -is-by-click';
+            if (!$block->isFilterActive($filterItem)) {
+                $wrapperClasses .= ' -folded';
+            }
+        } else {
+            $wrapperClasses .= ' -is-expanded';
+        }
+
+        if ($block->getFilter()->getItemsCount($currentPath)) {
+            $wrapperClasses .= ' -filter-parent';
+        }
+        ?>
+        <li class="item <?= /* @noEscape */ $wrapperClasses ?>"
+            data-label="<?= /* @noEscape */ $escapedOptionLabel ?>">
+            <?php if ($isExpandByClick): ?>
+                <span class="am-collapse-icon"></span>
+            <?php endif; ?>
+
+            <?php if ($filterCount > 0): ?>
+                <a class="am-filter-item-<?= /* @noEscape */ $escaper->escapeHtmlAttr(uniqid()) ?>
+                    <?= /* @noEscape */ ($isParent) ? 'amshopby-filter-parent' : '' ?>"
+                   data-am-js='filter-item-category-<?= /* @noEscape */ $filterSubcategoriesType ?>'
+                   aria-label="<?= /* @noEscape */ $escapedOptionLabel; ?>"
+                   title="<?= /* @noEscape */ $escapedOptionLabel; ?>"
+                   href="<?= $escaper->escapeUrl($filterItem->getUrl()) ?>"
+                    <?= /* @noEscape */ $filterItem->isAddNofollow() ? ' rel="nofollow"' : '' ?>
+                >
+            <?php endif; ?>
+
+            <?php if ($block->getFilter()->useLabelsOnly()): ?>
+                <span class="label"><?= /* @noEscape */ $filterItem->getOptionLabel() ?></span>
+            <?php else: ?>
+                <?php if ($block->isShowThumbnail($filterItem->getValue())): ?>
+                    <img src="<?= /* @noEscape */ $categoryHelper->getCategoryImageUrl($filterItem->getValue()) ?>"
+                         class="am-category-image"
+                         title="<?= /* @noEscape */ $escapedOptionLabel; ?>"
+                         alt="<?= /* @noEscape */ $escapedOptionLabel; ?>"
+                         height="<?= /* @noEscape */ $categoryHelper->getCategoryFilterImageSize(); ?>"
+                         width="<?= /* @noEscape */ $categoryHelper->getCategoryFilterImageSize(); ?>"/>
+                <?php endif; ?>
+                <?php if ($block->getFilter()->useLabelsAndImages()): ?>
+                    <span class="label"><?= /* @noEscape */ $filterItem->getOptionLabel() ?></span>
+                <?php endif; ?>
+            <?php endif; ?>
+
+            <?php if ($block->isShowProductQuantities($showProductQuantities)): ?>
+                <span class="count"><?= /* @noEscape */ $filterCount; ?><span class="filter-count-label">
+                <?= $escaper->escapeHtml(($filterCount === 1) ? __('item') : __('items')) ?></span></span>
+            <?php endif; ?>
+
+            <?php if ($filterCount > 0): ?>
+                </a>
+                <input class="am-input"
+                       name="amshopby[<?= $escaper->escapeHtmlAttr($block->getFilter()->getRequestVar()); ?>][]"
+                       value="<?= $escaper->escapeHtmlAttr($filterItem->getValueString()); ?>"
+                       type="<?= /* @noEscape */ $block->getInputType(); ?>"
+                       aria-label="<?= /* @noEscape */ $escapedOptionLabel; ?>"
+                    <?= /* @noEscape */ $block->checkedFilter($filterItem) ? ' checked' : ''; ?>
+                />
+                <span class="amshopby-choice"></span>
+            <?php endif; ?>
+
+            <?php if ($filterItemsCount): ?>
+                <?php $level = $block->getLevel();?>
+                <ul class="items items-children level-<?= /* @noEscape */ $level . ' ' . $filterFoldingClass; ?>">
+                    <?= /* @noEscape */ $block->renderChildrenItems($currentPath); ?>
+                </ul>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+
+    <script type="text/x-magento-init">
+        {
+            "[data-am-js='filter-item-category-<?= /* @noEscape */ $filterSubcategoriesType ?>']": {
+                "amShopbyFilterCategory": {
+                    "type": "<?= /* @noEscape */ $filterSubcategoriesType ?>",
+                    "collectFilters": <?= /* @noEscape */ $block->collectFilters(); ?>,
+                    "clearUrl": "<?= $escaper->escapeUrl($block->getClearUrl()); ?>"
+                }
+            }
+        }
+    </script>
+<?php endif; ?>

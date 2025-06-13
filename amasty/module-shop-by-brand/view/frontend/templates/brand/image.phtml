@@ -1,0 +1,24 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Brand for Magento 2
+ */
+/**
+ * Brand view image template
+ *
+ * @var $block \Magento\Catalog\Block\Category\View
+ * @var $escaper \Magento\Framework\Escaper
+ */
+
+/** @var \Amasty\ShopbyBrand\ViewModel\BrandView $brandViewModel */
+$brandViewModel = $block->getBrandViewModel();
+?>
+<?php if ($brandViewModel->getImageUrl() !== null): ?>
+    <div class="category-image">
+        <img src="<?= $escaper->escapeUrl($brandViewModel->getImageUrl()) ?>"
+             alt="<?= $escaper->escapeHtmlAttr($block->stripTags($brandViewModel->getImageAlt())) ?>"
+             title="<?= $escaper->escapeHtmlAttr($brandViewModel->getBrandTitle()) ?>"
+             class="image"/>
+    </div>
+<?php endif; ?>

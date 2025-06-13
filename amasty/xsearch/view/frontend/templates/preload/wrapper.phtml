@@ -1,0 +1,24 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Amasty\Xsearch\ViewModel\Preload\Sidebar $viewModel
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$viewModel = $block->getViewModel();
+$sidebarBlocks = $viewModel->getSidebarBlocksHtml();
+$sliderBlocks = $block->getChildHtml('amsearch_slider_block');
+?>
+
+<?php if ($sidebarBlocks != '' || $sliderBlocks != ''): ?>
+    <section class="amsearch-items-section">
+        <?= /* @noEscape */ $sidebarBlocks ?>
+        <?= /* @noEscape */ $sliderBlocks ?>
+    </section>
+<?php endif; ?>
+<?= $block->getChildHtml('amsearch_configurable_renderer') ?>

@@ -1,0 +1,13 @@
+<button class="amelsearch-button -primary"
+        data-bind="
+            attr: {
+                title: $t('Search')
+            },
+            css: {
+                '-disabled': !(value && value().length > 2)
+            },
+            event: {
+                click: search
+            },
+            i18n: 'Search'">
+</button>

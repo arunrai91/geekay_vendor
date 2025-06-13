@@ -1,0 +1,39 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Amasty\Xsearch\ViewModel\FormMiniData $viewModel
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$viewModel = $block->getViewModel();
+$options = $viewModel->getOptions();
+$isBaseSearch = $block->getNameInLayout() === 'top.search';
+?>
+
+<section class="amsearch-result-section"
+         data-amsearch-js="results"
+         style="display: none;"
+         data-bind="
+            css: {
+                '-small': $data.data.width < 700 && !$data.data.fullWidth
+            },
+            afterRender: function (node) {
+                initResultSection(node, <?= /* @noEscape */ $isBaseSearch ?>)
+            },
+            style: resultSectionStyles(),
+            visible: $data.opened()">
+    <!-- ko if: !$data.match() && $data.preload() -->
+        <!-- ko template: { name: templates.preload } --><!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: $data.match() -->
+        <!-- ko template: { name: templates.results } --><!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: $data.message() && $data.message().length -->
+        <!-- ko template: { name: templates.message } --><!-- /ko -->
+    <!-- /ko -->
+</section>

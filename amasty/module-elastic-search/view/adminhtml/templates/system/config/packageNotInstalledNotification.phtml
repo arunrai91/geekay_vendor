@@ -1,0 +1,19 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Elastic Search Base for Magento 2
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Amasty\ElasticSearch\ViewModel\Elasticsearch\SystemPackageViewModel $viewModel
+ */
+$viewModel = $block->getData('viewModel');
+?>
+
+<?php if (!$viewModel->isAvailable()): ?>
+    <div class="amasty-additional-content">
+        <span class="message success"><?= $escaper->escapeHtml($viewModel->generateMessage(), ['a']) ?></span>
+    </div>
+<?php endif; ?>

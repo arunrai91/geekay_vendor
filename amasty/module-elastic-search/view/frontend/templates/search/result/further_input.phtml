@@ -1,0 +1,50 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Elastic Search Base for Magento 2
+ */
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var FurtherQueryViewModel $furtherQueryViewModel */
+
+use Amasty\ElasticSearch\ViewModel\CatalogSearch\FurtherQueryViewModel;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+$furtherQueryViewModel = $block->getData('furtherQueryViewModel');
+$uniqueId = random_int(0, 10000000);
+?>
+
+<section class="amelsearch-further-section"
+         data-bind="
+            scope: 'amelsearch_further_wrapper<?= (int) $uniqueId ?>',
+            mageInit: {
+                'Magento_Ui/js/core/app': {
+                    components: {
+                        'amelsearch_further_wrapper<?= (int) $uniqueId ?>': {
+                            component: 'Amasty_ElasticSearch/js/components/further-search',
+                            defaultValue: '<?= $escaper->escapeHtml($furtherQueryViewModel->getSubQueryText()) ?>',
+                            searchUrl: '<?= $escaper->escapeUrl($furtherQueryViewModel->getSearchUrl()) ?>'
+                        }
+                    }
+                }
+            }">
+    <label class="amelsearch-label" for="amelsearch-further-input">
+        <?= $escaper->escapeHtml(__('Search further')) ?>
+    </label>
+    <section class="amelsearch-form-section" data-bind="css: { '-focused': focused }">
+        <input id="amelsearch-further-input"
+               class="amelsearch-input"
+               placeholder="<?= $escaper->escapeHtmlAttr(__('Search entire store here...')) ?>"
+               type="text"
+               data-bind="
+                    hasFocus: focused,
+                    value: value,
+                    event: {keypress: onEnter},
+                    valueUpdate: 'afterkeydown'"/>
+        <!-- ko template: { name: templates.clear_button } --><!-- /ko -->
+        <!-- ko template: { name: templates.loupe_button } --><!-- /ko -->
+        <!-- ko template: { name: templates.submit_button } --><!-- /ko -->
+    </section>
+</section>

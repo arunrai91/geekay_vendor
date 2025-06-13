@@ -1,0 +1,23 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Product Feed for Magento 2
+ */
+/** @var \Amasty\Feed\Block\Adminhtml\Feed\Edit\Tab\Buttons\TestConnection $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<div class="feed-test-connection">
+    <?= $block->getButtonHtml() ?>
+    <p class="feed-connection-result"></p>
+    <br>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Amasty_Feed/js/feed/testConnection": {
+                    "ajaxUrl": "<?= $escaper->escapeUrl($block->getAjaxUrl()) ?>"
+            }
+        }
+    }
+</script>

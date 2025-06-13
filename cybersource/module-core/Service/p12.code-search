@@ -1,0 +1,350 @@
+# Query: p12
+# Including: ./repo/cybersource
+# ContextLines: 1
+
+144 results - 16 files
+
+repo/cybersource/BankTransfer/etc/adminhtml/system.xml:
+   48                              </field>
+   49:                              <!-- p12 cert start ideal -->
+   50:                             <field id="ideal_p12_accesskey" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+   51                                  <label>PASSWORD</label>
+   52:                                 <config_path>payment/cybersource_bank_transfer/ideal_p12_accesskey</config_path>
+   53                                  <validate>no-whitespace</validate>
+
+   58                              </field>
+   59:                             <!-- P12 Certificate File Upload Field -->
+   60:                             <field id="ideal_p12_certificate" translate="label" type="file" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+   61:                                 <label>P12 Certificate File</label>
+   62                                  <backend_model>CyberSource\Core\Model\Config\Backend\CertificateUpload</backend_model>
+   63:                                 <config_path>payment/cybersource_bank_transfer/ideal_p12_certificate</config_path>
+   64:                                 <comment><![CDATA[Allowed file types: .p12]]></comment>
+   65                                  <depends>
+
+   69                              </field>
+   70:                         <!-- p12 cert end -->
+   71                             
+
+  129                              </field>
+  130:                               <!-- p12 cert start sofort -->
+  131:                             <field id="sofort_password_p12" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+  132                                  <label>PASSWORD</label>
+  133:                                 <config_path>payment/cybersource_bank_transfer/sofort_password_p12</config_path>
+  134                                  <validate>no-whitespace</validate>
+
+  139                              </field>
+  140:                             <!-- P12 Certificate File Upload Field -->
+  141:                             <field id="sofort_p12_certificate" translate="label" type="file" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
+  142:                                 <label>P12 Certificate File</label>
+  143                                  <backend_model>CyberSource\Core\Model\Config\Backend\CertificateUpload</backend_model>
+  144:                                 <config_path>payment/cybersource_bank_transfer/sofort_p12_certificate</config_path>
+  145:                                 <comment><![CDATA[Allowed file types: .p12]]></comment>
+  146                                  <depends>
+
+  150                              </field>
+  151:                         <!-- p12 cert end -->
+  152                              <field id="bank_transfer_sofort_currency" translate="label" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="1">
+
+  208                              </field>
+  209:                           <!-- p12 cert start ban contact -->
+  210                            
+  211:                             <field id="bancontact_password_p12" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+  212                                  <label>PASSWORD</label>
+  213:                                 <config_path>payment/cybersource_bank_transfer/bancontact_password_p12</config_path>
+  214                                  <validate>no-whitespace</validate>
+
+  219                              </field>
+  220:                             <!-- P12 Certificate File Upload Field -->
+  221:                             <field id="bancontact_p12_certificate" translate="label" type="file" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
+  222:                                 <label>P12 Certificate File</label>
+  223                                  <backend_model>CyberSource\Core\Model\Config\Backend\CertificateUpload</backend_model>
+  224:                                 <config_path>payment/cybersource_bank_transfer/bancontact_p12_certificate</config_path>
+  225:                                 <comment><![CDATA[Allowed file types: .p12]]></comment>
+  226                                  <depends>
+
+  230                              </field>
+  231:                         <!-- p12 cert end -->
+  232  
+
+repo/cybersource/BankTransfer/Model/Config.php:
+   32  	const KEY_USE_DEFAULT_MID = "use_default_mid";
+   33:     const KEY_PASSWORDP12 = 'password_p12';
+   34:     const KEY_P12CERTIFICATE = 'p12_certificate';
+   35      
+
+  103        /*
+  104: 	* get module p12 password
+  105  	* @param $storeId
+
+  107  	*/
+  108: 	public function getP12Password($storeId = null)
+  109      {
+  110: 		return $this->getModuleValue(self::KEY_PASSWORDP12, $storeId);
+  111      }
+
+  114       /*
+  115: 	* get module p12 certificate
+  116  	* @param $storeId
+
+  118  	*/
+  119: 	public function getP12Certificate($storeId = null)
+  120      {
+  121: 		return $this->getModuleValue(self::KEY_P12CERTIFICATE, $storeId);
+  122      }
+
+repo/cybersource/BankTransfer/Service/SoapAPI.php:
+  62          $this->_gatewayConfig->getMerchantId($storeId),
+  63:         $this->_gatewayConfig->getP12Certificate($storeId), 
+  64:         $this->_gatewayConfig->getP12Password($storeId));
+  65  
+
+repo/cybersource/Core/etc/adminhtml/system.xml:
+  71                          </group>
+  72:                         <!-- p12 cert start -->
+  73:                         <group id="cybersourceapi_p12" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+  74:                             <label>P12 Certificate</label>
+  75:                             <field id="p12_accesskey" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+  76                                  <label>PASSWORD</label>
+  77:                                 <config_path>payment/chcybersource/p12_accesskey</config_path>
+  78                                  <validate>no-whitespace</validate>
+  79                              </field>
+  80:                            <!-- P12 Certificate File Upload Field -->
+  81:                             <field id="general_p12_certificate" translate="label" type="file" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+  82:                                 <label>P12 Certificate File</label>
+  83                                  <backend_model>CyberSource\Core\Model\Config\Backend\CertificateUpload</backend_model>
+  84:                                 <config_path>payment/chcybersource/general_p12_certificate</config_path>
+  85:                                 <comment><![CDATA[Allowed file types: .p12]]></comment>
+  86                              </field>
+  87                          </group>
+  88:                         <!-- p12 cert end -->
+  89                      </group>
+
+repo/cybersource/Core/Model/DoRequest.php:
+  44                      $certificateInfo = pathinfo($this->propertiesUtility->getFilePath($this->_ssl_options));
+  45:                     if (in_array(strtolower($certificateInfo['extension']), array('p12', 'pfx')))
+  46                      {
+  47:                         $this->_ssl_options['certificate_type'] = 'P12';
+  48                      }
+
+repo/cybersource/Core/Model/Config/Backend/CertificateUpload.php:
+  123                          $fileName = $value['name'];
+  124:                         // Remove everything after ".p12"
+  125:                         $pos = strpos($fileName, '.p12');
+  126                          if ($pos !== false) {
+  127:                             // Truncate the string after ".p12"
+  128:                             $cleanedFileName = substr($fileName, 0, $pos + 4); // +4 to include ".p12"
+  129                          } else {
+
+  137                          $fileExtension = strtolower(pathinfo($uniqueFileName, PATHINFO_EXTENSION));
+  138:                         if ($fileExtension !== 'p12') {
+  139                              $this->logger->error('Disallowed file extension: ' . $fileExtension);
+
+  144                          $uploader = $this->uploaderFactory->create(['fileId' => $file]);
+  145:                         $uploader->setAllowedExtensions(['p12']);
+  146                          $uploader->setAllowRenameFiles(false);
+
+  250      {
+  251:         return ['p12', 'P12'];
+  252      }
+
+repo/cybersource/Core/Service/AbstractConnection.php:
+   17      const MERCHANT_ID_PATH = 'payment/chcybersource/merchant_id';
+   18:     const P12_ACCESSKEY = 'payment/chcybersource/p12_accesskey';
+   19:     const P12_CERTIFICATE = 'payment/chcybersource/general_p12_certificate';
+   20  
+
+   64       */
+   65:     protected $p12_accesskey;
+   66  
+
+   69       */
+   70:     protected $p12_certificate;
+   71  
+
+  109                          'KEY_ALIAS' => 'cybersource',
+  110:                         'KEY_FILE' => $this->p12_certificate,
+  111:                         'KEY_PASS' => $this->p12_accesskey,
+  112                          'KEY_DIRECTORY' => $certificateDir,
+
+  165      {
+  166:         $this->p12_accesskey = $this->config->getValue(
+  167:             self::P12_ACCESSKEY,
+  168              $this->storeScope
+  169          );
+  170:         $this->p12_certificate = $this->config->getValue(
+  171:             self::P12_CERTIFICATE,
+  172              $this->storeScope
+
+  192      {
+  193:         $this->p12_accesskey = $this->config->getValue(
+  194:             self::P12_ACCESSKEY,
+  195              'store',
+
+  197          );
+  198:         $this->p12_certificate = $this->config->getValue(
+  199:             self::P12_CERTIFICATE,
+  200              'store',
+
+repo/cybersource/Core/Service/MultiMidAbstractConnection.php:
+   20      const MERCHANT_ID_PATH         = 'payment/chcybersource/merchant_id';
+   21:     const P12_CERTIFICATE = 'payment/chcybersource/general_p12_certificate';
+   22:     const P12_ACCESSKEY     = 'payment/chcybersource/p12_accesskey';
+   23  
+
+   37       */
+   38:     public $p12certificate = null;
+   39  
+
+   42       */
+   43:     public $p12_accesskey = null;
+   44  
+
+   75          $merchantId,
+   76:         $p12_certificate,
+   77:         $p12_accesskey
+   78      ) {
+
+   81          $this->merchantId = $merchantId;
+   82:         $this->p12certificate = $p12certificate;
+   83:         $this->p12_accesskey = $p12_accesskey;
+   84          $this->handleWsdlEnvironment();
+
+  105                  $uploadDir = $filesystem->getDirectoryWrite($directory::ROOT)->getAbsolutePath('certificate/');
+  106:                 $filename = $this->p12_certificate; 
+  107:                 $p12_accesskey = $this->p12_accesskey; 
+  108                  $certificateDir = $directory->getRoot() . "/certificate";
+
+  112                          'KEY_FILE' => $filename,
+  113:                         'KEY_PASS' => $p12Password,
+  114                          'KEY_DIRECTORY' => $certificateDir,
+
+  167      {
+  168:         if(empty($this->p12_certificate) || empty($this->p12_accesskey) || empty($this->merchantId) ){
+  169:             $this->p12_certificate = $this->config->getValue(
+  170:                 self::P12_CERTIFICATE,
+  171                  $this->storeScope,
+
+  174   
+  175:             $this->p12_accesskey = $this->config->getValue(
+  176:                 self::P12_ACCESSKEY,
+  177                  $this->storeScope,
+
+repo/cybersource/Core/Service/SecurityUtility.php:
+  42  
+  43:         if (in_array(strtolower($certificateInfo['extension']), ['p12', 'pfx'])) {
+  44              try {
+
+  50                  } else {
+  51:                     $this->messageManager->addError(__('An error occurred : Incorrect password or invalid p12 certificate.'));
+  52                      $this->logger->info('Incorrect password or invalid certificate.');
+
+repo/cybersource/KlarnaFinancial/etc/adminhtml/system.xml:
+  42                          </field>
+  43:                         <!-- p12 cert start -->
+  44:                             <field id="password_p12" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+  45                                  <label>PASSWORD</label>
+  46:                                 <config_path>payment/cybersourceklarna/password_p12</config_path>
+  47                                  <validate>no-whitespace</validate>
+
+  52                              </field>
+  53:                             <!-- P12 Certificate File Upload Field -->
+  54:                             <field id="klarna_p12_certificate" translate="label" type="file" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0">
+  55:                                 <label>P12 Certificate File</label>
+  56                                  <backend_model>CyberSource\Core\Model\Config\Backend\CertificateUpload</backend_model>
+  57:                                 <config_path>payment/cybersourceklarna/klarna_p12_certificate</config_path>
+  58:                                 <comment><![CDATA[Allowed file types: .p12]]></comment>
+  59                                  <depends>
+
+  63                              </field>
+  64:                         <!-- p12 cert end -->
+  65                          <field id="order_status" translate="label" type="select" sortOrder="14" showInDefault="1" showInWebsite="0" showInStore="1">
+
+repo/cybersource/KlarnaFinancial/Gateway/Config/Config.php:
+   24      const KEY_PAYMENT_ACTION = "payment_action";
+   25:     const KEY_PASSWORDP12 = 'password_p12';
+   26:     const KEY_P12CERTIFICATE = 'klarna_p12_certificate';
+   27  
+
+  121       /*
+  122: 	* get module p12 password
+  123  	* @param $storeId
+
+  125  	*/
+  126: 	public function getP12Password($storeId = null)
+  127      {
+  128: 		return $this->getModuleValue(self::KEY_PASSWORDP12, $storeId);
+  129      }
+
+  132       /*
+  133: 	* get module p12 certificate
+  134  	* @param $storeId
+
+  136  	*/
+  137: 	public function getP12Certificate($storeId = null)
+  138      {
+  139: 		return $this->getModuleValue(self::KEY_P12CERTIFICATE, $storeId);
+  140      }
+
+repo/cybersource/KlarnaFinancial/Gateway/Http/Client/SOAPClient.php:
+  41           $this->gatewayConfig->getMerchantId($storeId), 
+  42:          $this->gatewayConfig->getP12Certificate($storeId), 
+  43:          $this->gatewayConfig->getP12Password($storeId));
+  44          /**
+
+repo/cybersource/KlarnaFinancial/Service/CyberSourceSoap.php:
+  55           $this->gatewayConfig->getMerchantId($storeId), 
+  56:          $this->gatewayConfig->getP12Certificate($storeId), 
+  57:          $this->gatewayConfig->getP12Password($storeId));
+  58  
+
+repo/cybersource/WeChatPay/etc/adminhtml/system.xml:
+  46                          </field>
+  47:                         <!-- p12 cert start -->
+  48:                             <field id="password_p12" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+  49                                  <label>PASSWORD</label>
+  50:                                 <config_path>payment/cybersourcewechatpay/password_p12</config_path>
+  51                                  <validate>no-whitespace</validate>
+
+  56                              </field>
+  57:                            <!-- P12 Certificate File Upload Field -->
+  58:                             <field id="wechatpay_p12_certificate" translate="label" type="file" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+  59:                                 <label>P12 Certificate File</label>
+  60                                  <backend_model>CyberSource\Core\Model\Config\Backend\CertificateUpload</backend_model> 
+  61:                                 <config_path>payment/cybersourcewechatpay/wechatpay_p12_certificate</config_path>
+  62:                                 <comment><![CDATA[Allowed file types: .p12]]></comment>
+  63                                  <depends>
+
+  67                              </field>    
+  68:                         <!-- p12 cert end -->                 
+  69                          <field id="qr_expiration_time" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+
+repo/cybersource/WeChatPay/Gateway/Config/Config.php:
+   30      const KEY_TEST_CHECK_STATUS_RESPONSE_CODE = 'test_response_code';
+   31:     const KEY_PASSWORDP12 = 'password_p12';
+   32:     const KEY_P12CERTIFICATE = 'wechatpay_p12_certificate';
+   33      /**
+
+  139        /*
+  140: 	* get module p12 password
+  141  	* @param $storeId
+
+  143  	*/
+  144: 	public function getP12Password($storeId = null)
+  145      {
+  146: 		return $this->getModuleValue(self::KEY_PASSWORDP12, $storeId);
+  147      }
+
+  150       /*
+  151: 	* get module p12 certificate
+  152  	* @param $storeId
+
+  154  	*/
+  155: 	public function getP12Certificate($storeId = null)
+  156      {
+  157: 		return $this->getModuleValue(self::KEY_P12CERTIFICATE, $storeId);
+  158      }
+
+repo/cybersource/WeChatPay/Service/Soap.php:
+  38          $storeId = $this->getCurrentStoreId();
+  39:         parent::__construct($scopeConfig, $logger, $this->gatewayConfig->getMerchantId($storeId), $this->gatewayConfig->getP12Certificate($storeId), $this->gatewayConfig->getP12Password($storeId));
+  40          /**

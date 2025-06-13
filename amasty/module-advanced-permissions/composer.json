@@ -1,0 +1,21 @@
+{
+    "name": "amasty/module-advanced-permissions",
+    "description": "Advanced Permissions by Amasty",
+    "require": {
+        "php": ">=7.3",
+        "amasty/base": ">=1.18.1"
+    },
+    "type": "magento2-module",
+    "version": "1.6.1",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\Rolepermissions\\": ""
+        }
+    }
+}

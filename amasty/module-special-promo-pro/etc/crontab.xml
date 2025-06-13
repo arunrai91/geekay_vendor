@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Pro for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="amasty_rulespro">
+        <job name="amasty_rulespro_cache_warmer" instance="Amasty\RulesPro\Cron\CacheWarmer"
+             method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+    </group>
+</config>

@@ -1,0 +1,64 @@
+//
+//  Slider Settings Styles
+//  __________________________________________________
+
+//
+//  Common
+//  --------------------------------------------------
+
+& when (@media-common = true) {
+    .amshopby-slider-settings {
+        list-style: none;
+    }
+
+    .amshopby-slider-settings.-style {
+        & {
+            max-width: 214px;
+        }
+
+        .amshopby-slider-container.-default .amshopby-label {
+            padding-bottom: 15px;
+        }
+
+        .am-slider {
+            z-index: 0;
+            margin: 0;
+        }
+
+        .amshopby-label {
+            display: flex;
+            align-items: center;
+            padding-bottom: 45px;
+        }
+
+        .amshopby-input {
+            & {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            &:checked {
+                background: #007bdb;
+            }
+
+            &:checked:after {
+                position: initial;
+                margin: 0;
+                width: 6px;
+                height: 6px;
+                background: #fff;
+            }
+        }
+
+        .amshopby-title {
+            padding-left: 7px;
+        }
+
+        .amshopby-slider-tooltip {
+            visibility: visible;
+            opacity: 1;
+            transition: none;
+        }
+    }
+}

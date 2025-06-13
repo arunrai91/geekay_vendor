@@ -1,0 +1,25 @@
+{
+    "name": "amasty/module-shop-by-base",
+    "description": "Improved Layered Navigation Base by Amasty",
+    "require": {
+        "php": ">=7.3.0",
+        "amasty/base": ">=1.17.0",
+        "amasty/module-lib-swiper-js": ">=9.1.1"
+    },
+    "suggest": {
+        "mobiledetect/mobiledetectlib": "We recommend using the 3rd-party library to improve the mobile detection algorithm."
+    },
+    "type": "magento2-module",
+    "version": "2.17.1",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\ShopbyBase\\": ""
+        }
+    }
+}

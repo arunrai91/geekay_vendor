@@ -1,0 +1,7 @@
+<div class="data-grid-cell-content" data-bind="
+                css: {
+                     'grid-severity-critical': $row()[$data.index] == 0,
+                     'grid-severity-notice': $row()[$data.index] == 1,
+                     'grid-severity-minor': $row()[$data.index] == 2
+                     },
+                text: $col.getLabel($row())"/>

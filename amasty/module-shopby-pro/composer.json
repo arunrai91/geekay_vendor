@@ -1,0 +1,22 @@
+{
+    "name": "amasty/module-shopby-pro",
+    "description": "Improved Layered Navigation Pro by Amasty",
+    "require": {
+        "php": ">=7.3.0",
+        "amasty/base": ">=1.17.0",
+        "amasty/shopby": ">=3.2.1"
+    },
+    "type": "magento2-module",
+    "version": "3.2.2",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\ShopbyPro\\": ""
+        }
+    }
+}

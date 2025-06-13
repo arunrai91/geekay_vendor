@@ -1,0 +1,53 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Layered Navigation Base for Magento 2
+ */
+/** @var \Amasty\ShopbyBase\Model\FilterSetting $filterSetting */
+/** @var \Amasty\Shopby\Block\Navigation\FilterRenderer $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * /** @var \Amasty\Shopby\Model\Layer\Filter\CategoryItems $filterItems */
+/** @var string $categoryTreeHtml */
+
+use Amasty\Shopby\Model\Source\SubcategoriesExpand;
+
+$filterUniqId = $escaper->escapeHtml(uniqid());
+$filterCode = $escaper->escapeHtml($filterSetting->getAttributeCode());
+?>
+
+<?php if ($filterSetting->isShowSearchBox($filterItems->getCount())): ?>
+    <?= /* @noEscape */ $block->getSearchForm() ?>
+<?php endif; ?>
+
+<form data-amshopby-filter="<?= /* @noEscape */ $filterCode ?>"
+      data-amshopby-filter-request-var="<?= /* @noEscape */ $block->getFilter()->getRequestVar() ?>">
+    <ul class="items am-filter-items-<?= /* @noEscape */ $filterCode ?> am-labels-folding
+    <?= /* @noEscape */ $block->isMultiselect($filterSetting) ? '-am-multiselect' : '-am-singleselect' ?>"
+        <?php if ($block->getEnableOverflowScroll($filterSetting) > 0): ?>
+            style="max-height:<?= /* @noEscape */ $block->getOverflowScrollValue($filterSetting) ?>px;
+                    overflow-y: auto;
+                    overflow-x: hidden;"
+        <?php endif; ?>>
+        <?= /* @noEscape */ $categoryTreeHtml ?>
+    </ul>
+</form>
+
+<?php if ($filterSetting->getSubcategoriesExpand() == SubcategoriesExpand::BY_CLICK): ?>
+    <script>
+        // initialize component by emulation behaviour of x-magento-init but without waiting of DOM load
+        require([
+            'mage/apply/main'
+        ], function (main) {
+            main.applyFor(
+                '.am-filter-items-<?= /* @noEscape */ $filterCode ?>',
+                {
+                    "mode": "folding",
+                    "collapseSelector": "<?= $block->isTopNav() ? '.amasty-catalog-topnav' : '.sidebar' ?>"
+                },
+                'amShopbyFilterCollapse'
+            );
+        });
+    </script>
+<?php endif; ?>

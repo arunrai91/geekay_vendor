@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Product Feed for Magento 2
+ */-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider"
+                  xsi:type="string">amfeed_wizard_form.amfeed_wizard_form_data_source
+            </item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Feed View</item>
+        <item name="reverseMetadataMerge" xsi:type="boolean">true</item>
+    </argument>
+    <settings>
+        <namespace>amfeed_wizard_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>amfeed_wizard_form.amfeed_wizard_form_data_source</dep>
+        </deps>
+        <layout>
+            <navContainerName>left</navContainerName>
+            <type>tabs</type>
+        </layout>
+    </settings>
+    <dataSource name="amfeed_wizard_form_data_source" component="Magento_Ui/js/form/provider">
+        <settings>
+            <submitUrl path="*/*/create"/>
+        </settings>
+        <dataProvider class="Amasty\Feed\Ui\DataProvider\Feed\FeedWizardDataProvider"
+                      name="amfeed_wizard_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general" sortOrder="10">
+        <settings>
+            <label translate="true">General</label>
+        </settings>
+        <field name="template_code"
+               formElement="select"
+               component="Amasty_Feed/js/form/element/template-select"
+               sortOrder="10"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">false</item>
+                    <item name="showCheckbox" xsi:type="boolean">false</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Template</label>
+                <dataScope>template_code</dataScope>
+                <componentType>field</componentType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="PromotionSelectFeedTemplates"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

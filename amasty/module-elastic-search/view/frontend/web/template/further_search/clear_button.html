@@ -1,0 +1,8 @@
+<button class="amelsearch-button -close -icon"
+        data-bind="
+            attr: { title: $t('Clear Field') },
+            event: {
+                click: value.bind(this, '')
+            },
+            visible: value && value().length && focused">
+</button>

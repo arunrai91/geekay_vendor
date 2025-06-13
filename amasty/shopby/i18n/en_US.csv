@@ -1,0 +1,259 @@
+"Category Filter Settings","Category Filter Settings"
+"Manage Group Attributes","Manage Group Attributes"
+"Add New Group","Add New Group"
+"Display Mode","Display Mode"
+"Add From-To Widget","Add From-To Widget"
+"Range Algorithm","Range Algorithm"
+"Range Step","Range Step"
+"Set 10 to get ranges 10-20, 20-30, etc.
+                        Custom value improves pages speed. Leave empty to get default ranges.","Set 10 to get ranges 10-20, 20-30, etc.
+                        Custom value improves pages speed. Leave empty to get default ranges."
+"Minimum Slider Value","Minimum Slider Value"
+"Please specify the min value to limit the slider, e.g. <$10","Please specify the min value to limit the slider, e.g. <$10"
+"Maximum Slider Value","Maximum Slider Value"
+"Please specify the max value to limit the slider, e.g. >$999","Please specify the max value to limit the slider, e.g. >$999"
+"Slider Step","Slider Step"
+"Measure Units","Measure Units"
+"Unit Label","Unit Label"
+"Position Label","Position Label"
+"Hide Zero Decimal","Hide Zero Decimal"
+"Show in the Block","Show in the Block"
+"Position in Top","Position in Top"
+"Specify sorting order in the top navigation block. Current configuration overrides a default attribute's Position setting.","Specify sorting order in the top navigation block. Current configuration overrides a default attribute's Position setting."
+"Position in Sidebar","Position in Sidebar"
+"Specify sorting order in the sidebar navigation block. Current configuration overrides a default attribute's Position setting.","Specify sorting order in the sidebar navigation block. Current configuration overrides a default attribute's Position setting."
+"Sort Options By","Sort Options By"
+"Show Product Quantities","Show Product Quantities"
+"Show Search Box","Show Search Box"
+"Show the searchbox if the number of options more than","Show the searchbox if the number of options more than"
+"Customers will be able to search for the filter option in the searchbox.","Customers will be able to search for the filter option in the searchbox."
+"Number of Unfolded Options","Number of Unfolded Options"
+"Other options will be shown after a customer clicks the ""More"" button.","Other options will be shown after a customer clicks the ""More"" button."
+Expand,Expand
+"Allows to expand filter automatically right after a page is loaded.
+                Set 'Expand for desktop only' to keep filter minimized on mobile. Keep 'Auto' to work
+                based on the custom theme functionality.","Allows to expand filter automatically right after a page is loaded.
+                Set 'Expand for desktop only' to keep filter minimized on mobile. Keep 'Auto' to work
+                based on the custom theme functionality."
+"When multiselect option is disabled it follows the category page (except the filtering from the search page)","When multiselect option is disabled it follows the category page (except the filtering from the search page)"
+"Allow Multiselect","Allow Multiselect"
+Tooltip,Tooltip
+"Multiple Values Logic","Multiple Values Logic"
+"Show Icon on the Product Page","Show Icon on the Product Page"
+"Upload images for your options to show them right after the product title","Upload images for your options to show them right after the product title"
+"Display Properties","Display Properties"
+Filtering,Filtering
+Visibility,Visibility
+"Visible in Categories","Visible in Categories"
+Categories,Categories
+"Show Only when Any Option of Attributes Below is Selected","Show Only when Any Option of Attributes Below is Selected"
+"Show Only if the Following Option is Selected","Show Only if the Following Option is Selected"
+"Comma separated options ids","Comma separated options ids"
+"Render Categories Tree","Render Categories Tree"
+"Need help with the settings? Please consult the <a href=""%1"">user guide</a> to configure the extension properly.","Need help with the settings? Please consult the <a href=""%1"">user guide</a> to configure the extension properly."
+"Render All Categories Tree","Render All Categories Tree"
+"Yes (Render Full Categories Tree) or No (For category filter tree customization)","Yes (Render Full Categories Tree) or No (For category filter tree customization)"
+"Category Tree Depth","Category Tree Depth"
+"Specify the max level number for category tree. Keep 1 to hide the subcategories","Specify the max level number for category tree. Keep 1 to hide the subcategories"
+"Render Categories Level","Render Categories Level"
+"Subcategories View","Subcategories View"
+"Category Tree Display Mode","Category Tree Display Mode"
+"Expand Subcategories","Expand Subcategories"
+"Wrong Filter Type","Wrong Filter Type"
+"%1 - %2","%1 - %2"
+above,above
+"Select Options","Select Options"
+"Incorrect data for object: %1","Incorrect data for object: %1"
+"Make sure that ""%1"" attribute can be used in layered navigation","Make sure that ""%1"" attribute can be used in layered navigation"
+Category,Category
+"Make sure that ""%1""(id:%2) category for current store is anchored","Make sure that ""%1""(id:%2) category for current store is anchored"
+"%1 and above","%1 and above"
+Yes,Yes
+New,New
+"On Sale","On Sale"
+"%1 star & up","%1 star & up"
+"%1 stars & up","%1 stars & up"
+"%1 stars","%1 stars"
+"Not Yet Rated","Not Yet Rated"
+"Out of Stock","Out of Stock"
+"In Stock","In Stock"
+"An error occurred. For details, see the error log.","An error occurred. For details, see the error log."
+"The bucket doesn't exist.","The bucket doesn't exist."
+"Before %1","Before %1"
+"After %1","After %1"
+"Replace %1","Replace %1"
+"Do Not Add","Do Not Add"
+"All Attributes","All Attributes"
+"Show Labels Only","Show Labels Only"
+"Show Images Only","Show Images Only"
+"Show Labels And Images","Show Labels And Images"
+Disabled,Disabled
+"Category Thumbnail Images","Category Thumbnail Images"
+"Category Names Without Images","Category Names Without Images"
+Labels,Labels
+Images,Images
+"Images & Labels","Images & Labels"
+"Text Swatches","Text Swatches"
+Slider,Slider
+"From-To Only","From-To Only"
+Dropdown,Dropdown
+Ranges,Ranges
+"Please upload images at the Properties tab.","Please upload images at the Properties tab."
+"Please add text values at the Properties tab.","Please add text values at the Properties tab."
+"Auto (based on custom theme)","Auto (based on custom theme)"
+"Expand for desktop and mobile","Expand for desktop and mobile"
+"Expand for desktop only","Expand for desktop only"
+"Category Description","Category Description"
+Meta-Description,Meta-Description
+Meta-Keywords,Meta-Keywords
+Meta-Title,Meta-Title
+"Category Name","Category Name"
+Sidebar,Sidebar
+Top,Top
+Both,Both
+"Store Currency","Store Currency"
+"Custom label","Custom label"
+"Show products with ANY value","Show products with ANY value"
+"Show products with ALL values only","Show products with ALL values only"
+Before,Before
+After,After
+"Default system algorithm","Default system algorithm"
+"Custom algorithm","Custom algorithm"
+"Root Category","Root Category"
+"Current Category Level","Current Category Level"
+"Current Category Children","Current Category Children"
+No,No
+"Yes (to Listing Top)","Yes (to Listing Top)"
+"Yes (to Page Top)","Yes (to Page Top)"
+Default,Default
+Improved,Improved
+"Volumetric Gradient","Volumetric Gradient"
+Light,Light
+Dark,Dark
+Position,Position
+Name,Name
+"Product Quantities","Product Quantities"
+Always,Always
+"By Click","By Click"
+Folding,Folding
+Fly-out,Fly-out
+"Fly-out for Desktop Only","Fly-out for Desktop Only"
+Instantly,Instantly
+"By Button Click","By Button Click"
+"Visible Everywhere","Visible Everywhere"
+"Only in Selected Categories","Only in Selected Categories"
+"Hide in Selected Categories","Hide in Selected Categories"
+"Improved Layered Navigation","Improved Layered Navigation"
+Thumbnail,Thumbnail
+"Please disable Amasty_ShopbyLite module manually.","Please disable Amasty_ShopbyLite module manually."
+"Please remove ""%1"" folder manually.","Please remove ""%1"" folder manually."
+"Amasty Improved Layered Navigation supports Magento v.2.3.3+ only","Amasty Improved Layered Navigation supports Magento v.2.3.3+ only"
+"\nWARNING: This update requires removing folder %1.\nRemove this folder and unpack new version of package into %1.\nRun `php bin/magento setup:upgrade` again","\nWARNING: This update requires removing folder %1.\nRemove this folder and unpack new version of package into %1.\nRun `php bin/magento setup:upgrade` again"
+exceprion,exceprion
+Relevance,Relevance
+"All Store Views","All Store Views"
+Remove,Remove
+item,item
+items,items
+" star(s)"," star(s)"
+"Select Option ...","Select Option ..."
+"&amp; up","&amp; up"
+"Now Shopping by","Now Shopping by"
+Previous,Previous
+From,From
+To,To
+"Apply filter","Apply filter"
+Apply,Apply
+"Show (%1) more","Show (%1) more"
+"Show more","Show more"
+Less,Less
+Search,Search
+"Apply Filters","Apply Filters"
+Next,Next
+image,image
+Items,Items
+Item,Item
+"Please enter a valid price range.","Please enter a valid price range."
+"Amasty 2 columns with left bar (for categories)","Amasty 2 columns with left bar (for categories)"
+"Amasty 2 columns with right bar (for categories)","Amasty 2 columns with right bar (for categories)"
+General,General
+"Enable AJAX","Enable AJAX"
+"Scroll to Top after AJAX Load","Scroll to Top after AJAX Load"
+"Add Vertical Scrolling to Filter Block After","Add Vertical Scrolling to Filter Block After"
+"Enable Sticky Sidebar for Desktop","Enable Sticky Sidebar for Desktop"
+"Note: filters in top block will be hidden.","Note: filters in top block will be hidden."
+"Submit Filters on Desktop","Submit Filters on Desktop"
+"Submit Filters on Mobile","Submit Filters on Mobile"
+"Leave the Single-Select Filter Visible after Selection","Leave the Single-Select Filter Visible after Selection"
+"Disable the setting to hide the filter with just one option when the value is selected.","Disable the setting to hide the filter with just one option when the value is selected."
+"Hide Filters with One Available Option","Hide Filters with One Available Option"
+"Applies only to category filters and filters based on EAV attributes.","Applies only to category filters and filters based on EAV attributes."
+"Number of Unfolded Options in State","Number of Unfolded Options in State"
+"Specify the number of unfolded options. To see other options, a customer should click the 'More' button.","Specify the number of unfolded options. To see other options, a customer should click the 'More' button."
+"Exclude 'Out of Stock' Configurable Options from Navigation","Exclude 'Out of Stock' Configurable Options from Navigation"
+"Parent configurable products won’t be displayed in the results when filtered by an out of stock option. This setting will exclude such products from search results as well.","Parent configurable products won’t be displayed in the results when filtered by an out of stock option. This setting will exclude such products from search results as well."
+"Slider Settings","Slider Settings"
+"Slider Color","Slider Color"
+"Default Slider color - #ff5502","Default Slider color - #ff5502"
+"Slider Style","Slider Style"
+"Add Title, Description and CMS Blocks of the Selected Filters","Add Title, Description and CMS Blocks of the Selected Filters"
+"Title, Description and CMS blocks of the applied filters will be added to the category and brand pages.","Title, Description and CMS blocks of the applied filters will be added to the category and brand pages."
+"Add the title & description of the selected filters","Add the title & description of the selected filters"
+"The title & description of the applied filters will be added to the category and brand pages","The title & description of the applied filters will be added to the category and brand pages"
+"Add Filter Title","Add Filter Title"
+"Separate Category Name & Title with","Separate Category Name & Title with"
+"Add Filter Description","Add Filter Description"
+"Replace Category Image","Replace Category Image"
+"When enabled, a category image will be replaced if a filter option has a custom image uploaded.","When enabled, a category image will be replaced if a filter option has a custom image uploaded."
+"Replace Category CMS Block","Replace Category CMS Block"
+"When enabled, a category CMS block will be replaced if a filter option has a custom Top CMS Block defined.","When enabled, a category CMS block will be replaced if a filter option has a custom Top CMS Block defined."
+"Children Categories Block","Children Categories Block"
+"These settings activate the block with subcategories on top of the selected category pages.","These settings activate the block with subcategories on top of the selected category pages."
+"Category's Thumbnail Image Size","Category's Thumbnail Image Size"
+"Show Image Labels","Show Image Labels"
+"Enable the setting to display the titles of the subcategories.","Enable the setting to display the titles of the subcategories."
+"Enable Slider","Enable Slider"
+"Items per Slide","Items per Slide"
+"Category Meta Tags","Category Meta Tags"
+"Please open Stores -> Attributes -> Product -> [open attribute] -> Properties ->
+[open attribute option settings] in order to define Meta-Title, Meta-Description and Meta-Keywords for your filter options.","Please open Stores -> Attributes -> Product -> [open attribute] -> Properties ->
+[open attribute option settings] in order to define Meta-Title, Meta-Description and Meta-Keywords for your filter options."
+"Add the Meta-data of the selected filters","Add the Meta-data of the selected filters"
+"The Meta-data of the applied filters will be added to the category and brand pages","The Meta-data of the applied filters will be added to the category and brand pages"
+"Add Filter Title to Meta-Title","Add Filter Title to Meta-Title"
+"Title Tag Separator","Title Tag Separator"
+"Description Tag Separator","Description Tag Separator"
+"Add Filter Title to Meta-Keywords","Add Filter Title to Meta-Keywords"
+"""Category"" Filter","""Category"" Filter"
+Enabled,Enabled
+"Specify sorting order in the sidebar navigation block.","Specify sorting order in the sidebar navigation block."
+"Category Filter","Category Filter"
+"""Stock"" Filter","""Stock"" Filter"
+"If set to ‘Yes’, please make sure that displaying of out of stock products is configured accordingly
+                    (Stores -> Configuration -> Catalog -> Inventory -> Stock Options -> Display Out of Stock Products -> Yes).
+                    Otherwise, stock filter won’t appear on storefront.","If set to ‘Yes’, please make sure that displaying of out of stock products is configured accordingly
+                    (Stores -> Configuration -> Catalog -> Inventory -> Stock Options -> Display Out of Stock Products -> Yes).
+                    Otherwise, stock filter won’t appear on storefront."
+"Consider Product Salable Quantity in the Filter","Consider Product Salable Quantity in the Filter"
+"If enabled the Salable Quantity will be taken into account and displayed on the front-end
+                        in the ""In Stock"" filter. Is only compatible with simple products.","If enabled the Salable Quantity will be taken into account and displayed on the front-end
+                        in the ""In Stock"" filter. Is only compatible with simple products."
+"Specify sorting order in the top navigation block.","Specify sorting order in the top navigation block."
+Label,Label
+"Specify tooltip text that will be displayed on a mouse hover for the Stock filter.","Specify tooltip text that will be displayed on a mouse hover for the Stock filter."
+"""Rating"" Filter","""Rating"" Filter"
+"Specify tooltip text that will be displayed on a mouse hover for the Rating filter.","Specify tooltip text that will be displayed on a mouse hover for the Rating filter."
+"""New"" Filter","""New"" Filter"
+"Specify tooltip text that will be displayed on a mouse hover for the New filter.","Specify tooltip text that will be displayed on a mouse hover for the New filter."
+"""On Sale"" Filter","""On Sale"" Filter"
+"Specify tooltip text that will be displayed on a mouse hover for the On Sale filter.","Specify tooltip text that will be displayed on a mouse hover for the On Sale filter."
+Tooltips,Tooltips
+"Tooltip Image","Tooltip Image"
+"Improved Layered Navigation: All Products","Improved Layered Navigation: All Products"
+"Enable All Products Page","Enable All Products Page"
+"When enabled, the All Products page is activated, containing all store items and layered navigation filters.","When enabled, the All Products page is activated, containing all store items and layered navigation filters."
+"All Products Page URL","All Products Page URL"
+"Amasty Improved Layered Navigation","Amasty Improved Layered Navigation"
+"Settings for your filters and their options","Settings for your filters and their options"
+"Exclude from Category Filter","Exclude from Category Filter"
+"No layout updates","No layout updates"

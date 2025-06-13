@@ -1,0 +1,26 @@
+{
+    "name": "amasty/xsearch",
+    "description": "Search Autocomplete / Advanced Search by Amasty",
+    "require": {
+        "php": ">=7.3.0",
+        "amasty/base": ">=1.18.0",
+        "magento/module-cms": "*"
+    },
+    "suggest": {
+        "amasty/module-xsearch-mftf-3": "Install xsearch-mftf-3 module to be able to run Advanced Search MFTF tests for Magento 2.4.0+ version",
+        "amasty/module-store-locator-advanced-search": "Install this package in order to use the Store Locations search functionality."
+    },
+    "type": "magento2-module",
+    "version": "1.25.0",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\Xsearch\\": ""
+        }
+    }
+}

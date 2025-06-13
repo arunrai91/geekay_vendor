@@ -1,0 +1,104 @@
+//
+//  Search Popup Tab item Styles
+//  ______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amsearch-category-tab .amsearch-item {
+        & {
+            font-size: 1.6rem;
+            margin-bottom: @amsearch__indent;
+        }
+
+        .am-item-link:not(:last-of-type):after {
+            background: @amsearch-icon__background__arrow-right;
+            background-size: contain;
+            content: '';
+            display: inline-block;
+            height: @amsearch__indent;
+            margin: 0 @amsearch__indent;
+            width: @amsearch__indent;
+        }
+    }
+
+    .amsearch-result-tabs {
+        & {
+            margin-top: @amsearch__indent / 2;
+            z-index: initial;
+        }
+
+        > .data.item.content:not([aria-hidden='false']) {
+            display: none;
+        }
+
+        .title {
+            & {
+                box-sizing: border-box;
+                position: relative;
+            }
+
+            &.active {
+                .amsearch-results-count {
+                    display: none;
+                }
+
+                .switch {
+                    padding-bottom: 1px;
+                }
+            }
+        }
+
+        .data.content {
+            display: none;
+        }
+
+        .data.content[aria-hidden='false'] {
+            display: block;
+        }
+
+        .data.title {
+            & {
+                margin-right: @amsearch__indent / 2;
+            }
+
+            &.active {
+                background: @amsearch-tab__active__background;
+                box-sizing: border-box;
+            }
+
+            &.last {
+                margin-bottom: 8px;
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  ---------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .amsearch-result-tabs .title:hover,
+    .amsearch-result-tabs .title.active {
+        &:before {
+            background: @color-white;
+            bottom: -1px;
+            content: '';
+            height: 2px;
+            left: 1px;
+            position: absolute;
+            width: ~'calc(100% - 2px)';
+        }
+    }
+
+    .amsearch-result-tabs.product.data.items {
+        .item.title.active {
+            .switch {
+                padding-bottom: 1px;
+            }
+        }
+    }
+}

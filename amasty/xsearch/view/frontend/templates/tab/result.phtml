@@ -1,0 +1,41 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var \Amasty\Xsearch\Block\Search\AbstractSearch $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$results = $block->getResults();
+?>
+
+<?php if (count($results)): ?>
+    <?php foreach ($results as $item):
+        /** @var array $item  = ['title' => string, 'name' => string, 'description' => string, 'url' => string, 'num_results' => string] */
+        $title = $item['full_path'] ?? $item['title'];?>
+        <div class="amsearch-item">
+            <a href="<?= $escaper->escapeUrl($block->getFullLink($item['url'])) ?>"
+               title="<?= /* @noEscape */ $block->stripTags($title); ?>"
+               class="amsearch-link item-name" >
+                <?= /* @noEscape */ $block->stripTags($title); ?>
+            </a>
+            <?php if (isset($item['num_results'])):?>
+                <span class="amasty-xsearch-num-results"><?= $escaper->escapeHtml($item['num_results']) ?></span>
+            <?php endif; ?>
+            <?php if ($block->showDescription($item)):?>
+                <div class="item-description">
+                    <?= /* @noEscape */ $item['description']?>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endforeach;?>
+<?php else: ?>
+    <div class="message notice">
+        <div>
+            <?= $escaper->escapeHtml(__('We could not find anything for %1', $block->getQuery()->getQueryText())) ?>
+        </div>
+    </div>
+<?php endif; ?>

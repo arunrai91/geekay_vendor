@@ -1,0 +1,24 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Amasty\Xsearch\ViewModel\ConfigurableBlockRenderer $viewModel
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$blocks = $block->getViewModel()->getBlocks();
+?>
+
+<?php if ($blocks): ?>
+<section class="amsearch-products-list">
+    <?php endif; ?>
+        <?php foreach ($blocks as $block): ?>
+            <?= /* @noEscape */ $block->toHtml() ?>
+        <?php endforeach; ?>
+    <?php if ($blocks): ?>
+</section>
+<?php endif; ?>

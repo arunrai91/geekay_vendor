@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Base for Magento 2
+ */-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Amasty_Rules::css/am-highlight-promotion.css"/>
+        <remove src="Amasty_Promo::js/form_script.js" />
+    </head>
+    <body>
+        <referenceContainer name="main.col">
+            <block class="Magento\Framework\View\Element\Template"
+                   template="Amasty_Rules::form_scripts.phtml"
+                   name="amrules_form_scripts"
+            />
+        </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block class="Amasty\Rules\Block\Adminhtml\PromoFormScript" template="Amasty_Rules::promo/form_script.phtml" />
+        </referenceContainer>
+    </body>
+</page>

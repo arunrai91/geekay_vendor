@@ -1,0 +1,25 @@
+//
+//  Search Popup Tab item Styles
+//  ______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amsearch-result-tabs {
+        &.data.items.product > .item.content {
+            background: transparent;
+        }
+
+        .data.title {
+            &:hover:before {
+                background-color: @color-green;
+            }
+
+            &.active {
+                background: none;
+            }
+        }
+    }
+}

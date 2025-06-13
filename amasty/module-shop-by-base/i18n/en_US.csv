@@ -1,0 +1,61 @@
+%1,%1
+"A brand with the same URL alias already exists. Please enter a unique value.","A brand with the same URL alias already exists. Please enter a unique value."
+"You saved the item.","You saved the item."
+"Something went wrong while saving the item data. Please review the error log.","Something went wrong while saving the item data. Please review the error log."
+"Provided argument is not in PSR-0 or underscore notation.","Provided argument is not in PSR-0 or underscore notation."
+"Requested entity doesn't exist","Requested entity doesn't exist"
+"Wrong parameter %1.","Wrong parameter %1."
+"Requested Improved Navigation submodule is disabled. Only read methods is allowed.","Requested Improved Navigation submodule is disabled. Only read methods is allowed."
+"Requested option setting doesn't exist","Requested option setting doesn't exist"
+"Unable to delete option with ID %1. Error: %2","Unable to delete option with ID %1. Error: %2"
+Labels,Labels
+Dropdown,Dropdown
+Images,Images
+"Images & Labels","Images & Labels"
+"Text Swatches","Text Swatches"
+Slider,Slider
+"From-To Only","From-To Only"
+Ranges,Ranges
+"Please upload images at the Properties tab.","Please upload images at the Properties tab."
+"Please add text values at the Properties tab.","Please add text values at the Properties tab."
+Default,Default
+Yes,Yes
+No,No
+"Featured Options","Featured Options"
+"Is Featured","Is Featured"
+"Not featured options will be hidden under ‘show more’ element (if at least one attribute's option is marked as ‘Is Featured’). ","Not featured options will be hidden under ‘show more’ element (if at least one attribute's option is marked as ‘Is Featured’). "
+SEO,SEO
+"URL alias","URL alias"
+Loading...,Loading...
+Settings,Settings
+"Use Default Value","Use Default Value"
+"
+                Enable the module-mage-2.4.5-fix module for the extension to function correctly.
+                Please, run the following command in the SSH: composer require amasty/module-mage-2.4.5-fix
+            ","
+                Enable the module-mage-2.4.5-fix module for the extension to function correctly.
+                Please, run the following command in the SSH: composer require amasty/module-mage-2.4.5-fix
+            "
+"
+                Considering your current Magento version, please disable the module-mage-2.4.5-fix module to
+                prevent frontend issues, as it is only compatible with version 2.4.5. Please, run the following command
+                in the SSH: php bin/magento module:disable Amasty_Mage245Fix
+            ","
+                Considering your current Magento version, please disable the module-mage-2.4.5-fix module to
+                prevent frontend issues, as it is only compatible with version 2.4.5. Please, run the following command
+                in the SSH: php bin/magento module:disable Amasty_Mage245Fix
+            "
+"
+                Enable the module-shop-by-live-search module to activate Live Search and Improved Layered Navigation integration.
+                Please, run the following command in the SSH: composer require amasty/module-shop-by-live-search
+            ","
+                Enable the module-shop-by-live-search module to activate Live Search and Improved Layered Navigation integration.
+                Please, run the following command in the SSH: composer require amasty/module-shop-by-live-search
+            "
+"
+                Enable the module-shopby-livesearch-root-category module to activate Live Search and Improved Layered Navigation integration.
+                Please, run the following command in the SSH: composer require amasty/module-shopby-livesearch-root-category
+            ","
+                Enable the module-shopby-livesearch-root-category module to activate Live Search and Improved Layered Navigation integration.
+                Please, run the following command in the SSH: composer require amasty/module-shopby-livesearch-root-category
+            "

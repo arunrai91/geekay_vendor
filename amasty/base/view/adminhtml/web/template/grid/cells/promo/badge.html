@@ -1,0 +1,13 @@
+<button class="ampromo-badge"
+        data-bind="
+            text: $data.promoBadgeText ??  $t('Subscribe to Unlock'),
+            style: {
+                color: $data.promoBadgeColor ?? '#523cc0',
+                backgroundColor: $data.promoBadgeBgColor ?? 'rgba(123, 97, 255, 0.15)',
+                display: 'block',
+                margin: '0 auto'
+            },
+            click: !!$data.promoLink ? () => { window.open($data.promoLink, '_blank') } : null,
+            clickBubble: false
+        "
+></button>

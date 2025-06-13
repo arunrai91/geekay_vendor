@@ -1,0 +1,49 @@
+//
+//  Related Terms Styles
+//  ______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amsearch-related-terms {
+        & {
+            display: flex;
+            flex-wrap: wrap;
+            margin: @amsearch__indent__l 0;
+        }
+
+        > .amsearch-title {
+            font-weight: 700;
+            margin: 0 0 @amsearch__indent__m 0;
+            width: 100%;
+        }
+
+        > .amsearch-item {
+            & {
+                background: #d8eeff;
+                border-radius: @amsearch__indent__l;
+                color: #252525;
+                font-size: 12px;
+                line-height: 1.3;
+                margin: 0 @amsearch__indent__m @amsearch__indent 0;
+                padding: @amsearch__indent / 2 @amsearch__indent__m;
+                transition: .1s;
+            }
+
+            &:hover {
+                background: #b7e0ff;
+            }
+
+            &:hover,
+            &:active {
+                text-decoration: none;
+            }
+        }
+
+        .amsearch-count {
+            color: #757575;
+        }
+    }
+}

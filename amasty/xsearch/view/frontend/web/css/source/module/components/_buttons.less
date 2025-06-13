@@ -1,0 +1,171 @@
+//
+//  Search Buttons Styles
+//  ______________________________________________
+
+//
+//  Colors
+//  ----------------------------------------------
+
+@amsearch-button__full-close__color: #f5f5f5;
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amsearch-button {
+        & {
+            cursor: pointer;
+            display: inline-block;
+            transition: .3s;
+        }
+
+        &.-icon {
+            & {
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: 13px;
+            }
+
+            &:hover,
+            &:focus {
+                filter: brightness(.5);
+            }
+        }
+
+        &.-clear {
+            & {
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+
+            &:active,
+            &:hover,
+            &:focus {
+                border: none;
+                box-shadow: none;
+            }
+        }
+
+        &.-close {
+            background-image: @amsearch-icon__background__close;
+            border: 0;
+            padding: 16px;
+        }
+
+        &.-loupe {
+            background-image: @amsearch-icon__background__loupe;
+            border: 0;
+            box-shadow: none;
+            height: 20px;
+            padding: 0;
+            width: 20px;
+        }
+
+        &.-wishlist,
+        &.-compare {
+            background-size: 18px;
+        }
+
+        &.-wishlist {
+            background-image: @amsearch-icon__background__wishlist;
+            height: 20px;
+            width: 20px;
+        }
+
+        &.-compare {
+            background-image: @amsearch-icon__background__compare;
+            height: 20px;
+            width: 20px;
+        }
+
+        &.-disabled {
+            opacity: .7;
+            pointer-events: none;
+        }
+
+        &.-primary {
+            & {
+                background: @amsearch-secondary__color;
+                border: 1px solid @amsearch-secondary__color;
+                border-radius: 0;
+                color: @amsearch-secondary__color;
+                letter-spacing: -.015em;
+                transition: .3s;
+            }
+
+            &:hover {
+                background: @amsearch-secondary__color;
+            }
+
+            &:active {
+                background: @amsearch-secondary__color;
+            }
+        }
+
+        &.-search {
+            & {
+                background-color: var(--amsearch-color-search_button, @amsearch-secondary__color);
+                border-color: var(--amsearch-color-search_button, @amsearch-secondary__color);
+                color: var(--amsearch-color-search_button_text, #fff);
+            }
+
+            &:hover {
+                background: var(--amsearch-color-search_button-hover, darken(@amsearch-secondary__color, 5%));
+                border-color: var(--amsearch-color-search_button-hover, darken(@amsearch-secondary__color, 5%));
+            }
+
+            &:active {
+                background: var(--amsearch-color-search_button-focus, darken(@amsearch-secondary__color, 10%));
+                border-color: var(--amsearch-color-search_button-focus, darken(@amsearch-secondary__color, 10%));
+            }
+        }
+
+        &.-full-close {
+            & {
+                align-items: center;
+                background-color: @amsearch-button__full-close__color;
+                border-color: @amsearch-button__full-close__color;
+                border-radius: 50%;
+                display: flex;
+                font-size: 10px;
+                height: 32px;
+                justify-content: center;
+                padding: 0;
+                width: 32px;
+            }
+
+            &:after {
+                background: @amsearch-icon__background__close;
+                background-repeat: no-repeat;
+                content: '';
+                display: inline-block;
+                height: 12px;
+                width: 12px;
+            }
+
+            &:hover {
+                background-color: darken(@amsearch-button__full-close__color, 5%);
+            }
+
+            &:active {
+                background-color: darken(@amsearch-button__full-close__color, 10%);
+            }
+        }
+    }
+}
+
+//
+//  Tablet
+//  --------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .amsearch-button {
+        &.-close:hover,
+        &.-close:hover {
+            filter: brightness(0%);
+        }
+    }
+}

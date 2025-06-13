@@ -1,0 +1,57 @@
+//
+//  Search Popup Header Styles
+//  ______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amsearch-block-header {
+        & {
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0;
+            padding: 0 @amsearch__indent__l 2px;
+            width: 100%;
+        }
+
+        .amsearch-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: capitalize;
+            word-break: break-word;
+            word-wrap: break-word;
+        }
+
+        .amsearch-link {
+            & {
+                line-height: 26px;
+                min-width: 90px;
+            }
+
+            &.-view-all .amsearch-count {
+                font-weight: inherit;
+            }
+        }
+
+        .amsearch-link .amsearch-count:before {
+            content: '(+';
+        }
+
+        .amsearch-count {
+            & {
+                font-weight: 300;
+            }
+
+            &:before {
+                content: '(';
+            }
+
+            &:after {
+                content: ')';
+            }
+        }
+    }
+}

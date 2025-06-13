@@ -1,0 +1,129 @@
+/*
+ * Styles for Analytics Dashboard
+ * ------------------------------
+ */
+
+/* Override Amchart's style */
+.analytics-chart .amcharts-chart-div > a {
+    bottom: 5px;
+    color: #333 !important;
+    font-size: 10px !important;
+    left: initial !important;
+    right: 5px;
+    top: initial !important;
+}
+
+.analytics-chart {
+    background-color: #fff;
+    height: 400px;
+    width: 100%;
+}
+
+.amxsearch-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.amxsearch-table {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .15);
+    max-height: 950px;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.amxsearch-table .amxsearch-thead {
+    background: #e6f6ff;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 14px;
+}
+
+.amxsearch-table .amxsearch-row {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.amxsearch-table .amxsearch-row:nth-child(2n) {
+    background: #f8f8f8;
+}
+
+.amxsearch-table .amxsearch-cell {
+    padding: 20px;
+    text-align: left;
+}
+
+.amxsearch-more-link {
+    display: inline-block;
+    margin: 25px 0 10px;
+}
+
+.amxsearch-table-wrap {
+    -webkit-box-pack: justify;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.amxsearch-2column {
+    padding: 0 20px;
+    width: 50%;
+}
+
+.amxsearch-legend-wrap {
+    -webkit-box-pack: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin: 35px 0 60px;
+}
+
+.amxsearch-legend-wrap > .amxsearch-item {
+    margin-right: 50px;
+}
+
+.amxsearch-legend-wrap > .amxsearch-item:last-child {
+    margin: 0;
+}
+
+.amxsearch-legend-wrap .amxsearch-total {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 18px;
+    min-width: 100px;
+    padding: 10px;
+    text-align: center;
+}
+
+.amxsearch-legend-wrap .amxsearch-total.-popularity {
+    background: #ffa942;
+}
+
+.amxsearch-legend-wrap .amxsearch-total.-unique_query {
+    background: #2dca9b;
+}
+
+.amxsearch-legend-wrap .amxsearch-total.-users {
+    background: #79c5ca;
+}
+
+.amxsearch-legend-wrap .amxsearch-total.-product_click {
+    background: #5b81cc;
+}
+
+.amxsearch-legend-wrap .amxsearch-label {
+    color: #979797;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 10px;
+    text-align: center;
+}
+/* end Override Amchart's style */

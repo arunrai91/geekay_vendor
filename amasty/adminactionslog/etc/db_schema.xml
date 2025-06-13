@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Admin Actions Log for Magento 2
+ */-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="amasty_audit_log_entry" resource="default" engine="innodb" comment="Amasty Admin Actions Log Entry Table">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Log Entry ID"/>
+    <column xsi:type="datetime" name="date" on_update="false" nullable="true" comment="Log Entry Date"/>
+    <column xsi:type="varchar" name="username" nullable="true" length="40" comment="Log Entry Username"/>
+    <column xsi:type="varchar" name="type" nullable="true" length="70" comment="Log Entry Type"/>
+    <column xsi:type="varchar" name="category" length="255" nullable="true" comment="Log Entry Category"/>
+    <column xsi:type="varchar" name="category_name" length="255" nullable="true" comment="Log Entry Category Name"/>
+    <column xsi:type="varchar" name="parameter_name" length="255" nullable="true" comment="Log Entry Parameter Name"/>
+    <column xsi:type="int" name="element_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Log Entry Element ID"/>
+    <column xsi:type="int" name="view_element_id" padding="10" unsigned="true" nullable="true" identity="false" comment="Log Entry View Element ID"/>
+    <column xsi:type="text" name="item" nullable="true" comment="Log Entry Item"/>
+    <column xsi:type="varchar" name="ip" nullable="true" length="30" comment="Log Entry Item"/>
+    <column xsi:type="int" name="store_id" padding="10" unsigned="true" nullable="true" identity="false" comment="Log Entry Store ID"/>
+    <column xsi:type="blob" name="additional_data" nullable="true" comment="Additional serialized data"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+    <index referenceId="AMASTY_AUDIT_LOG_ENTRY_USERNAME" indexType="btree">
+      <column name="username"/>
+    </index>
+    <index referenceId="AMASTY_AUDIT_LOG_ENTRY_CATEGORY" indexType="btree">
+      <column name="category"/>
+    </index>
+    <index referenceId="AMASTY_AUDIT_LOG_ENTRY_ELEMENT_ID" indexType="btree">
+      <column name="element_id"/>
+    </index>
+  </table>
+  <table name="amasty_audit_log_details" resource="default" engine="innodb" comment="Amasty Admin Actions Log Log Detail Table">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Log Detail ID"/>
+    <column xsi:type="int" name="log_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Log Entry ID"/>
+    <column xsi:type="text" name="name" nullable="true" comment="Name"/>
+    <column xsi:type="text" name="old_value" nullable="true" comment="Old Value"/>
+    <column xsi:type="text" name="new_value" nullable="true" comment="New Value"/>
+    <column xsi:type="text" name="model" nullable="true" comment="Model"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="AMASTY_AUDIT_LOG_DETAILS_LOG_ID_AMASTY_AUDIT_LOG_ENTRY_ID" table="amasty_audit_log_details" column="log_id" referenceTable="amasty_audit_log_entry" referenceColumn="id" onDelete="CASCADE"/>
+    <index referenceId="AMASTY_AUDIT_LOG_DETAILS_LOG_ID" indexType="btree">
+      <column name="log_id"/>
+    </index>
+  </table>
+  <table name="amasty_audit_active_sessions" resource="default" engine="innodb" comment="Amasty Admin Actions Log Active Sessions Table">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Active Session ID"/>
+    <column xsi:type="text" name="session_id" nullable="false" comment="Active Session Session ID"/>
+    <column xsi:type="text" name="username" nullable="true" comment="Active Session Username"/>
+    <column xsi:type="text" name="full_name" nullable="true" comment="Active Session User Full Name"/>
+    <column xsi:type="text" name="ip" nullable="true" comment="Active Session User IP"/>
+    <column xsi:type="timestamp" name="session_start" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Active Session Start Time"/>
+    <column xsi:type="timestamp" name="recent_activity" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Active Session Recent Activity Time"/>
+    <column xsi:type="text" name="location" nullable="true" comment="Active Session Location"/>
+    <column xsi:type="text" name="country_id" nullable="true" comment="Active Session Country ID"/>
+    <column xsi:type="int" name="admin_session_info_id" padding="10" unsigned="true" nullable="true" identity="false" comment="Admin Session Info Id"/>
+    <column xsi:type="int" name="user_id" padding="10" unsigned="true" nullable="true" identity="false" comment="Admin User Id"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+    <index referenceId="AMASTY_AUDIT_ACTIVE_SESSIONS_USER_ID" indexType="btree">
+        <column name="user_id"/>
+    </index>
+  </table>
+  <table name="amasty_audit_visit_entry" resource="default" engine="innodb" comment="Amasty Admin Actions Visit History Entry Table">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Visit History Entry ID"/>
+    <column xsi:type="text" name="username" nullable="true" comment="Visit History Entry Username"/>
+    <column xsi:type="text" name="full_name" nullable="true" comment="Visit History Entry Full Name"/>
+    <column xsi:type="datetime" name="session_start" on_update="false" nullable="true" comment="Visit History Entry Session Start"/>
+    <column xsi:type="datetime" name="session_end" on_update="false" nullable="true" comment="Visit History Entry Session End"/>
+    <column xsi:type="text" name="ip" nullable="true" comment="Visit History Entry IP"/>
+    <column xsi:type="text" name="location" nullable="true" comment="Visit History Entry Location"/>
+    <column xsi:type="text" name="session_id" nullable="true" comment="Visit History Entry Session Id"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+  </table>
+  <table name="amasty_audit_visit_details" resource="default" engine="innodb" comment="Amasty Admin Actions Log Visit History Detail Table">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Visit History Detail ID"/>
+    <column xsi:type="int" name="visit_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Visit History Entry ID"/>
+    <column xsi:type="text" name="page_name" nullable="true" comment="Page Name"/>
+    <column xsi:type="text" name="page_url" nullable="true" comment="Page URL"/>
+    <column xsi:type="int" name="stay_duration" padding="11" unsigned="false" nullable="true" identity="false" comment="Stay Duration"/>
+    <column xsi:type="text" name="session_id" nullable="true" comment="Session ID"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="AMASTY_AUDIT_VISIT_DETAILS_VISIT_ID_AMASTY_AUDIT_VISIT_ENTRY_ID" table="amasty_audit_visit_details" column="visit_id" referenceTable="amasty_audit_visit_entry" referenceColumn="id" onDelete="CASCADE"/>
+    <index referenceId="AMASTY_AUDIT_VISIT_DETAILS_VISIT_ID" indexType="btree">
+      <column name="visit_id"/>
+    </index>
+  </table>
+  <table name="amasty_audit_login_attempts" resource="default" engine="innodb" comment="Amasty Admin Actions Log Login Attempts Table">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Login Attempt ID"/>
+    <column xsi:type="timestamp" name="date_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Login Attempt Date Time" disabled="true"/>
+    <column xsi:type="timestamp" name="date" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Login Attempt Date Time" onCreate="migrateDataFrom(date_time)"/>
+    <column xsi:type="text" name="username" nullable="true" comment="Login Attempt Username"/>
+    <column xsi:type="text" name="name" nullable="true" comment="Login Attempt User Full Name" disabled="true"/>
+    <column xsi:type="text" name="full_name" nullable="true" comment="Login Attempt User Full Name" onCreate="migrateDataFrom(name)"/>
+    <column xsi:type="text" name="ip" nullable="true" comment="Login Attempt User IP"/>
+    <column xsi:type="smallint" name="status" padding="6" unsigned="false" nullable="true" identity="false" comment="Login Attempt Status"/>
+    <column xsi:type="text" name="location" nullable="true" comment="Login Attempt Location"/>
+    <column xsi:type="text" name="country_id" nullable="true" comment="Login Attempt Country ID"/>
+    <column xsi:type="text" name="user_agent" nullable="true" comment="Login Attempt User Agent"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+  </table>
+</schema>

@@ -1,0 +1,28 @@
+//
+//  Amasty Promotion Config Fieldset
+//  ______________________________________________
+
+//
+//  Variables
+//  --------------------------------------------
+@ambase__promoconfig__message__color: #adadad;
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .ampromo-config-icon.fieldset-icon {
+        float: left;
+        height: 36px;
+        margin-right: 1rem;
+        width: 36px;
+    }
+
+    .ampromo-config-fieldset-notification-message {
+        color: @ambase__promoconfig__message__color;
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 400;
+    }
+}

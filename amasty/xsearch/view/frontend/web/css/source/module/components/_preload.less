@@ -1,0 +1,52 @@
+//
+//  Results Preload Popup Styles
+//  ______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amsearch-result-block.-preload {
+        & {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        &:empty {
+            display: none;
+        }
+
+        .amsearch-item:first-child:last-child {
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .amsearch-slider-section {
+            width: 100%;
+        }
+
+        .amsearch-products-list {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+    }
+}
+
+//
+//  Mobile
+//  ---------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .amsearch-result-block.-preload {
+        & {
+            flex-wrap: nowrap;
+        }
+
+        .amsearch-products-list:not(:first-child) {
+            border-left: 1px solid @amsearch-border__color;
+            width: ~'calc(100% - @{amsearch-sidebar__width})';
+        }
+    }
+}

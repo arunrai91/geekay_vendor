@@ -1,0 +1,20 @@
+{
+    "name": "amasty/module-lib-swiper-js",
+    "description": "Lib Swiper Js by Amasty",
+    "require": {
+        "php": ">=7.3",
+        "amasty/base": ">=1.14.6"
+    },
+    "homepage": "https://amasty.com/",
+    "type": "magento2-module",
+    "version": "9.1.1",
+    "license": "proprietary",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\LibSwiperJs\\": ""
+        }
+    }
+}

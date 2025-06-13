@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Admin Actions Log for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_predispatch">
+        <observer name="amaudit_handleActionPredispatch" instance="Amasty\AdminActionsLog\Observer\HandleActionPredispatch"/>
+    </event>
+
+    <!-- Model save/delete events start -->
+    <event name="model_save_before">
+        <observer name="Amasty_AdminActionsLog::handleModelSaveBefore" instance="Amasty\AdminActionsLog\Observer\HandleModelSaveBefore"/>
+    </event>
+    <event name="model_save_after">
+        <observer name="Amasty_AdminActionsLog::handleModelSaveAfter" instance="Amasty\AdminActionsLog\Observer\HandleModelSaveAfter"/>
+    </event>
+
+    <event name="model_delete_before">
+        <observer name="Amasty_AdminActionsLog::handleModelDeleteBefore" instance="Amasty\AdminActionsLog\Observer\HandleModelDeleteBefore"/>
+    </event>
+    <event name="model_delete_after">
+        <observer name="Amasty_AdminActionsLog::handleModelDeleteAfter" instance="Amasty\AdminActionsLog\Observer\HandleModelDeleteAfter"/>
+    </event>
+    <!-- Model save/delete events end -->
+
+    <!-- Amasty_RequestQuote compatibility start -->
+    <event name="amquote_not_modified_save_before">
+        <observer name="Amasty_AdminActionsLog::handleNotModifiedQuoteSaveBefore" instance="Amasty\AdminActionsLog\Observer\HandleModelSaveBefore"/>
+    </event>
+    <event name="amquote_not_modified_save_after">
+        <observer name="Amasty_AdminActionsLog::handleNotModifiedQuoteSaveAfter" instance="Amasty\AdminActionsLog\Observer\HandleModelSaveAfter"/>
+    </event>
+    <!-- Amasty_RequestQuote compatibility end -->
+
+    <!-- User login events start -->
+    <event name="backend_auth_user_login_success">
+        <observer name="amaudit_handleBackendAuthUserLoginSuccess" instance="Amasty\AdminActionsLog\Observer\HandleBackendAuthUserLoginSuccess" />
+    </event>
+    <event name="backend_auth_user_login_failed">
+        <observer name="amaudit_handleBackendAuthUserLoginFailed" instance="Amasty\AdminActionsLog\Observer\HandleBackendAuthUserLoginFailed" />
+    </event>
+    <!-- User login events end -->
+
+    <!-- Layout render events start -->
+    <event name="layout_render_before">
+        <observer name="amaudit_handleLayoutRenderBefore" instance="Amasty\AdminActionsLog\Observer\HandleLayoutRenderBefore" />
+    </event>
+    <!-- Layout render events end -->
+</config>

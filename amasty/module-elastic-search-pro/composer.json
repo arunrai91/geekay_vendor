@@ -1,0 +1,24 @@
+{
+    "name": "amasty/module-elastic-search-pro",
+    "description": "Elastic Search Pro by Amasty",
+    "require": {
+        "php": ">=7.3",
+        "amasty/base": ">=1.18.0",
+        "amasty/xsearch": ">=1.23.0",
+        "amasty/module-elastic-search": ">=2.1.0"
+    },
+    "homepage": "https://amasty.com/",
+    "type": "magento2-module",
+    "version": "2.5.0",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\ElasticSearchPro\\": ""
+        }
+    }
+}

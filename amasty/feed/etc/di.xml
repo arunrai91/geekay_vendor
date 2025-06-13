@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Product Feed for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\Feed\Api\ValidProductsRepositoryInterface" type="Amasty\Feed\Model\ValidProduct\Repository" />
+    <preference for="Amasty\Feed\Api\Data\ValidProductsInterface" type="Amasty\Feed\Model\ValidProduct\ValidProduct" />
+    <preference for="Amasty\Feed\Api\CustomFieldsRepositoryInterface" type="Amasty\Feed\Model\Field\Repository" />
+    <preference for="Amasty\Feed\Api\Data\FeedInterface" type="Amasty\Feed\Model\Feed" />
+    <preference for="Amasty\Feed\Api\FeedRepositoryInterface" type="Amasty\Feed\Model\FeedRepository" />
+    <preference for="Amasty\Feed\Api\ScheduleRepositoryInterface" type="Amasty\Feed\Model\Schedule\Repository" />
+    <preference for="Amasty\Feed\Api\Data\FeedTemplateInterface" type="Amasty\Feed\Model\FeedTemplate" />
+    <preference for="Amasty\Feed\Api\FeedTemplateRepositoryInterface" type="Amasty\Feed\Model\FeedTemplate\Repository" />
+    <preference for="Amasty\Feed\Api\Data\ValidProductsSnapshotInterface" type="Amasty\Feed\Model\ValidProductSnapshot" />
+
+    <type name="Amasty\Feed\Controller\Adminhtml\Feed\Connection">
+        <arguments>
+            <argument name="ftp" xsi:type="object">Magento\Framework\Filesystem\Io\Ftp\Proxy</argument>
+            <argument name="sftp" xsi:type="object">Magento\Framework\Filesystem\Io\Sftp\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Model\Filesystem\Ftp">
+        <arguments>
+            <argument name="ftp" xsi:type="object">Magento\Framework\Filesystem\Io\Ftp\Proxy</argument>
+            <argument name="sftp" xsi:type="object">Magento\Framework\Filesystem\Io\Sftp\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Model\Filesystem\Compressor">
+        <arguments>
+            <argument name="compressors" xsi:type="array">
+                <item name="zip" xsi:type="object">Magento\Framework\Archive\Zip\Proxy</item>
+                <item name="gz" xsi:type="object">Magento\Framework\Archive\Gz\Proxy</item>
+                <item name="bz2" xsi:type="object">Magento\Framework\Archive\Bz\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="FeedCsvFactory" type="Amasty\Feed\Model\Export\Adapter\DocumentFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">\Amasty\Feed\Model\Export\Adapter\Csv</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="FeedXmlFactory" type="Amasty\Feed\Model\Export\Adapter\DocumentFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">\Amasty\Feed\Model\Export\Adapter\Xml</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\Feed\Model\Export\Adapter\AdapterProvider">
+        <arguments>
+            <argument name="adapters" xsi:type="array">
+                <item name="csv" xsi:type="object">FeedCsvFactory</item>
+                <item name="txt" xsi:type="object">FeedCsvFactory</item>
+                <item name="xml" xsi:type="object">FeedXmlFactory</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Model\Export\RowCustomizer\Composite">
+        <arguments>
+            <argument name="customizers" xsi:type="array">
+                <item name="configurableProduct" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\ConfigurableProduct</item>
+                <item name="imagesData" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\Image</item>
+                <item name="galleryData" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\Gallery</item>
+                <item name="categoryData" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\Category</item>
+                <item name="relationData" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\Relation</item>
+                <item name="urlData" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\Url</item>
+                <item name="priceData" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\Price</item>
+                <item name="effectiveData" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\Effectivedate</item>
+                <item name="taxpercentsData" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\Taxpercents</item>
+                <item name="customFieldData" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\CustomField</item>
+                <item name="advancedData" xsi:type="string">Amasty\Feed\Model\Export\RowCustomizer\Advanced</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Model\Export\RowCustomizer\CustomField">
+        <arguments>
+            <argument name="mergedAttributeProcessor" xsi:type="object">Amasty\Feed\Model\Export\Utils\MergedAttributeProcessor\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="generateFeedCommand" xsi:type="object">Amasty\Feed\Console\Command\Generate</item>
+                <item name="showProfileListCommand" xsi:type="object">Amasty\Feed\Console\Command\ProfileList</item>
+                <item name="forceUnlockCommand" xsi:type="object">Amasty\Feed\Console\Command\ForceUnlock</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amasty\Feed\Console\Command\Generate">
+        <arguments>
+            <argument name="feedRepository" xsi:type="object">Amasty\Feed\Api\FeedRepositoryInterface\Proxy</argument>
+            <argument name="config" xsi:type="object">Amasty\Feed\Model\Config\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Model\Rule\Rule">
+        <arguments>
+            <argument name="combineFactory" xsi:type="object">Amasty\Feed\Model\Rule\Condition\CombineFactory</argument>
+        </arguments>
+    </type>
+    <type name="Amasty\Feed\Model\Rule\Condition\CombineFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">\Amasty\Feed\Model\Rule\Condition\Combine</argument>
+        </arguments>
+    </type>
+    <type name="Amasty\Feed\Model\Rule\Condition\ProductFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">\Amasty\Feed\Model\Rule\Condition\Product</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Model\GoogleWizard">
+        <arguments>
+            <argument name="session" xsi:type="object">Magento\Backend\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Setup\Patch\Data\UpgradeTo270">
+        <arguments>
+            <argument name="operations" xsi:type="array">
+                <item name="upgradeTo114" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo114\Proxy</item>
+                <item name="upgradeTo135" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo135\Proxy</item>
+                <item name="upgradeTo191" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo191\Proxy</item>
+                <item name="upgradeTo200" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo200\Proxy</item>
+                <item name="upgradeTo210" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo210\Proxy</item>
+                <item name="upgradeTo220" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo220\Proxy</item>
+                <item name="upgradeTo227" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo227\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Setup\RecurringData">
+        <arguments>
+            <argument name="operations" xsi:type="array">
+                <item name="upgradeTo170" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo170\Proxy</item>
+                <item name="upgradeTo210" xsi:type="object">Amasty\Feed\Setup\Operation\UpgradeTo210\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Base\Plugin\Setup\Model\DeclarationInstaller\ApplyPatchesBeforeDeclarativeSchema">
+        <arguments>
+            <argument name="moduleNames" xsi:type="array">
+                <item name="amasty_feed" xsi:type="string">Amasty_Feed</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Model\OptionSource\Feed\CustomOptionSourceProvider">
+        <arguments>
+            <argument name="optionSources" xsi:type="array">
+                <item name="basic" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Basic</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\BasicAttribute\Proxy</item>
+                </item>
+                <item name="advanced" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Advanced</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\AdvancedAttribute\Proxy</item>
+                </item>
+                <item name="product" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Product</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\ProductAttribute\Proxy</item>
+                </item>
+                <item name="price" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Price</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\PriceAttribute\Proxy</item>
+                </item>
+                <item name="inventory" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Inventory</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\InventoryAttribute\Proxy</item>
+                </item>
+                <item name="category" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Category</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\CategoryAttribute\Proxy</item>
+                </item>
+                <item name="category_paths" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Category Paths</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\CategoryPathsAttribute\Proxy</item>
+                </item>
+                <item name="condition_based_attributes" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Condition-Based Attributes</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\CustomFieldsAttribute\Proxy</item>
+                </item>
+                <item name="image" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Image</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\ImageAttribute\Proxy</item>
+                </item>
+                <item name="gallery" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Gallery</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\GalleryAttribute\Proxy</item>
+                </item>
+                <item name="url" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Url</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\UrlAttribute\Proxy</item>
+                </item>
+                <item name="other" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Other</item>
+                    <item name="optionSource"
+                          xsi:type="object">Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\OtherAttribute\Proxy</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Model\Export\Product\Attributes\ProductFeedAttributesPool">
+        <arguments>
+            <argument name="customTypes" xsi:type="array">
+                <item name="price" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_PRICE_ATTRIBUTE</item>
+                <item name="category" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_CATEGORY_ATTRIBUTE</item>
+                <item name="category_path" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_CATEGORY_PATH_ATTRIBUTE</item>
+                <item name="mapped_category" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_MAPPED_CATEGORY_ATTRIBUTE</item>
+                <item name="mapped_category_paths" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_MAPPED_CATEGORY_PATHS_ATTRIBUTE</item>
+                <item name="custom_field" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_CUSTOM_FIELD_ATTRIBUTE</item>
+                <item name="image" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_IMAGE_ATTRIBUTE</item>
+                <item name="gallery" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_GALLERY_ATTRIBUTE</item>
+                <item name="url" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_URL_ATTRIBUTE</item>
+                <item name="other" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_OTHER_ATTRIBUTES</item>
+                <item name="advanced" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_ADVANCED_ATTRIBUTE</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Model\Field\Utils\FieldNameResolver">
+        <arguments>
+            <argument name="fieldNamesMap" xsi:type="array">
+                <item name="result" xsi:type="array">
+                    <item name="ruleFieldName" xsi:type="string">rule</item>
+                    <item name="resultFieldName" xsi:type="string">result</item>
+                </item>
+                <item name="default" xsi:type="array">
+                    <item name="ruleFieldName" xsi:type="string">default</item>
+                    <item name="resultFieldName" xsi:type="string">default</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Model\OptionSource\Feed\CustomOptionSource\CategoryAttribute">
+        <arguments>
+            <argument name="options" xsi:type="array">
+                <item name="first_selected_category" xsi:type="array">
+                    <item name="code" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::FIRST_SELECTED_CATEGORY</item>
+                    <item name="type" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_CATEGORY_ATTRIBUTE</item>
+                    <item name="option" xsi:type="array">
+                        <item name="title" xsi:type="string" translatable="true">Default</item>
+                        <item name="code" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::FIRST_SELECTED_CATEGORY</item>
+                    </item>
+                </item>
+                <item name="last_selected_category" xsi:type="array">
+                    <item name="code" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_CATEGORY_ATTRIBUTE</item>
+                    <item name="type" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::PREFIX_CATEGORY_ATTRIBUTE</item>
+                    <item name="option" xsi:type="array">
+                        <item name="title" xsi:type="string" translatable="true">Default</item>
+                        <item name="code" xsi:type="const">Amasty\Feed\Model\Export\Product\Attributes\FeedAttributesStorage::LAST_SELECTED_CATEGORY</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Feed\Setup\Operation\ImportFeedTemplates">
+        <arguments>
+            <argument name="excludeList" xsi:type="array">
+                <item name="name" xsi:type="string">name</item>
+                <item name="template_code" xsi:type="string">template_code</item>
+                <item name="feed_type" xsi:type="string">feed_type</item>
+                <item name="dynamic_fields" xsi:type="string">dynamic_fields</item>
+                <item name="xml_header" xsi:type="string">xml_header</item>
+                <item name="xml_item" xsi:type="string">xml_item</item>
+                <item name="xml_content" xsi:type="string">xml_content</item>
+                <item name="xml_footer" xsi:type="string">xml_footer</item>
+                <item name="csv_column_name" xsi:type="string">csv_column_name</item>
+                <item name="csv_header" xsi:type="string">csv_header</item>
+                <item name="csv_enclosure" xsi:type="string">csv_enclosure</item>
+                <item name="csv_delimiter" xsi:type="string">csv_delimiter</item>
+                <item name="csv_field" xsi:type="string">csv_field</item>
+            </argument>
+            <argument name="feedContent" xsi:type="array">
+                <item name="xml" xsi:type="array">
+                    <item name="header" xsi:type="string">xml_header</item>
+                    <item name="item" xsi:type="string">xml_item</item>
+                    <item name="content" xsi:type="string">xml_content</item>
+                    <item name="footer" xsi:type="string">xml_footer</item>
+                </item>
+                <item name="csv" xsi:type="array">
+                    <item name="column_name" xsi:type="string">csv_column_name</item>
+                    <item name="header" xsi:type="string">csv_header</item>
+                    <item name="enclosure" xsi:type="string">csv_enclosure</item>
+                    <item name="delimiter" xsi:type="string">csv_delimiter</item>
+                    <item name="field" xsi:type="string">csv_field</item>
+                </item>
+                <item name="txt" xsi:type="array">
+                    <item name="column_name" xsi:type="string">csv_column_name</item>
+                    <item name="header" xsi:type="string">csv_header</item>
+                    <item name="enclosure" xsi:type="string">csv_enclosure</item>
+                    <item name="delimiter" xsi:type="string">csv_delimiter</item>
+                    <item name="field" xsi:type="string">csv_field</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

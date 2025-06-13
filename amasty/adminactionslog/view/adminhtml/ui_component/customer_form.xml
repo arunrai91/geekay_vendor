@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Admin Actions Log for Magento 2
+ */-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="customer_history" class="Amasty\AdminActionsLog\Ui\Component\Form\CustomerHistoryFieldset">
+        <settings>
+            <label translate="true">History of Changes</label>
+            <componentType>fieldset</componentType>
+        </settings>
+        <insertListing name="amaudit_customer_history_listing">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <externalProvider>amaudit_customer_history_listing.amaudit_actionslog_listing_data_source</externalProvider>
+                <autoRender>true</autoRender>
+                <dataScope>amaudit_customer_history_listing</dataScope>
+                <ns>amaudit_customer_history_listing</ns>
+                <exports>
+                    <link name="parent_id">${ $.externalProvider }:params.parent_id</link>
+                </exports>
+                <imports>
+                    <link name="parent_id">${ $.provider }:data.customer.entity_id</link>
+                    <link name="visible">${ $.provider }:data.customer.entity_id</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+</form>

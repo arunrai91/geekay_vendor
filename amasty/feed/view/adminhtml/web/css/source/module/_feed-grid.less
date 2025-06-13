@@ -1,0 +1,106 @@
+//
+//  Amasty Feed Grid Component
+//  ____________________________________________
+
+//
+//  Variables
+//  --------------------------------------------
+@amfeed-grid-copy-link-button__bg-color: #007bdb;
+@amfeed-grid-copy-link-button__bg-color__hover: #0a5dbd;
+@amfeed-grid-tooltip__bg-color: #6b6663;
+@amfeed-status-badge-active__bg-color: #e2f6db;
+@amfeed-status-badge-inactive__bg-color: #fce7e7;
+@amfeed-status-badge-active__color: #52b430;
+@amfeed-status-badge-inactive__color: #e22637;
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amfeed-link.amasty-copy-on-clipboard-text:before {
+        content: url('@{baseDir}Amasty_Feed/images/icon/import.svg');
+        margin-right: .5rem;
+    }
+
+    .amfeed-ellipsis-overflow {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: auto;
+    }
+
+    .amfeed-button.amasty-copy-on-clipboard-button {
+        background: url('@{baseDir}Amasty_Feed/images/icon/clipboard.svg') no-repeat center;
+
+        &:hover {
+            background-color: @amfeed-grid-copy-link-button__bg-color__hover;
+        }
+    }
+
+    .amfeed-button.amasty-copy-on-clipboard-button {
+        background-color: @amfeed-grid-copy-link-button__bg-color;
+        border: none;
+        border-radius: 50%;
+        height: 28px;
+        margin-left: 7%;
+        width: 28px;
+    }
+
+    .amfeed-file-content {
+        align-items: center;
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
+    [data-tooltip='tooltip-wrapper']:has(.amfeed-tooltip-content) {
+        .data-tooltip {
+            background: @amfeed-grid-tooltip__bg-color;
+            border: none;
+            border-radius: 3px;
+            box-shadow: none;
+            color: @color-white;
+            padding: .7rem;
+        }
+
+        .data-tooltip-tail {
+            left: -4px;
+            margin-top: -4px;
+
+            &:before,
+            &:after {
+                background: @amfeed-grid-tooltip__bg-color;
+                border: none;
+                box-shadow: none;
+                height: 8px;
+                width: 8px;
+            }
+        }
+    }
+
+    .amfeed-status-badge {
+        border-radius: 4px;
+        font-size: 1.4rem;
+        padding: 4px 0;
+        text-align: center;
+
+        &.amfeed-status-badge-inactive {
+            background-color: @amfeed-status-badge-inactive__bg-color;
+            color: @amfeed-status-badge-inactive__color;
+        }
+
+        &.amfeed-status-badge-active {
+            background-color: @amfeed-status-badge-active__bg-color;
+            color: @amfeed-status-badge-active__color;
+        }
+    }
+
+    .amfeed-feed-index {
+        .data-grid-actions-cell {
+            a.action-menu-item:before {
+                content: url('@{baseDir}Amasty_Feed/images/icon/edit.svg');
+                margin-right: .4rem;
+            }
+        }
+    }
+}

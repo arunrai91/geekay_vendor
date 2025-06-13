@@ -1,0 +1,8 @@
+<div class="data-grid-cell-content">
+    <span data-bind="i18n: $row().item"></span>
+    <!-- ko if: $row().view_url -->
+    <a data-bind="attr: { href: $row().view_url }">
+        <span data-bind="i18n: '[View]'"></span>
+    </a>
+    <!-- /ko -->
+</div>

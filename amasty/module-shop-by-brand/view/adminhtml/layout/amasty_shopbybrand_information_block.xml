@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Brand for Magento 2
+ */-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="amasty_shopbybase_information_block"/>
+    <referenceBlock name="aminfotab.basic">
+        <block class="Amasty\ShopbyBrand\Block\Adminhtml\System\Config\InformationBlocks\SuggestNotification"
+               name="aminfotab.shopby-brand.suggest"
+               after="aminfotab.conflicts"/>
+    </referenceBlock>
+</page>

@@ -1,0 +1,20 @@
+<div class="ampromo-config-label">
+    <button class="ampromo-config-icon" data-bind="
+                style: {
+                    color: $data.promoBadgeColor ?? '#523cc0',
+                    backgroundColor: $data.promoBadgeBgColor ?? 'rgba(123, 97, 255, 0.15)',
+                    backgroundImage: `url(${require.toUrl($data.iconSrc ?? 'Amasty_Base/images/components/promotion-field/lock.svg')})`,
+                    cursor: !!$data.promoLink ? 'pointer' : 'default'
+                },
+                click: !!$data.promoLink ? () => { window.open($data.promoLink, '_blank') } : null,
+                clickBubble: false
+            "></button>
+    <div class="ampromo-config-content-container">
+        <div>
+            <label attr="for: uid">
+                <span translate="label"></span>
+            </label>
+        </div>
+        <div class="ampromo-config-notification-message" text="$data.subscribeText ?? $t('Subscribe to Unlock')"></div>
+    </div>
+</div>

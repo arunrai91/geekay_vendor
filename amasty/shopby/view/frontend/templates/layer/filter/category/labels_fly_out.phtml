@@ -1,0 +1,30 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Layered Navigation Base for Magento 2
+ */
+/** @var \Amasty\ShopbyBase\Model\FilterSetting $filterSetting */
+/** @var \Amasty\Shopby\Block\Navigation\FilterRenderer $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+$filterCode = $escaper->escapeHtml($filterSetting->getAttributeCode());
+$currentCategoryId = (int) $block->getCurrentCategoryId();
+?>
+<form class="amshopby-flyout-block"
+      data-amshopby-filter="<?= /* @noEscape */ $filterCode; ?>"
+      data-amshopby-filter-request-var="<?= /* @noEscape */ $block->getFilter()->getRequestVar(); ?>"
+      <?php if ($block->getEnableOverflowScroll($filterSetting) > 0): ?>
+            style="max-height:<?= /* @noEscape */ (int) $block->getOverflowScrollValue($filterSetting); ?>px;
+            overflow-y: auto;
+            overflow-x: hidden;"
+      <?php endif; ?>
+>
+    <ul class="items am-filter-items-<?= /* @noEscape */ $filterCode; ?> amshopby-fly-out-view"
+        data-mage-init='{"amShopbyFilterFlyout":{
+            "currentCategoryId": "<?= /* @noEscape */ $currentCategoryId; ?>"
+        }}'
+    >
+        <?= /* @noEscape */ $categoryTreeHtml; ?>
+    </ul>
+</form>

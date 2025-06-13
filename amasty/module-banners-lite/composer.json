@@ -1,0 +1,24 @@
+{
+    "name": "amasty/module-banners-lite",
+    "description": "Promo Banners Lite by Amasty",
+    "require": {
+        "php": ">=7.3",
+        "amasty/base": ">=1.17.0"
+    },
+    "suggest": {
+        "amasty/module-graphql-application-server-compatibility": "Install this package for compatibility with GraphQL Application Server."
+    },
+    "type": "magento2-module",
+    "version": "1.2.3",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\BannersLite\\": ""
+        }
+    }
+}

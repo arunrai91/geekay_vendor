@@ -1,0 +1,181 @@
+"Restore Changes","Restore Changes"
+"Are you sure you want to do this?","Are you sure you want to do this?"
+"Clear Log","Clear Log"
+"Are you sure you want to terminate all sessions? Your current session will also be terminated.","Are you sure you want to terminate all sessions? Your current session will also be terminated."
+"Terminate All Sessions","Terminate All Sessions"
+"History of Changes","History of Changes"
+"Actions Log has been successfully cleared.","Actions Log has been successfully cleared."
+"Admin Actions Log","Admin Actions Log"
+"Actions Log","Actions Log"
+"A total of %1 record(s) have been restored.","A total of %1 record(s) have been restored."
+"The restoring of records (%1) is not allowed.","The restoring of records (%1) is not allowed."
+"Failed to restore the records (%1).","Failed to restore the records (%1)."
+"Changes have been successfully restored.","Changes have been successfully restored."
+"Something went wrong.","Something went wrong."
+"Active Sessions","Active Sessions"
+"Login Attempts Log has been successfully cleared.","Login Attempts Log has been successfully cleared."
+"Login Attempts","Login Attempts"
+"Page History Log has been successfully cleared.","Page History Log has been successfully cleared."
+"Visit History","Visit History"
+"An error occurred during Logging Action execution. Error is %1","An error occurred during Logging Action execution. Error is %1"
+Cache,Cache
+"Flushed image cache","Flushed image cache"
+"Flushed JavaScript/CSS cache","Flushed JavaScript/CSS cache"
+"Flushed static files cache","Flushed static files cache"
+"Flushed cache storage","Flushed cache storage"
+"Flushed Magento cache storage","Flushed Magento cache storage"
+"Cache disabled","Cache disabled"
+"Cache enabled","Cache enabled"
+"Cache refreshed","Cache refreshed"
+"Data was exported.","Data was exported."
+"Admin User","Admin User"
+"Expiration for Admin #%1","Expiration for Admin #%1"
+"Admin Expiration","Admin Expiration"
+"Admin User Role","Admin User Role"
+"Stock Item","Stock Item"
+"Request Quote #%1","Request Quote #%1"
+"Request Quote","Request Quote"
+"Catalog Category","Catalog Category"
+"Catalog Product","Catalog Product"
+"Product Gallery Image","Product Gallery Image"
+"Option ""%1""","Option ""%1"""
+"Product Customizable Option","Product Customizable Option"
+"Value ""%1"" of Option ""%2""","Value ""%1"" of Option ""%2"""
+"Terms and Conditions","Terms and Conditions"
+"CMS Block","CMS Block"
+"CMS Page","CMS Page"
+"CMS Widget","CMS Widget"
+"System Config","System Config"
+Customer,Customer
+"Customer Address","Customer Address"
+"Customer Group","Customer Group"
+"Customer Segment","Customer Segment"
+"Product Attribute","Product Attribute"
+"Product Attribute Set","Product Attribute Set"
+Flag,Flag
+"Source Item (%1)","Source Item (%1)"
+"Email Template","Email Template"
+"Newsletter Template","Newsletter Template"
+"Cart Price Rule","Cart Price Rule"
+"Catalog Price Rule","Catalog Price Rule"
+"Gift Card Account #%1","Gift Card Account #%1"
+"Gift Card Account","Gift Card Account"
+"Related Products Rule","Related Products Rule"
+"URL Rewrite","URL Rewrite"
+"Credit Memo for Order #%1","Credit Memo for Order #%1"
+"Credit Memo","Credit Memo"
+"Invoice for Order #%1","Invoice for Order #%1"
+Invoice,Invoice
+"Order #%1","Order #%1"
+Order,Order
+"%1 Address for Order #%2","%1 Address for Order #%2"
+"Order Address","Order Address"
+"Return Request #%1","Return Request #%1"
+RMA,RMA
+"Shipment for Order #%1","Shipment for Order #%1"
+Shipment,Shipment
+"Active Session with specified ID ""%1"" not found.","Active Session with specified ID ""%1"" not found."
+"Unable to save the Active Session. Error: %1","Unable to save the Active Session. Error: %1"
+"Unable to delete the Active Session. Error: %1","Unable to delete the Active Session. Error: %1"
+"Provided argument is not in PSR-0 or underscore notation.","Provided argument is not in PSR-0 or underscore notation."
+"Log Entry with specified ID ""%1"" not found.","Log Entry with specified ID ""%1"" not found."
+"Unable to save the Log Entry. Error: %1","Unable to save the Log Entry. Error: %1"
+"Unable to delete the Log Entry. Error: %1","Unable to delete the Log Entry. Error: %1"
+"Login Attempt with specified ID ""%1"" not found.","Login Attempt with specified ID ""%1"" not found."
+"Unable to save the Login Attempt. Error: %1","Unable to save the Login Attempt. Error: %1"
+"Unable to delete the Login Attempt. Error: %1","Unable to delete the Login Attempt. Error: %1"
+New,New
+Edit,Edit
+Delete,Delete
+Export,Export
+Restore,Restore
+"From New Device","From New Device"
+"With New IP Address","With New IP Address"
+"From New Location","From New Location"
+Failed,Failed
+Success,Success
+Logout,Logout
+"Visit History Entry with specified ID ""%1"" not found.","Visit History Entry with specified ID ""%1"" not found."
+"Unable to save the Visit History. Error: %1","Unable to save the Visit History. Error: %1"
+"Unable to delete the Visit History. Error: %1","Unable to delete the Visit History. Error: %1"
+"Unable to restore changes. Error: %1","Unable to restore changes. Error: %1"
+"Product Option with specified ID ""%1"" not found.","Product Option with specified ID ""%1"" not found."
+"Product Option Value with specified ID ""%1"" not found.","Product Option Value with specified ID ""%1"" not found."
+"View Details","View Details"
+"Preview Details","Preview Details"
+"Just Now","Just Now"
+". "" minute(s) ago""",". "" minute(s) ago"""
+". "" hour(s) ago""",". "" hour(s) ago"""
+"Show History","Show History"
+"Are you sure you want to restore selected items?","Are you sure you want to restore selected items?"
+Username:,Username:
+"Full Name:","Full Name:"
+"Session Start:","Session Start:"
+"Session End:","Session End:"
+"IP Address:","IP Address:"
+Location:,Location:
+"Page Name","Page Name"
+"Page URL","Page URL"
+"Stay Duration","Stay Duration"
+Name,Name
+"Old Value","Old Value"
+"New Value","New Value"
+"The item has been deleted.","The item has been deleted."
+Date:,Date:
+Email:,Email:
+"Action Type:","Action Type:"
+Object:,Object:
+[View],[View]
+minutes,minutes
+hours,hours
+seconds,seconds
+General,General
+"Enable Page Visit History","Enable Page Visit History"
+Geolocation,Geolocation
+"If the field is inactive, it means that Geo IP Date was not downloaded. Please navigate to Stores > Configuration > Amasty Extensions > Geo IP Data and download the data.","If the field is inactive, it means that Geo IP Date was not downloaded. Please navigate to Stores > Configuration > Amasty Extensions > Geo IP Data and download the data."
+"Restore Settings Warning Text","Restore Settings Warning Text"
+"Log Actions For All Admin Users","Log Actions For All Admin Users"
+"Exclude Entities from Logging","Exclude Entities from Logging"
+"Exclude Actions from Logging","Exclude Actions from Logging"
+"Admin Users To Log Actions For","Admin Users To Log Actions For"
+"Log Auto-Cleaning","Log Auto-Cleaning"
+"Actions Log Auto-Cleaning","Actions Log Auto-Cleaning"
+"The records that were saved for a longer period than the specified below will be automatically removed from Actions Log.","The records that were saved for a longer period than the specified below will be automatically removed from Actions Log."
+"Auto-Cleaning Period in Days","Auto-Cleaning Period in Days"
+"Login Attempts Auto-Cleaning","Login Attempts Auto-Cleaning"
+"The records that were saved for a longer period than the specified below will be automatically removed from Login Attempts Log.","The records that were saved for a longer period than the specified below will be automatically removed from Login Attempts Log."
+"Visit History Log Auto-Cleaning","Visit History Log Auto-Cleaning"
+"The records that were saved for a longer period than the specified below will be automatically removed from Page Visit History.","The records that were saved for a longer period than the specified below will be automatically removed from Page Visit History."
+"Email Notifications","Email Notifications"
+"Email Successful Logins To Admin","Email Successful Logins To Admin"
+"Email Sender","Email Sender"
+"Select Email Template","Select Email Template"
+"Send to Email(s)","Send to Email(s)"
+"Email Unsuccessful Logins To Admin","Email Unsuccessful Logins To Admin"
+"Number of Unsuccessful Login Attempts","Number of Unsuccessful Login Attempts"
+"Email Suspicious Logins To Admin","Email Suspicious Logins To Admin"
+"Suspicious if Logged In","Suspicious if Logged In"
+"Edit Checkbox","Edit Checkbox"
+Back,Back
+"All Store Views","All Store Views"
+"Store View","Store View"
+"Restore items","Restore items"
+ID,ID
+Date,Date
+"Item ID","Item ID"
+Username,Username
+"Full Name","Full Name"
+"IP Address","IP Address"
+"Action Type","Action Type"
+Object,Object
+Item,Item
+"Action Log Details","Action Log Details"
+"Logged In At","Logged In At"
+Location,Location
+"Recent Activity","Recent Activity"
+"Terminate Session","Terminate Session"
+"User Agent","User Agent"
+Status,Status
+"Session Start","Session Start"
+"Session End","Session End"
+History,History

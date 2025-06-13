@@ -1,0 +1,39 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Abandoned Cart Email Base for Magento 2
+ */
+
+/**
+ * @var Template $block
+ * @var Escaper $escaper
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+$customerName = $block->getData('customer_firstname') || $block->getData('customer_lastname')
+    ? $block->getData('customer_firstname') . ' ' . $block->getData('customer_lastname')
+    : '-';
+?>
+<div class="customer-info-container">
+    <div class="customer-info-block">
+        <div class="customer-contact-detail">
+            <?= $escaper->escapeHtml(__('Abandoned Cart - Customer Contact Details')) ?>
+        </div>
+        <div class="customer-information">
+            <div class="customer-info-text">
+                <div class="customer-email">
+                    <?= $escaper->escapeHtml(__('<b>Email:</b> %1', $block->getData('customer_email') ?? '-'), ['b']) ?>
+                </div>
+                <div class="customer-email">
+                    <?= $escaper->escapeHtml(__('<b>Phone Number:</b> %1', $block->getData('customer_phone') ?? '-'), ['b']) ?>
+                </div>
+                <div class="customer-email">
+                    <?= $escaper->escapeHtml(__('<b>Customer Name:</b> %1', $customerName), ['b']) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

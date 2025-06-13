@@ -1,0 +1,30 @@
+<?php
+/* @var $block \CyberSource\SecureAcceptance\Block\Adminhtml\Microform\Flex */
+$clientLibraryUrl = $block->isSandbox() ? $block->getClientLibrary() : $block->getClientProdLibrary();
+$clientLibraryUrl = $clientLibraryUrl ?? '';
+$integrityValue = $block->getClientIntegrity() ?? '';
+$crossOriginValue = 'anonymous';
+?>
+
+<script type="text/javascript">
+    require.config({
+        paths: {
+            "flex-microform": '<?php echo str_replace('.js', '', $clientLibraryUrl); ?>'
+        },
+        shim: {
+            "flex-microform": {
+                exports: 'Flex'
+            }
+        }
+    });
+
+    if ('<?php echo $clientLibraryUrl; ?>' && '<?php echo $integrityValue; ?>') {
+        var script = document.createElement('script');
+        script.src = '<?php echo $clientLibraryUrl; ?>';
+        script.integrity = '<?php echo $integrityValue; ?>';
+        script.crossOrigin = '<?php echo $crossOriginValue; ?>';
+        document.head.appendChild(script);
+    } else {
+        console.warn('Unable to load the CyberSource flex microform. Please check your configuration.');
+    }
+</script>

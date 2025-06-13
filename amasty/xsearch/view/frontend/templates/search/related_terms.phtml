@@ -1,0 +1,41 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var \Amasty\Xsearch\Block\RelatedSearchTerms $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php
+/** @var \Amasty\Xsearch\ViewModel\RelatedTermsViewModel $viewModel */
+$viewModel = $block->getData('related_terms_view_model');
+if (!$viewModel->isCanShow()) {
+    return;
+}
+?>
+
+<?php
+/** @var \Magento\Search\Model\Query[] $data */
+$data = $block->getItems();
+?>
+
+<?php if (count($data)): ?>
+    <section class="amsearch-related-terms">
+        <?= /* @noEscape */ $block->fetchView($block->getTemplateFile('Amasty_Xsearch::components/header.phtml')) ?>
+
+        <?php foreach ($data as $additionalInfo): ?>
+            <a class="amsearch-item" href="<?= $escaper->escapeHtml($block->getLink($additionalInfo->getQueryText())) ?>">
+                <?= $escaper->escapeHtml($additionalInfo->getQueryText()) ?>
+
+                <?php if ($block->isShowResultsCount()): ?>
+                    <?php $resultsCount = ($block->getNameInLayout() != 'search_recommendations')
+                        ? $additionalInfo->getNumResults() : $additionalInfo->getResultsCount() ?>
+                    <span class="amsearch-count">(<?= $escaper->escapeHtml($resultsCount) ?>)</span>
+                <?php endif; ?>
+            </a>
+        <?php endforeach; ?>
+    </section>
+<?php endif; ?>

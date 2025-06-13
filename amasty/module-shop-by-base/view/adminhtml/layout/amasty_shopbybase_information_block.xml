@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Base for Magento 2 (System)
+ */-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="aminfotab.basic">
+            <block class="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Mage245FixInstall"
+                   name="aminfotab.shopby-mage245fix-install"
+                   after="aminfotab.conflicts">
+            </block>
+            <block class="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\Mage245FixUninstall"
+                   name="aminfotab.shopby-mage245fix-uninstall"
+                   after="aminfotab.conflicts">
+            </block>
+            <block class="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\ShopByLiveSearch"
+                   name="aminfotab.shopby-shopby-live-search"
+                   after="aminfotab.conflicts">
+            </block>
+            <block class="Amasty\ShopbyBase\Block\Adminhtml\System\Config\InformationBlocks\ShopByLiveSearchCategory"
+                   name="aminfotab.shopby-shopby-live-search-category"
+                   after="aminfotab.conflicts">
+            </block>
+        </referenceBlock>
+    </body>
+</page>

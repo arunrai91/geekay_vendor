@@ -1,0 +1,57 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+// We have to override the default magento template to avoid image width style collisions on product listings
+
+/** @var $block \Magento\Catalog\Block\Product\Image */
+/** @var $escaper \Magento\Framework\Escaper */
+$width = (int)$block->getWidth();
+$paddingBottom = $block->getRatio() * 100;
+?>
+<span class="amsearch-product-image-container amsearch-product-image-container-<?= /* @noEscape */ $block->getProductId() ?>">
+    <span class="product-image-wrapper">
+        <img class="<?= $escaper->escapeHtmlAttr($block->getClass()) ?>"
+            <?php if (is_array($block->getCustomAttributes())): ?>
+                <?php foreach ($block->getCustomAttributes() as $name => $value): ?>
+                    <?= $escaper->escapeHtmlAttr($name) ?>="<?= $escaper->escapeHtml($value) ?>"
+                <?php endforeach; ?>
+            <?php else: ?>
+                <?= $escaper->escapeHtmlAttr($block->getCustomAttributes()) ?>
+            <?php endif; ?>
+            src="<?= $escaper->escapeUrl($block->getImageUrl()) ?>"
+            loading="lazy"
+            width="<?= $escaper->escapeHtmlAttr($block->getWidth()) ?>"
+            height="<?= $escaper->escapeHtmlAttr($block->getHeight()) ?>"
+            alt="<?= $escaper->escapeHtmlAttr($block->getLabel()) ?>"/></span>
+</span>
+<?php
+$styles = <<<STYLE
+.amsearch-product-image-container-{$block->getProductId()} {
+    width: {$width}px;
+}
+.amsearch-product-image-container-{$block->getProductId()} span.product-image-wrapper {
+    padding-bottom: {$paddingBottom}%;
+}
+STYLE;
+//In case a script was using "style" attributes of these elements
+$script = <<<SCRIPT
+prodImageContainers = document.querySelectorAll(".amsearch-product-image-container-{$block->getProductId()}");
+for (var i = 0; i < prodImageContainers.length; i++) {
+    prodImageContainers[i].style.width = "{$width}px";
+}
+prodImageContainersWrappers = document.querySelectorAll(
+    ".amsearch-product-image-container-{$block->getProductId()}  span.product-image-wrapper"
+);
+for (var i = 0; i < prodImageContainersWrappers.length; i++) {
+    prodImageContainersWrappers[i].style.paddingBottom = "{$paddingBottom}%";
+}
+SCRIPT;
+
+?>
+
+<style><?= /** @noEscape */ $styles ?></style>
+<?php //phpcs:ignore Magento2.Legacy.PhtmlTemplate.TextJavascriptTypeFound ?>
+<script type="text/javascript"><?= /** @noEscape */ $script ?></script>

@@ -1,0 +1,209 @@
+//
+//  Amasty Acart Email Base styles
+//  ----------------------------------------------
+
+body {
+    background-color: @acart-bg__color__body;
+}
+
+.email-non-inline() {
+    .acart-link:hover {
+        color: @acart-text__color__primary !important; // Browser links styles overriding
+        text-decoration: none !important; // Browser links styles overriding
+    }
+
+    .acart-link.-checkout:hover {
+        background: darken(@acart-bg__color__link__checkout, 10%) !important; // Browser links styles overriding
+        color: @acart-text__color__white !important; // Browser links styles overriding
+    }
+}
+
+.acart-link {
+    color: @acart-text__color__primary !important; // Browser links styles overriding
+    text-decoration: none !important; // Browser links styles overriding
+    vertical-align: top;
+}
+
+td.header {
+    & {
+        background: @acart-text__color__white;
+        padding: 40px 25px 0;
+    }
+
+    .logo img {
+        max-width: 120px;
+    }
+}
+
+.main-content {
+    font-family: 'Open Sans', sans-serif;
+    padding: 30px;
+}
+
+.acart-link.-checkout {
+    background: @acart-bg__color__link__checkout;
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: @acart-text__color__white !important; // Browser links styles overriding
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 auto;
+    max-width: 186px;
+    padding: 11px 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.acart-footer-block {
+    & {
+        color: @acart-text__color__secodary;
+        font-size: 12px;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    .acart-contacts {
+        & {
+            margin: 0;
+            padding: 0 0 10px;
+        }
+
+        span {
+            padding: 0 7px;
+        }
+
+        .acart-phone img {
+            margin: -1px;
+            max-width: 12px;
+        }
+
+        .acart-mail img {
+            max-width: 14px;
+        }
+    }
+
+    .acart-copyright {
+        margin: 0;
+        padding: 0 0 5px;
+    }
+}
+
+.acart-content-block {
+    & {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    > li {
+        margin: 0 0 30px;
+    }
+
+    > li:last-child {
+        margin: 0 0 50px;
+    }
+
+    .forwarding {
+        text-align: center;
+    }
+}
+
+.acart-header-block {
+    & {
+        font-weight: 300;
+        margin: 0;
+        padding: 0;
+    }
+
+    .acart-header {
+        color: @acart-text__color__primary;
+        display: block;
+        font-size: 2.4rem;
+        padding: 0 0 5px;
+    }
+
+    .acart-description {
+        font-size: 1.6rem;
+        font-weight: 400;
+    }
+
+    b {
+        font-weight: 700;
+    }
+
+    .customer-info-block {
+        border-bottom: 1px solid rgba(227, 227, 227, 1);
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .customer-contact-detail {
+        font-size: 1.4rem;
+        font-weight: 400;
+        line-height: 1.9rem;
+    }
+
+    .customer-information {
+        margin-top: .5rem;
+    }
+
+    .customer-info-text {
+        font-size: 1.2rem;
+        line-height: 2rem;
+    }
+}
+
+.acart-coupon-block {
+    & {
+        background-color: @acart-bg__color__coupon;
+        border-radius: 3px;
+        font-size: 10pt;
+        margin: 0 0 30px;
+        padding: 15px;
+    }
+
+    b {
+        font-size: 9pt;
+        padding-left: 10px;
+    }
+}
+
+.acart-subtotal-block {
+    & {
+        color: @acart-text__color__primary;
+        font-size: 12px;
+        padding: 20px 0;
+    }
+
+    .acart-table {
+        margin: 0 auto;
+    }
+
+    td {
+        line-height: 19px;
+        padding: 0 0 5px;
+        vertical-align: middle;
+    }
+
+    .acart-label {
+        font-weight: 400;
+    }
+
+    .acart-value {
+        font-weight: 700;
+        padding-left: 10px;
+        text-align: right;
+    }
+
+    .acart-total {
+        & {
+            padding-top: 5px;
+        }
+
+        .acart-value {
+            font-size: 2.4rem;
+            line-height: 33px;
+        }
+    }
+}

@@ -1,0 +1,44 @@
+//
+//  Amasty Promotion Config Field
+//  ______________________________________________
+
+//
+//  Variables
+//  --------------------------------------------
+@ambase__promoconfig__message__color: #adadad;
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .ampromo-config-label {
+        align-items: center;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: .8rem;
+        justify-content: right;
+    }
+
+    .ampromo-config-icon {
+        background-position: center;
+        background-repeat: no-repeat;
+        border: none;
+        border-radius: 50%;
+        display: block;
+        height: 32px;
+        min-width: 32px;
+        width: 32px;
+    }
+
+    .ampromo-config-content-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+
+        .ampromo-config-notification-message {
+            color: @ambase__promoconfig__message__color;
+            font-size: 1.2rem;
+        }
+    }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Layered Navigation Base for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Cache/etc/cache.xsd">
+    <type name="amasty_shopby" translate="label,description" instance="Amasty\ShopbyBase\Model\Cache\Type">
+        <label>Amasty Improved Layered Navigation</label>
+        <description>Settings for your filters and their options</description>
+    </type>
+</config>

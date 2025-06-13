@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Seo for Magento 2 (System)
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amasty\ShopbyBase\Model\XmlSitemap">
+        <plugin name="Amasty_ShopbySeo::apply-seo-url" type="Amasty\ShopbySeo\Plugin\XmlSitemap\ShopbyBase\Model\Sitemap" />
+    </type>
+
+    <type name="Magento\Config\Model\Config">
+        <plugin name="Amasty_ShopbySeo::config_save_plugin" type="Amasty\ShopbySeo\Plugin\Adminhtml\ConfigPlugin" />
+    </type>
+
+    <type name="Amasty\ShopbySeo\Model\SeoOptions">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="hardcoded" xsi:type="object">Amasty\ShopbySeo\Model\SeoOptionsModifier\HardcodedAliases</item>
+                <item name="dynamic" xsi:type="object">Amasty\ShopbySeo\Model\SeoOptionsModifier\DynamicAliases</item>
+                <item name="yesno" xsi:type="object">Amasty\ShopbySeo\Model\SeoOptionsModifier\YesNoAliases</item>
+                <item name="categories" xsi:type="object">Amasty\ShopbySeo\Model\SeoOptionsModifier\CategoryAliases</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amasty\GroupedOptions\Model\SeoOptionsModifier\GroupAliases">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="uniqueBuilder" xsi:type="object">Amasty\ShopbySeo\Model\SeoOptionsModifier\UniqueBuilder</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\ShopbyBase\Model\Integration\ShopbySeo\GetConfigProvider">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="object" xsi:type="object">Amasty\ShopbySeo\Model\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\ShopbySeo\Model\Attribute\GetAttributeCodesSeoByDefault">
+        <arguments>
+            <argument name="attributesToExclude" xsi:type="array">
+                <item name="category_ids" xsi:type="string">category_ids</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

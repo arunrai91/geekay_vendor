@@ -1,0 +1,52 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Search Base for Magento 2
+ */
+/**
+ * @var array $data
+ * @var \Amasty\Xsearch\Block\Search\AbstractSearch $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$data = $block->getResults();
+$isNoFollow = $block->isNoFollow();
+$isAnalytics = !in_array($block->getBlockType(), ['popular_searches', 'recent_searches']);
+?>
+<?php if (!empty($data)): ?>
+    <section class="amsearch-item-container amsearch-collapsible-section
+        -<?= $escaper->escapeHtmlAttr($block->getBlockType()) ?>"
+             data-bind="mageInit: {'amsearchCollapsible':{}}"
+             data-amcollapse-js="wrapper"
+            <?php if ($isAnalytics): ?>
+                data-amsearch-analytics="block"
+            <?php endif; ?>
+             >
+        <?= /* @noEscape */ $block->fetchView($block->getTemplateFile('Amasty_Xsearch::components/header.phtml')) ?>
+
+        <ul class="amsearch-tab-items amsearch-collapsible-content" data-role="content">
+        <?php foreach ($data as $item): ?>
+            <?php $fullMatch = $item['full_match'] ?? false ?>
+
+            <li class="amsearch-item<?= $escaper->escapeHtmlAttr($fullMatch ? ' -match' : '') ?>">
+                <a class="amsearch-link item-name"
+                   <?php if (isset($item['url'])): ?>href="<?= $escaper->escapeUrl($block->getFullLink($item['url'])) ?>"<?php endif; ?>
+                   <?php if (isset($item['data_post'])): ?>data-post='<?=  /* @noEscape */ $item['data_post'] ?>'<?php endif; ?>
+                   title="<?= $escaper->escapeHtmlAttr($block->stripTags($item['title'])) ?>"
+                    <?= /* @noEscape */ $isNoFollow ? ' rel="nofollow"' : '' ?>>
+                    <?= /* @noEscape */ $item['name'] ?>
+                </a>
+                <?php if (isset($item['num_results'])): ?>
+                    <span class="amasty-xsearch-num-results">(<?= $escaper->escapeHtml($item['num_results']) ?>)</span>
+                <?php endif ?>
+                <?php if ($block->showDescription($item)): ?>
+                    <p class="amsearch-description">
+                        <?= /* @noEscape */ $item['description'] ?>
+                    </p>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+    </section>
+<?php endif; ?>

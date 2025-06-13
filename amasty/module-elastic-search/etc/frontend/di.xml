@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Elastic Search Base for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection">
+        <plugin name="Amasty_ElasticSearch::addDefaultSortToMagento2.1"
+                type="Amasty\ElasticSearch\Plugin\CatalogSearch\Model\ResourceModel\Fulltext\Collection" />
+    </type>
+    <type name="Magento\CatalogSearch\Model\Search\RequestGenerator">
+        <plugin name="Amasty_ElasticSearch::SearchRequestGeneratorFix"
+                type="Amasty\ElasticSearch\Plugin\CatalogSearch\Model\Search\RequestGenerator" />
+    </type>
+    <type name="Magento\Framework\Search\Request\Binder">
+        <plugin name="Amasty_ElasticSearch::AllProductsOptionFix"
+                type="Amasty\ElasticSearch\Plugin\Search\Request\Binder" />
+    </type>
+
+    <type name="Magento\CatalogSearch\Block\Result">
+        <plugin name="Amasty_ElasticSearch::AddSecondSearchQueryInput"
+                type="Amasty\ElasticSearch\Plugin\CatalogSearch\Block\Result\AddSecondSearchQueryInput" />
+    </type>
+     <type name="Magento\CatalogSearch\Controller\Result\Index">
+        <plugin name="Amasty_ElasticSearch::RegisterSubQuery"
+                type="Amasty\ElasticSearch\Plugin\CatalogSearch\Controller\Result\Index\RegisterSubQuery" />
+    </type>
+    <type name="Magento\Framework\Api\Search\SearchInterface">
+        <plugin name="Amasty_ElasticSearch::SearchWithSubQuery"
+                type="Amasty\ElasticSearch\Plugin\Framework\Api\Search\SearchInterface\SearchWithSubQuery" />
+    </type>
+    <type name="Amasty\Xsearch\Plugin\CatalogSearch\Block\Result\ChangeNoResultText">
+        <plugin name="Amasty_ElasticSearch::ReplaceQueryText"
+                type="Amasty\ElasticSearch\Plugin\Xsearch\Plugin\CatalogSearch\Block\Result\ChangeNoResultText\ReplaceQueryText" />
+    </type>
+
+    <type name="Amasty\ElasticSearch\Model\Search\Dynamic\Algorithm" shared="false" />
+</config>

@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Automatic Related Products for Magento 2
+ */-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/amasty_mostviewed/rules" method="POST">
+        <service class="Amasty\Mostviewed\Api\GroupRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Amasty_Mostviewed::rule"/>
+        </resources>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/:groupId" method="PUT">
+        <service class="Amasty\Mostviewed\Api\GroupRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Amasty_Mostviewed::rule"/>
+        </resources>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/:groupId" method="DELETE">
+        <service class="Amasty\Mostviewed\Api\GroupRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="Amasty_Mostviewed::rule"/>
+        </resources>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/:groupId" method="GET">
+        <service class="Amasty\Mostviewed\Api\GroupRepositoryInterface" method="getById"/>
+        <resources>
+            <resource ref="Amasty_Mostviewed::rule"/>
+        </resources>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules" method="GET">
+        <service class="Amasty\Mostviewed\Api\GroupRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Amasty_Mostviewed::rule"/>
+        </resources>
+    </route>
+
+    <route url="/V1/amasty_mostviewed/rules/product-group-by-id" method="GET">
+        <service class="Amasty\Mostviewed\Api\ProductGroupResolverInterface"
+                 method="getGroupByProductIdAndPosition"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+        <data>
+            <parameter name="customerGroupId" force="true">%customer_group_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/product-group-by-sku" method="GET">
+        <service class="Amasty\Mostviewed\Api\ProductGroupResolverInterface"
+                 method="getGroupByProductSkuAndPosition"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+        <data>
+            <parameter name="customerGroupId" force="true">%customer_group_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/category-group" method="GET">
+        <service class="Amasty\Mostviewed\Api\CategoryGroupResolverInterface"
+                 method="getGroupByCategoryIdAndPosition"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+        <data>
+            <parameter name="customerGroupId" force="true">%customer_group_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/guest-cart-group/:maskedCartId" method="GET">
+        <service class="Amasty\Mostviewed\Api\CartGroupResolverInterface"
+                 method="getGroupByMaskedQuoteIdAndPosition"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+        <data>
+            <parameter name="customerGroupId" force="true">%customer_group_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/cart-group" method="GET">
+        <service class="Amasty\Mostviewed\Api\CartGroupResolverInterface"
+                 method="getGroupByQuoteIdAndPosition"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerGroupId" force="true">%customer_group_id%</parameter>
+            <parameter name="quoteId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/custom-group" method="GET">
+        <service class="Amasty\Mostviewed\Api\CustomGroupResolverInterface"
+                 method="getGroup"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+        <data>
+            <parameter name="customerGroupId" force="true">%customer_group_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/custom-group-for-product" method="GET">
+        <service class="Amasty\Mostviewed\Api\CustomGroupResolverInterface"
+                 method="getGroupForProduct"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+        <data>
+            <parameter name="customerGroupId" force="true">%customer_group_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/custom-group-for-guest-cart/:maskedCartId" method="GET">
+        <service class="Amasty\Mostviewed\Api\CustomGroupResolverInterface"
+                 method="getGroupForGuestCart"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+        <data>
+            <parameter name="customerGroupId" force="true">%customer_group_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/amasty_mostviewed/rules/custom-group-for-customer-cart" method="GET">
+        <service class="Amasty\Mostviewed\Api\CustomGroupResolverInterface"
+                 method="getGroupForCart"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerGroupId" force="true">%customer_group_id%</parameter>
+            <parameter name="quoteId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+</routes>

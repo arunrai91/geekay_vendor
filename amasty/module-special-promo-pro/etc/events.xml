@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Pro for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- for save the used rule to counter -->
+    <event name="sales_order_place_after">
+        <observer name="Amasty_RulesPro::after_place_order" instance="Amasty\RulesPro\Observer\Sales\Order\AfterPlaceOrder"/>
+    </event>
+    <event name="customer_login">
+        <observer name="Amasty_RulesPro::cache_warmer" instance="Amasty\RulesPro\Observer\CacheWarmer"/>
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="Amasty_RulesPro::UpdateIndex" instance="Amasty\RulesPro\Observer\Sales\Order\UpdateIndex" />
+        <observer name="Amasty_RulesPro::clean_cache" instance="Amasty\RulesPro\Observer\Sales\Order\CleanCache"/>
+    </event>
+</config>

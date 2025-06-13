@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Admin Actions Log for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="amaudit_actionslog_listing_data_source" xsi:type="string">Amasty\AdminActionsLog\Model\LogEntry\ResourceModel\Grid\Collection</item>
+                <item name="amaudit_order_history_listing_data_source" xsi:type="string">Amasty\AdminActionsLog\Model\LogEntry\ResourceModel\Grid\OrderHistoryCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amasty\AdminActionsLog\Model\LoginAttempt\ResourceModel\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="const">Amasty\AdminActionsLog\Model\LoginAttempt\ResourceModel\LoginAttempt::TABLE_NAME</argument>
+            <argument name="resourceModel" xsi:type="string">Amasty\AdminActionsLog\Model\LoginAttempt\ResourceModel\LoginAttempt</argument>
+        </arguments>
+    </type>
+    <type name="Amasty\AdminActionsLog\Model\LogEntry\ResourceModel\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="const">Amasty\AdminActionsLog\Model\LogEntry\ResourceModel\LogEntry::TABLE_NAME</argument>
+            <argument name="resourceModel" xsi:type="string">Amasty\AdminActionsLog\Model\LogEntry\ResourceModel\LogEntry</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\AdminActionsLog\Model\LoginAttempt\Notification\Type\Failed">
+        <arguments>
+            <argument name="dataStorage" xsi:type="object">Amasty\AdminActionsLog\Logging\DataStorage\FlagTable</argument>
+        </arguments>
+    </type>
+    <type name="Amasty\AdminActionsLog\Model\LoginAttempt\Notification\Processor">
+        <arguments>
+            <argument name="notifierTypes" xsi:type="array">
+                <item name="0" xsi:type="object">Amasty\AdminActionsLog\Model\LoginAttempt\Notification\Type\Failed\Proxy</item>
+                <item name="1" xsi:type="object">Amasty\AdminActionsLog\Model\LoginAttempt\Notification\Type\Succeed\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\AdminActionsLog\Model\LoginAttempt\SuspiciousDetection\Detector">
+        <arguments>
+            <argument name="detectionTypes" xsi:type="array">
+                <item name="new_device" xsi:type="object">Amasty\AdminActionsLog\Model\LoginAttempt\SuspiciousDetection\Type\NewDevice</item>
+                <item name="new_ip" xsi:type="object">Amasty\AdminActionsLog\Model\LoginAttempt\SuspiciousDetection\Type\NewIp</item>
+                <item name="new_location" xsi:type="object">Amasty\AdminActionsLog\Model\LoginAttempt\SuspiciousDetection\Type\NewLocation</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="AmActionLog_TFASession" type="Amasty\AdminActionsLog\Model\Di\Wrapper">
+        <arguments>
+            <argument name="name" xsi:type="string">Magento\TwoFactorAuth\Api\TfaSessionInterface</argument>
+            <argument name="isShared" xsi:type="boolean">true</argument>
+            <argument name="isProxy" xsi:type="boolean">true</argument>
+        </arguments>
+    </virtualType>
+    <type name="Amasty\AdminActionsLog\Logging\ActionType\Validation\TwoFactorGranted">
+        <arguments>
+            <argument name="tfaSession" xsi:type="object">AmActionLog_TFASession</argument>
+        </arguments>
+    </type>
+    <type name="Magento\TwoFactorAuth\Api\TfaSessionInterface">
+        <plugin name="Amasty_AdminActionsLog::afterTfaAccessGranted" type="Amasty\AdminActionsLog\Plugin\TwoFactorAuth\Model\TfaSessionPlugin" />
+    </type>
+    <type name="Magento\User\Model\ResourceModel\User">
+        <plugin name="Amasty_AdminActionsLog::adminAfterDelele" type="Amasty\AdminActionsLog\Plugin\User\Model\ResourceModel\UserPlugin" />
+    </type>
+
+    <type name="Amasty\AdminActionsLog\Logging\ActionType\RenderBefore\Layout">
+        <arguments>
+            <argument name="historyEntryRepository" xsi:type="object">AmActionLog_LastDetailHistoryRepository</argument>
+            <argument name="dataStorage" xsi:type="object">Amasty\AdminActionsLog\Logging\DataStorage\BackendSession\Proxy</argument>
+        </arguments>
+    </type>
+    <virtualType name="AmActionLog_LastDetailHistoryRepository" type="Amasty\AdminActionsLog\Model\VisitHistoryEntry\Repository">
+        <arguments>
+            <argument name="detailLoader" xsi:type="object">Amasty\AdminActionsLog\Model\VisitHistoryEntry\Detail\LastDetailLoader</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\AdminActionsLog\Model\LogEntry\Frontend\LogDetailsFormatter">
+        <arguments>
+            <argument name="diffFinder" xsi:type="object">Amasty\AdminActionsLog\Model\DiffFinder\FineDiffAdapter</argument>
+        </arguments>
+    </type>
+
+    <!-- Preferences Start -->
+    <preference for="Amasty\AdminActionsLog\Api\Data\LogDetailInterface"
+                type="Amasty\AdminActionsLog\Model\LogEntry\LogDetail"/>
+    <preference for="Amasty\AdminActionsLog\Api\Data\LogEntryInterface"
+                type="Amasty\AdminActionsLog\Model\LogEntry\LogEntry"/>
+    <preference for="Amasty\AdminActionsLog\Api\LogEntryRepositoryInterface"
+                type="Amasty\AdminActionsLog\Model\LogEntry\Repository"/>
+    <preference for="Amasty\AdminActionsLog\Api\Data\LogEntrySearchResultsInterface"
+                type="Amasty\AdminActionsLog\Model\LogEntry\LogEntrySearchResults"/>
+
+    <preference for="Amasty\AdminActionsLog\Api\Data\ActiveSessionInterface"
+                type="Amasty\AdminActionsLog\Model\ActiveSession\ActiveSession"/>
+    <preference for="Amasty\AdminActionsLog\Api\ActiveSessionRepositoryInterface"
+                type="Amasty\AdminActionsLog\Model\ActiveSession\Repository"/>
+    <preference for="Amasty\AdminActionsLog\Api\ActiveSessionManagerInterface"
+                type="Amasty\AdminActionsLog\Model\ActiveSession\ActiveSessionManager"/>
+
+    <preference for="Amasty\AdminActionsLog\Api\Logging\ObjectDataStorageInterface"
+                type="Amasty\AdminActionsLog\Logging\DataStorage\InMemory"/>
+    <preference for="Amasty\AdminActionsLog\Api\Logging\MetadataInterface"
+                type="Amasty\AdminActionsLog\Logging\Metadata"/>
+
+    <preference for="Amasty\AdminActionsLog\Api\Data\LoginAttemptInterface"
+                type="Amasty\AdminActionsLog\Model\LoginAttempt\LoginAttempt"/>
+    <preference for="Amasty\AdminActionsLog\Api\LoginAttemptRepositoryInterface"
+                type="Amasty\AdminActionsLog\Model\LoginAttempt\Repository"/>
+    <preference for="Amasty\AdminActionsLog\Api\LoginAttemptManagerInterface"
+                type="Amasty\AdminActionsLog\Model\LoginAttempt\LoginAttemptManager"/>
+    <preference for="Amasty\AdminActionsLog\Api\Data\LoginAttemptSearchResultsInterface"
+                type="Amasty\AdminActionsLog\Model\LoginAttempt\LoginAttemptSearchResults"/>
+
+    <preference for="Amasty\AdminActionsLog\Api\Data\VisitHistoryDetailInterface"
+                type="Amasty\AdminActionsLog\Model\VisitHistoryEntry\VisitHistoryDetail"/>
+    <preference for="Amasty\AdminActionsLog\Api\Data\VisitHistoryEntryInterface"
+                type="Amasty\AdminActionsLog\Model\VisitHistoryEntry\VisitHistoryEntry"/>
+    <preference for="Amasty\AdminActionsLog\Api\VisitHistoryEntryRepositoryInterface"
+                type="Amasty\AdminActionsLog\Model\VisitHistoryEntry\Repository"/>
+    <preference for="Amasty\AdminActionsLog\Api\VisitHistoryManagerInterface"
+                type="Amasty\AdminActionsLog\Model\VisitHistoryEntry\VisitHistoryManager"/>
+    <preference for="Amasty\AdminActionsLog\Api\Data\VisitHistoryEntrySearchResultsInterface"
+                type="Amasty\AdminActionsLog\Model\VisitHistoryEntry\VisitHistoryEntrySearchResults"/>
+
+    <preference for="Amasty\AdminActionsLog\Model\VisitHistoryEntry\DetailLoaderInterface"
+                type="Amasty\AdminActionsLog\Model\VisitHistoryEntry\Detail\FullDetailLoader"/>
+
+    <preference for="Amasty\AdminActionsLog\Notification\Type\Email\ConfigInterface"
+                type="Amasty\AdminActionsLog\Notification\Type\Email\Config"/>
+    <!-- Preferences End -->
+
+    <type name="Amasty\AdminActionsLog\Ui\Component\Listing\Column\LogEntryActions">
+        <arguments>
+            <argument name="availablePreviewTypes" xsi:type="array">
+                <item name="edit" xsi:type="const">Amasty\AdminActionsLog\Model\OptionSource\LogEntryTypes::TYPE_EDIT</item>
+                <item name="new" xsi:type="const">Amasty\AdminActionsLog\Model\OptionSource\LogEntryTypes::TYPE_NEW</item>
+                <item name="restore" xsi:type="const">Amasty\AdminActionsLog\Model\OptionSource\LogEntryTypes::TYPE_RESTORE</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

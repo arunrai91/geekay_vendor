@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package GeoIP Data for Magento 2 (System)
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\Geoip\Api\Data\IpLogInterface" type="Amasty\Geoip\Model\IpLog"/>
+    <preference for="Amasty\Geoip\Api\IpLog\SaveInterface" type="Amasty\Geoip\Model\IpLog\Repository\Save"/>
+    <preference for="Amasty\Geoip\Api\IpLog\DeleteInterface" type="Amasty\Geoip\Model\IpLog\Repository\Delete"/>
+    <preference for="Amasty\Geoip\Api\BlockRepositoryInterface" type="Amasty\Geoip\Model\Block\Repository"/>
+    <preference for="Amasty\Geoip\Api\BlockV6RepositoryInterface" type="Amasty\Geoip\Model\BlockV6\Repository"/>
+    <preference for="Amasty\Geoip\Api\LocationRepositoryInterface" type="Amasty\Geoip\Model\Location\Repository"/>
+
+    <type name="Amasty\Geoip\Model\SyncService\Patch\ApplierComposite">
+        <arguments>
+            <argument name="appliersPool" xsi:type="array">
+                <item name="block" xsi:type="object">Amasty\Geoip\Model\SyncService\Patch\Applier\Block</item>
+                <item name="block_v6" xsi:type="object">Amasty\Geoip\Model\SyncService\Patch\Applier\BlockV6</item>
+                <item name="location" xsi:type="object">Amasty\Geoip\Model\SyncService\Patch\Applier\Location</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Geoip\Cron\SyncDb">
+        <arguments>
+            <argument name="patchApplier"
+                      xsi:type="object">Amasty\Geoip\Model\SyncService\Patch\ApplierComposite</argument>
+        </arguments>
+    </type>
+</config>

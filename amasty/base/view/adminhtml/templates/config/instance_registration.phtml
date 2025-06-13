@@ -1,0 +1,62 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Magento 2 Base Package
+ */
+
+use Amasty\Base\Block\Adminhtml\InstanceRegistrationMessages;
+use Magento\Framework\Escaper;
+
+/** @var InstanceRegistrationMessages $block */
+/** @var Escaper $escaper */
+
+$licenseValidation = $block->getLicenseValidation();
+?>
+
+<?php if ($block->isAmastyProductsSection() && $licenseValidation->isNeedCheckLicense() === true): ?>
+    <?php if ($messages = $licenseValidation->getMessages()): ?>
+        <?php foreach ($messages as $message): ?>
+            <?php list($firstPartOfMessage, $secondPartOfMessage) = $block->splitMessage($message->getContent()); ?>
+            <div
+                class="am-irs-msg-container am-irs-msg-<?= $escaper->escapeHtmlAttr($message->getType()) ?>"
+                <?php if (!empty($secondPartOfMessage)): ?>
+                    data-mage-init='{
+                        "Amasty_Base/js/config/message/toggler": {
+                            "additionalText": "<?= $escaper->escapeJs(
+                                $escaper->escapeHtml(nl2br($secondPartOfMessage), ['a', 'br'])
+                            ) ?>"
+                         }
+                    }'
+                <?php endif; ?>
+            >
+                <div class="am-irs-msg-header">
+                    <?= $escaper->escapeHtml(__('License Registration')) ?>
+                </div>
+                <div class="am-irs-msg-content">
+                    <?= $escaper->escapeHtml(nl2br($firstPartOfMessage), ['a', 'br']) ?>
+                    <?php if (!empty($secondPartOfMessage)): ?>
+                        <span data-ambase-message-additional></span>
+                        <br>
+                        <button class="am-irs-toggler-btn" data-ambase-message-toggle-btn>
+                            <?= $escaper->escapeHtml(__('View More')) ?>
+                        </button>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="am-irs-msg-container am-irs-msg-info">
+                <div class="am-irs-msg-header">
+                    <?= $escaper->escapeHtml(__('License Registration')) ?>
+                </div>
+                <div class="am-irs-msg-content">
+                    <?= $escaper->escapeHtml(__('Please register your instance to avoid unlicensed product usage. Enter the Instance Registration Key from your Account &#10230; License Registration.')) ?>
+                    <?= $escaper->escapeHtml(__('For a detailed instruction, please follow')) ?>
+                    <a target="_blank" href="https://support.amasty.com/portal/en/kb/articles/i-see-messages-in-my-account-and-admin-area-that-license-registration-is-required-what-should-i-do">
+                        <?= $escaper->escapeHtml(__('this link')) ?>.
+                    </a>
+                </div>
+            </div>
+    <?php endif; ?>
+<?php endif; ?>

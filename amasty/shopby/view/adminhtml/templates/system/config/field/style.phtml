@@ -1,0 +1,32 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Improved Layered Navigation Base for Magento 2
+ */
+/* @var $block \Amasty\Shopby\Block\Adminhtml\System\Config\Field\Renderer\SliderStyle */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+
+<ul class="amshopby-slider-settings -style"
+    if="$data.default.options"
+    data-bind="scope: 'index = amshopby_slider_settings'">
+    <!-- ko foreach: { data: Object.keys($data.default.options), as: 'key' } -->
+        <li data-bind="attr: { class: 'amshopby-slider-container ' + $data }">
+            <label class="amshopby-label">
+                <input class="amshopby-input"
+                       type="radio"
+                       name="groups[slider][fields][slider_style][value]"
+                       data-bind="
+                         attr: {
+                            value: $data,
+                            checked: ($parent.default.style === $data)
+                         }
+
+                ">
+                <span class="amshopby-title" data-bind="i18n: $parent.default.options[$data]"></span>
+            </label>
+            <!-- ko template: { name: 'Amasty_Shopby/slider/' + $data.replace('-', '') } --><!-- /ko -->
+        </li>
+    <!-- /ko-->
+</ul>

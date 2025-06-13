@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Brand for Magento 2
+ */-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="catalog_category_view"/>
+    <body>
+        <referenceContainer name="columns.top">
+            <referenceBlock name="category.image" template="Amasty_ShopbyBrand::brand/image.phtml">
+                <arguments>
+                    <argument name="brand_view_model"
+                              xsi:type="object">\Amasty\ShopbyBrand\ViewModel\BrandView</argument>
+                </arguments>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

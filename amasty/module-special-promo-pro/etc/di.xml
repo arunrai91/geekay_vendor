@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Special Promotions Pro for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\RulesPro\Api\RuleUsageRepositoryInterface"
+                type="Amasty\RulesPro\Model\RuleUsageRepository"/>
+    <preference for="Amasty\RulesPro\Api\Data\QueueInterface" type="Amasty\RulesPro\Model\Queue\Queue"/>
+
+    <type name="Amasty\Base\Setup\RecurringData">
+        <arguments>
+            <argument name="modulesToDisable" xsi:type="array">
+                <item name="Amasty_SpecialPromotionsLite" xsi:type="string">Amasty_SpecialPromotionsLite</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\RulesPro\Model\Rule\Condition\Customer">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\Rules\Model\Rule\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validatorsData" xsi:type="array">
+                <item name="usageLimitValidator" xsi:type="array">
+                    <item name="object" xsi:type="object">Amasty\RulesPro\Model\Rule\Validator\UsageLimitValidator</item>
+                    <item name="sortOrder" xsi:type="string">5</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Magento\SalesRule\Api\Data\RuleInterface" xsi:type="array">
+                    <item name="read" xsi:type="array">
+                        <item name="read_usage" xsi:type="string">Amasty\RulesPro\Model\SalesRule\ReadHandler</item>
+                    </item>
+                    <item name="create" xsi:type="array">
+                        <item name="save_usage" xsi:type="string">Amasty\RulesPro\Model\SalesRule\SaveHandler</item>
+                    </item>
+                    <item name="update" xsi:type="array">
+                        <item name="save_usage" xsi:type="string">Amasty\RulesPro\Model\SalesRule\UpdateHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Add Tooltip For Maximum Qty Discount is Applied To field -->
+    <type name="Magento\SalesRule\Model\Rule\Metadata\ValueProvider">
+        <plugin name="Amasty_RulesPro::SalesRule_ValueProvider" type="Amasty\RulesPro\Plugin\SalesRule\Model\Rule\Metadata\ValueProvider" />
+    </type>
+
+    <type name="Amasty\Base\Plugin\Setup\Model\DeclarationInstaller\ApplyPatchesBeforeDeclarativeSchema">
+        <arguments>
+            <argument name="moduleNames" xsi:type="array">
+                <item name="amasty_rulespro" xsi:type="string">Amasty_RulesPro</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

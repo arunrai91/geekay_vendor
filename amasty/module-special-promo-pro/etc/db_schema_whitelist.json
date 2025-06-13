@@ -1,0 +1,40 @@
+{
+    "amasty_amrules_usage_limit": {
+        "column": {
+            "entity_id": true,
+            "salesrule_id": true,
+            "limit": true
+        },
+        "index": {
+            "AMASTY_AMRULES_USAGE_LIMIT_SALESRULE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "amasty_amrules_usage_counter": {
+        "column": {
+            "entity_id": true,
+            "salesrule_id": true,
+            "count": true
+        },
+        "index": {
+            "AMASTY_AMRULES_USAGE_COUNTER_SALESRULE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "AMASTY_AMRULES_USAGE_COUNTER_SALESRULE_ID_SALESRULE_RULE_ID": true
+        }
+    },
+  "amasty_amrules_cache_queue": {
+    "column": {
+      "queue_id": true,
+      "customer_id": true
+    },
+    "constraint": {
+      "PRIMARY": true,
+      "AMASTY_AMRULES_CACHE_QUEUE_CUSTOMER_ID": true,
+      "AMASTY_AMRULES_CACHE_QUEUE_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true
+    }
+  }
+}

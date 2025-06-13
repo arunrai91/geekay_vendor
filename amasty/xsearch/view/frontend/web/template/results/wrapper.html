@@ -1,0 +1,16 @@
+<section if="$data.searchItems && $data.searchItems().length"
+         class="amsearch-items-section"
+         data-bind="foreach: $data.searchItems()">
+    <div data-bind="afterRender: $parent.updateHtml, html: $data.html,
+        attr: {
+            class: ($data.type === 'product') ? $parent.getProductsBlockClasses() : ''
+        }"></div>
+</section>
+<section if="$data.searchProducts().length && data.isProductBlockEnabled"
+         data-amsearch-analytics="block"
+         data-bind="
+            attr: {
+                class: 'amsearch-products-section' + (data.popup_display ? ' -list' : ' -grid')
+            },
+            bindHtml: $data.searchProducts()">
+</section>

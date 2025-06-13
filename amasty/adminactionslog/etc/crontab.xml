@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Admin Actions Log for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="amaudit_clear_log" instance="Amasty\AdminActionsLog\Cron\LogCleaner" method="execute">
+            <schedule>0 0 * * *</schedule>
+        </job>
+        <job name="amaudit_update_active_sessions"
+             instance="Amasty\AdminActionsLog\Cron\UpdateActiveSessions"
+             method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+    </group>
+</config>
