@@ -14,8 +14,8 @@ class Title extends Source\AbstractFilterDataPosition implements \Magento\Framew
     /**
      * @return void
      */
-    protected function _setLabel()
+    public function initLabel()
     {
-        $this->_label = __('Category Name');
+        $this->setLabel(__('Category Name'));
     }
 }

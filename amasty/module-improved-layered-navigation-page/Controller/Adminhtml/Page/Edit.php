@@ -7,10 +7,11 @@
 
 namespace Amasty\ShopbyPage\Controller\Adminhtml\Page;
 
+use Amasty\ShopbyPage\Model\Request\Page\Registry as PageRegistry;
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Result\PageFactory;
-use Magento\Framework\Registry as CoreRegistry;
-use Amasty\ShopbyPage\Controller\RegistryConstants;
 use Amasty\ShopbyPage\Api\Data\PageInterfaceFactory;
 use Amasty\ShopbyPage\Api\PageRepositoryInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -19,43 +20,49 @@ use Magento\Framework\Api\DataObjectHelper;
 class Edit extends Action
 {
     /**
-     * @var CoreRegistry
-     */
-    protected $_coreRegistry = null;
-
-    /**
      * @var PageFactory
      */
-    protected $_resultPageFactory;
+    private PageFactory $resultPageFactory;
 
     /**
      * @var PageRepositoryInterface
      */
-    protected $_pageRepository;
+    private PageRepositoryInterface $pageRepository;
 
     /**
      * @var PageFactory
      */
-    protected $_pageFactory;
+    private $pageFactory;
 
     /**
      * @var DataObjectHelper
      */
     private $dataObjectHelper;
 
+    /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
+    /**
+     * @var PageRegistry
+     */
+    private PageRegistry $pageRegistry;
+
     public function __construct(
-        Action\Context $context,
         PageFactory $resultPageFactory,
-        CoreRegistry $registry,
         PageInterfaceFactory $pageFactory,
         PageRepositoryInterface $pageRepository,
-        DataObjectHelper $dataObjectHelper
+        DataObjectHelper $dataObjectHelper,
+        PageRegistry $pageRegistry,
+        Context $context
     ) {
-        $this->_resultPageFactory = $resultPageFactory;
-        $this->_coreRegistry = $registry;
-        $this->_pageRepository = $pageRepository;
-        $this->_pageFactory = $pageFactory;
+        $this->resultPageFactory = $resultPageFactory;
+        $this->pageRepository = $pageRepository;
+        $this->pageFactory = $pageFactory;
         $this->dataObjectHelper = $dataObjectHelper;
+        $this->request = $context->getRequest();
+        $this->pageRegistry = $pageRegistry;
 
         parent::__construct($context);
     }
@@ -73,11 +80,11 @@ class Edit extends Action
      *
      * @return \Magento\Backend\Model\View\Result\Page
      */
-    protected function _initAction()
+    public function initAction()
     {
         // load layout, set active menu and breadcrumbs
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-        $resultPage = $this->_resultPageFactory->create();
+        $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('page')
             ->addBreadcrumb(__('Manage Custom Pages'), __('Manage Custom Pages'));
         return $resultPage;
@@ -89,10 +96,10 @@ class Edit extends Action
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('id');
+        $id = $this->request->getParam('id');
         $isExisting = (bool)$id;
 
-        $page = $this->_pageFactory->create();
+        $page = $this->pageFactory->create();
         if ($isExisting
             && !($page = $this->loadPage($id))
         ) {
@@ -108,10 +115,10 @@ class Edit extends Action
                     \Amasty\ShopbyPage\Api\Data\PageInterface::class
                 );
             }
-            $this->_coreRegistry->register(RegistryConstants::PAGE, $page);
+            $this->pageRegistry->set($page);
 
-            /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-            $result = $this->_initAction();
+            /** @var \Magento\Backend\Model\View\Result\Page $result */
+            $result = $this->initAction();
             $result->addBreadcrumb(
                 $id ? __('Edit Improved Navigation Page') : __('New Improved Navigation Page'),
                 $id ? __('Edit Improved Navigation Page') : __('New Improved Navigation Page')
@@ -136,7 +143,7 @@ class Edit extends Action
     private function loadPage($pageId)
     {
         try {
-            $page = $this->_pageRepository->get($pageId);
+            $page = $this->pageRepository->get($pageId);
         } catch (NoSuchEntityException $e) {
             $this->messageManager->addExceptionMessage($e, __('Something went wrong while editing the page.'));
             $page = false;

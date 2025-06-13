@@ -24,7 +24,6 @@ use Magento\Customer\Model\Context;
 use Magento\Eav\Model\Entity\Attribute\Option;
 use Magento\Framework\App\Cache\Type\Collection as CollectionCache;
 use Magento\Framework\App\Http\Context as HttpContext;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\SharedCatalog\Model\State as SharedCatalogState;
 
@@ -97,9 +96,9 @@ class LoadItems
         CollectionCache $cache,
         SerializerInterface $serializer,
         DataHelper $helper,
-        ?int $cacheLifetime = 86400,
-        HttpContext $httpContext = null,// TODO move to not optional
-        Wrapper $state = null
+        HttpContext $httpContext,
+        Wrapper $state,
+        ?int $cacheLifetime = 86400
     ) {
         $this->productCount = $productCount;
         $this->brandSettingProvider = $brandSettingProvider;
@@ -110,16 +109,8 @@ class LoadItems
         $this->cacheLifetime = $cacheLifetime;
         $this->brandDataFactory = $brandDataFactory;
         $this->helper = $helper;
-        // OM for backward compatibility
-        $this->httpContext = $httpContext ?? ObjectManager::getInstance()->get(HttpContext::class);
-        $this->state = $state ?? ObjectManager::getInstance()->create(
-            Wrapper::class,
-            [
-                'name' => SharedCatalogState::class, // @phpstan-ignore class.notFound
-                'isShared' => true,
-                'isProxy' => true
-            ]
-        );
+        $this->httpContext = $httpContext;
+        $this->state = $state;
     }
 
     /**

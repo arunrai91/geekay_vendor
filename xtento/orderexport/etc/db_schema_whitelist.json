@@ -1,0 +1,119 @@
+{
+    "xtento_orderexport_destination": {
+        "column": {
+            "destination_id": true,
+            "name": true,
+            "type": true,
+            "hostname": true,
+            "port": true,
+            "username": true,
+            "password": true,
+            "timeout": true,
+            "path": true,
+            "ftp_type": true,
+            "ftp_pasv": true,
+            "email_sender": true,
+            "email_recipient": true,
+            "email_subject": true,
+            "email_body": true,
+            "email_html": true,
+            "email_attach_files": true,
+            "custom_class": true,
+            "custom_function": true,
+            "last_result": true,
+            "last_result_message": true,
+            "last_modification": true,
+            "email_send_files_separately": true,
+            "ftp_ignorepasvaddress": true,
+            "email_bcc": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "xtento_orderexport_log": {
+        "column": {
+            "log_id": true,
+            "created_at": true,
+            "profile_id": true,
+            "files": true,
+            "destination_ids": true,
+            "export_type": true,
+            "export_event": true,
+            "records_exported": true,
+            "result": true,
+            "result_message": true
+        },
+        "index": {
+            "XTENTO_ORDEREXPORT_LOG_PROFILE_ID_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "xtento_orderexport_profile": {
+        "column": {
+            "profile_id": true,
+            "entity": true,
+            "enabled": true,
+            "name": true,
+            "destination_ids": true,
+            "last_execution": true,
+            "last_modification": true,
+            "conditions_serialized": true,
+            "store_ids": true,
+            "export_fields": true,
+            "customer_groups": true,
+            "export_one_file_per_object": true,
+            "export_filter_new_only": true,
+            "export_filter_datefrom": true,
+            "export_filter_dateto": true,
+            "export_filter_older_x_minutes": true,
+            "export_filter_last_x_days": true,
+            "export_filter_status": true,
+            "export_filter_product_type": true,
+            "export_action_change_status": true,
+            "export_action_add_comment": true,
+            "export_action_cancel_order": true,
+            "export_action_invoice_order": true,
+            "export_action_invoice_notify": true,
+            "export_action_ship_order": true,
+            "export_action_ship_notify": true,
+            "save_files_manual_export": true,
+            "export_empty_files": true,
+            "manual_export_enabled": true,
+            "start_download_manual_export": true,
+            "save_files_local_copy": true,
+            "event_observers": true,
+            "cronjob_enabled": true,
+            "cronjob_frequency": true,
+            "cronjob_custom_frequency": true,
+            "output_type": true,
+            "filename": true,
+            "encoding": true,
+            "xsl_template": true,
+            "test_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "xtento_orderexport_profile_history": {
+        "column": {
+            "history_id": true,
+            "profile_id": true,
+            "log_id": true,
+            "entity": true,
+            "entity_id": true,
+            "exported_at": true
+        },
+        "index": {
+            "XTENTO_ORDEREXPORT_PROFILE_HISTORY_ENTITY_ENTITY_ID": true,
+            "XTENTO_ORDEREXPORT_PROFILE_HISTORY_PROFILE_ID": true,
+            "XTENTO_ORDEREXPORT_PROFILE_HISTORY_ENTITY_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

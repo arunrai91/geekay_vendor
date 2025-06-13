@@ -16,4 +16,9 @@
         <plugin name="Amasty_CompositeProductPriceIndexer::AddIndexRulePrice"
                 type="Amasty\CompositeProductPriceIndexer\Plugin\Catalog\Model\ResourceModel\Product\Indexer\Price\Dimensional\Simple\AddIndexRulePrice"/>
     </type>
+
+    <type name="Magento\Catalog\Model\Indexer\Product\Price\Action\Full">
+        <plugin name="Amasty_CompositeProductPriceIndexer::SetFullReindexFlag"
+                type="Amasty\CompositeProductPriceIndexer\Plugin\Catalog\Model\Indexer\Product\Price\Action\Full\SetFullReindexFlag"/>
+    </type>
 </config>

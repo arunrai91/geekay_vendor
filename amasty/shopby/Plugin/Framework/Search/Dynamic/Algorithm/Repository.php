@@ -32,16 +32,15 @@ class Repository
     /**
      * Reinitialize shared instance. In order to get correct aggregations for a price when it has current value applied
      *
-     * @param Repository $subject
-     * @param \Closure $closure
+     * @param DynamicAlgorithmRepository $subject
+     * @param mixed $result
      * @param $algorithmType
      * @param array $data
      * @return mixed
      * @SuppressWarnings(PHPMD.UnusedFormatParameter)
      */
-    public function aroundGet(DynamicAlgorithmRepository $subject, \Closure $closure, $algorithmType, array $data = [])
+    public function afterGet(DynamicAlgorithmRepository $subject, $result, $algorithmType, array $data = [])
     {
-        $result = $closure($algorithmType, $data);
         if ($algorithmType == 'auto') {
             return $this->objectManager->create(Algorithm\Auto::class, $data);
         } elseif ($algorithmType == 'manual') {

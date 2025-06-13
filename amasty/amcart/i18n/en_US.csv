@@ -188,6 +188,7 @@ Phone,Phone
 Message,Message
 Unsubscribe,Unsubscribe
 "The template did not load. Please review the log for details.","The template did not load. Please review the log for details."
+"There are currently no emails in the queue. Sent emails can be found on the <a class=""new-page-url"" href=""%1"" target=""_blank"">History</a> page.<br>Please keep in mind there is a time gap before carts abandoned by customers actually considered abandoned by Magento.<br>The time gap is taken from the setting 'Cart Considered Abandoned After Period (Minutes)' in general configuration.\n","There are currently no emails in the queue. Sent emails can be found on the <a class=""new-page-url"" href=""%1"" target=""_blank"">History</a> page.<br>Please keep in mind there is a time gap before carts abandoned by customers actually considered abandoned by Magento.<br>The time gap is taken from the setting 'Cart Considered Abandoned After Period (Minutes)' in general configuration.\n"
 "Money awaiting in abandoned carts","Money awaiting in abandoned carts"
 "Money made of recovered carts","Money made of recovered carts"
 "Sent emails","Sent emails"

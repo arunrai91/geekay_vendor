@@ -49,7 +49,7 @@ class Module implements CollectorInterface
         return $modulesData;
     }
 
-    protected function getModuleData(string $moduleName): array
+    private function getModuleData(string $moduleName): array
     {
         $moduleInfo = $this->moduleInfoProvider->getModuleInfo($moduleName);
         $moduleVersion = $moduleInfo[ModuleInfoProvider::MODULE_VERSION_KEY] ?? '';

@@ -93,7 +93,7 @@ class Resizer
      * @param string $imagePath
      * @return string
      */
-    protected function buildUrl($imagePath)
+    private function buildUrl($imagePath)
     {
         return $this->storeManager->getStore()->getBaseUrl(
             \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
@@ -106,7 +106,7 @@ class Resizer
      * @param int $height
      * @return bool|string
      */
-    protected function resizeAndGetUrl($imageUrl, $width = null, $height = null)
+    private function resizeAndGetUrl($imageUrl, $width = null, $height = null)
     {
         $resultUrl = $imageUrl;
         $this->initRelativeFilenameFromUrl($imageUrl);
@@ -135,7 +135,7 @@ class Resizer
      * @param string $imageUrl
      * @return bool|mixed|string
      */
-    protected function initRelativeFilenameFromUrl($imageUrl)
+    private function initRelativeFilenameFromUrl($imageUrl)
     {
         $this->relativeFilename = false;
         $storeUrl = $this->storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
@@ -154,7 +154,7 @@ class Resizer
      * @param int $height
      * @return void
      */
-    protected function initSize($width, $height)
+    private function initSize($width, $height)
     {
         $this->width = $width;
         $this->height = ($height === null ? $width : $height);
@@ -166,7 +166,7 @@ class Resizer
      * @return bool
      * @throws \Exception
      */
-    protected function resizeAndSaveImage()
+    private function resizeAndSaveImage()
     {
         if (!$this->width || !$this->height) {
             return false;
@@ -198,7 +198,7 @@ class Resizer
      * @param AdapterInterface $imageAdapter
      * @return int
      */
-    protected function prepareImageWidth(AdapterInterface $imageAdapter)
+    private function prepareImageWidth(AdapterInterface $imageAdapter)
     {
         if (!$this->isPercent($this->width)) {
             return $this->width;
@@ -212,7 +212,7 @@ class Resizer
      * @param AdapterInterface $imageAdapter
      * @return int
      */
-    protected function prepareImageHeight(AdapterInterface $imageAdapter)
+    private function prepareImageHeight(AdapterInterface $imageAdapter)
     {
         if (!$this->isPercent($this->height)) {
             return $this->height;
@@ -227,7 +227,7 @@ class Resizer
      *
      * @return bool|string
      */
-    protected function getResizedImageUrl()
+    private function getResizedImageUrl()
     {
         $relativePath = $this->getRelativePathResizedImage();
         if ($this->fileSystem->isFile($relativePath)) {
@@ -242,7 +242,7 @@ class Resizer
      *
      * @return string
      */
-    protected function getAbsolutePathResized()
+    private function getAbsolutePathResized()
     {
         return $this->fileSystem->getAbsolutePath($this->getRelativePathResizedImage());
     }
@@ -252,7 +252,7 @@ class Resizer
      *
      * @return string
      */
-    protected function getAbsolutePathOriginal()
+    private function getAbsolutePathOriginal()
     {
         return $this->fileSystem->getAbsolutePath($this->relativeFilename);
     }
@@ -264,7 +264,7 @@ class Resizer
      *
      * @return string
      */
-    protected function getRelativePathResizedImage()
+    private function getRelativePathResizedImage()
     {
         $pathInfo = $this->getPathInfo();
         if (!isset($pathInfo['basename']) || !isset($pathInfo['dirname'])) {
@@ -283,7 +283,7 @@ class Resizer
     /**
      * @return mixed
      */
-    protected function getPathInfo()
+    private function getPathInfo()
     {
         return $this->fileIo->getPathInfo($this->relativeFilename);
     }
@@ -293,7 +293,7 @@ class Resizer
      *
      * @return string
      */
-    protected function getResizeSubFolderName()
+    private function getResizeSubFolderName()
     {
         $subPath = 'resized/' . $this->width . "x" . $this->height;
         return $subPath;

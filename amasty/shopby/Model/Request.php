@@ -121,7 +121,7 @@ class Request extends \Magento\Framework\DataObject
     /**
      * @return array
      */
-    protected function getBulkParams()
+    private function getBulkParams()
     {
         $bulkParams = $this->request->getParam('amshopby', []);
         $bulkParams = is_array($bulkParams) ? $bulkParams : [$bulkParams];

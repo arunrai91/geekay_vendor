@@ -91,8 +91,6 @@ class Inflector extends AbstractFilter
     /**
      * Retrieve plugin manager
      *
-     * @deprecated Since 2.41.0 This method will be removed in version 3.0 without replacement
-     *
      * @return FilterPluginManager
      */
     public function getPluginManager()
@@ -107,8 +105,6 @@ class Inflector extends AbstractFilter
     /**
      * Set plugin manager
      *
-     * @deprecated Since 2.41.0 This method will be removed in version 3.0 without replacement
-     *
      * @return self
      */
     public function setPluginManager(FilterPluginManager $manager)
@@ -120,10 +116,7 @@ class Inflector extends AbstractFilter
     /**
      * Set options
      *
-     * @deprecated Since 2.41.0 This method will be removed in version 3.0 without replacement. Options should be
-     *             passed to the constructor.
-     *
-     * @param array|Options|iterable $options
+     * @param  array|Options|iterable $options
      * @return self
      */
     public function setOptions($options)
@@ -163,10 +156,7 @@ class Inflector extends AbstractFilter
      * Set Whether or not the inflector should throw an exception when a replacement
      * identifier is still found within an inflected target.
      *
-     * @deprecated  Since 2.41.0 This method will be removed in version 3.0 without replacement. Options should be
-     *              passed to the constructor.
-     *
-     * @param bool $throwTargetExceptionsOn
+     * @param  bool $throwTargetExceptionsOn
      * @return self
      */
     public function setThrowTargetExceptionsOn($throwTargetExceptionsOn)
@@ -178,8 +168,6 @@ class Inflector extends AbstractFilter
     /**
      * Will exceptions be thrown?
      *
-     * @deprecated  Since 2.41.0 This method will be removed in version 3.0 without replacement.
-     *
      * @return bool
      */
     public function isThrowTargetExceptionsOn()
@@ -190,10 +178,7 @@ class Inflector extends AbstractFilter
     /**
      * Set the Target Replacement Identifier, by default ':'
      *
-     * @deprecated  Since 2.41.0 This method will be removed in version 3.0 without replacement. Options should be
-     *              passed to the constructor.
-     *
-     * @param string $targetReplacementIdentifier
+     * @param  string $targetReplacementIdentifier
      * @return self
      */
     public function setTargetReplacementIdentifier($targetReplacementIdentifier)
@@ -208,8 +193,6 @@ class Inflector extends AbstractFilter
     /**
      * Get Target Replacement Identifier
      *
-     * @deprecated  Since 2.41.0 This method will be removed in version 3.0 without replacement.
-     *
      * @return string
      */
     public function getTargetReplacementIdentifier()
@@ -221,10 +204,7 @@ class Inflector extends AbstractFilter
      * Set a Target
      * ex: 'scripts/:controller/:action.:suffix'
      *
-     * @deprecated  Since 2.41.0 This method will be removed in version 3.0 without replacement. Options should be
-     *              passed to the constructor.
-     *
-     * @param string $target
+     * @param  string $target
      * @return self
      */
     public function setTarget($target)
@@ -236,8 +216,6 @@ class Inflector extends AbstractFilter
     /**
      * Retrieve target
      *
-     * @deprecated Since 2.41.0 This method will be removed in version 3.0 without replacement.
-     *
      * @return string
      */
     public function getTarget()
@@ -248,9 +226,7 @@ class Inflector extends AbstractFilter
     /**
      * Set Target Reference
      *
-     * @deprecated Since 2.41.0 This method will be removed in version 3.0 without replacement.
-     *
-     * @param string $target
+     * @param  string $target
      * @return self
      */
     public function setTargetReference(&$target)
@@ -262,9 +238,6 @@ class Inflector extends AbstractFilter
     /**
      * Is the same as calling addRules() with the exception that it
      * clears the rules before adding them.
-     *
-     * @deprecated Since 2.41.0 This method will be removed in version 3.0 without replacement. Options should be
-     *             passed to the constructor.
      *
      * @return self
      */
@@ -288,9 +261,6 @@ class Inflector extends AbstractFilter
      *     'suffix'      => 'phtml'
      *     );
      *
-     * @deprecated  Since 2.41.0 This method will be removed in version 3.0 without replacement. Options should be
-     *              passed to the constructor.
-     *
      * @return self
      */
     public function addRules(array $rules)
@@ -313,9 +283,7 @@ class Inflector extends AbstractFilter
      * By default, returns all rules. If a $spec is provided, will return those
      * rules if found, false otherwise.
      *
-     * @deprecated Since 2.41.0 This method will be removed in version 3.0 without replacement.
-     *
-     * @param string $spec
+     * @param  string $spec
      * @return array|false
      */
     public function getRules($spec = null)
@@ -334,10 +302,8 @@ class Inflector extends AbstractFilter
     /**
      * Returns a rule set by setFilterRule(), a numeric index must be provided
      *
-     * @deprecated Since 2.41.0 This method will be removed in version 3.0 without replacement.
-     *
-     * @param string $spec
-     * @param int $index
+     * @param  string $spec
+     * @param  int $index
      * @return FilterInterface|false
      */
     public function getRule($spec, $index)
@@ -354,8 +320,6 @@ class Inflector extends AbstractFilter
     /**
      * Clears the rules currently in the inflector
      *
-     * @deprecated Since 2.41.0 This method will be removed in version 3.0 without replacement.
-     *
      * @return self
      */
     public function clearRules()
@@ -367,9 +331,6 @@ class Inflector extends AbstractFilter
     /**
      * Set a filtering rule for a spec.  $ruleSet can be a string, Filter object
      * or an array of strings or filter objects.
-     *
-     * @deprecated  Since 2.41.0 This method will be removed in version 3.0 without replacement. Options should be
-     *               passed to the constructor.
      *
      * @param  string $spec
      * @param array|string|FilterInterface $ruleSet
@@ -384,9 +345,6 @@ class Inflector extends AbstractFilter
 
     /**
      * Add a filter rule for a spec
-     *
-     * @deprecated   Since 2.41.0 This method will be removed in version 3.0 without replacement. Options should be
-     *               passed to the constructor.
      *
      * @return self
      */
@@ -417,9 +375,6 @@ class Inflector extends AbstractFilter
     /**
      * Set a static rule for a spec.  This is a single string value
      *
-     * @deprecated  Since 2.41.0 This method will be removed in version 3.0 without replacement. Options should be
-     *               passed to the constructor.
-     *
      * @param  string $name
      * @param  string $value
      * @return self
@@ -437,8 +392,6 @@ class Inflector extends AbstractFilter
      * This allows a consuming class to pass a property or variable
      * in to be referenced when its time to build the output string from the
      * target.
-     *
-     * @deprecated  Since 2.41.0 This method will be removed in version 3.0 without replacement.
      *
      * @param  string $name
      * @return self

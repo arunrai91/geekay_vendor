@@ -6,7 +6,6 @@ namespace Codeception\Coverage\Subscriber;
 
 use Codeception\Configuration;
 use Codeception\Event\SuiteEvent;
-use Codeception\Lib\Interfaces\Web;
 use Codeception\Util\FileSystem;
 use PharData;
 
@@ -29,7 +28,7 @@ class RemoteServer extends LocalServer
 {
     public function isEnabled(): bool
     {
-        return $this->module instanceof Web && $this->settings['remote'] && $this->settings['enabled'];
+        return $this->module && $this->settings['remote'] && $this->settings['enabled'];
     }
 
     public function afterSuite(SuiteEvent $event): void

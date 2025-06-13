@@ -67,8 +67,6 @@ final class ProcessRulesetTest extends TestCase
             "$std.DeprecatedInvalid.InvalidDeprecationMessage"       => "$sniffDir\DeprecatedInvalid\InvalidDeprecationMessageSniff",
             "$std.DeprecatedInvalid.InvalidDeprecationVersion"       => "$sniffDir\DeprecatedInvalid\InvalidDeprecationVersionSniff",
             "$std.DeprecatedInvalid.InvalidRemovalVersion"           => "$sniffDir\DeprecatedInvalid\InvalidRemovalVersionSniff",
-            "$std.MissingInterface.ValidImplements"                  => "$sniffDir\MissingInterface\ValidImplementsSniff",
-            "$std.MissingInterface.ValidImplementsViaAbstract"       => "$sniffDir\MissingInterface\ValidImplementsViaAbstractSniff",
             "$std.SetProperty.AllowedAsDeclared"                     => "$sniffDir\SetProperty\AllowedAsDeclaredSniff",
             "$std.SetProperty.AllowedViaMagicMethod"                 => "$sniffDir\SetProperty\AllowedViaMagicMethodSniff",
             "$std.SetProperty.AllowedViaStdClass"                    => "$sniffDir\SetProperty\AllowedViaStdClassSniff",

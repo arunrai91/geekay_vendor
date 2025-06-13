@@ -1,6 +1,7 @@
 parameters:
     checkExplicitMixedMissingReturn: true
     checkPhpDocMissingReturn: true
+    reportUnmatchedIgnoredErrors: false
     scanDirectories:
         - %rootDir%/../../../dev/tests/static/framework/tests/unit/testsuite/Magento
         - %rootDir%/../../../dev/tests/integration/framework/tests/unit/testsuite/Magento
@@ -14,9 +15,11 @@ parameters:
     ignoreErrors:
         # Optional module deps
         -
-            message: '#^Caught class Elastic\\.*not found.#'
+            message: '#^Caught class (Elastic|Elasticsearch)\\.*not found.#'
             paths:
                 - Model/Client/Elasticsearch8/*
+                - Model/Client/Elasticsearch7/*
+                - Model/Search/Adapter.php
         -
             message: '#^.*getElasticsearchClient\(\) has invalid return type Elastic\\Elasticsearch\\Client.#'
             paths:
@@ -25,6 +28,15 @@ parameters:
             message: '#^Call to static method fromConfig\(\).*#'
             paths:
                 - Model/Client/Elasticsearch8/*
+        -
+            message: '#^.* unknown class (Elasticsearch|Elastic)\\.*#'
+            paths:
+                - Model/Client/Elasticsearch7/*
+                - Model/Search/Adapter.php
+        -
+            message: '#^.* has invalid return type Elasticsearch\\.*#'
+            paths:
+                - Model/Client/Elasticsearch7/*
 services:
     -
         class: Magento\PhpStan\Reflection\Php\DataObjectClassReflectionExtension

@@ -7,7 +7,13 @@
 
 namespace Amasty\ShopbyBase\Model\Category;
 
+use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Magento\Catalog\Model\Session as CatalogSession;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Registry;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class Manager extends \Magento\Framework\DataObject
@@ -17,41 +23,41 @@ class Manager extends \Magento\Framework\DataObject
     public const CATEGORY_SHOPBY_IMAGE_URL = 'amshopby_category_image_url';
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
-    protected $coreRegistry;
+    private Registry $coreRegistry;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
-    protected $storeManager;
+    private StoreManagerInterface $storeManager;
 
     /**
-     * @var \Magento\Catalog\Api\CategoryRepositoryInterface
+     * @var CategoryRepositoryInterface
      */
-    protected $categoryRepository;
+    private CategoryRepositoryInterface $categoryRepository;
 
     /**
-     * @var \Magento\Catalog\Model\Session
+     * @var CatalogSession
      */
-    protected $catalogSession;
+    private CatalogSession $catalogSession;
 
     /**
-     * @var \Magento\Framework\Event\ManagerInterface
+     * @var EventManager
      */
-    protected $eventManager;
+    private EventManager $eventManager;
 
     /**
      * @var LoggerInterface
      */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\Registry $coreRegistry,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
-        \Magento\Catalog\Model\Session $catalogSession,
+        Context $context,
+        Registry $coreRegistry,
+        StoreManagerInterface $storeManager,
+        CategoryRepositoryInterface $categoryRepository,
+        CatalogSession $catalogSession,
         LoggerInterface $logger,
         array $data = []
     ) {
@@ -120,7 +126,7 @@ class Manager extends \Magento\Framework\DataObject
     /**
      * @return bool|\Magento\Catalog\Api\Data\CategoryInterface
      */
-    protected function getCategoryModel()
+    private function getCategoryModel()
     {
         $categoryId = $this->getRootCategoryId();
         if (!$categoryId) {

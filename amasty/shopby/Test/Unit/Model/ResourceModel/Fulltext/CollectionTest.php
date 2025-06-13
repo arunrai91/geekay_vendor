@@ -44,7 +44,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     {
         $this->collection = $this->getMockBuilder(Collection::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getStoreId'])
+            ->onlyMethods(['getStoreId'])
             ->getMock();
         $scopeConfig = $this->createMock(\Magento\Framework\App\Config::class);
         $searchCriteriaBuilderProvider = $this->createMock(SearchCriteriaBuilderProvider::class);

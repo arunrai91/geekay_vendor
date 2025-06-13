@@ -7,7 +7,7 @@
  */-->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Amasty\ShopbyPage\Api\Data\PageInterface"
-                type="Amasty\ShopbyPage\Model\Data\Page" />
+                type="Amasty\ShopbyPage\Model\Page" />
     <preference for="Amasty\ShopbyPage\Api\PageRepositoryInterface"
                 type="Amasty\ShopbyPage\Model\ResourceModel\PageRepository" />
     <preference for="Amasty\ShopbyPage\Api\Data\PageSearchResultsInterface"
@@ -35,10 +35,6 @@
                 <item name="amCustomPage" xsi:type="object">Amasty\ShopbyPage\Model\Sitemap\ItemProvider\CustomPage</item>
             </argument>
         </arguments>
-    </type>
-
-    <type name="Magento\Sitemap\Model\Sitemap">
-        <plugin name="Amasty_ShopbyPage::add-paget-to-default_sitemap" type="Amasty\ShopbyPage\Plugin\XmlSitemap\Model\DefaultSitemap" />
     </type>
 
     <type name="Amasty\XmlSitemap\Model\Sitemap\SourceProvider">

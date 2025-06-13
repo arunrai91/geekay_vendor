@@ -7,21 +7,21 @@
 
 namespace Amasty\ShopbyBrand\Block\Adminhtml\Slider;
 
-use Magento\Backend\Block\Widget\Form\Container;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Container as WidgetContainer;
 
 /**
  * @api
  */
-class Edit extends Container
+class Edit extends WidgetContainer
 {
     /**
      * @return void
      */
     protected function _construct()
     {
-        $this->_objectId = 'option_setting_id';
+        $this->setObjectId('option_setting_id');
         $this->_controller = 'adminhtml_slider';
-        $this->_blockGroup = 'Amasty_ShopbyBrand';
+        $this->setBlockGroup('Amasty_ShopbyBrand');
         parent::_construct();
         $this->buttonList->add(
             'saveandcontinue',

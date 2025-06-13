@@ -20,10 +20,6 @@ class Data extends AbstractHelper
 {
     public const SHOPBY_MODULE_NAME = 'Amasty_Shopby';
 
-    public const SHOPBY_CATEGORY_INDEX = 'amasty_shopby_category_index';
-
-    public const SHOPBY_SEO_PARSED_PARAMS = 'amasty_shopby_seo_parsed_params';
-
     public const SHOPBY_BRAND_POPUP = 'shopby_brand_popup';
 
     public const SHOPBY_SWITCHER_STORE_ID = 'shopby_switcher_store_id';
@@ -110,7 +106,7 @@ class Data extends AbstractHelper
      */
     public function isEnableRelNofollow()
     {
-        /** @var ConfigProvider|DummyObject $seoHelper */
+        /** @var ConfigProvider|DummyObject $seoConfigProvider */
         $seoConfigProvider = $this->integrationFactory->get(ConfigProvider::class, true);
 
         return $seoConfigProvider->isEnableRelNofollow();

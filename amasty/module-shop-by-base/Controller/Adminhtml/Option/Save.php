@@ -14,6 +14,8 @@ use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\CatalogSearch\Model\Indexer\Fulltext;
 use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Controller\Result\Forward;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -24,7 +26,7 @@ use Psr\Log\LoggerInterface;
 class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option
 {
     /**
-     * @var  TypeListInterface
+     * @var TypeListInterface
      */
     private $cacheTypeList;
 
@@ -48,6 +50,11 @@ class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option
      */
     private $saveOptionSettings;
 
+    /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
     public function __construct(
         Action\Context $context,
         TypeListInterface $typeList,
@@ -62,6 +69,7 @@ class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option
         $this->optionSettingRepository = $optionSettingRepository;
         $this->indexerRegistry = $indexerRegistry;
         $this->saveOptionSettings = $saveOptionSettings;
+        $this->request = $context->getRequest();
     }
 
     /**
@@ -69,11 +77,11 @@ class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option
      */
     public function execute()
     {
-        $attributeCode = $this->getRequest()->getParam('attribute_code');
-        $optionId = (int)$this->getRequest()->getParam('option_id');
-        $storeId = (int)$this->getRequest()->getParam('store', Store::DEFAULT_STORE_ID);
+        $attributeCode = $this->request->getParam('attribute_code');
+        $optionId = (int)$this->request->getParam('option_id');
+        $storeId = (int)$this->request->getParam('store', Store::DEFAULT_STORE_ID);
 
-        if ($data = $this->getRequest()->getPostValue()) {
+        if ($data = $this->request->getPostValue()) {
             try {
                 $issetUrlAlias = isset($data['url_alias']) && $data['url_alias'];
                 if ($issetUrlAlias && !$this->isUniqueAlias($data['url_alias'], $optionId)) {
@@ -81,8 +89,8 @@ class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option
                         __('A brand with the same URL alias already exists. Please enter a unique value.')
                     );
 
-                    if ($this->getRequest()->isAjax()) {
-                        return $this->_redirectRefer();
+                    if ($this->request->isAjax()) {
+                        return $this->redirectRefer();
                     } else {
                         return $this->redirectBack($attributeCode, $optionId, $storeId);
                     }
@@ -99,7 +107,7 @@ class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option
                 $this->messageManager->addSuccessMessage(__('You saved the item.'));
                 $this->_session->setPageData(false);
 
-                if ($this->getRequest()->getParam('back')) {
+                if ($this->request->getParam('back')) {
                     return $this->redirectBack($attributeCode, $optionId, $storeId);
                 }
             } catch (LocalizedException $e) {
@@ -113,7 +121,7 @@ class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option
             }
         }
 
-        return $this->_redirectRefer();
+        return $this->redirectRefer();
     }
 
     private function redirectBack(string $attributeCode, int $optionId, int $storeId): Redirect
@@ -132,9 +140,9 @@ class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option
         return $resultRedirect;
     }
 
-    protected function _redirectRefer()
+    public function redirectRefer()
     {
-        /** @var Redirect $resultRedirect */
+        /** @var Forward $resultForward */
         $resultForward = $this->resultFactory->create(ResultFactory::TYPE_FORWARD);
 
         return $resultForward->forward('settings');
@@ -145,7 +153,7 @@ class Save extends \Amasty\ShopbyBase\Controller\Adminhtml\Option
      *
      * @return array
      */
-    protected function filterData($data)
+    public function filterData($data)
     {
         $data[OSInterface::TOP_CMS_BLOCK_ID] = ($data[OSInterface::TOP_CMS_BLOCK_ID] ?? null) ?: null;
         $data[OSInterface::BOTTOM_CMS_BLOCK_ID] = ($data[OSInterface::BOTTOM_CMS_BLOCK_ID] ?? null) ?: null;

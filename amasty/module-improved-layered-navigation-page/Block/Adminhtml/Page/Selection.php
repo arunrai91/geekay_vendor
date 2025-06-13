@@ -7,33 +7,35 @@
 
 namespace Amasty\ShopbyPage\Block\Adminhtml\Page;
 
+use Amasty\ShopbyPage\Model\Request\Page\Registry as PageRegistry;
 use Magento\Framework\View\Element\Template;
-use Amasty\ShopbyPage\Controller\RegistryConstants;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Framework\Registry;
 
 /**
  * @api
  */
 class Selection extends Template
 {
-    /** @var Registry */
-    protected $_coreRegistry;
+    /**
+     * @var PageRegistry
+     */
+    private PageRegistry $pageRegistry;
 
-    public function __construct(
-        Context $context,
-        Registry $registry,
-        $data = []
-    ) {
-        $this->_coreRegistry = $registry;
-        parent::__construct($context, $data);
-    }
     /**
      * Path to template file in theme.
      *
      * @var string
      */
     protected $_template = 'selection.phtml';
+
+    public function __construct(
+        PageRegistry $pageRegistry,
+        Context $context,
+        array $data = []
+    ) {
+        parent::__construct($context, $data);
+        $this->pageRegistry = $pageRegistry;
+    }
 
     /**
      * Get attribute values url
@@ -59,7 +61,7 @@ class Selection extends Template
     public function getCounter()
     {
         /** @var \Amasty\ShopbyPage\Model\Page $model */
-        $model = $this->_coreRegistry->registry(RegistryConstants::PAGE);
+        $model = $this->pageRegistry->get();
         $conditions = $model->getConditions();
 
         return $conditions && !is_string($conditions) ? count($conditions) : 0;

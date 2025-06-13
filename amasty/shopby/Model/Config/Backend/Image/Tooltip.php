@@ -8,6 +8,7 @@
 namespace Amasty\Shopby\Model\Config\Backend\Image;
 
 use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Driver\File as FileDriver;
 
 class Tooltip extends \Magento\Config\Model\Config\Backend\Image
 {
@@ -20,22 +21,10 @@ class Tooltip extends \Magento\Config\Model\Config\Backend\Image
     public const DEFAULT_VALUE = 'amasty/shopby/images/tooltip.png';
 
     /**
-     * @var  Filesystem\Driver\File
+     * @var FileDriver
      */
-    protected $fileDriver;
+    private FileDriver $fileDriver;
 
-    /**
-     * @param \Magento\Framework\Model\Context                                           $context
-     * @param \Magento\Framework\Registry                                                $registry
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface                         $config
-     * @param \Magento\Framework\App\Cache\TypeListInterface                             $cacheTypeList
-     * @param \Magento\MediaStorage\Model\File\UploaderFactory                           $uploaderFactory
-     * @param \Magento\Config\Model\Config\Backend\File\RequestData\RequestDataInterface $requestData
-     * @param Filesystem                                                                 $filesystem
-     * @param \Magento\Framework\Model\ResourceModel\AbstractResource                    $resource
-     * @param \Magento\Framework\Data\Collection\AbstractDb                              $resourceCollection
-     * @param array                                                                      $data
-     */
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
@@ -44,9 +33,9 @@ class Tooltip extends \Magento\Config\Model\Config\Backend\Image
         \Magento\MediaStorage\Model\File\UploaderFactory $uploaderFactory,
         \Magento\Config\Model\Config\Backend\File\RequestData\RequestDataInterface $requestData,
         Filesystem $filesystem,
-        Filesystem\Driver\File $file,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        FileDriver $file,
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->fileDriver = $file;
@@ -144,7 +133,7 @@ class Tooltip extends \Magento\Config\Model\Config\Backend\Image
     /**
      * @throws \Magento\Framework\Exception\FileSystemException
      */
-    protected function deleteOldFile()
+    private function deleteOldFile()
     {
         $absoluteOldPath = $this->_mediaDirectory->getAbsolutePath($this->getOldValue());
         if ($this->getOldValue() != 'amasty/shopby/images/tooltip.png' && $this->fileDriver->isFile($absoluteOldPath)) {

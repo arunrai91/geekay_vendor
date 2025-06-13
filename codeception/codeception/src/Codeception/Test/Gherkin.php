@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\ScenarioInterface;
 use Behat\Gherkin\Node\ScenarioNode;
 use Behat\Gherkin\Node\StepNode;
 use Behat\Gherkin\Node\TableNode;
+use Codeception\Lib\Di;
 use Codeception\Lib\Generator\GherkinSnippets;
 use Codeception\Scenario;
 use Codeception\Step\Comment;
@@ -17,8 +18,9 @@ use Codeception\Test\Interfaces\Reported;
 use Codeception\Test\Interfaces\ScenarioDriven;
 use Exception;
 
-use function array_keys;
 use function array_merge;
+use function array_pop;
+use function array_shift;
 use function basename;
 use function call_user_func_array;
 use function count;
@@ -33,11 +35,8 @@ class Gherkin extends Test implements ScenarioDriven, Reported
 {
     protected Scenario $scenario;
 
-    public function __construct(
-        protected FeatureNode $featureNode,
-        protected ScenarioInterface $scenarioNode,
-        protected array $steps = []
-    ) {
+    public function __construct(protected FeatureNode $featureNode, protected ScenarioInterface $scenarioNode, protected array $steps = [])
+    {
         $this->setMetadata(new Metadata());
         $this->scenario = new Scenario($this);
         $this->getMetadata()->setName($this->scenarioNode->getTitle());
@@ -52,13 +51,21 @@ class Gherkin extends Test implements ScenarioDriven, Reported
 
     public function preload(): void
     {
-        $metadata = $this->getMetadata();
-        $metadata->setGroups(array_merge($this->featureNode->getTags(), $this->scenarioNode->getTags()));
+        $this->getMetadata()->setGroups($this->featureNode->getTags());
+        $this->getMetadata()->setGroups($this->scenarioNode->getTags());
         $this->scenario->setMetaStep(null);
-        $this->processSteps([$this, 'validateStep']);
 
-        if ($incomplete = rtrim((string) $metadata->getIncomplete(), "\n")) {
-            $metadata->setIncomplete($incomplete . "\nRun gherkin:snippets to define missing steps");
+        if (($background = $this->featureNode->getBackground()) !== null) {
+            foreach ($background->getSteps() as $step) {
+                $this->validateStep($step);
+            }
+        }
+
+        foreach ($this->scenarioNode->getSteps() as $step) {
+            $this->validateStep($step);
+        }
+        if ($this->getMetadata()->getIncomplete()) {
+            $this->getMetadata()->setIncomplete($this->getMetadata()->getIncomplete() . "\nRun gherkin:snippets to define missing steps");
         }
     }
 
@@ -70,100 +77,123 @@ class Gherkin extends Test implements ScenarioDriven, Reported
     public function test(): void
     {
         $this->makeContexts();
-        foreach (explode("\n", (string)$this->featureNode->getDescription()) as $line) {
-            $this->scenario->runStep(new Comment($line));
+        $description = explode("\n", (string)$this->featureNode->getDescription());
+        foreach ($description as $line) {
+            $this->getScenario()->runStep(new Comment($line));
         }
-        $this->processSteps([$this, 'runStep']);
-    }
 
-    private function processSteps(callable $callback): void
-    {
-        if ($background = $this->featureNode->getBackground()) {
-            array_map($callback, $background->getSteps());
+        if (($background = $this->featureNode->getBackground()) !== null) {
+            foreach ($background->getSteps() as $step) {
+                $this->runStep($step);
+            }
         }
-        array_map($callback, $this->scenarioNode->getSteps());
+
+        foreach ($this->scenarioNode->getSteps() as $step) {
+            $this->runStep($step);
+        }
     }
 
     protected function validateStep(StepNode $stepNode): void
     {
-        $text = $stepNode->getText() . (GherkinSnippets::stepHasPyStringArgument($stepNode) ? ' ""' : '');
-        $metadata = $this->getMetadata();
-
-        $matchedPatterns = array_filter(
-            array_keys($this->steps),
-            fn(string $pattern): bool => preg_match($pattern, $text) === 1
-        );
-
-        if ($matchedPatterns === []) {
-            $metadata->setIncomplete(
-                ($metadata->getIncomplete() ?? '')
-                . "\nStep definition for `{$text}` not found in contexts"
-            );
-        } elseif (count($matchedPatterns) > 1) {
-            $defs = array_map(
-                fn(string $pattern): string => "- {$pattern} ({$this->contextAsString($this->steps[$pattern])})",
-                $matchedPatterns
-            );
-            $metadata->setIncomplete(
-                ($metadata->getIncomplete() ?? '')
-                . "\nAmbiguous step: `{$text}` matches multiple definitions:\n"
-                . implode("\n", $defs)
+        $stepText = $stepNode->getText();
+        if (GherkinSnippets::stepHasPyStringArgument($stepNode)) {
+            $stepText .= ' ""';
+        }
+        $matches = [];
+        foreach ($this->steps as $pattern => $context) {
+            $res = preg_match($pattern, $stepText);
+            if (!$res) {
+                continue;
+            }
+            $matches[$pattern] = $context;
+        }
+        if ($matches === []) {
+            // There were no matches, meaning that the user should first add a step definition for this step
+            $incomplete = $this->getMetadata()->getIncomplete();
+            $this->getMetadata()->setIncomplete("{$incomplete}\nStep definition for `{$stepText}` not found in contexts");
+        }
+        if (count($matches) > 1) {
+            // There were more than one match, meaning that we don't know which step definition to execute for this step
+            $incomplete = $this->getMetadata()->getIncomplete();
+            $matchingDefinitions = [];
+            foreach ($matches as $pattern => $context) {
+                $matchingDefinitions[] = '- ' . $pattern . ' (' . self::contextAsString($context) . ')';
+            }
+            $this->getMetadata()->setIncomplete(
+                "{$incomplete}\nAmbiguous step: `{$stepText}` matches multiple definitions:\n"
+                . implode("\n", $matchingDefinitions)
             );
         }
+    }
+
+    private function contextAsString($context): string
+    {
+        if (is_array($context) && count($context) === 2) {
+            [$class, $method] = $context;
+
+            if (is_string($class) && is_string($method)) {
+                return $class . ':' . $method;
+            }
+        }
+
+        return var_export($context, true);
     }
 
     protected function runStep(StepNode $stepNode): void
     {
-        $text = $stepNode->getText() . (GherkinSnippets::stepHasPyStringArgument($stepNode) ? ' ""' : '');
         $params = [];
-        if ($stepNode->hasArguments() && $stepNode->getArguments()[0] instanceof TableNode) {
-            $params[] = $stepNode->getArguments()[0]->getTableAsString();
+        if ($stepNode->hasArguments()) {
+            $args = $stepNode->getArguments();
+            $table = $args[0];
+            if ($table instanceof TableNode) {
+                $params = [$table->getTableAsString()];
+            }
         }
         $meta = new Meta($stepNode->getText(), $params);
         $meta->setPrefix($stepNode->getKeyword());
-        $this->scenario->setMetaStep($meta);
-        $this->scenario->comment('');
 
+        $this->scenario->setMetaStep($meta); // enable metastep
+        $stepText = $stepNode->getText();
+        $hasPyStringArg = GherkinSnippets::stepHasPyStringArgument($stepNode);
+        if ($hasPyStringArg) {
+            // pretend it is inline argument
+            $stepText .= ' ""';
+        }
+        $this->getScenario()->comment(''); // make metastep to be printed even if no steps in it
         foreach ($this->steps as $pattern => $context) {
-            if (!preg_match($pattern, $text, $matches)) {
+            $matches = [];
+            if (!preg_match($pattern, $stepText, $matches)) {
                 continue;
             }
-            $args = array_slice($matches, 1);
-            if (GherkinSnippets::stepHasPyStringArgument($stepNode)) {
-                array_pop($args);
+            array_shift($matches);
+            if ($hasPyStringArg) {
+                // get rid off last fake argument
+                array_pop($matches);
             }
             if ($stepNode->hasArguments()) {
-                $args = array_merge($args, $stepNode->getArguments());
+                $matches = array_merge($matches, $stepNode->getArguments());
             }
-            call_user_func_array($context, $args);
+            call_user_func_array($context, $matches); // execute the step
             break;
         }
-
-        $this->scenario->setMetaStep(null);
+        $this->scenario->setMetaStep(null); // disable metastep
     }
 
     protected function makeContexts(): void
     {
+        /** @var Di $di */
         $di = $this->getMetadata()->getService('di');
-        $di->set($this->scenario);
-        if ($actor = $this->getMetadata()->getCurrent('actor')) {
-            $di->instantiate($actor);
-        }
-        foreach ($this->steps as $pattern => &$step) {
-            $di->instantiate($step[0]);
-            $step[0] = $di->get($step[0]);
-        }
-    }
+        $di->set($this->getScenario());
 
-    private function contextAsString(mixed $context): string
-    {
-        if (is_array($context) && count($context) === 2) {
-            [$class, $method] = $context;
-            if (is_string($class) && is_string($method)) {
-                return "{$class}:{$method}";
-            }
+        $actorClass = $this->getMetadata()->getCurrent('actor');
+        if ($actorClass) {
+            $di->instantiate($actorClass);
         }
-        return var_export($context, true);
+
+        foreach ($this->steps as $pattern => $step) {
+            $di->instantiate($step[0]);
+            $this->steps[$pattern][0] = $di->get($step[0]);
+        }
     }
 
     public function toString(): string
@@ -218,9 +248,9 @@ class Gherkin extends Test implements ScenarioDriven, Reported
     public function getReportFields(): array
     {
         return [
-            'name'    => $this->toString(),
+            'name' => $this->toString(),
             'feature' => $this->getFeature(),
-            'file'    => $this->getFileName(),
+            'file' => $this->getFileName(),
         ];
     }
 }

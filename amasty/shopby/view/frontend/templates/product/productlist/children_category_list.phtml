@@ -32,7 +32,7 @@ $swiperPrefix = $block->isSliderEnabled() ? 'swiper-' : '';
                  <?php if ($block->isSliderEnabled()): ?>
                  data-mage-init='{"amShopbySwiperSlider":{
                     "slidesPerView": 1,
-                    "loop": true,
+                    "loop": <?= $escaper->escapeJs($block->isCategoryInfinityLoop() ? 'true' : 'false') ?>,
                     "simulateTouch": true,
                     "breakpoints": {
                         "320": {

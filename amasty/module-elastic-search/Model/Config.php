@@ -41,7 +41,7 @@ class Config
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         ?Config\QuerySettings $querySettingsOld = null, // @deprecated TODO delete
-        QuerySettingsProcessor $querySettings = null // TODO move to not optional
+        ?QuerySettingsProcessor $querySettings = null // TODO move to not optional
     ) {
         $this->scopeConfig = $scopeConfig;
         // OM for backward compatibility

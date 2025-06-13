@@ -31,22 +31,21 @@ class AdditionalDataMapper
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @param $subject
-     * @param callable $proceed
+     * @param array $document
      * @param $productId
      * @param array $indexData
      * @param $storeId
      * @param array $context
      * @return array
      */
-    public function aroundMap(
+    public function afterMap(
         $subject,
-        callable $proceed,
+        array $document,
         $productId,
         array $indexData,
         $storeId,
         $context = []
     ): array {
-        $document = $proceed($productId, $indexData, $storeId, $context);
         $context['document'] = $document;
         foreach ($this->dataMappers as $mapper) {
             if ($mapper instanceof DataMapperInterface

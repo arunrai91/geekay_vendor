@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="xtento_orderexport_log_grid_block"/>
+    <body>
+        <referenceContainer name="page.content">
+            <block before="page_main_actions" class="Xtento\OrderExport\Block\Adminhtml\Widget\Menu" name="orderexport.menu"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Xtento\OrderExport\Block\Adminhtml\Log" name="adminhtml.orderexport.log.grid.container"/>
+        </referenceContainer>
+    </body>
+</page>
+
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            %!uniqueid!%
+ * Last Modified: 2016-03-02T21:07:01+00:00
+ * File:          view/adminhtml/layout/xtento_orderexport_log_index.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

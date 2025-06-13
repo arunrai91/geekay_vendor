@@ -68,8 +68,8 @@ class UpgradeTo210 implements OperationInterface
         ResourceConnection $resource,
         File $driverFile,
         SampleDataContext $sampleDataContext,
-        FlagManager $flagManager = null,
-        LoggerInterface $logger = null
+        ?FlagManager $flagManager = null,
+        ?LoggerInterface $logger = null
     ) {
         $this->connection = $resource->getConnection();
         $this->resource = $resource;

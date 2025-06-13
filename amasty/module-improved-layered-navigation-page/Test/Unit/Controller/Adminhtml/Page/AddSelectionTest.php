@@ -49,7 +49,7 @@ class AddSelectionTest extends \PHPUnit\Framework\TestCase
             AddSelection::class,
             [
                 'context' => $context,
-                '_catalogConfig' => $catalogConfig,
+                'catalogConfig' => $catalogConfig,
             ]
         );
     }

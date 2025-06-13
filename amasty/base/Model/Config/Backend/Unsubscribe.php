@@ -8,6 +8,8 @@
 namespace Amasty\Base\Model\Config\Backend;
 
 use Amasty\Base\Model\Source\NotificationType;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
 
 class Unsubscribe extends \Magento\Framework\App\Config\Value implements
     \Magento\Framework\App\Config\Data\ProcessorInterface
@@ -31,8 +33,8 @@ class Unsubscribe extends \Magento\Framework\App\Config\Value implements
         \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
         \Amasty\Base\Model\AdminNotification\Messages $messageManager,
         NotificationType $notificationType,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        AbstractResource $resource,
+        AbstractDb $resourceCollection,
         array $data = []
     ) {
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
@@ -81,7 +83,7 @@ class Unsubscribe extends \Magento\Framework\App\Config\Value implements
         return $value;
     }
 
-    protected function generateMessage($change)
+    private function generateMessage($change)
     {
         $message = '';
         $titles = $this->notificationType->toOptionArray();

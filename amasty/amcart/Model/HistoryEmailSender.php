@@ -14,16 +14,12 @@ use Amasty\Acart\Api\BlacklistRepositoryInterface;
 use Amasty\Acart\Api\Data\HistoryInterface;
 use Amasty\Acart\Api\HistoryRepositoryInterface;
 use Amasty\Acart\Api\RuleQuoteRepositoryInterface;
-use Amasty\Acart\Model\Mail\MessageBuilder\MessageBuilder;
-use Amasty\Acart\Model\Mail\MessageBuilder\MessageBuilderFactory;
 use Amasty\Acart\Model\Mail\TemplateBuilder;
 use Amasty\Acart\Model\Mail\TrackingPixelModifier;
 use Amasty\Acart\Model\ResourceModel\Inventory;
+use Amasty\Base\Utils\Email\TransportBuilder;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NotFoundException;
-use Magento\Framework\Mail\MessageFactory;
-use Magento\Framework\Mail\MessageInterface;
-use Magento\Framework\Mail\TransportInterfaceFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Newsletter\Model\ResourceModel\Subscriber\Collection;
@@ -53,16 +49,6 @@ class HistoryEmailSender
      * @var DateTime
      */
     private $dateTime;
-
-    /**
-     * @var TransportInterfaceFactory
-     */
-    private $mailTransportFactory;
-
-    /**
-     * @var MessageFactory
-     */
-    private $messageFactory;
 
     /**
      * @var QuoteFactory
@@ -110,32 +96,27 @@ class HistoryEmailSender
     private $registry;
 
     /**
-     * @var MessageBuilder|null
+     * @var TransportBuilder
      */
-    private $messageBuilder;
+    private $transportBuilder;
 
     public function __construct(
         TemplateBuilder $templateBuilder,
         DateTime\DateTime $date,
         DateTime $dateTime,
-        TransportInterfaceFactory $mailTransportFactory,
-        MessageFactory $messageFactory,
         QuoteFactory $quoteFactory,
         ConfigProvider $configProvider,
         Collection $newsletterSubscriberCollection,
-        MessageBuilderFactory $messageBuilderFactory,
-        ?UrlManager $urlManager, // deprecated.
         HistoryRepositoryInterface $historyRepository,
         BlacklistRepositoryInterface $blacklistRepository,
         Inventory $inventory,
         TrackingPixelModifier $trackingPixelModifier,
         RuleQuoteRepositoryInterface $ruleQuoteRepository,
-        Registry $registry
+        Registry $registry,
+        TransportBuilder $transportBuilder
     ) {
         $this->date = $date;
         $this->dateTime = $dateTime;
-        $this->mailTransportFactory = $mailTransportFactory;
-        $this->messageFactory = $messageFactory;
         $this->quoteFactory = $quoteFactory;
         $this->configProvider = $configProvider;
         $this->newsletterSubscriberCollection = $newsletterSubscriberCollection;
@@ -145,8 +126,8 @@ class HistoryEmailSender
         $this->trackingPixelModifier = $trackingPixelModifier;
         $this->ruleQuoteRepository = $ruleQuoteRepository;
         $this->registry = $registry;
-        $this->messageBuilder = $messageBuilderFactory->create();
         $this->templateBuilder = $templateBuilder;
+        $this->transportBuilder = $transportBuilder;
     }
 
     /**
@@ -395,55 +376,25 @@ class HistoryEmailSender
             $this->registry->register('mp_smtp_store_id', $storeId);
         }
 
-        $name = [
-            $history->getCustomerFirstname(),
-            $history->getCustomerLastname(),
-        ];
-        $message = $this->messageFactory->create();
-        $message->addTo($toEmail, implode(' ', $name));
-        $message->setSubject($emailSubject);
-
-        if (method_exists($message, 'setFromAddress')) {
-            $message->setFromAddress($senderEmail, $senderName);
-        } else {
-            $message->setFrom($senderEmail, $senderName);
-        }
-
         $emailBody = $this->trackingPixelModifier->execute(
             $history->getPublicKey() ?? '',
             $emailBody,
             (int)$history->getStoreId()
         );
-        if (method_exists($message, 'setBodyHtml')) {
-            $message->setBodyHtml($emailBody);
-        } else {
-            $message->setBody($emailBody)
-                ->setMessageType(MessageInterface::TYPE_HTML);
+        $name = implode(' ', [$history->getCustomerFirstname(), $history->getCustomerLastname()]);
+        foreach ($toEmail as $reciever) {
+            $this->transportBuilder->setBodyHtml($emailBody)
+                ->setSubject($emailSubject)
+                ->addTo($reciever, $name)
+                ->setFromByScope(['email' => $senderEmail, 'name' => $senderName], $storeId);
+            if ($replyToEmail) {
+                $this->transportBuilder->setReplyTo($replyToEmail);
+            }
+            if ($bcc) {
+                $this->transportBuilder->addBcc($bcc);
+            }
+            $this->transportBuilder->getTransport()->sendMessage();
         }
-
-        if ($replyToEmail) {
-            $message->setReplyTo($replyToEmail);
-        }
-
-        if ($bcc) {
-            $message->addBcc($bcc);
-        }
-
-        if (method_exists($message, 'setPartsToBody')) {
-            $message->setPartsToBody();
-        }
-
-        // This is a compatibility fill for the implemented EmailMessageInterface in Magento 2.3.3.
-        if ($this->messageBuilder) {
-            $message = $this->messageBuilder->build($message);
-        }
-
-        $mailTransport = $this->mailTransportFactory->create(
-            [
-                'message' => $message
-            ]
-        );
-        $mailTransport->sendMessage();
 
         if ($isSetMpSmtpStoreId === null) {
             $this->registry->unregister('mp_smtp_store_id');

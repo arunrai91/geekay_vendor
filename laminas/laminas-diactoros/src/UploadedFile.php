@@ -44,7 +44,7 @@ class UploadedFile implements UploadedFileInterface
         UPLOAD_ERR_EXTENSION  => 'A PHP extension stopped the file upload.',
     ];
 
-    private readonly int $error;
+    private int $error;
 
     private ?string $file = null;
 
@@ -58,10 +58,10 @@ class UploadedFile implements UploadedFileInterface
      */
     public function __construct(
         $streamOrFile,
-        private readonly ?int $size,
+        private ?int $size,
         int $errorStatus,
-        private readonly ?string $clientFilename = null,
-        private readonly ?string $clientMediaType = null
+        private ?string $clientFilename = null,
+        private ?string $clientMediaType = null
     ) {
         if ($errorStatus === UPLOAD_ERR_OK) {
             if (is_string($streamOrFile)) {

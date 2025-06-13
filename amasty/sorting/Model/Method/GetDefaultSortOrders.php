@@ -61,7 +61,7 @@ class GetDefaultSortOrders
      * @param int|null $storeId
      * @return array ['attributeCode' => 'direction', ...]
      */
-    public function execute(string $pageType, int $storeId = null): array
+    public function execute(string $pageType, ?int $storeId = null): array
     {
         $sortOrders = [];
 

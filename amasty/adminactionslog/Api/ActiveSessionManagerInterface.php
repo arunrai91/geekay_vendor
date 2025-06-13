@@ -16,7 +16,7 @@ interface ActiveSessionManagerInterface
 
     public function update(): void;
 
-    public function terminate(string $sessionId = null): void;
+    public function terminate(?string $sessionId = null): void;
 
     public function getInactiveSessions(): array;
 

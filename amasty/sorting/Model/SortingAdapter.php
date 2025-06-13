@@ -7,6 +7,8 @@
 
 namespace Amasty\Sorting\Model;
 
+use Amasty\Sorting\Api\MethodInterface;
+
 /**
  * Class SortingAdapter
  * adapter of @see \Magento\Eav\Model\Entity\Attribute
@@ -22,13 +24,13 @@ class SortingAdapter extends \Magento\Framework\DataObject
     private $helper;
 
     /**
-     * @var \Amasty\Sorting\Api\MethodInterface
+     * @var MethodInterface
      */
     private $methodModel;
 
     public function __construct(
         \Amasty\Sorting\Helper\Data $helper,
-        \Amasty\Sorting\Api\MethodInterface $methodModel = null,
+        ?MethodInterface $methodModel = null,
         array $data = []
     ) {
         $this->helper = $helper;
@@ -92,7 +94,7 @@ class SortingAdapter extends \Magento\Framework\DataObject
     }
 
     /**
-     * @param \Amasty\Sorting\Api\MethodInterface $methodModel
+     * @param MethodInterface $methodModel
      *
      * @return $this
      */
@@ -103,7 +105,7 @@ class SortingAdapter extends \Magento\Framework\DataObject
     }
 
     /**
-     * @return \Amasty\Sorting\Api\MethodInterface
+     * @return MethodInterface
      */
     public function getMethodModel()
     {
@@ -130,7 +132,7 @@ class SortingAdapter extends \Magento\Framework\DataObject
     {
         return $this->getAttributeCode();
     }
-    
+
     /**
      * @return bool
      */

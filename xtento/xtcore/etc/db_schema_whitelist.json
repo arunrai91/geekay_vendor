@@ -1,0 +1,13 @@
+{
+    "xtento_xtcore_config_data": {
+        "column": {
+            "config_id": true,
+            "path": true,
+            "value": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "XTENTO_XTCORE_CONFIG_DATA_PATH": true
+        }
+    }
+}

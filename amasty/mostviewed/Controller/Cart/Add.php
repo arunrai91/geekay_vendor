@@ -136,7 +136,7 @@ class Add extends \Magento\Checkout\Controller\Cart\Add
         CustomMessageManager $customMessageManager,
         IsProductHasRequiredOptions $isProductHasRequiredOptions,
         Cart $cartHelper,
-        LocalizedToNormalized $localizedToNormalized = null
+        ?LocalizedToNormalized $localizedToNormalized = null
     ) {
         parent::__construct(
             $context,

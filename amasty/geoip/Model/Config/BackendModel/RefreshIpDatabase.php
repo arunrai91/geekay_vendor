@@ -34,8 +34,8 @@ class RefreshIpDatabase extends Value
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
         LicenseValidatorClient $licenseValidatorClient,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->licenseValidatorClient = $licenseValidatorClient;

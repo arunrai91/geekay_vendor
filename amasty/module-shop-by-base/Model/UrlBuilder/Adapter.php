@@ -47,7 +47,7 @@ class Adapter implements \Amasty\ShopbyBase\Api\UrlBuilder\AdapterInterface
         return $this->urlBuilder->getBaseUrl($params);
     }
 
-    public function isApplicable(string $routePath = null, array $routeParams = null): bool
+    public function isApplicable(?string $routePath = null, ?array $routeParams = null): bool
     {
         return true;
     }

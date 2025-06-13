@@ -14,43 +14,42 @@ use Amasty\Shopby\Model\Layer\GetSelectedFiltersSettings as SelectedFiltersSetti
 use Amasty\ShopbyBase\Model\Integration\Shopby\GetSelectedFiltersSettings;
 use Amasty\ShopbyBase\Model\Integration\Shopby\IsBrandPage;
 use Amasty\ShopbyBase\Model\Integration\ShopbySeo\GetConfigProvider;
-use Amasty\ShopbySeo\Helper\Meta;
+use Amasty\ShopbyBase\Model\Integration\ShopbySeo\Request\GetRobotsRegistry;
 use Amasty\ShopbySeo\Model\ConfigProvider;
 use Amasty\ShopbySeo\Model\Source\IndexMode;
-use Magento\Framework\Registry;
 
 class IsAddNofollow
 {
     /**
      * @var ConfigProvider|null
      */
-    private $seoConfigProvider;
+    private ?ConfigProvider $seoConfigProvider;
 
     /**
      * @var SelectedFiltersSettings|null
      */
-    private $selectedFiltersSettings;
+    private ?SelectedFiltersSettings $selectedFiltersSettings;
 
     /**
      * @var IsBrandPage
      */
-    private $isBrandPage;
+    private IsBrandPage $isBrandPage;
 
     /**
-     * @var Registry
+     * @var GetRobotsRegistry
      */
-    private $registry;
+    private GetRobotsRegistry $getRobotsRegistry;
 
     public function __construct(
         GetConfigProvider $getConfigProvider,
         GetSelectedFiltersSettings $getSelectedFiltersSettings,
         IsBrandPage $isBrandPage,
-        Registry $registry
+        GetRobotsRegistry $getRobotsRegistry
     ) {
         $this->seoConfigProvider = $getConfigProvider->execute();
         $this->selectedFiltersSettings = $getSelectedFiltersSettings->execute();
         $this->isBrandPage = $isBrandPage;
-        $this->registry = $registry;
+        $this->getRobotsRegistry = $getRobotsRegistry;
     }
 
     public function execute(int $relNofollow, int $followMode): bool
@@ -70,7 +69,12 @@ class IsAddNofollow
 
     private function isPageNofollow(): bool
     {
-        return strpos((string) $this->registry->registry(Meta::AMSHOPBYSEO_FOLLOW), 'nofollow') !== false;
+        $robotsRegistry = $this->getRobotsRegistry->execute();
+        if ($robotsRegistry === null) {
+            return false;
+        }
+
+        return strpos((string)$robotsRegistry->get(), 'nofollow') !== false;
     }
 
     private function isNofollowByMode(int $followMode): bool

@@ -8,6 +8,7 @@
 namespace Amasty\ShopbyBase\Test\Unit\Helper;
 
 use Amasty\ShopbyBase\Helper\Meta;
+use Amasty\ShopbyBase\Model\Request\PageTitleRegistry;
 use Amasty\ShopbyBase\Test\Unit\Traits;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -40,7 +41,7 @@ class MetaTest extends \PHPUnit\Framework\TestCase
     private $metaHelper;
 
     /**
-     * @var \Magento\Framework\Registry|MockObject
+     * @var PageTitleRegistry|MockObject
      */
     private $registry;
 
@@ -56,10 +57,10 @@ class MetaTest extends \PHPUnit\Framework\TestCase
             ->getMockForAbstractClass();
 
         $this->pageConfig = $this->createMock(\Magento\Framework\View\Page\Config::class);
-        $this->registry = $this->createMock(\Magento\Framework\Registry::class);
+        $this->registry = $this->createMock(PageTitleRegistry::class);
 
         $this->setProperty($this->metaHelper, 'pageConfig', $this->pageConfig, Meta::class);
-        $this->setProperty($this->metaHelper, 'registry', $this->registry, Meta::class);
+        $this->setProperty($this->metaHelper, 'pageTitleRegistry', $this->registry, Meta::class);
     }
 
     /**
@@ -68,7 +69,7 @@ class MetaTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetOriginPageMetaTitle($metaValue, $regVal, $expected)
     {
-        $this->registry->expects($this->any())->method('registry')
+        $this->registry->expects($this->any())->method('get')
             ->willReturn($regVal);
         $category = $this->getObjectManager()->getObject(
             \Magento\Catalog\Model\Category::class

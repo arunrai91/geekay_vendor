@@ -21,6 +21,8 @@ use Amasty\Shopby\Model\Source\RenderCategoriesTree;
 use Amasty\Shopby\Model\Source\SubcategoriesExpand;
 use Amasty\Shopby\Model\Source\SubcategoriesView;
 use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form as WidgetForm;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Element\ElementCreator;
 use Amasty\ShopbyBase\Block\Widget\Form\Element\Dependence;
 use Amasty\Shopby\Helper\FilterSetting as FilterSettingHelper;
 use Amasty\ShopbyBase\Model\FilterSetting;
@@ -52,7 +54,7 @@ use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Swatches\Model\Swatch;
 
-class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
+class Shopby extends WidgetForm
 {
     public const MAX_ATTRIBUTE_OPTIONS_COUNT = 500;
 
@@ -66,107 +68,107 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
     /**
      * @var Yesno
      */
-    protected $yesNo;
+    private $yesNo;
 
     /**
      * @var  DisplayMode
      */
-    protected $displayMode;
+    private $displayMode;
 
     /**
      * @var  MeasureUnit
      */
-    protected $measureUnitSource;
+    private $measureUnitSource;
 
     /**
      * @var  MultipleValuesLogic
      */
-    protected $multipleValuesLogic;
+    private $multipleValuesLogic;
 
     /**
      * @var  FilterSetting
      */
-    protected $setting;
+    private $setting;
 
     /**
      * @var Attribute $attributeObject
      */
-    protected $attributeObject;
+    private $attributeObject;
 
     /**
      * @var SortOptionsBy
      */
-    protected $sortOptionsBy;
+    private $sortOptionsBy;
 
     /**
      * @var ShowProductQuantities
      */
-    protected $showProductQuantities;
+    private $showProductQuantities;
 
     /**
      * @var CategoryTreeDisplayMode
      */
-    protected $categoryTreeDisplayMode;
+    private $categoryTreeDisplayMode;
 
     /**
      * @var FieldFactory
      */
-    protected $dependencyFieldFactory;
+    private $dependencyFieldFactory;
 
     /**
      * @var VisibleInCategory
      */
-    protected $visibleInCategory;
+    private $visibleInCategory;
 
     /**
      * @var CategorySource
      */
-    protected $categorySource;
+    private $categorySource;
 
     /**
      * @var AttributeSource
      */
-    protected $attributeSource;
+    private $attributeSource;
 
     /**
      * @var AttributeOptionSource
      */
-    protected $attributeOptionSource;
+    private $attributeOptionSource;
 
     /**
      * @var FilterPlacedBlock
      */
-    protected $filterPlacedBlockSource;
+    private $filterPlacedBlockSource;
 
     /**
      * @var SubcategoriesView
      */
-    protected $subcategoriesViewSource;
+    private $subcategoriesViewSource;
 
     /**
      * @var SubcategoriesExpand
      */
-    protected $subcategoriesExpandSource;
+    private $subcategoriesExpandSource;
 
     /**
      * @var RenderCategoriesLevel
      */
-    protected $renderCategoriesLevelSource;
+    private $renderCategoriesLevelSource;
 
     /**
      * @var FilterSettingHelper
      */
-    protected $filterSettingHelper;
+    private $filterSettingHelper;
 
     /**
      * @var RenderCategoriesTree
      */
-    protected $renderCategoriesTreeSource;
+    private $renderCategoriesTreeSource;
 
     /**
      * @var PositionLabel
      */
-    protected $positionLabelSource;
+    private $positionLabelSource;
 
     /**
      * @var Expand
@@ -191,9 +193,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
     private $rangeAlgorithmSource;
 
     public function __construct(
-        Context $context,
         Registry $registry,
-        FormFactory $formFactory,
         Yesno $yesNo,
         DisplayMode $displayMode,
         CategorySource $categorySource,
@@ -218,6 +218,9 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
         Json $serializer,
         ConfigProvider $configProvider,
         RangeAlgorithmSource $rangeAlgorithmSource,
+        FormFactory $formFactory,
+        ElementCreator $creator,
+        Context $context,
         array $data = []
     ) {
         $this->yesNo = $yesNo;
@@ -244,9 +247,9 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
         $this->expandSource = $expandSource;
         $this->visibleInCategory = $visibleInCategory;
         $this->serializer = $serializer;
-        parent::__construct($context, $registry, $formFactory, $data);
         $this->configProvider = $configProvider;
         $this->rangeAlgorithmSource = $rangeAlgorithmSource;
+        parent::__construct($formFactory, $creator, $context, $data);
     }
 
     private function addDisplayModeField(Fieldset $fieldsetDisplayProperties, Dependence $dependence): ?AbstractElement
@@ -655,7 +658,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
     private function addBlockPositionField(
         Fieldset $fieldsetDisplayProperties,
         Dependence $dependence
-    ): ?AbstractElement {
+    ): AbstractElement {
         $blockPosition = $fieldsetDisplayProperties->addField(
             'block_position',
             'select',
@@ -717,7 +720,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
             FilterPlacedBlock::POSITION_BOTH
         );
 
-        return $blockPosition ?? null;
+        return $blockPosition;
     }
 
     private function addSortOptionsField(
@@ -759,14 +762,14 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
         }
         $dependence->addFieldToGroup($sortOptionsByField->getName(), DisplayMode::ATTRUBUTE_DEFAULT);
 
-        return $sortOptionsByField ?? null;
+        return $sortOptionsByField;
     }
 
     private function addProductQuantitiesField(
         Fieldset $fieldsetDisplayProperties,
         Dependence $dependence,
         ?AbstractElement $displayModeField
-    ): ?AbstractElement {
+    ): AbstractElement {
         $showProductQuantitiesField = $fieldsetDisplayProperties->addField(
             'show_product_quantities',
             'select',
@@ -800,7 +803,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
             );
         }
 
-        return $showProductQuantitiesField ?? null;
+        return $showProductQuantitiesField;
     }
 
     private function addSearchBoxField(
@@ -808,7 +811,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
         Dependence $dependence,
         ?AbstractElement $displayModeField,
         $displayModeDependence
-    ): ?AbstractElement {
+    ): AbstractElement {
         $showSearchBoxField = $fieldsetDisplayProperties->addField(
             'is_show_search_box',
             'select',
@@ -833,16 +836,16 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
             );
         }
 
-        return $showSearchBoxField ?? null;
+        return $showSearchBoxField;
     }
 
     private function addLimitOptionsField(
         Fieldset $fieldsetDisplayProperties,
         Dependence $dependence,
         ?AbstractElement $displayModeField,
-        ?AbstractElement $showSearchBoxField,
+        AbstractElement $showSearchBoxField,
         $displayModeDependence
-    ): ?AbstractElement {
+    ): AbstractElement {
         $showSearchBoxFieldIfManyOptions = $fieldsetDisplayProperties->addField(
             'limit_options_show_search_box',
             'text',
@@ -875,14 +878,14 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
             );
         }
 
-        return $showSearchBoxFieldIfManyOptions ?? null;
+        return $showSearchBoxFieldIfManyOptions;
     }
 
     private function addNumberUnfoldedoptionsField(
         Fieldset $fieldsetDisplayProperties,
         Dependence $dependence,
         ?AbstractElement $displayModeField
-    ): ?AbstractElement {
+    ): AbstractElement {
         $numberUnfoldedOptionsField = $fieldsetDisplayProperties->addField(
             'number_unfolded_options',
             'text',
@@ -916,14 +919,14 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
             );
         }
 
-        return $numberUnfoldedOptionsField ?? null;
+        return $numberUnfoldedOptionsField;
     }
 
     private function addIsExpandedField(
         Fieldset $fieldsetDisplayProperties,
         Dependence $dependence,
-        ?AbstractElement $blockPosition
-    ): ?AbstractElement {
+        AbstractElement $blockPosition
+    ): AbstractElement {
         $isExpand = $fieldsetDisplayProperties->addField(
             'is_expanded',
             'select',
@@ -958,14 +961,14 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
             )
         );
 
-        return $isExpand ?? null;
+        return $isExpand;
     }
 
     private function addIsMultiselectField(
         Fieldset $fieldsetFiltering,
         Dependence $dependence,
         ?AbstractElement $displayModeField
-    ): ?AbstractElement {
+    ): AbstractElement {
         if ($this->attributeObject->getAttributeCode() == Category::ATTRIBUTE_CODE) {
             $multiselectNote = __(
                 'When multiselect option is disabled it follows the category page '
@@ -1007,12 +1010,12 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
             );
         }
 
-        return $multiselectField ?? null;
+        return $multiselectField;
     }
 
     private function addTooltipField(
         Fieldset $fieldsetDisplayProperties
-    ): ?AbstractElement {
+    ): AbstractElement {
         $toolTip = $fieldsetDisplayProperties->addField(
             'tooltip',
             'text',
@@ -1028,7 +1031,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
                 ->setName('tooltip')
         );
 
-        return $toolTip ?? null;
+        return $toolTip;
     }
 
     private function addIsUseAndLogicField(
@@ -1096,10 +1099,10 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
     /**
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    protected function _prepareForm()
+    public function prepareForm(): Shopby
     {
         /** @var Form $form */
-        $form = $this->_formFactory->create(
+        $form = $this->getDataFormFactory()->create(
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
         );
 
@@ -1115,7 +1118,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
             ]
         );
 
-        /** @var  $dependence Dependence */
+        /** @var Dependence $dependence */
         $dependence = $this->getLayout()->createBlock(Dependence::class);
 
         $fieldsetDisplayProperties = $form->addFieldset(
@@ -1183,7 +1186,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
         $this->addIsShowIconsField($fieldsetDisplayProperties);
         $this->modifyFormData($dependence, $form);
 
-        return parent::_prepareForm();
+        return parent::prepareForm();
     }
 
     private function modifyFormData(Dependence $dependence, Form $form)
@@ -1225,7 +1228,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
      * @param Dependence $dependence
      * @return Fieldset
      */
-    protected function addCategoriesVisibleFilter(
+    private function addCategoriesVisibleFilter(
         Fieldset $fieldsetDisplayProperties,
         Dependence $dependence
     ) {
@@ -1283,7 +1286,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
      * @return Fieldset
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function addDependentFiltersFilter(Fieldset $fieldsetDisplayProperties)
+    private function addDependentFiltersFilter(Fieldset $fieldsetDisplayProperties)
     {
         $attributesFilter = $fieldsetDisplayProperties->addField(
             'attributes_filter',
@@ -1341,7 +1344,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
      * @param Fieldset $fieldsetDisplayProperties
      * @param Dependence $dependence
      */
-    protected function addCategorySettingFields(
+    private function addCategorySettingFields(
         Fieldset $fieldsetDisplayProperties,
         Dependence $dependence
     ) {
@@ -1507,7 +1510,7 @@ class Shopby extends \Magento\Backend\Block\Widget\Form\Generic
         );
     }
 
-    protected function prepareFilterSetting()
+    private function prepareFilterSetting()
     {
         if ($this->attributeObject->getId()) {
             $filterCode = $this->attributeObject->getAttributeCode();

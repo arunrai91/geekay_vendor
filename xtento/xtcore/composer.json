@@ -1,0 +1,33 @@
+{
+    "name": "xtento/xtcore",
+    "description": "XTENTO Core Module",
+    "require": {
+        "php": "~8.1.0|~8.2.0|~8.3.0|~8.4.0",
+        "magento/framework": "^103.0",
+        "magento/module-backend": "^102.0"
+    },
+    "type": "magento2-module",
+    "version": "2.21.0",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Xtento\\XtCore\\": ""
+        }
+    },
+    "authors": [
+        {
+            "name": "XTENTO GmbH & Co. KG",
+            "email": "info@xtento.com",
+            "homepage": "http://www.xtento.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "info@xtento.com"
+    }
+}

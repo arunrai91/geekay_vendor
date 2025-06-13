@@ -7,11 +7,16 @@
 
 namespace Amasty\ShopbyPage\Controller\Adminhtml\Page;
 
+use Amasty\ShopbyPage\Model\Page;
+use Amasty\ShopbyPage\Model\Page\ImagesManager;
 use Magento\Backend\App\Action;
 use Amasty\ShopbyPage\Api\Data\PageInterfaceFactory;
 use Amasty\ShopbyPage\Api\PageRepositoryInterface;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\Session;
 use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\Api\ExtensibleDataObjectConverter;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\File\Uploader;
 
@@ -20,34 +25,53 @@ class Save extends Action
     /**
      * @var PageInterfaceFactory
      */
-    protected $pageDataFactory;
+    private PageInterfaceFactory $pageDataFactory;
 
     /**
      * @var PageRepositoryInterface
      */
-    protected $pageRepository;
+    private PageRepositoryInterface $pageRepository;
 
     /**
      * @var DataObjectHelper
      */
-    protected $dataObjectHelper;
+    private DataObjectHelper $dataObjectHelper;
 
     /**
      * @var ExtensibleDataObjectConverter
      */
-    protected $extensibleDataObjectConverter;
+    private ExtensibleDataObjectConverter $extensibleDataObjectConverter;
+
+    /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
+    /**
+     * @var ImagesManager
+     */
+    private ImagesManager $imagesManager;
+
+    /**
+     * @var Session
+     */
+    private Session $session;
 
     public function __construct(
-        Action\Context $context,
+        Context $context,
         PageInterfaceFactory $pageDataFactory,
         PageRepositoryInterface $pageRepository,
         DataObjectHelper $dataObjectHelper,
-        ExtensibleDataObjectConverter $extensibleDataObjectConverter
+        ExtensibleDataObjectConverter $extensibleDataObjectConverter,
+        ImagesManager $imagesManager
     ) {
         $this->pageDataFactory = $pageDataFactory;
         $this->pageRepository = $pageRepository;
         $this->dataObjectHelper = $dataObjectHelper;
         $this->extensibleDataObjectConverter = $extensibleDataObjectConverter;
+        $this->imagesManager = $imagesManager;
+        $this->session = $context->getSession();
+        $this->request = $context->getRequest();
 
         parent::__construct($context);
     }
@@ -67,13 +91,14 @@ class Save extends Action
      */
     public function execute()
     {
-        $data = $this->getRequest()->getPostValue();
-        $id = $this->getRequest()->getParam('page_id', false);
+        $data = $this->request->getPostValue();
+        $id = $this->request->getParam('page_id', false);
 
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
             try {
+                /** @var Page $pageData */
                 $pageData = $this->pageDataFactory->create();
 
                 if ($id) {
@@ -97,13 +122,16 @@ class Save extends Action
 
                 $this->validateConditions($data);
 
-                if (isset($data['image_delete'])) {
-                    $pageData->removeImage();
+                if (isset($data['image_delete']) && $pageData->getImage()) {
+                    $this->imagesManager->removeImage($pageData->getImage());
                     $pageData->setImage(null);
                 }
 
                 try {
-                    $imageName = $pageData->uploadImage('image');
+                    $imageName = $this->imagesManager->uploadImage('image');
+                    if ($pageData->getImage()) {
+                        $this->imagesManager->removeImage($pageData->getImage());
+                    }
                     $pageData->setImage($imageName);
                 } catch (\Exception $e) {
                     if ($e->getCode() != Uploader::TMP_NAME_EMPTY) {
@@ -115,7 +143,7 @@ class Save extends Action
 
                 $this->messageManager->addSuccessMessage(__('You saved this page.'));
                 $this->_session->setFormData(false);
-                if ($this->getRequest()->getParam('back')) {
+                if ($this->request->getParam('back')) {
                     return $resultRedirect->setPath('*/*/edit', ['id' => $pageData->getPageId(), '_current' => true]);
                 }
 
@@ -128,7 +156,7 @@ class Save extends Action
                 $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the page.'));
             }
 
-            $this->_getSession()->setFormData($data);
+            $this->session->setFormData($data);
 
             if ($id) {
                 return $resultRedirect->setPath('*/*/edit', ['id' => $id]);
@@ -145,7 +173,7 @@ class Save extends Action
      *
      * @throws LocalizedException
      */
-    protected function validateConditions(array $data)
+    private function validateConditions(array $data)
     {
         if (!isset($data['conditions'])) {
             throw new LocalizedException(__('Please select the Filter Conditions'));

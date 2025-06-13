@@ -96,4 +96,9 @@
                 type="Amasty\ShopbyBrand\Plugin\Framework\Search\Request\Config\FilesystemReader\AddBrandSearchRequest"
                 sortOrder="9999"/>
     </type>
+
+    <type name="Amasty\ShopbySeo\Model\SeoOptionsModifier\UniqueBuilder">
+        <plugin name="Amasty_ShopbyBrand::CheckUniqueWithBrandAliases"
+                type="Amasty\ShopbyBrand\Plugin\ShopbySeo\Model\SeoOptionsModifier\UniqueBuilder\CheckUniqueWithBrandAliases"/>
+    </type>
 </config>

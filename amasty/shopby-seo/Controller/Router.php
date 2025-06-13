@@ -16,7 +16,6 @@ use Amasty\ShopbySeo\Helper\Url;
 use Amasty\ShopbySeo\Helper\UrlParser;
 use Amasty\ShopbySeo\Model\UrlRewrite\IsExist as IsUrlRewriteExist;
 use Magento\Framework\App\ActionInterface;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\RequestInterface;
 use Magento\Store\Model\ScopeInterface;
 
@@ -62,16 +61,15 @@ class Router implements \Magento\Framework\App\RouterInterface
         Url $urlHelper,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         Data $helper,
-        NonSlashRedirectManager $nonSlashRedirectManager = null,
-        IsUrlRewriteExist $isUrlRewriteExist = null // TODO move to not optional
+        NonSlashRedirectManager $nonSlashRedirectManager,
+        IsUrlRewriteExist $isUrlRewriteExist
     ) {
         $this->urlHelper = $urlHelper;
         $this->urlParser = $urlParser;
         $this->scopeConfig = $scopeConfig;
         $this->helper = $helper;
-        $this->nonSlashRedirectManager = $nonSlashRedirectManager
-            ?? ObjectManager::getInstance()->get(NonSlashRedirectManager::class);
-        $this->isUrlRewriteExist = $isUrlRewriteExist ?? ObjectManager::getInstance()->get(IsUrlRewriteExist::class);
+        $this->nonSlashRedirectManager = $nonSlashRedirectManager;
+        $this->isUrlRewriteExist = $isUrlRewriteExist;
     }
 
     /**
@@ -221,6 +219,13 @@ class Router implements \Magento\Framework\App\RouterInterface
      */
     public function skipRequest(RequestInterface $request)
     {
+        if ($request->isXmlHttpRequest()
+            && !$request->getParam('shopbyAjax')
+            && !$request->getParam('is_scroll')
+        ) {
+            return true;
+        }
+
         return !$this->helper->isAllowedRequest($request, true);
     }
 

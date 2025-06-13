@@ -108,7 +108,7 @@ class AdditionalFieldMapper
     /**
      * @param mixed $subject
      * @param callable $proceed
-     * @param BucketInterface $bucket
+     * @param string $fieldName
      * @return string
      */
     public function aroundMapFieldName($subject, callable $proceed, $fieldName)

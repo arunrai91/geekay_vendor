@@ -7,17 +7,12 @@
 
 namespace Amasty\ShopbyPage\Block\Adminhtml\Page\Edit;
 
-class Form extends \Magento\Backend\Block\Widget\Form\Generic
+class Form extends \Amasty\ShopbyBase\Block\Adminhtml\Widget\Form
 {
-    /**
-     * Prepare form
-     *
-     * @return $this
-     */
-    protected function _prepareForm()
+    public function prepareForm(): Form
     {
         /** @var \Magento\Framework\Data\Form $form */
-        $form = $this->_formFactory->create(
+        $form = $this->getDataFormFactory()->create(
             ['data' => [
                 'id' => 'edit_form',
                 'action' => $this->getData('action'),
@@ -29,6 +24,6 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
 
         $this->setForm($form);
 
-        return parent::_prepareForm();
+        return parent::prepareForm();
     }
 }

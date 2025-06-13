@@ -7,21 +7,22 @@
 
 namespace Amasty\ShopbyBase\Plugin\View\Page;
 
+use Amasty\ShopbyBase\Model\Request\PageTitleRegistry;
+
 /**
  * Save category meta title (!without prefixes and suffixes) for further use in customizers.
  */
 class Title
 {
-    public const PAGE_META_TITLE_MAIN_PART = 'am_meta_title_main_part';
-
     /**
-     * @var \Magento\Framework\Registry
+     * @var PageTitleRegistry
      */
-    private $registry;
+    private PageTitleRegistry $pageTitleRegistry;
 
-    public function __construct(\Magento\Framework\Registry $registry)
-    {
-        $this->registry = $registry;
+    public function __construct(
+        PageTitleRegistry $pageTitleRegistry
+    ) {
+        $this->pageTitleRegistry = $pageTitleRegistry;
     }
 
     /**
@@ -30,7 +31,7 @@ class Title
      */
     public function beforeSet(\Magento\Framework\View\Page\Title $subject, $title)
     {
-        $this->registry->register(self::PAGE_META_TITLE_MAIN_PART, $title, true);
+        $this->pageTitleRegistry->set($title, true);
     }
 
     /**
@@ -38,6 +39,6 @@ class Title
      */
     public function beforeUnsetValue(\Magento\Framework\View\Page\Title $subject)
     {
-        $this->registry->register(self::PAGE_META_TITLE_MAIN_PART, '', true);
+        $this->pageTitleRegistry->set('', true);
     }
 }

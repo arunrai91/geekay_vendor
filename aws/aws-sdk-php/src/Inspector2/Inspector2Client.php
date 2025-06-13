@@ -51,8 +51,6 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise getCisScanReportAsync(array $args = [])
  * @method \Aws\Result getCisScanResultDetails(array $args = [])
  * @method \GuzzleHttp\Promise\Promise getCisScanResultDetailsAsync(array $args = [])
- * @method \Aws\Result getClustersForImage(array $args = [])
- * @method \GuzzleHttp\Promise\Promise getClustersForImageAsync(array $args = [])
  * @method \Aws\Result getConfiguration(array $args = [])
  * @method \GuzzleHttp\Promise\Promise getConfigurationAsync(array $args = [])
  * @method \Aws\Result getDelegatedAdminAccount(array $args = [])

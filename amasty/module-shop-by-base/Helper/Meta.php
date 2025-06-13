@@ -7,32 +7,32 @@
 
 namespace Amasty\ShopbyBase\Helper;
 
-use Amasty\ShopbyBase\Plugin\View\Page\Title;
-use Magento\Framework\Registry;
+use Amasty\ShopbyBase\Model\Request\PageTitleRegistry;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Catalog\Model\Category;
+use Magento\Framework\View\Page\Config as PageConfig;
 
 class Meta extends AbstractHelper
 {
     /**
-     * @var Registry
+     * @var PageConfig
      */
-    private $registry;
+    private PageConfig $pageConfig;
 
     /**
-     * @var \Magento\Framework\View\Page\Config
+     * @var PageTitleRegistry
      */
-    private $pageConfig;
+    private PageTitleRegistry $pageTitleRegistry;
 
     public function __construct(
         Context $context,
-        Registry $registry,
-        \Magento\Framework\View\Page\Config $pageConfig
+        PageConfig $pageConfig,
+        PageTitleRegistry $pageTitleRegistry
     ) {
         parent::__construct($context);
-        $this->registry = $registry;
         $this->pageConfig = $pageConfig;
+        $this->pageTitleRegistry = $pageTitleRegistry;
     }
 
     /**
@@ -43,7 +43,7 @@ class Meta extends AbstractHelper
     public function getOriginPageMetaTitle(Category $category)
     {
         return $category->getData('meta_title')
-            ?: (string)$this->registry->registry(Title::PAGE_META_TITLE_MAIN_PART);
+            ?: (string)$this->pageTitleRegistry->get();
     }
 
     /**

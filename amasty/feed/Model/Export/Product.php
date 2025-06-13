@@ -24,6 +24,7 @@ use Amasty\Feed\Model\Export\RowCustomizer\Relation;
 use Amasty\Feed\Model\InventoryResolver;
 use Amasty\Feed\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Catalog\Model\Category\StoreCategories;
+use Magento\Catalog\Model\Product as ProductEntity;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\LinkTypeProvider;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
@@ -33,6 +34,7 @@ use Magento\Catalog\Model\ResourceModel\Product\Option\CollectionFactory as Prod
 use Magento\Catalog\Model\ResourceModel\ProductFactory;
 use Magento\CatalogImportExport\Model\Export\Product as ProductBase;
 use Magento\CatalogImportExport\Model\Export\Product\Type\Factory as TypeFactory;
+use Magento\CatalogImportExport\Model\Import\Product as ImportProduct;
 use Magento\CatalogInventory\Model\ResourceModel\Stock\ItemFactory;
 use Magento\CatalogInventory\Model\StockRegistry;
 use Magento\Eav\Model\Config;
@@ -43,6 +45,7 @@ use Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory as At
 use Magento\Framework\App\Area;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\ImportExport\Model\Export;
 use Magento\ImportExport\Model\Export\ConfigInterface;
 use Magento\ImportExport\Model\Import;
 use Magento\Store\Model\App\Emulation;
@@ -216,8 +219,8 @@ class Product extends ProductBase
         FeedAttributesStorageFactory $attributesStorageFactory,
         AttributesCache $attributesCache,
         Emulation $emulation,
-        FeedInterface $feedProfile = null,
-        int $storeId = null
+        ?FeedInterface $feedProfile = null,
+        ?int $storeId = null
     ) {
         $this->rowCustomizerComposite = $rowCustomizerFactory->create();
         $this->collectionAmastyFactory = $collectionAmastyFactory;
@@ -323,10 +326,10 @@ class Product extends ProductBase
                 ['eq' => Status::STATUS_ENABLED]
             );
         }
-        $parentsData = $this->getExportData();
 
         $this->rowCustomizerComposite->setIsParentExport(true);
         $this->rowCustomizerComposite->setStoreId((int)$this->storeId);
+        $parentsData = $this->getExportData();
         $this->rowCustomizerComposite->setIsParentExport(false);
 
         return $parentsData;
@@ -498,33 +501,115 @@ class Product extends ProductBase
     }
 
     /**
-     * Overriding original method to reproduce missed $this->userDefinedAttributes processing logic part
-     * Original method is using private property so we can't restore it from cache in initAttributes() method
+     * Overriding original method to reproduce datetime attributes processing
+     * Original method is using private properties so we can't restore it from cache in initAttributes() method
      * @see self::initAttributes()
+     *
+     * @return array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * phpcs:disable Generic.Metrics.NestingLevel
      */
     protected function collectRawData(): array
     {
-        $rawData = parent::collectRawData();
+        $data = [];
+        $items = $this->loadCollection();
 
-        $datetimeUserAttributes = array_intersect(
-            array_keys($this->_attributeTypes, 'datetime'),
-            $this->userDefinedAttributes
-        );
-        foreach ($rawData as &$productData) {
-            foreach ($productData as &$dataRow) {
-                foreach (array_intersect(array_keys($dataRow), $datetimeUserAttributes) as $datetimeAttribute) {
-                    $dataRow[$datetimeAttribute] = $this->_localeDate->formatDateTime(
-                        new \DateTime($dataRow[$datetimeAttribute]),
-                        \IntlDateFormatter::SHORT,
-                        \IntlDateFormatter::NONE,
-                        null,
-                        date_default_timezone_get()
-                    );
+        /**
+         * @var ProductEntity[] $itemByStore
+         */
+        foreach ($items as $itemId => $itemByStore) {
+            foreach ($this->_storeIdToCode as $storeId => $storeCode) {
+                $item = $itemByStore[$storeId];
+                $additionalAttributes = [];
+                $productLinkId = $item->getData($this->getProductEntityLinkField());
+                foreach ($this->_getExportAttrCodes() as $code) {
+                    $attrValue = $item->getData($code);
+                    if (!$this->isValidAttributeValue($code, $attrValue)) {
+                        continue;
+                    }
+                    if (isset($this->_attributeValues[$code][$attrValue]) && !empty($this->_attributeValues[$code])) {
+                        $attrValue = $this->_attributeValues[$code][$attrValue];
+                    }
+                    $fieldName = $this->_fieldsMap[$code] ?? $code;
+
+                    if ($this->_attributeTypes[$code] === 'datetime') {
+                        if (in_array($code, $this->dateAttrCodes, true)
+                            || in_array($code, $this->userDefinedAttributes, true)
+                        ) {
+                            $attrValue = $this->_localeDate->formatDateTime(
+                                new \DateTime($attrValue),
+                                \IntlDateFormatter::SHORT,
+                                \IntlDateFormatter::NONE,
+                                null,
+                                date_default_timezone_get()
+                            );
+                        } else {
+                            $attrValue = $this->_localeDate->formatDateTime(
+                                new \DateTime($attrValue)
+                            );
+                        }
+                    }
+
+                    if ($storeId !== Store::DEFAULT_STORE_ID
+                        && isset($data[$itemId][Store::DEFAULT_STORE_ID][$fieldName])
+                        && $data[$itemId][Store::DEFAULT_STORE_ID][$fieldName] === htmlspecialchars_decode($attrValue)
+                    ) {
+                        continue;
+                    }
+
+                    if ($this->_attributeTypes[$code] !== 'multiselect') {
+                        if (is_scalar($attrValue)) {
+                            if (!in_array($fieldName, $this->_getExportMainAttrCodes(), true)) {
+                                $additionalAttributes[$fieldName] = $fieldName .
+                                    ImportProduct::PAIR_NAME_VALUE_SEPARATOR . $this->wrapValue($attrValue);
+                            }
+                            $data[$itemId][$storeId][$fieldName] = htmlspecialchars_decode($attrValue);
+                        }
+                    } else {
+                        $this->collectMultiselectValues($item, $code, $storeId);
+                        if (!empty($this->collectedMultiselectsData[$storeId][$productLinkId][$code])) {
+                            $additionalAttributes[$code] = $fieldName .
+                                ImportProduct::PAIR_NAME_VALUE_SEPARATOR . implode(
+                                    ImportProduct::PSEUDO_MULTI_LINE_SEPARATOR,
+                                    $this->wrapValue($this->collectedMultiselectsData[$storeId][$productLinkId][$code])
+                                );
+                        }
+                    }
                 }
+
+                if (!empty($additionalAttributes)) {
+                    $additionalAttributes = array_map('htmlspecialchars_decode', $additionalAttributes);
+                    $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] =
+                        implode(Import::DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR, $additionalAttributes);
+                } else {
+                    unset($data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES]);
+                }
+                $attrSetId = $item->getAttributeSetId();
+                $data[$itemId][$storeId][self::COL_STORE] = $storeCode;
+                $data[$itemId][$storeId][self::COL_ATTR_SET] = $this->_attrSetIdToName[$attrSetId];
+                $data[$itemId][$storeId][self::COL_TYPE] = $item->getTypeId();
+                $data[$itemId][$storeId][self::COL_SKU] = htmlspecialchars_decode($item->getSku());
+                $data[$itemId][$storeId]['store_id'] = $storeId;
+                $data[$itemId][$storeId]['product_id'] = $itemId;
+                $data[$itemId][$storeId]['product_link_id'] = $productLinkId;
             }
         }
 
-        return $rawData;
+        return $data;
+    }
+    //phpcs:enable Generic.Metrics.NestingLevel
+
+    private function wrapValue($value)
+    {
+        if (!empty($this->_parameters[Export::FIELDS_ENCLOSURE])) {
+            $wrap = static function ($value) {
+                return sprintf('"%s"', $value !== null ? str_replace('"', '""', $value) : '');
+            };
+            $value = is_array($value) ? array_map($wrap, $value) : $wrap($value);
+        }
+
+        return $value;
     }
 
     /**

@@ -10,6 +10,7 @@ namespace Amasty\Shopby\Model\Category\Attribute\Frontend;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Directory\WriteInterface;
 use Magento\Framework\View\Asset\Repository;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -23,59 +24,59 @@ class Image
     public const IMAGE_RESIZER_CACHE_DIR = self::IMAGE_RESIZER_DIR . DIRECTORY_SEPARATOR . DirectoryList::CACHE;
 
     /**
-     * @var imageAdapterFactory
+     * @var ImageAdapterFactory
      */
-    protected $imageAdapterFactory;
+    private ImageAdapterFactory $imageAdapterFactory;
 
     /**
      * @var string
      */
-    protected $relativeFilename;
+    private $relativeFilename;
 
     /**
      * @var int
      */
-    protected $width;
+    private $width;
 
     /**
      * @var int
      */
-    protected $height;
+    private $height;
 
     /**
-     * @var Filesystem\Directory\WriteInterface
+     * @var WriteInterface
      */
-    protected $fileSystem;
+    private WriteInterface $fileSystem;
 
     /**
      * @var Repository
      */
-    protected $assetRepo;
+    private Repository $assetRepo;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    private StoreManagerInterface $storeManager;
 
     /**
      * @var string
      */
-    protected $placeholder;
+    private string $placeholder;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    private LoggerInterface $logger;
 
     /**
      * @var File
      */
-    protected $fileIo;
+    private File $fileIo;
 
     /**
      * @var ScopeConfigInterface
      */
-    private $scopeConfig;
+    private ScopeConfigInterface $scopeConfig;
 
     public function __construct(
         Filesystem $fileSystem,
@@ -132,7 +133,7 @@ class Image
      * @param string $imageName
      * @return string
      */
-    protected function buildUrl($imageName)
+    private function buildUrl($imageName)
     {
         return $this->storeManager->getStore()->getBaseUrl(
             \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
@@ -145,7 +146,7 @@ class Image
      * @param int $height
      * @return bool|string
      */
-    protected function resizeAndGetUrl($imageUrl, $width = null, $height = null)
+    private function resizeAndGetUrl($imageUrl, $width = null, $height = null)
     {
         $resultUrl = $imageUrl;
         $this->initRelativeFilenameFromUrl($imageUrl);
@@ -174,7 +175,7 @@ class Image
      * @param string $imageUrl
      * @return bool|mixed|string
      */
-    protected function initRelativeFilenameFromUrl($imageUrl)
+    private function initRelativeFilenameFromUrl($imageUrl)
     {
         $this->relativeFilename = false;
         $storeUrl = $this->storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
@@ -192,7 +193,7 @@ class Image
      * @param int $height
      * @return void
      */
-    protected function initSize($width, $height)
+    private function initSize($width, $height)
     {
         $this->width = $width;
         $this->height = ($height === null ? $width : $height);
@@ -203,7 +204,7 @@ class Image
      *
      * @return bool
      */
-    protected function resizeAndSaveImage()
+    private function resizeAndSaveImage()
     {
         if (!$this->width || !$this->height) {
             return false;
@@ -228,7 +229,7 @@ class Image
      *
      * @return bool|string
      */
-    protected function getResizedImageUrl()
+    private function getResizedImageUrl()
     {
         $relativePath = $this->getRelativePathResizedImage();
         if ($this->fileSystem->isFile($relativePath)) {
@@ -242,7 +243,7 @@ class Image
      *
      * @return string
      */
-    protected function getAbsolutePathResized()
+    private function getAbsolutePathResized()
     {
         return $this->fileSystem->getAbsolutePath($this->getRelativePathResizedImage());
     }
@@ -252,7 +253,7 @@ class Image
      *
      * @return string
      */
-    protected function getAbsolutePathOriginal()
+    private function getAbsolutePathOriginal()
     {
         return $this->fileSystem->getAbsolutePath($this->relativeFilename);
     }
@@ -264,7 +265,7 @@ class Image
      *
      * @return string
      */
-    protected function getRelativePathResizedImage()
+    private function getRelativePathResizedImage()
     {
         $pathInfo = $this->fileIo->getPathInfo($this->relativeFilename);
         if (!isset($pathInfo['basename']) || !isset($pathInfo['dirname'])) {
@@ -284,7 +285,7 @@ class Image
      *
      * @return string
      */
-    protected function getResizeSubFolderName()
+    private function getResizeSubFolderName()
     {
         $subPath = $this->width . "x" . $this->height;
         return $subPath;

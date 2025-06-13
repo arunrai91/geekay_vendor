@@ -12,7 +12,6 @@ namespace Amasty\Shopby\Helper;
 
 use Amasty\ShopbyBase\Helper\FilterSetting as BaseFilterSetting;
 use Amasty\ShopbyBase\Model\FilterSetting\FilterResolver;
-use Amasty\ShopbyBase\Model\FilterSettingFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\View\Element\BlockFactory;
 use Magento\Store\Model\ScopeInterface;
@@ -30,18 +29,17 @@ class FilterSetting extends BaseFilterSetting
     private $scopeConfig;
 
     public function __construct(
-        FilterSettingFactory $settingFactory,
         FilterResolver $filterResolver,
         ScopeConfigInterface $scopeConfig,
         BlockFactory $blockFactory
     ) {
-        parent::__construct($settingFactory, $filterResolver, $scopeConfig);
+        parent::__construct($filterResolver, $scopeConfig);
         $this->blockFactory = $blockFactory;
         $this->scopeConfig = $scopeConfig;
     }
 
     /**
-     * @return string
+     * @return \Magento\Framework\View\Element\BlockInterface
      */
     public function getShowMoreButtonBlock($setting)
     {

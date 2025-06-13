@@ -14,8 +14,6 @@
                 type="Amasty\Shopby\Block\Navigation\SwatchRenderer"/>
     <preference for="Magento\LayeredNavigation\Block\Navigation\State"
                 type="Amasty\Shopby\Block\Navigation\State"/>
-    <preference for="Magento\CatalogSearch\Model\Adapter\Mysql\Plugin\Aggregation\Category\DataProvider"
-                type="Amasty\Shopby\Plugin\Aggregation\Category\DataProvider"/>
     <preference for="Amasty\Shopby\Model\UrlResolver\UrlResolverInterface"
                 type="Amasty\Shopby\Model\UrlResolver\ClearUrlResolver"/>
 
@@ -289,11 +287,6 @@
         </arguments>
     </type>
 
-    <type name="Magento\Framework\Search\Adapter\Mysql\Aggregation\Builder\Dynamic">
-        <plugin name="Amasty_Shopby::changeAggregationForSliders"
-                type="Amasty\Shopby\Plugin\Framework\Search\Adapter\Mysql\Aggregation\Builder\Dynamic\BuildDynamicAggregations"/>
-    </type>
-
     <!-- needed to be executed after Mirasvit's one -->
     <type name="Magento\Framework\Search\Request\Config\FilesystemReader">
         <plugin name="Amasty_Shopby::UseAndLogicFields"
@@ -452,5 +445,15 @@
         <arguments>
             <argument name="urlBuilder" xsi:type="object">Amasty\ShopbyBase\Model\CacheableUrlBuilder</argument>
         </arguments>
+    </type>
+
+    <type name="Amasty\ShopbyBase\Model\FilterSetting\IsMultiselect">
+        <plugin name="Amasty_Shopby::ValidateMultiselectOnAllProducts"
+                type="Amasty\Shopby\Plugin\ShopbyBase\Model\FilterSetting\IsMultiselect\ValidateMultiselectOnAllProducts" />
+    </type>
+
+    <type name="Amasty\ShopbySeo\Model\UrlRewrite\IsExist">
+        <plugin name="Amasty_Shopby::CheckWithCachedData"
+                type="Amasty\Shopby\Plugin\ShopbySeo\Model\UrlRewrite\IsExist\CheckWithCachedData"/>
     </type>
 </config>

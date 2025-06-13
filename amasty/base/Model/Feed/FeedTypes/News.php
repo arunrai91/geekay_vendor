@@ -28,7 +28,7 @@ class News
     /**
      * @var array
      */
-    protected $amastyModules = [];
+    private $amastyModules = [];
 
     /**
      * @var Config
@@ -165,7 +165,7 @@ class News
      *
      * @return bool
      */
-    protected function isItemValid(\SimpleXMLElement $item): bool
+    private function isItemValid(\SimpleXMLElement $item): bool
     {
         return $this->validateByExtension((string)$item->extension)
             && $this->validateByAmastyCount($item->amasty_module_qty)
@@ -178,7 +178,7 @@ class News
     /**
      * @return string
      */
-    protected function getCurrentEdition(): string
+    private function getCurrentEdition(): string
     {
         return $this->productMetadata->getEdition() === 'Community' ? 'ce' : 'ee';
     }

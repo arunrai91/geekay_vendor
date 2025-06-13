@@ -10,13 +10,14 @@ declare(strict_types=1);
 
 namespace Amasty\Mostviewed\Model\Customer;
 
+use Amasty\Mostviewed\Model\Validation\ValidatorInterface;
 use Magento\Customer\Api\Data\GroupInterface as CustomerGroupInterface;
 use Magento\Customer\Model\GroupManagement;
 use Magento\Customer\Model\SessionFactory as CustomerSessionFactory;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Model\AbstractModel;
 
-class GroupValidator
+class GroupValidator implements ValidatorInterface
 {
     /**
      * @var CustomerGroupContextInterface|null

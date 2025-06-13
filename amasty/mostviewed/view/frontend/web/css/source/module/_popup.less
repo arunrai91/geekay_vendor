@@ -1,6 +1,6 @@
 //
 //  Styles for minipage popup
-//  _____________________________________________
+//  ____________________________________________
 
 //
 //  Variables
@@ -11,6 +11,9 @@
 @ampage-popup-border__color: #ebeef5;
 @ampage-popup-text__color: #333;
 @ampage-close-icon__background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMWwxMSAxMW0wLTExTDEgMTIiIHN0cm9rZT0iI0IyQjJCMiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==) no-repeat center;
+@ampage-bundle-popup__background: #fff;
+@ampage-related-product-container__background: #c5c5c5;
+@ampga-bundle-options-wrapper__color: #e02b27;
 
 //
 //  Common
@@ -29,9 +32,7 @@
 
     .amrelated-bundle-popup {
         & {
-            .lib-css(transform, translate(-50%, -50%), 1);
-
-            background: #fff;
+            background: @ampage-bundle-popup__background;
             border-radius: 9px;
             box-shadow: 0 5px 10px rgba(0, 0, 0, .25);
             box-sizing: border-box;
@@ -43,6 +44,7 @@
             position: absolute;
             text-align: center;
             top: 50%;
+            transform: translate(-50%, -50%);
             z-index: 9999;
         }
 
@@ -91,7 +93,7 @@
 
         .amrelated-popup-tocart-wrapper {
             & {
-                background-color: #fff;
+                background-color: @ampage-bundle-popup__background;
                 bottom: 0;
                 box-sizing: border-box;
                 padding: 15px;
@@ -115,7 +117,7 @@
         }
 
         &:after {
-            background-color: #c5c5c5;
+            background-color: @ampage-related-product-container__background;
             bottom: 0;
             content: '';
             display: block;
@@ -167,7 +169,7 @@
         }
 
         .bundle-options-wrapper p.required {
-            color: #e02b27;
+            color: @ampga-bundle-options-wrapper__color;
         }
 
         .bundle-options-wrapper .field.qty > .label {
@@ -240,7 +242,7 @@
         }
 
         .reviews-actions .action {
-            color: #000;
+            color: @color-black;
             font-size: 14px;
             margin-left: 15px;
         }

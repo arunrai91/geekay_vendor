@@ -6,7 +6,6 @@ namespace Codeception\Command;
 
 use Codeception\Configuration;
 use Codeception\Lib\Generator\Group as GroupGenerator;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,10 +18,6 @@ use function ucfirst;
  *
  * * `codecept g:group Admin`
  */
-#[AsCommand(
-    name: 'generate:groupobject',
-    description: 'Generates Group subscriber'
-)]
 class GenerateGroup extends Command
 {
     use Shared\FileSystemTrait;
@@ -30,7 +25,8 @@ class GenerateGroup extends Command
 
     protected function configure(): void
     {
-        $this->addArgument('group', InputArgument::REQUIRED, 'Group class name');
+        $this->setDescription('Generates Group subscriber')
+            ->addArgument('group', InputArgument::REQUIRED, 'Group class name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

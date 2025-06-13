@@ -21,9 +21,6 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class Domain implements CollectorInterface
 {
-    public const CONFIG_PATH_KEY = 'path';
-    public const CONFIG_VALUE_KEY = 'value';
-
     /**
      * @var ScopeConfigInterface
      */
@@ -36,8 +33,8 @@ class Domain implements CollectorInterface
 
     public function __construct(
         ?ConfigCollectionFactory $configCollectionFactory, // @deprecated
-        ScopeConfigInterface $scopeConfig = null,
-        StoreManagerInterface $storeManager = null
+        ?ScopeConfigInterface $scopeConfig = null,
+        ?StoreManagerInterface $storeManager = null
     ) {
         $this->scopeConfig = $scopeConfig ?? ObjectManager::getInstance()->get(ScopeConfigInterface::class);
         $this->storeManager = $storeManager ?? ObjectManager::getInstance()->get(StoreManagerInterface::class);

@@ -46,7 +46,7 @@ class InstanceRegistrationMessages extends Field
         Context $context,
         GetCurrentLicenseValidation $getCurrentLicenseValidation,
         array $data = [],
-        Splitter $textSplitter = null
+        ?Splitter $textSplitter = null
     ) {
         parent::__construct($context, $data);
 

@@ -43,7 +43,7 @@ class GetCurrentUserFromContext implements GetCurrentUserInterface
         UserContextInterface $userContext,
         UserInterfaceFactory $userFactory,
         UserResource $userResource,
-        Registry $registry = null
+        ?Registry $registry = null
     ) {
         $this->userContext = $userContext;
         $this->userFactory = $userFactory;

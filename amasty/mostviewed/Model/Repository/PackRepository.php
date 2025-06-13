@@ -15,6 +15,7 @@ use Amasty\Mostviewed\Model\ResourceModel\Pack\CollectionFactory;
 use Amasty\Mostviewed\Model\ResourceModel\Pack\Collection;
 use Magento\Framework\Api\ExtensibleDataInterface;
 use Magento\Framework\Api\SearchResultsInterface;
+use Magento\Framework\DB\Select;
 use Magento\Framework\EntityManager\Operation\Read\ReadExtensions;
 use Magento\Framework\EntityManager\Operation\Update\UpdateExtensions;
 use Magento\Framework\Exception\CouldNotSaveException;
@@ -214,6 +215,8 @@ class PackRepository implements PackRepositoryInterface
             . '(ISNULL(main_table.' . PackInterface::DATE_TO
             . ') || main_table.' . PackInterface::DATE_TO . ' >= NOW())'
         );
+        $packCollection->getSelect()->reset(Select::COLUMNS);
+        $packCollection->getSelect()->columns(PackInterface::PACK_ID);
 
         // Add filters from root filter group to the collection
         foreach ($searchCriteria->getFilterGroups() as $group) {
@@ -226,10 +229,10 @@ class PackRepository implements PackRepositoryInterface
         }
         $packCollection->setCurPage($searchCriteria->getCurrentPage());
         $packCollection->setPageSize($searchCriteria->getPageSize());
+        $data = $packCollection->getData();
         $packs = [];
-        /** @var PackInterface $pack */
-        foreach ($packCollection->getItems() as $pack) {
-            $packs[] = $this->getById($pack->getPackId(), true);
+        foreach ($data as $item) {
+            $packs[] = $this->getById($item[PackInterface::PACK_ID], true);
         }
         $searchResults->setItems($packs);
 

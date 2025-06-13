@@ -7,33 +7,32 @@
 
 namespace Amasty\ShopbyPage\Block\Adminhtml\Page\Edit\Tab;
 
-use Amasty\ShopbyPage\Model\Data\Page as DataPage;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form as WidgetForm;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Element\ElementCreator;
 use Amasty\ShopbyPage\Model\Page;
-use Magento\Backend\Block\Widget\Form\Generic;
+use Amasty\ShopbyPage\Model\Request\Page\Registry as PageRegistry;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Data\FormFactory;
-use Magento\Framework\Registry;
 use Magento\Store\Model\System\Store as SystemStore;
 use Amasty\ShopbyPage\Model\Config\Source\Category as SourceCategory;
-use Amasty\ShopbyPage\Controller\RegistryConstants;
 use Magento\Framework\Api\ExtensibleDataObjectConverter;
 use Magento\Framework\Data\Form\Element\Fieldset;
 
 /**
  * @api
  */
-class Category extends Generic implements TabInterface
+class Category extends WidgetForm implements TabInterface
 {
     /**
      * @var SystemStore
      */
-    protected $_systemStore;
+    private SystemStore $systemStore;
 
     /**
      * @var SourceCategory
      */
-    protected $_sourceCategory;
+    private SourceCategory $sourceCategory;
 
     /**
      * @var ExtensibleDataObjectConverter
@@ -41,27 +40,25 @@ class Category extends Generic implements TabInterface
     private $extensibleDataObjectConverter;
 
     /**
-     * @param Context $context
-     * @param Registry $registry
-     * @param FormFactory $formFactory
-     * @param SystemStore $systemStore
-     * @param SourceCategory $sourceCategory
-     * @param ExtensibleDataObjectConverter $extensibleDataObjectConverter
-     * @param array $data
+     * @var PageRegistry
      */
+    private PageRegistry $pageRegistry;
+
     public function __construct(
-        Context $context,
-        Registry $registry,
-        FormFactory $formFactory,
         SystemStore $systemStore,
         SourceCategory $sourceCategory,
         ExtensibleDataObjectConverter $extensibleDataObjectConverter,
+        PageRegistry $pageRegistry,
+        Context $context,
+        FormFactory $formFactory,
+        ElementCreator $creator,
         array $data = []
     ) {
-        $this->_systemStore = $systemStore;
-        $this->_sourceCategory = $sourceCategory;
+        $this->systemStore = $systemStore;
+        $this->sourceCategory = $sourceCategory;
         $this->extensibleDataObjectConverter = $extensibleDataObjectConverter;
-        parent::__construct($context, $registry, $formFactory, $data);
+        $this->pageRegistry = $pageRegistry;
+        parent::__construct($formFactory, $creator, $context, $data);
     }
 
     /**
@@ -100,19 +97,14 @@ class Category extends Generic implements TabInterface
         return false;
     }
 
-    /**
-     * Prepare form
-     *
-     * @return $this
-     */
-    protected function _prepareForm()
+    public function prepareForm(): Category
     {
         /** @var \Magento\Framework\Data\Form $form */
-        $form = $this->_formFactory->create();
+        $form = $this->getDataFormFactory()->create();
         $form->setHtmlIdPrefix('amasty_shopbypage_');
 
         /** @var Page $model */
-        $model = $this->_coreRegistry->registry(RegistryConstants::PAGE);
+        $model = $this->pageRegistry->get();
         $fieldset = $form->addFieldset(
             'category_fieldset',
             ['legend' => __('Categories'), 'class' => 'fieldset-wide']
@@ -125,7 +117,7 @@ class Category extends Generic implements TabInterface
             'title' => __('Categories'),
             'name' => 'categories',
             'style' => 'height: 500px; width: 300px;',
-            'values' => $this->_sourceCategory->toOptionArray()
+            'values' => $this->sourceCategory->toOptionArray()
         ]);
 
         $form->setValues(
@@ -138,18 +130,19 @@ class Category extends Generic implements TabInterface
 
         $this->setForm($form);
 
-        parent::_prepareForm();
+        parent::prepareForm();
+
         return $this;
     }
 
     /**
      * @param Fieldset $fieldset
-     * @param DataPage $model
+     * @param Page $model
      *
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function addStoreField(Fieldset $fieldset, DataPage $model)
+    private function addStoreField(Fieldset $fieldset, Page $model)
     {
         if (!$this->_storeManager->isSingleStoreMode()) {
             $field = $fieldset->addField(
@@ -160,7 +153,7 @@ class Category extends Generic implements TabInterface
                     'label' => __('Store Views'),
                     'title' => __('Store Views'),
                     'required' => true,
-                    'values' => $this->_systemStore->getStoreValuesForForm(false, true),
+                    'values' => $this->systemStore->getStoreValuesForForm(false, true),
                 ]
             );
 

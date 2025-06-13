@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Amasty\Base\Model\LicenceService\Request\Data;
 
+use Amasty\Base\Model\LicenceService\Request\Data\InstanceInfo\Domain;
+use Amasty\Base\Model\LicenceService\Request\Data\InstanceInfo\Module;
 use Amasty\Base\Model\LicenceService\Request\Data\InstanceInfo\Platform;
 use Amasty\Base\Model\SimpleDataObject;
 use Magento\Framework\Api\ExtensibleDataInterface;
@@ -59,7 +61,7 @@ class InstanceInfo extends SimpleDataObject implements ExtensibleDataInterface
     }
 
     /**
-     * @param \Amasty\Base\Model\LicenceService\Request\Data\InstanceInfo\Module[]|null $modules
+     * @param \Amasty\Base\Model\LicenceService\Request\Data\InstanceInfo\Module[] $modules
      * @return $this
      */
     public function setModules(array $modules): self
@@ -76,7 +78,7 @@ class InstanceInfo extends SimpleDataObject implements ExtensibleDataInterface
     }
 
     /**
-     * @param \Amasty\Base\Model\LicenceService\Request\Data\InstanceInfo\Domain[]|null $domains
+     * @param \Amasty\Base\Model\LicenceService\Request\Data\InstanceInfo\Domain[] $domains
      * @return $this
      */
     public function setDomains(array $domains): self

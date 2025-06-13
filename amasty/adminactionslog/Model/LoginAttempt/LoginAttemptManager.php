@@ -95,7 +95,7 @@ class LoginAttemptManager implements LoginAttemptManagerInterface
         $this->notificationProcessor->execute($loginAttempt);
     }
 
-    public function clear(int $period = null): void
+    public function clear(?int $period = null): void
     {
         $this->loginAttemptRepository->clean($period);
     }

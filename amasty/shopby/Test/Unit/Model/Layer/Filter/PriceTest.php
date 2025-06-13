@@ -79,11 +79,11 @@ class PriceTest extends \PHPUnit\Framework\TestCase
     {
         $this->removeExtraZeros = $this->createMock(RemoveExtraZeros::class);
         $filterItemFactory = $this->getMockBuilder(\Magento\Catalog\Model\Layer\Filter\ItemFactory::class)
-            ->setMethods(['create'])
+            ->onlyMethods(['create'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $filterItem = $this->getMockBuilder(\Magento\Catalog\Model\Layer\Filter\Item::class)
-            ->setMethods(['setFilter', 'setLabel', 'setValue', 'setCount'])
+            ->addMethods(['setFilter', 'setLabel', 'setValue', 'setCount'])
             ->disableOriginalConstructor()
             ->getMock();
         $attributeModel = $this->createMock(\Magento\Catalog\Model\ResourceModel\Eav\Attribute::class);
@@ -98,11 +98,13 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->dataProvider = $this->createMock(\Magento\Catalog\Model\Layer\Filter\DataProvider\Price::class);
         $dataProviderFactory = $this->createMock(\Magento\Catalog\Model\Layer\Filter\DataProvider\PriceFactory::class);
         $this->storeMock = $this->getMockBuilder(StoreInterface::class)
-            ->setMethods(['getId', 'getCurrentCurrencyRate'])
+            ->onlyMethods(['getId'])
+            ->addMethods(['getCurrentCurrencyRate'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $messageManager = $this->getMockBuilder(\Magento\Framework\Message\ManagerInterface::class)
-            ->setMethods(['hasMessages', 'addErrorMessage'])
+            ->addMethods(['hasMessages',])
+            ->onlyMethods(['addErrorMessage'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 

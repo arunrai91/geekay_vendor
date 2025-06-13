@@ -58,7 +58,7 @@ class MetaTest extends \PHPUnit\Framework\TestCase
     {
         $this->meta = $this->getMockBuilder(Meta::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->addMethods([])
             ->getMockForAbstractClass();
 
         $this->filterRequestDataResolver = $this->createMock(FilterRequestDataResolver::class);

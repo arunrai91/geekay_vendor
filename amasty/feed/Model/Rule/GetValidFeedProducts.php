@@ -12,11 +12,10 @@ use Amasty\Feed\Model\Feed;
 use Amasty\Feed\Model\InventoryResolver;
 use Amasty\Feed\Model\Rule\Condition\Sql\Builder;
 use Amasty\Feed\Model\ValidProduct\ResourceModel\ValidProduct;
-use Magento\Catalog\Model\Product\Attribute\Source\Status;
-use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product;
-use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\DB\Select;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -27,47 +26,48 @@ class GetValidFeedProducts
     /**
      * @var CollectionFactory
      */
-    private $productCollectionFactory;
+    private CollectionFactory $productCollectionFactory;
 
     /**
      * @var RuleFactory
      */
-    private $ruleFactory;
+    private RuleFactory $ruleFactory;
 
     /**
      * @var Builder
      */
-    protected $sqlBuilder;
-
-    /**
-     * @var InventoryResolver
-     */
-    private $inventoryResolver;
+    protected Builder $sqlBuilder;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected StoreManagerInterface $storeManager;
 
     /**
      * @var Product
      */
-    private $productResource;
+    private Product $productResource;
+
+    /**
+     * @var FilterProvider
+     */
+    private FilterProvider $filterProvider;
 
     public function __construct(
         RuleFactory $ruleFactory,
         CollectionFactory $productCollectionFactory,
         Builder $sqlBuilder,
-        InventoryResolver $inventoryResolver,
+        ?InventoryResolver $inventoryResolver, // @deprecated
         StoreManagerInterface $storeManager,
-        Product $productResource
+        Product $productResource,
+        ?FilterProvider $filterProvider = null
     ) {
         $this->productCollectionFactory = $productCollectionFactory;
         $this->ruleFactory = $ruleFactory;
         $this->sqlBuilder = $sqlBuilder;
-        $this->inventoryResolver = $inventoryResolver;
         $this->storeManager = $storeManager;
         $this->productResource = $productResource;
+        $this->filterProvider = $filterProvider ?? ObjectManager::getInstance()->get(FilterProvider::class);
     }
 
     public function execute(Feed $model, array $ids = []): void
@@ -113,8 +113,9 @@ class GetValidFeedProducts
         if (!empty($ids)) {
             $productCollection->addAttributeToFilter('entity_id', ['in' => $ids]);
         }
-        $this->addExcludeFilters($productCollection, $model);
-        $this->addConditionFilters($productCollection, $model);
+        foreach ($this->filterProvider->getFilters() as $filter) {
+            $filter->apply($productCollection, $model);
+        }
 
         return $productCollection;
     }
@@ -139,80 +140,5 @@ class GetValidFeedProducts
             ->limit(self::BATCH_SIZE);
 
         return $productSelect;
-    }
-
-    private function addExcludeFilters(ProductCollection $productCollection, Feed $model): void
-    {
-        $excludedIds = [];
-        if ($model->getExcludeDisabled()) {
-            $productCollection->addAttributeToFilter(
-                'status',
-                ['eq' => Status::STATUS_ENABLED]
-            );
-            if ($model->getExcludeSubDisabled()) {
-                $excludedIds = $this->getSubDisabledIds((int)$model->getStoreId());
-            }
-        }
-
-        if ($model->getExcludeNotVisible()) {
-            $productCollection->addAttributeToFilter(
-                'visibility',
-                ['neq' => Visibility::VISIBILITY_NOT_VISIBLE]
-            );
-        }
-
-        if ($model->getExcludeOutOfStock()) {
-            $outOfStockProductIds = $this->inventoryResolver->getOutOfStockProductIds();
-            $excludedIds = array_unique(array_merge($excludedIds, $outOfStockProductIds));
-        }
-
-        if (!empty($excludedIds)) {
-            $productCollection->addFieldToFilter(
-                'entity_id',
-                ['nin' => $excludedIds]
-            );
-        }
-    }
-
-    private function addConditionFilters(ProductCollection $productCollection, Feed $model): void
-    {
-        $conditions = $model->getRule()->getConditions();
-        $conditions->collectValidatedAttributes($productCollection);
-        $this->sqlBuilder->attachConditionToCollection($productCollection, $conditions);
-    }
-
-    private function getSubDisabledIds(int $storeId): array
-    {
-        $disabledParentProductsSelect = $this->getDisabledParentProductsSelect($storeId);
-
-        $subDisabledProductsCollection = $this->productCollectionFactory->create();
-        $subDisabledProductsCollection->getSelect()->join(
-            ['rel' => $this->productResource->getTable('catalog_product_relation')],
-            'e.entity_id = rel.child_id',
-            []
-        )->where('rel.parent_id IN (?)', $disabledParentProductsSelect);
-
-        return $subDisabledProductsCollection->getAllIds();
-    }
-
-    private function getDisabledParentProductsSelect(int $storeId): Select
-    {
-        $disabledParentsCollection = $this->productCollectionFactory->create();
-        $linkField = $disabledParentsCollection->getProductEntityMetadata()->getLinkField();
-
-        $disabledParentsCollection->addStoreFilter($storeId);
-        $disabledParentsCollection->addAttributeToFilter(
-            'status',
-            ['eq' => Status::STATUS_DISABLED]
-        );
-
-        return $disabledParentsCollection->getSelect()
-            ->reset(Select::COLUMNS)
-            ->columns(['e.' . $linkField])
-            ->join(
-                ['rel' => $this->productResource->getTable('catalog_product_relation')],
-                'rel.parent_id = e.' . $linkField,
-                []
-            )->distinct();
     }
 }

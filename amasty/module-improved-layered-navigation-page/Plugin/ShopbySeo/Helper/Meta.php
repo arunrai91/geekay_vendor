@@ -8,10 +8,9 @@
 namespace Amasty\ShopbyPage\Plugin\ShopbySeo\Helper;
 
 use Amasty\ShopbyPage\Api\Data\PageInterface;
-use Amasty\ShopbyPage\Model\Page;
+use Amasty\ShopbyPage\Model\Request\Page\Registry as PageRegistry;
 use Amasty\ShopbySeo\Helper\Meta as ShopbySeoMeta;
 use Magento\Framework\DataObject;
-use Magento\Framework\Registry;
 use Magento\Framework\View\Page\Config as PageConfig;
 
 /**
@@ -21,14 +20,13 @@ use Magento\Framework\View\Page\Config as PageConfig;
 class Meta
 {
     /**
-     * @var Registry
+     * @var PageRegistry
      */
-    private $registry;
+    private PageRegistry $pageRegistry;
 
-    public function __construct(
-        Registry $registry
-    ) {
-        $this->registry = $registry;
+    public function __construct(PageRegistry $pageRegistry)
+    {
+        $this->pageRegistry = $pageRegistry;
     }
 
     public function aroundGetIndexTagByData(
@@ -38,7 +36,7 @@ class Meta
         DataObject $data
     ): bool {
         /** @var PageInterface $page */
-        $page = $this->registry->registry(Page::MATCHED_PAGE);
+        $page = $this->pageRegistry->get();
         if (!$page || !$page->getTagRobots()) {
             return $proceed($indexTag, $data);
         }
@@ -55,7 +53,7 @@ class Meta
         PageConfig $pageConfig
     ): void {
         /** @var PageInterface $page */
-        $page = $this->registry->registry(Page::MATCHED_PAGE);
+        $page = $this->pageRegistry->get();
         if (!$page || !$page->getTagRobots()) {
             $proceed($pageConfig);
         }

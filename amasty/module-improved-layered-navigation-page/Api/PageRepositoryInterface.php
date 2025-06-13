@@ -10,10 +10,10 @@ namespace Amasty\ShopbyPage\Api;
 interface PageRepositoryInterface
 {
     /**
-     * @param \Amasty\ShopbyPage\Api\Data\PageInterface $pageData
+     * @param \Amasty\ShopbyPage\Api\Data\PageInterface $page
      * @return \Amasty\ShopbyPage\Api\Data\PageInterface
      */
-    public function save(\Amasty\ShopbyPage\Api\Data\PageInterface $pageData);
+    public function save(\Amasty\ShopbyPage\Api\Data\PageInterface $page);
 
     /**
      * @param int $id

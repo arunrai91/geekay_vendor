@@ -293,8 +293,8 @@ class General extends Generic implements TabInterface
             ->addFieldDependence(FeedInterface::EXCLUDE_SUBDISABLED, FeedInterface::EXCLUDE_DISABLED, 1);
 
         $form->setValues($model->getData());
-        $this->setForm($form);
         $this->setChild('form_after', $dependencies);
+        $this->setForm($form);
 
         return parent::_prepareForm();
     }

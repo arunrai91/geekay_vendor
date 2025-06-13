@@ -150,22 +150,6 @@ define([
                 this.$shopbyOverlay.show();
             }
 
-            data.every(function (item, key) {
-                if (item.name.indexOf('[cat]') != -1) {
-                    if (item.value == self.options.currentCategoryId) {
-                        data.splice(key, 1);
-                    } else {
-                        item.value.split(',').filter(function (element) {
-                            return element != self.options.currentCategoryId;
-                        }).join(',');
-                    }
-
-                    return false;
-                }
-
-                return true;
-            });
-
             data.push({ name: 'shopbyAjax', value: 1 });
 
             if (isGetCounter) {

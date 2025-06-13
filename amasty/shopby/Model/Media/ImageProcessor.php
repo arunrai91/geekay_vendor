@@ -21,25 +21,14 @@ class ImageProcessor extends ImageUploader
     /**
      * @var Filesystem
      */
-    protected $filesystem;
+    private Filesystem $filesystem;
 
     /**
      * @var AdapterFactory
      */
-    protected $imageFactory;
+    private AdapterFactory $imageFactory;
 
     /**
-     * ImageProcessor constructor.
-     *
-     * @param Filesystem $filesystem
-     * @param AdapterFactory $imageFactory
-     * @param Database $coreFileStorageDatabase
-     * @param UploaderFactory $uploaderFactory
-     * @param StoreManagerInterface $storeManager
-     * @param LoggerInterface $logger
-     * @param string $baseTmpPath
-     * @param string $basePath
-     * @param array $allowedExtensions
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(

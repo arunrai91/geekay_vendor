@@ -22,16 +22,16 @@ class TopmenuThemes extends Topmenu
         $subject,
         $html
     ) {
-        $position = $topMenuEnabled = $this->scopeConfig->getValue(
+        $position = $topMenuEnabled = $this->getScopeConfig()->getValue(
             'amshopby_brand/general/topmenu_enabled',
             ScopeInterface::SCOPE_STORE
         );
 
         if ($position) {
             if ($subject instanceof \Smartwave\Megamenu\Block\Topmenu) { // @phpstan-ignore class.notFound
-                $this->brandsPopup->setPortoTheme();
+                $this->getBrandsPopupBlock()->setPortoTheme();
             } elseif ($subject instanceof \Infortis\UltraMegamenu\Block\Navigation) { // @phpstan-ignore class.notFound
-                $this->brandsPopup->setUltimoTheme();
+                $this->getBrandsPopupBlock()->setUltimoTheme();
             }
             $htmlBrand = $this->generateHtml($this->_getNodeAsArray());
             if ($position == TopmenuSource::DISPLAY_FIRST) {
@@ -62,6 +62,6 @@ class TopmenuThemes extends Topmenu
      */
     private function generateHtml($data)
     {
-        return $this->brandsPopup->toHtml();
+        return $this->getBrandsPopupBlock()->toHtml();
     }
 }

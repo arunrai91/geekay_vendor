@@ -7,79 +7,69 @@
 
 namespace Amasty\ShopbyPage\Model\ResourceModel;
 
+use Amasty\Base\Model\Serializer as BaseSerializer;
 use Amasty\ShopbyPage\Api\Data\PageInterface;
+use Amasty\ShopbyPage\Api\Data\PageInterfaceFactory;
+use Amasty\ShopbyPage\Api\Data\PageSearchResultsInterfaceFactory;
 use Amasty\ShopbyPage\Api\PageRepositoryInterface;
+use Amasty\ShopbyPage\Model\Page as PageModel;
+use Amasty\ShopbyPage\Model\ResourceModel\Page as PageResource;
+use Amasty\ShopbyPage\Model\ResourceModel\Page\CollectionFactory as PageCollectionFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 class PageRepository implements PageRepositoryInterface
 {
     /**
-     * @var \Amasty\ShopbyPage\Model\ResourceModel\Page
+     * @var PageResource
      */
-    protected $pageResourceModel;
+    private PageResource $pageResourceModel;
 
     /**
-     * @var \Amasty\ShopbyPage\Model\PageFactory
+     * @var PageInterfaceFactory
      */
-    protected $pageFactory;
+    private PageInterfaceFactory $pageFactory;
 
     /**
-     * @var \Amasty\ShopbyPage\Api\Data\PageInterfaceFactory
+     * @var PageSearchResultsInterfaceFactory
      */
-    protected $pageDataFactory;
+    private PageSearchResultsInterfaceFactory $pageSearchResultsFactory;
 
     /**
-     * @var \Magento\Framework\Api\DataObjectHelper
+     * @var BaseSerializer
      */
-    protected $dataObjectHelper;
+    private BaseSerializer $serializer;
 
     /**
-     * @var \Magento\Framework\Reflection\DataObjectProcessor
+     * @var PageCollectionFactory
      */
-    protected $dataObjectProcessor;
-
-    /**
-     * @var \Amasty\ShopbyPage\Api\Data\PageSearchResultsInterfaceFactory
-     */
-    protected $pageSearchResultsFactory;
-
-    /**
-     * @var \Amasty\Base\Model\Serializer
-     */
-    private $serializer;
+    private PageCollectionFactory $pageCollectionFactory;
 
     public function __construct(
-        \Amasty\ShopbyPage\Model\ResourceModel\Page $pageResourceModel,
-        \Amasty\ShopbyPage\Model\PageFactory $pageFactory,
-        \Amasty\ShopbyPage\Api\Data\PageSearchResultsInterfaceFactory $pageSearchResultsFactory,
-        \Amasty\ShopbyPage\Api\Data\PageInterfaceFactory $pageDataFactory,
-        \Magento\Framework\Api\DataObjectHelper $dataObjectHelper,
-        \Magento\Framework\Reflection\DataObjectProcessor $dataObjectProcessor,
-        \Amasty\Base\Model\Serializer $serializer
+        PageResource $pageResourceModel,
+        PageSearchResultsInterfaceFactory $pageSearchResultsFactory,
+        PageInterfaceFactory $pageFactory,
+        BaseSerializer $serializer,
+        PageCollectionFactory $pageCollectionFactory
     ) {
         $this->pageResourceModel = $pageResourceModel;
-        $this->pageFactory = $pageFactory;
         $this->pageSearchResultsFactory = $pageSearchResultsFactory;
-        $this->pageDataFactory = $pageDataFactory;
-        $this->dataObjectHelper = $dataObjectHelper;
-        $this->dataObjectProcessor = $dataObjectProcessor;
+        $this->pageFactory = $pageFactory;
         $this->serializer = $serializer;
+        $this->pageCollectionFactory = $pageCollectionFactory;
     }
 
     /**
-     * @param PageInterface $pageData
+     * @param PageInterface $page
      *
      * @return PageInterface
      */
-    public function save(PageInterface $pageData)
+    public function save(PageInterface $page)
     {
-        $outputData = $this->dataObjectProcessor
-            ->buildOutputDataArray($pageData, PageInterface::class);
+        $outputData = $page->getData();
 
         $this->normalizeOutputData($outputData);
 
-        $page = $this->pageFactory->create()
-            ->setData($outputData);
+        $page->setData($outputData);
 
         $this->pageResourceModel
             ->save($page)
@@ -93,7 +83,7 @@ class PageRepository implements PageRepositoryInterface
      * @param $key
      * @param string $delimiter
      */
-    protected function implodeMultipleData(&$data, $key, $delimiter = ',')
+    private function implodeMultipleData(&$data, $key, $delimiter = ',')
     {
         if (array_key_exists($key, $data) && is_array($data[$key])) {
             $data[$key] = implode($delimiter, $data[$key]);
@@ -106,7 +96,7 @@ class PageRepository implements PageRepositoryInterface
      * @param $data
      * @param $key
      */
-    protected function serializeMultipleData(&$data, $key)
+    private function serializeMultipleData(&$data, $key)
     {
         if (array_key_exists($key, $data)) {
             $data[$key] = $this->serializer->serialize($data[$key]);
@@ -118,7 +108,7 @@ class PageRepository implements PageRepositoryInterface
     /**
      * @param $data
      */
-    protected function normalizeOutputData(&$data)
+    private function normalizeOutputData(&$data)
     {
         if (array_key_exists('top_block_id', $data) && $data['top_block_id'] === '') {
             $data['top_block_id'] = null;
@@ -132,10 +122,7 @@ class PageRepository implements PageRepositoryInterface
         $this->serializeMultipleData($data, 'conditions');
     }
 
-    /**
-     * @param $data
-     */
-    protected function normalizeInputData(&$data)
+    private function normalizeInputData(array &$data): void
     {
         if (array_key_exists('categories', $data)) {
             $this->processCategoryField($data['categories']);
@@ -157,6 +144,8 @@ class PageRepository implements PageRepositoryInterface
     {
         if ($categories) {
             $categories = explode(',', $categories);
+        } else {
+            $categories = [\Amasty\Base\Model\Source\Category::EMPTY_OPTION_ID];
         }
     }
 
@@ -195,6 +184,7 @@ class PageRepository implements PageRepositoryInterface
      */
     public function get($id)
     {
+        /** @var PageModel $page */
         $page = $this->pageFactory->create();
         $this->pageResourceModel->load($page, $id);
 
@@ -205,25 +195,15 @@ class PageRepository implements PageRepositoryInterface
         return $this->getPageData($page);
     }
 
-    /**
-     * @param \Amasty\ShopbyPage\Model\Page $page
-     *
-     * @return PageInterface
-     */
-    protected function getPageData(\Amasty\ShopbyPage\Model\Page $page)
+    private function getPageData(PageModel $page): PageModel
     {
-        $pageData = $this->pageDataFactory->create();
         $inputData = $page->getData();
 
         $this->normalizeInputData($inputData);
 
-        $this->dataObjectHelper->populateWithArray(
-            $pageData,
-            $inputData,
-            PageInterface::class
-        );
+        $page->setData($inputData);
 
-        return $pageData;
+        return $page;
     }
 
     /**
@@ -236,20 +216,20 @@ class PageRepository implements PageRepositoryInterface
     {
         $searchResults = $this->pageSearchResultsFactory->create();
 
-        $collection = $this->pageFactory->create()->getCollection()
-            ->addFieldToFilter(
-                'categories',
-                [
-                    ['finset' => $categoryId],
-                    ['eq' => 0],
-                    ['null' => true]
-                ]
-            )
-            ->addStoreFilter($storeId);
+        $collection = $this->pageCollectionFactory->create();
+        $collection->addFieldToFilter(
+            'categories',
+            [
+                ['finset' => $categoryId],
+                ['eq' => 0],
+                ['null' => true]
+            ]
+        );
+        $collection->addStoreFilter($storeId);
 
         $pagesData = [];
 
-        /** @var \Amasty\ShopbyPage\Model\Page $page */
+        /** @var PageModel $page */
         foreach ($collection as $page) {
             $pagesData[] = $this->getPageData($page);
         }
@@ -283,6 +263,7 @@ class PageRepository implements PageRepositoryInterface
      */
     public function deleteById($id)
     {
+        /** @var PageModel $page */
         $page = $this->pageFactory->create();
         $this->pageResourceModel->load($page, $id);
         $this->pageResourceModel->delete($page);

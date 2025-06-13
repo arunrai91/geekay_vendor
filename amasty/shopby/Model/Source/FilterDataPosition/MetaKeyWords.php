@@ -14,8 +14,8 @@ class MetaKeyWords extends Source\AbstractFilterDataPosition implements \Magento
     /**
      * @return void
      */
-    protected function _setLabel()
+    public function initLabel()
     {
-        $this->_label = __('Meta-Keywords');
+        $this->setLabel(__('Meta-Keywords'));
     }
 }

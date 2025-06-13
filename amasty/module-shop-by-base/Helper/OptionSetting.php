@@ -106,7 +106,7 @@ class OptionSetting extends \Magento\Framework\App\Helper\AbstractHelper
      * @param AttributeOptionInterface $option
      * @return $this
      */
-    protected function initiateSettingByOption(
+    private function initiateSettingByOption(
         OptionSettingInterface $setting,
         AttributeOptionInterface $option
     ) {

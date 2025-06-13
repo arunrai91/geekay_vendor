@@ -16,7 +16,7 @@ use Magento\Framework\View\Element\Template;
 
 class FeatureRequest extends Template
 {
-    public const FEATURE_LINK = 'https://products.amasty.com/request-a-feature';
+    public const FEATURE_LINK = 'https://amasty.com/amcustomer/account/products';
     public const CAMPAIGN_NAME = 'request_a_feature';
 
     /**

@@ -68,11 +68,16 @@ class Config
     ) {
         if ($this->request->getFullActionName() !== 'catalog_product_view'
             && $contentType == 'canonical'
-            && !$this->metaHelper->getIndexTagValue()
+            && !$this->isNeedAddCanonical()
         ) {
             return $subject;
         }
 
         return $proceed($url, $contentType, $properties, $name);
+    }
+
+    public function isNeedAddCanonical(): bool
+    {
+        return $this->metaHelper->getIndexTagValue();
     }
 }

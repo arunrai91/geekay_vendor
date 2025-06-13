@@ -73,6 +73,11 @@ class Data extends AbstractHelper
      */
     private $shopBySeoConfig;
 
+    /**
+     * @var null | string
+     */
+    private $specialChar = null;
+
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         OptionCollectionFactory $optionCollectionFactory,
@@ -80,7 +85,7 @@ class Data extends AbstractHelper
         ProductUrl $productUrl,
         \Magento\Framework\Escaper $escaper,
         \Amasty\ShopbyBrand\Model\Attribute $brandAttribute,
-        ShopBySeoConfigDi $shopBySeoConfig = null // TODO move to not optional
+        ShopBySeoConfigDi $shopBySeoConfig
     ) {
         parent::__construct($context);
         $this->url = $context->getUrlBuilder();
@@ -89,7 +94,7 @@ class Data extends AbstractHelper
         $this->productUrl = $productUrl;
         $this->escaper = $escaper;
         $this->brandAttribute = $brandAttribute;
-        $this->shopBySeoConfig = $shopBySeoConfig ?? ObjectManager::getInstance()->get(ShopBySeoConfigDi::class);
+        $this->shopBySeoConfig = $shopBySeoConfig;
     }
 
     /**
@@ -117,7 +122,7 @@ class Data extends AbstractHelper
         return $identifierWithId[0];
     }
 
-    public function getBrandAliases(int $storeId = null): array
+    public function getBrandAliases(?int $storeId = null): array
     {
         $storeId = $storeId ?: (int)$this->storeManager->getStore()->getId();
         if (!isset($this->brandAliases[$storeId])) {
@@ -209,7 +214,7 @@ class Data extends AbstractHelper
      * @param bool $addBaseUrl
      * @return string
      */
-    public function getBrandUrl(Option $option, int $storeId = null, bool $addBaseUrl = true): string
+    public function getBrandUrl(Option $option, ?int $storeId = null, bool $addBaseUrl = true): string
     {
         $url = '#';
         $aliases = $this->getBrandAliases($storeId);
@@ -332,13 +337,18 @@ class Data extends AbstractHelper
 
     public function getSpecialChar(): string
     {
-        if ($this->_moduleManager->isEnabled('Amasty_ShopbySeo')
-            && $this->shopBySeoConfig->isSeoUrlEnabled()
-        ) {
-            return $this->scopeConfig->getValue('amasty_shopby_seo/url/special_char', ScopeInterface::SCOPE_STORE);
-        } else {
-            return '-';
+        if (!$this->specialChar) {
+            if ($this->_moduleManager->isEnabled('Amasty_ShopbySeo')
+                && $this->shopBySeoConfig->isSeoUrlEnabled()
+            ) {
+                $this->specialChar =  $this->scopeConfig
+                    ->getValue('amasty_shopby_seo/url/special_char', ScopeInterface::SCOPE_STORE);
+            } else {
+                $this->specialChar =  '-';
+            }
         }
+
+        return $this->specialChar;
     }
 
     /**
@@ -350,43 +360,5 @@ class Data extends AbstractHelper
             'amshopby_brand/general/menu_item_label',
             ScopeInterface::SCOPE_STORE
         );
-    }
-
-    /**
-     * used in graphQL
-     * @return int|string
-     * @deprecated
-     */
-    public function getLogoProductPageWidth()
-    {
-        return ObjectManager::getInstance()->get(ConfigProvider::class)->getLogoWidth();
-    }
-
-    /**
-     * used in graphQL
-     * @return int|string
-     * @deprecated
-     */
-    public function getLogoProductPageHeight()
-    {
-        return ObjectManager::getInstance()->get(ConfigProvider::class)->getLogoHeight();
-    }
-
-    /**
-     * @return int|string
-     * @deprecated
-     */
-    public function getBrandLogoProductListingWidth()
-    {
-        return ObjectManager::getInstance()->get(ConfigProvider::class)->getListingBrandLogoWidth();
-    }
-
-    /**
-     * @return int|string
-     * @deprecated
-     */
-    public function getBrandLogoProductListingHeight()
-    {
-        return ObjectManager::getInstance()->get(ConfigProvider::class)->getListingBrandLogoHeight();
     }
 }

@@ -21,12 +21,12 @@ class ModuleInfoProvider
     /**
      * @var string[]
      */
-    protected $moduleDataStorage = [];
+    private $moduleDataStorage = [];
 
     /**
      * @var string[]
      */
-    protected $restrictedModules = [
+    private $restrictedModules = [
         'Amasty_CommonRules',
         'Amasty_Router'
     ];

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Codeception\Command;
 
 use Codeception\Lib\Generator\Test as TestGenerator;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,10 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * * `codecept g:test unit User`
  * * `codecept g:test unit "App\User"`
  */
-#[AsCommand(
-    name: 'generate:test',
-    description: 'Generates empty unit test file in suite'
-)]
 class GenerateTest extends Command
 {
     use Shared\FileSystemTrait;
@@ -28,7 +23,7 @@ class GenerateTest extends Command
 
     protected function configure(): void
     {
-        $this
+        $this->setDescription('Generates empty unit test file in suite')
             ->addArgument('suite', InputArgument::REQUIRED, 'Suite where tests will be put')
             ->addArgument('class', InputArgument::REQUIRED, 'Class name');
     }

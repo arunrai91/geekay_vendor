@@ -488,6 +488,7 @@ class Client implements DispatchableInterface
     /**
      * Set the POST parameters
      *
+     * @param array $post
      * @return $this
      */
     public function setParameterPost(array $post)
@@ -499,6 +500,7 @@ class Client implements DispatchableInterface
     /**
      * Set the GET parameters
      *
+     * @param array $query
      * @return $this
      */
     public function setParameterGet(array $query)

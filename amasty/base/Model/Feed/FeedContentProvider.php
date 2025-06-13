@@ -10,6 +10,8 @@ namespace Amasty\Base\Model\Feed;
 use Amasty\Base\Model\Feed\Response\FeedResponseInterface;
 use Amasty\Base\Model\Feed\Response\FeedResponseInterfaceFactory;
 use Laminas\Http\Request;
+use Laminas\Uri\Uri;
+use Laminas\Uri\UriFactory;
 use Magento\Framework\HTTP\Adapter\Curl;
 use Magento\Framework\HTTP\Adapter\CurlFactory;
 use Magento\Store\Model\StoreManagerInterface;
@@ -45,7 +47,7 @@ class FeedContentProvider
     private $storeManager;
 
     /**
-     * @var \Zend\Uri\Uri
+     * @var Uri
      */
     private $baseUrlObject;
 
@@ -72,8 +74,8 @@ class FeedContentProvider
      */
     public function getFeedResponse(string $url, array $options = []): FeedResponseInterface
     {
-        /** @var Curl $curlObject */
         $curlObject = $this->curlFactory->create();
+        //compatibility with 2.4.4
         $curlObject->addOption(CURLOPT_ACCEPT_ENCODING, 'gzip');
         $curlObject->setConfig(
             [
@@ -88,9 +90,8 @@ class FeedContentProvider
         $curlObject->write(Request::METHOD_GET, $url, '1.1', $headers);
         $result = $curlObject->read();
 
-        /** @var FeedResponseInterface $feedResponse */
         $feedResponse = $this->feedResponseFactory->create();
-        if ($result === false || $result === '') {
+        if ($result === '') {
             return $feedResponse;
         }
         $result = preg_split('/^\r?$/m', $result, 2);
@@ -127,13 +128,13 @@ class FeedContentProvider
     }
 
     /**
-     * @return \Zend\Uri\Uri
+     * @return Uri
      */
     private function getBaseUrlObject()
     {
         if ($this->baseUrlObject === null) {
             $url = $this->storeManager->getStore()->getBaseUrl();
-            $this->baseUrlObject = \Laminas\Uri\UriFactory::factory($url);
+            $this->baseUrlObject = UriFactory::factory($url);
         }
 
         return $this->baseUrlObject;

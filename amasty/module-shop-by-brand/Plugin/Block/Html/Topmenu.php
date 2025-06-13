@@ -7,41 +7,45 @@
 
 namespace Amasty\ShopbyBrand\Plugin\Block\Html;
 
+use Amasty\ShopbyBrand\Block\BrandsPopup as BrandsPopupBlock;
+use Amasty\ShopbyBrand\Helper\Data as Helper;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\UrlInterface;
 use Magento\Store\Model\ScopeInterface;
 use Amasty\ShopbyBrand\Model\Source\TopmenuLink as TopmenuSource;
 
 class Topmenu
 {
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
-    protected $scopeConfig;
+    private ScopeConfigInterface $scopeConfig;
 
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
-    private $url;
+    private UrlInterface $url;
 
     /**
-     * @var \Amasty\ShopbyBrand\Helper\Data
+     * @var Helper
      */
-    private $helper;
+    private Helper $helper;
 
     /**
-     * @var \Amasty\ShopbyBrand\Block\BrandsPopup
+     * @var BrandsPopupBlock
      */
-    protected $brandsPopup;
+    private BrandsPopupBlock $brandsPopup;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $label;
+    private ?string $label = null;
 
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\UrlInterface $url,
-        \Amasty\ShopbyBrand\Helper\Data $helper,
-        \Amasty\ShopbyBrand\Block\BrandsPopup $brandsPopup
+        ScopeConfigInterface $scopeConfig,
+        UrlInterface $url,
+        Helper $helper,
+        BrandsPopupBlock $brandsPopup
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->helper = $helper;
@@ -75,7 +79,7 @@ class Topmenu
     /**
      * @return array
      */
-    protected function _getNodeAsArray()
+    public function _getNodeAsArray()
     {
         $url = $this->helper->getAllBrandsUrl();
         return [
@@ -90,7 +94,7 @@ class Topmenu
     /**
      * @return bool
      */
-    protected function isEnabled()
+    public function isEnabled()
     {
         $topMenuEnabled = $this->scopeConfig->getValue(
             'amshopby_brand/general/topmenu_enabled',
@@ -108,7 +112,7 @@ class Topmenu
     /**
      * @return int
      */
-    protected function getPosition()
+    public function getPosition()
     {
         return TopmenuSource::DISPLAY_FIRST;
     }
@@ -136,5 +140,15 @@ class Topmenu
     public function setLabel($label)
     {
         $this->label = $label;
+    }
+
+    public function getScopeConfig(): ScopeConfigInterface
+    {
+        return $this->scopeConfig;
+    }
+
+    public function getBrandsPopupBlock(): BrandsPopupBlock
+    {
+        return $this->brandsPopup;
     }
 }

@@ -9,6 +9,7 @@ use Codeception\Events;
 use Codeception\Test\Descriptor;
 use Codeception\Test\Interfaces\Dependent;
 use Codeception\TestInterface;
+use PHPUnit\Framework\SelfDescribing;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use function in_array;
@@ -37,9 +38,10 @@ class Dependencies implements EventSubscriberInterface
             return;
         }
 
-        foreach ($test->fetchDependencies() as $dep) {
-            if (!in_array($dep, $this->successfulTests, true) && $test instanceof TestInterface) {
-                $test->getMetadata()->setSkip("This test depends on {$dep} to pass");
+        $testSignatures = $test->fetchDependencies();
+        foreach ($testSignatures as $signature) {
+            if (!in_array($signature, $this->successfulTests) && $test instanceof TestInterface) {
+                $test->getMetadata()->setSkip("This test depends on {$signature} to pass");
                 return;
             }
         }
@@ -47,6 +49,7 @@ class Dependencies implements EventSubscriberInterface
 
     public function testSuccess(TestEvent $event): void
     {
-        $this->successfulTests[] = Descriptor::getTestSignature($event->getTest());
+        $test = $event->getTest();
+        $this->successfulTests[] = Descriptor::getTestSignature($test);
     }
 }

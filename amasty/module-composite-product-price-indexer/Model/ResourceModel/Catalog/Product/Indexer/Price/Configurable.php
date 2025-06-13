@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace Amasty\CompositeProductPriceIndexer\Model\ResourceModel\Catalog\Product\Indexer\Price;
 
+use Amasty\CompositeProductPriceIndexer\Model\Indexer\Price\FullReindexFlag;
 use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Search\Request\IndexScopeResolverInterface as TableResolver;
 
@@ -34,14 +36,21 @@ class Configurable
      */
     private $productIdLink;
 
+    /**
+     * @var FullReindexFlag
+     */
+    private $fullReindexFlag;
+
     public function __construct(
         ResourceConnection $resourceConnection,
         TableResolver $tableResolver,
-        ProductResource $productResource
+        ProductResource $productResource,
+        ?FullReindexFlag $fullReindexFlag = null
     ) {
         $this->resourceConnection = $resourceConnection;
         $this->tableResolver = $tableResolver;
         $this->productIdLink = $productResource->getLinkField();
+        $this->fullReindexFlag = $fullReindexFlag ?? ObjectManager::getInstance()->get(FullReindexFlag::class);
     }
 
     public function addSpecialPrice(array $dimensions, array $entityIds): void
@@ -93,7 +102,12 @@ class Configurable
 
     private function getDataTable(array $dimensions): string
     {
-        return $this->tableResolver->resolve(self::MAIN_INDEX_TABLE, $dimensions);
+        $tableName = $this->tableResolver->resolve(self::MAIN_INDEX_TABLE, $dimensions);
+        if ($this->fullReindexFlag->isFullReindex()) {
+            $tableName .= '_replica';
+        }
+
+        return $tableName;
     }
 
     private function getIdxTable(array $dimensions): string

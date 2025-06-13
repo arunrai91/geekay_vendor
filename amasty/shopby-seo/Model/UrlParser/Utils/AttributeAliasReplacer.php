@@ -12,7 +12,6 @@ namespace Amasty\ShopbySeo\Model\UrlParser\Utils;
 
 use Amasty\ShopbySeo\Helper\Data;
 use Amasty\ShopbySeo\Model\ConfigProvider;
-use Magento\Framework\App\ObjectManager;
 use Magento\Store\Model\StoreManagerInterface;
 
 class AttributeAliasReplacer
@@ -40,15 +39,13 @@ class AttributeAliasReplacer
     public function __construct(
         StoreManagerInterface $storeManager,
         Data $seoHelper,
-        SpecialCharReplacer $specialCharReplacer = null, // TODO move to not optional
-        ConfigProvider $configProvider = null // TODO move to not optional
+        SpecialCharReplacer $specialCharReplacer,
+        ConfigProvider $configProvider
     ) {
         $this->storeManager = $storeManager;
         $this->seoHelper = $seoHelper;
-        // OM for backward compatibility
-        $this->specialCharReplacer = $specialCharReplacer ?? ObjectManager::getInstance()
-            ->get(SpecialCharReplacer::class);
-        $this->configProvider = $configProvider ?? ObjectManager::getInstance()->get(ConfigProvider::class);
+        $this->specialCharReplacer = $specialCharReplacer;
+        $this->configProvider = $configProvider;
     }
 
     /**

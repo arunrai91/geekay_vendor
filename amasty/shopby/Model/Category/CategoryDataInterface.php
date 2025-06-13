@@ -18,6 +18,7 @@ interface CategoryDataInterface
     public const LABEL = 'label';
     public const COUNT = 'count';
     public const PERMISSIONS = 'permissions';
+    public const REQUEST_PATH = 'request_path';
 
     /**
      * @return int
@@ -78,4 +79,14 @@ interface CategoryDataInterface
      * @param string[] $permissions
      */
     public function setPermissions(array $permissions): void;
+
+    /**
+     * @return string
+     */
+    public function getRequestPath(): string;
+
+    /**
+     * @param string $requestPath
+     */
+    public function setRequestPath(string $requestPath): void;
 }

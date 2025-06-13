@@ -6,7 +6,6 @@ namespace Codeception\Command;
 
 use Codeception\Configuration;
 use Codeception\Exception\ConfigurationException;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,10 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * Required to have `envs` path to be specified in `codeception.yml`
  */
-#[AsCommand(
-    name: 'generate:environment',
-    description: 'Generates empty environment config'
-)]
 class GenerateEnvironment extends Command
 {
     use Shared\FileSystemTrait;
@@ -30,7 +25,8 @@ class GenerateEnvironment extends Command
 
     protected function configure(): void
     {
-        $this->addArgument('env', InputArgument::REQUIRED, 'Environment name');
+        $this->setDescription('Generates empty environment config')
+            ->addArgument('env', InputArgument::REQUIRED, 'Environment name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

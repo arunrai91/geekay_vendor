@@ -203,7 +203,7 @@ class FilterSetting extends \Magento\Framework\Model\AbstractModel implements Fi
      */
     public function getCategoriesFilter()
     {
-        $this->getResource()->lookupCategoriesFilter($this);
+        $this->lookupCategoriesFilter();
         return $this->getData(self::CATEGORIES_FILTER);
     }
 
@@ -212,7 +212,7 @@ class FilterSetting extends \Magento\Framework\Model\AbstractModel implements Fi
      */
     public function getAttributesFilter()
     {
-        $this->getResource()->lookupAttributesFilter($this);
+        $this->lookupAttributesFilter();
         return $this->getData(self::ATTRIBUTES_FILTER);
     }
 
@@ -221,7 +221,7 @@ class FilterSetting extends \Magento\Framework\Model\AbstractModel implements Fi
      */
     public function getAttributesOptionsFilter()
     {
-        $this->getResource()->lookupAttributesOptionsFilter($this);
+        $this->lookupAttributesOptionsFilter();
         return $this->getData(self::ATTRIBUTES_OPTIONS_FILTER);
     }
 
@@ -727,5 +727,43 @@ class FilterSetting extends \Magento\Framework\Model\AbstractModel implements Fi
     public function setAttributeId(int $attributeId): void
     {
         $this->setData(self::ATTRIBUTE_ID, $attributeId);
+    }
+
+    private function lookupCategoriesFilter(): void
+    {
+        $categoriesFilter = $this->getData(self::CATEGORIES_FILTER);
+        if (!is_array($categoriesFilter)) {
+            $categoriesFilterArray = [];
+            if ($categoriesFilter !== '' && $categoriesFilter !== null) {
+                $categoriesFilterArray = explode(',', $categoriesFilter);
+            }
+            $this->setData(self::CATEGORIES_FILTER, $categoriesFilterArray);
+        }
+    }
+
+    private function lookupAttributesFilter(): void
+    {
+        $attributesFilter = $this->getData(self::ATTRIBUTES_FILTER);
+        if (!is_array($attributesFilter)) {
+            $attributesFilterArray = [];
+
+            if ($attributesFilter !== '' && $attributesFilter !== null) {
+                $attributesFilterArray = explode(',', $attributesFilter);
+            }
+            $this->setData(self::ATTRIBUTES_FILTER, $attributesFilterArray);
+        }
+    }
+
+    private function lookupAttributesOptionsFilter(): void
+    {
+        $attributesOptionsFilter = $this->getData(self::ATTRIBUTES_OPTIONS_FILTER);
+
+        if (!is_array($attributesOptionsFilter)) {
+            $attributesOptionsFilterArray = [];
+            if ($attributesOptionsFilter !== '' && $attributesOptionsFilter !== null) {
+                $attributesOptionsFilterArray = explode(',', $attributesOptionsFilter);
+            }
+            $this->setData(self::ATTRIBUTES_OPTIONS_FILTER, $attributesOptionsFilterArray);
+        }
     }
 }

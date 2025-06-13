@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Codeception\Reporter;
 
 use Codeception\Event\FailEvent;
@@ -27,6 +25,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Throwable;
 
 use function sprintf;
+use function str_replace;
 
 class JUnitReporter implements EventSubscriberInterface
 {
@@ -149,7 +148,7 @@ class JUnitReporter implements EventSubscriberInterface
             $this->root->appendChild($testSuite);
         }
 
-        ++$this->testSuiteLevel;
+        $this->testSuiteLevel++;
         $this->testSuites[$this->testSuiteLevel]          = $testSuite;
         $this->testSuiteTests[$this->testSuiteLevel]      = 0;
         $this->testSuiteAssertions[$this->testSuiteLevel] = 0;
@@ -162,46 +161,60 @@ class JUnitReporter implements EventSubscriberInterface
 
     public function afterSuite(SuiteEvent $event): void
     {
-        $this->setTestSuiteAttributes($this->testSuiteLevel);
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+            'tests',
+            (string)$this->testSuiteTests[$this->testSuiteLevel]
+        );
 
-        if ($this->testSuiteLevel > 1) {
-            $this->aggregateTestSuiteData($this->testSuiteLevel - 1, $this->testSuiteLevel);
-        }
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+            'assertions',
+            (string)$this->testSuiteAssertions[$this->testSuiteLevel]
+        );
 
-        --$this->testSuiteLevel;
-    }
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+            'errors',
+            (string)$this->testSuiteErrors[$this->testSuiteLevel]
+        );
 
-    private function setTestSuiteAttributes(int $level): void
-    {
-        $testSuite = $this->testSuites[$level];
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+            'failures',
+            (string)$this->testSuiteFailures[$this->testSuiteLevel]
+        );
 
-        $testSuite->setAttribute('tests', (string)$this->testSuiteTests[$level]);
-        $testSuite->setAttribute('assertions', (string)$this->testSuiteAssertions[$level]);
-        $testSuite->setAttribute('errors', (string)$this->testSuiteErrors[$level]);
-        $testSuite->setAttribute('failures', (string)$this->testSuiteFailures[$level]);
-        $testSuite->setAttribute('skipped', (string)$this->testSuiteSkipped[$level]);
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+            'skipped',
+            (string)$this->testSuiteSkipped[$this->testSuiteLevel]
+        );
 
         if (!$this->isStrict) {
-            $testSuite->setAttribute('useless', (string)$this->testSuiteUseless[$level]);
+            $this->testSuites[$this->testSuiteLevel]->setAttribute(
+                'useless',
+                (string)$this->testSuiteUseless[$this->testSuiteLevel]
+            );
         }
 
-        $testSuite->setAttribute('time', sprintf('%F', $this->testSuiteTimes[$level]));
-    }
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+            'time',
+            sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel])
+        );
 
-    private function aggregateTestSuiteData(int $parentLevel, int $childLevel): void
-    {
-        $this->testSuiteTests[$parentLevel] += $this->testSuiteTests[$childLevel];
-        $this->testSuiteAssertions[$parentLevel] += $this->testSuiteAssertions[$childLevel];
-        $this->testSuiteErrors[$parentLevel] += $this->testSuiteErrors[$childLevel];
-        $this->testSuiteFailures[$parentLevel] += $this->testSuiteFailures[$childLevel];
-        $this->testSuiteSkipped[$parentLevel] += $this->testSuiteSkipped[$childLevel];
-        $this->testSuiteUseless[$parentLevel] += $this->testSuiteUseless[$childLevel];
-        $this->testSuiteTimes[$parentLevel] += $this->testSuiteTimes[$childLevel];
+        if ($this->testSuiteLevel > 1) {
+            $this->testSuiteTests[$this->testSuiteLevel - 1] += $this->testSuiteTests[$this->testSuiteLevel];
+            $this->testSuiteAssertions[$this->testSuiteLevel - 1] += $this->testSuiteAssertions[$this->testSuiteLevel];
+            $this->testSuiteErrors[$this->testSuiteLevel - 1] += $this->testSuiteErrors[$this->testSuiteLevel];
+            $this->testSuiteFailures[$this->testSuiteLevel - 1] += $this->testSuiteFailures[$this->testSuiteLevel];
+            $this->testSuiteSkipped[$this->testSuiteLevel - 1] += $this->testSuiteSkipped[$this->testSuiteLevel];
+            $this->testSuiteUseless[$this->testSuiteLevel - 1] += $this->testSuiteUseless[$this->testSuiteLevel];
+            $this->testSuiteTimes[$this->testSuiteLevel - 1] += $this->testSuiteTimes[$this->testSuiteLevel];
+        }
+
+        $this->testSuiteLevel--;
     }
 
     public function startTest(TestEvent $event): void
     {
         $test = $event->getTest();
+
         $this->currentTestCase = $this->document->createElement('testcase');
 
         foreach ($test->getReportFields() as $attr => $value) {
@@ -217,26 +230,19 @@ class JUnitReporter implements EventSubscriberInterface
         $test = $event->getTest();
         $time = $event->getTime();
 
-        $this->currentTestCase->setAttribute('time', sprintf('%F', $time));
+        $this->currentTestCase->setAttribute(
+            'time',
+            sprintf('%F', $time)
+        );
         $numAssertions = $test->numberOfAssertionsPerformed();
+
         $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
-        $this->currentTestCase->setAttribute('assertions', (string)$numAssertions);
 
-        $testOutput = $this->getTestOutput($test);
+        $this->currentTestCase->setAttribute(
+            'assertions',
+            (string)$numAssertions
+        );
 
-        if ($testOutput !== '') {
-            $systemOut = $this->document->createElement('system-out', Xml::prepareString($testOutput));
-            $this->currentTestCase->appendChild($systemOut);
-        }
-
-        $this->testSuites[$this->testSuiteLevel]->appendChild($this->currentTestCase);
-        ++$this->testSuiteTests[$this->testSuiteLevel];
-        $this->testSuiteTimes[$this->testSuiteLevel] += $time;
-        $this->currentTestCase = null;
-    }
-
-    private function getTestOutput(Test $test): string
-    {
         $testOutput = '';
 
         if ($test instanceof TestCaseWrapper) {
@@ -250,30 +256,59 @@ class JUnitReporter implements EventSubscriberInterface
                 if (!$testCase->expectsOutput()) {
                     $testOutput = $testCase->getActualOutputForAssertion();
                 }
-            } elseif (!$testCase->hasExpectationOnOutput()) {
-                $testOutput = $testCase->getActualOutputForAssertion();
+            } else {
+                if (!$testCase->hasExpectationOnOutput()) {
+                    $testOutput = $testCase->getActualOutputForAssertion();
+                }
             }
         }
 
-        return $testOutput;
+        if ($testOutput !== '') {
+            $systemOut = $this->document->createElement(
+                'system-out',
+                Xml::prepareString($testOutput)
+            );
+
+            $this->currentTestCase->appendChild($systemOut);
+        }
+
+        $this->testSuites[$this->testSuiteLevel]->appendChild(
+            $this->currentTestCase
+        );
+
+        $this->testSuiteTests[$this->testSuiteLevel]++;
+        $this->testSuiteTimes[$this->testSuiteLevel] += $time;
+        $this->currentTestCase = null;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws ReflectionException
+     */
     public function testError(FailEvent $event): void
     {
-        $this->addFault($event->getTest(), $event->getFail(), 'error');
-        ++$this->testSuiteErrors[$this->testSuiteLevel];
+        $this->doAddFault($event->getTest(), $event->getFail(), 'error');
+        $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws ReflectionException
+     */
     public function testWarning(FailEvent $event): void
     {
-        $this->addFault($event->getTest(), $event->getFail(), 'warning');
-        ++$this->testSuiteFailures[$this->testSuiteLevel];
+        $this->doAddFault($event->getTest(), $event->getFail(), 'warning');
+        $this->testSuiteFailures[$this->testSuiteLevel]++;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws ReflectionException
+     */
     public function testFailure(FailEvent $event): void
     {
-        $this->addFault($event->getTest(), $event->getFail(), 'failure');
-        ++$this->testSuiteFailures[$this->testSuiteLevel];
+        $this->doAddFault($event->getTest(), $event->getFail(), 'failure');
+        $this->testSuiteFailures[$this->testSuiteLevel]++;
     }
 
     public function testSkipped(FailEvent $event): void
@@ -284,7 +319,8 @@ class JUnitReporter implements EventSubscriberInterface
 
         $skipped = $this->document->createElement('skipped');
         $this->currentTestCase->appendChild($skipped);
-        ++$this->testSuiteSkipped[$this->testSuiteLevel];
+
+        $this->testSuiteSkipped[$this->testSuiteLevel]++;
     }
 
     public function testUseless(FailEvent $event): void
@@ -295,7 +331,8 @@ class JUnitReporter implements EventSubscriberInterface
 
         $error = $this->document->createElement('error', 'Useless Test');
         $this->currentTestCase->appendChild($error);
-        ++$this->testSuiteUseless[$this->testSuiteLevel];
+
+        $this->testSuiteUseless[$this->testSuiteLevel]++;
     }
 
     /**
@@ -304,7 +341,7 @@ class JUnitReporter implements EventSubscriberInterface
      * @throws InvalidArgumentException
      * @throws ReflectionException
      */
-    private function addFault(Test $test, Throwable $t, string $type): void
+    private function doAddFault(Test $test, Throwable $t, string $type): void
     {
         if (!$this->currentTestCase instanceof DOMElement) {
             return;
@@ -318,10 +355,7 @@ class JUnitReporter implements EventSubscriberInterface
             $buffer = '';
         }
 
-        if (
-            version_compare(PHPUnitVersion::series(), '10.0', '<')
-            && class_exists(TestFailure::class)
-        ) {
+        if (PHPUnitVersion::series() < 10) {
             $exceptionString = TestFailure::exceptionToString($t);
         } else {
             $exceptionString = ThrowableToStringMapper::map($t);
@@ -329,8 +363,13 @@ class JUnitReporter implements EventSubscriberInterface
 
         $buffer .= $exceptionString . "\n" . StackTraceFilter::getFilteredStacktrace($t);
 
-        $fault = $this->document->createElement($type, Xml::prepareString($buffer));
+        $fault = $this->document->createElement(
+            $type,
+            Xml::prepareString($buffer)
+        );
+
         $fault->setAttribute('type', $t::class);
+
         $this->currentTestCase->appendChild($fault);
     }
 }

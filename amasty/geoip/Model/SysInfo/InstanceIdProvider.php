@@ -41,4 +41,9 @@ class InstanceIdProvider
 
         return $this->instanceId;
     }
+
+    public function _resetState(): void
+    {
+        $this->instanceId = null;
+    }
 }

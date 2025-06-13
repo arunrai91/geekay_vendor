@@ -68,14 +68,13 @@ class ApplyCustomFilters
      * Build index query
      *
      * @param $subject
-     * @param callable $proceed
+     * @param Select $select
      * @param RequestInterface $request
      * @return Select
      * @SuppressWarnings(PHPMD.UnusedFormatParameter)
      */
-    public function aroundBuild($subject, callable $proceed, RequestInterface $request)
+    public function afterBuild($subject, Select $select, RequestInterface $request)
     {
-        $select = $proceed($request);
         $filters = $this->getFilters($request->getQuery());
         foreach ($filters as $filter) {
             $this->customExclusionStrategyPool->applyFilter($filter, $select);
@@ -134,7 +133,6 @@ class ApplyCustomFilters
     {
         $filters = [];
 
-        /** @var BoolExpression $filter */
         $this->prepareFilters($boolExpression->getMust(), $filters);
         $this->prepareFilters($boolExpression->getShould(), $filters);
         $this->prepareFilters($boolExpression->getMustNot(), $filters);

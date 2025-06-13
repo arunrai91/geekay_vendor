@@ -13,16 +13,11 @@ use Amasty\Shopby\Model\Layer\GetSelectedFiltersSettings;
 use Amasty\Shopby\Model\Layer\IsBrandPage;
 use Amasty\Shopby\Model\Request;
 use Amasty\ShopbyBase\Api\UrlBuilderInterface;
-use Amasty\ShopbyBase\Model\Detection\MobileDetect;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
 use Magento\Catalog\Model\Layer\Resolver;
-use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\Helper\AbstractHelper;
 use Amasty\Shopby;
 use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Registry;
-use Magento\Store\Model\ScopeInterface;
 use Amasty\ShopbyBase\Helper\OptionSetting as OptionSettingHelper;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Swatches\Helper\Data as SwatchesHelper;
@@ -36,43 +31,39 @@ class Data
     public const SHOPBY_AJAX = 'shopbyAjax';
 
     /**
-     * @var  Layer
+     * @var Layer|null
      */
-    protected $layer;
+    private ?Layer $layer = null;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    private StoreManagerInterface $storeManager;
 
     /**
      * @var Request
      */
-    protected $shopbyRequest;
-
-    /**
-     * @var Registry
-     */
-    protected $registry;
+    private Request $shopbyRequest;
 
     /**
      * @var SwatchesHelper
      */
-    private $swatchHelper;
+    private SwatchesHelper $swatchHelper;
+
     /**
      * @var OptionSettingHelper
      */
-    private $optionSettingHelper;
+    private OptionSettingHelper $optionSettingHelper;
 
     /**
      * @var UrlBuilderInterface
      */
-    private $amUrlBuilder;
+    private UrlBuilderInterface $amUrlBuilder;
 
     /**
      * @var Resolver
      */
-    private $layerResolver;
+    private Resolver $layerResolver;
 
     public function __construct(
         Resolver $layerResolver,
@@ -80,13 +71,11 @@ class Data
         Request $shopbyRequest,
         SwatchesHelper $swatchHelper,
         OptionSettingHelper $optionSettingHelper,
-        Registry $registry,
         UrlBuilderInterface $amUrlBuilder
     ) {
         $this->layerResolver = $layerResolver;
         $this->storeManager = $storeManager;
         $this->shopbyRequest = $shopbyRequest;
-        $this->registry = $registry;
         $this->swatchHelper = $swatchHelper;
         $this->optionSettingHelper = $optionSettingHelper;
         $this->amUrlBuilder = $amUrlBuilder;
@@ -118,7 +107,7 @@ class Data
 
         $ids = explode(',', $data);
         if ($this->isNeedCheckOption($filter)) {
-            $ids = array_map('intval', $ids ?? []);
+            $ids = array_map('intval', $ids ?: []);
         }
 
         if (in_array($filterItem->getValue(), $ids)) {

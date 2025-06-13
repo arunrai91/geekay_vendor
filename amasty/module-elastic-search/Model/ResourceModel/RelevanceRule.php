@@ -30,7 +30,7 @@ class RelevanceRule extends AbstractDb
         Context $context,
         OnDeleteCallbackPull $onDeleteCallbackPull,
         OnSaveCallbackPull $onSaveCallbackPull,
-        $connectionName = null
+        ?string $connectionName = null
     ) {
         $this->onDeleteCallbackPull = $onDeleteCallbackPull;
         $this->onSaveCallbackPull = $onSaveCallbackPull;

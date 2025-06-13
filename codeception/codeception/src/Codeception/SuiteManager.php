@@ -24,25 +24,34 @@ class SuiteManager
     use ActorTrait;
 
     protected ?Suite $suite = null;
+
     protected GroupManager $groupManager;
+
     protected ModuleContainer $moduleContainer;
+
     protected Di $di;
+
     protected string $env = '';
+
     protected array $settings = [];
+
     private Filter $testFilter;
 
     public function __construct(protected ?EventDispatcher $dispatcher, string $name, array $settings, array $options)
     {
-        $this->settings       = $settings;
-        $this->di             = new Di();
-        $this->groupManager   = new GroupManager($settings['groups']);
+        $this->settings = $settings;
+        $this->di = new Di();
+        $this->groupManager = new GroupManager($settings['groups']);
         $this->moduleContainer = new ModuleContainer($this->di, $settings);
 
-        foreach (Configuration::modules($this->settings) as $moduleName) {
+        $modules = Configuration::modules($this->settings);
+        foreach ($modules as $moduleName) {
             $this->moduleContainer->create($moduleName);
         }
         $this->moduleContainer->validateConflicts();
-        $this->env = $settings['current_environment'] ?? '';
+        if (isset($settings['current_environment'])) {
+            $this->env = $settings['current_environment'];
+        }
 
         $this->testFilter = new Filter(
             $options['groups'] ?? null,
@@ -55,32 +64,29 @@ class SuiteManager
 
     public function initialize(): void
     {
-        $this->dispatch(Events::MODULE_INIT);
+        $this->dispatcher->dispatch(new Event\SuiteEvent($this->suite, $this->settings), Events::MODULE_INIT);
         foreach ($this->moduleContainer->all() as $module) {
             $module->_initialize();
         }
-
         if ($this->settings['actor'] && !file_exists(Configuration::supportDir() . $this->settings['actor'] . '.php')) {
             throw new Exception\ConfigurationException(
                 $this->settings['actor']
                 . " class doesn't exist in suite folder.\nRun the 'build' command to generate it"
             );
         }
-
-        $this->dispatch(Events::SUITE_INIT);
-        ini_set('xdebug.show_exception_trace', '0'); // See https://github.com/symfony/symfony/issues/7646
+        $this->dispatcher->dispatch(new Event\SuiteEvent($this->suite, $this->settings), Events::SUITE_INIT);
+        ini_set('xdebug.show_exception_trace', '0'); // Issue https://github.com/symfony/symfony/issues/7646
     }
 
     public function loadTests(?string $path = null): void
     {
-        $loader = new Loader($this->settings);
-        $loader->loadTests($path);
+        $testLoader = new Loader($this->settings);
+        $testLoader->loadTests($path);
 
-        $tests = $loader->getTests();
+        $tests = $testLoader->getTests();
         if ($this->settings['shuffle']) {
             shuffle($tests);
         }
-
         foreach ($tests as $test) {
             $this->addToSuite($test);
         }
@@ -94,21 +100,23 @@ class SuiteManager
         }
 
         $this->configureTest($test);
-        $this->checkEnvironmentExists($test);
 
+        $this->checkEnvironmentExists($test);
         if (!$this->isExecutedInCurrentEnvironment($test)) {
-            return;
+            return; // skip tests from other environments
         }
 
         $groups = $this->groupManager->groupsForTest($test);
+
         if (!$this->testFilter->isGroupAccepted($test, $groups)) {
             return;
         }
 
         $this->suite->addTest($test);
-        if ($groups !== []) {
-            $test->getMetadata()->setGroups($groups);
+        if ($groups === []) {
+            return;
         }
+        $test->getMetadata()->setGroups($groups);
     }
 
     protected function createSuite(string $name): Suite
@@ -118,32 +126,30 @@ class SuiteManager
         }
 
         $suite = new Suite($this->dispatcher, $name);
-        $suite->setBaseName(preg_replace('#\s.+$#', '', $name));
+        $suite->setBaseName(preg_replace('#\s.+$#', '', $name)); // replace everything after space (env name)
         $suite->setModules($this->moduleContainer->all());
 
-        $suite->reportUselessTests(!empty($this->settings['report_useless_tests']));
-        $suite->backupGlobals(!empty($this->settings['backup_globals']));
-        $suite->beStrictAboutChangesToGlobalState(!empty($this->settings['be_strict_about_changes_to_global_state']));
-        $suite->disallowTestOutput(!empty($this->settings['disallow_test_output']));
+        $suite->reportUselessTests((bool)($this->settings['report_useless_tests'] ?? false));
+        $suite->backupGlobals((bool)($this->settings['backup_globals'] ?? false));
+        $suite->beStrictAboutChangesToGlobalState((bool)($this->settings['be_strict_about_changes_to_global_state'] ?? false));
+        $suite->disallowTestOutput((bool)($this->settings['disallow_test_output'] ?? false));
 
         if (PHPUnitVersion::series() >= 10) {
             $suite->initPHPUnitConfiguration();
         }
-
         return $suite;
     }
 
     public function run(ResultAggregator $resultAggregator): void
     {
-        $this->dispatch(Events::SUITE_BEFORE);
+        $this->dispatcher->dispatch(new Event\SuiteEvent($this->suite, $this->settings), Events::SUITE_BEFORE);
         try {
-            unset($GLOBALS['app']);
+            unset($GLOBALS['app']); // hook for not to serialize globals
             $this->suite->run($resultAggregator);
         } finally {
-            $this->dispatch(Events::SUITE_AFTER);
+            $this->dispatcher->dispatch(new Event\SuiteEvent($this->suite, $this->settings), Events::SUITE_AFTER);
         }
     }
-
     public function getSuite(): Suite
     {
         return $this->suite;
@@ -157,12 +163,18 @@ class SuiteManager
     protected function checkEnvironmentExists(TestInterface $test): void
     {
         $envs = $test->getMetadata()->getEnv();
-        if ($envs === [] || !isset($this->settings['env'])) {
+        if ($envs === []) {
             return;
         }
-        $missing = array_diff($envs, array_keys($this->settings['env']));
-        foreach ($missing as $env) {
-            Notification::warning("Environment {$env} was not configured but used in test", Descriptor::getTestFullName($test));
+        if (!isset($this->settings['env'])) {
+            Notification::warning("Environments are not configured", Descriptor::getTestFullName($test));
+            return;
+        }
+        $listedEnvironments = explode(',', implode(',', $envs));
+        foreach ($listedEnvironments as $env) {
+            if (!array_key_exists($env, $this->settings['env'])) {
+                Notification::warning("Environment {$env} was not configured but used in test", Descriptor::getTestFullName($test));
+            }
         }
     }
 
@@ -172,34 +184,29 @@ class SuiteManager
         if ($envs === []) {
             return true;
         }
-
-        $current = array_filter(array_map('trim', explode(',', $this->env)));
+        $currentEnvironments = explode(',', $this->env);
         foreach ($envs as $envList) {
-            $envList = array_filter(array_map('trim', explode(',', $envList)));
-            if ($envList === [] || array_diff($envList, $current) === []) {
+            $envList = explode(',', $envList);
+            if (count($envList) === count(array_intersect($currentEnvironments, $envList))) {
                 return true;
             }
         }
-
         return false;
     }
 
     protected function configureTest(TestInterface $test): void
     {
-        $di = clone $this->di;
-
+        $di = clone($this->di);
         $test->getMetadata()->setServices([
             'di' => $di,
             'dispatcher' => $this->dispatcher,
-            'modules' => $this->moduleContainer,
+            'modules' => $this->moduleContainer
         ]);
-
         $test->getMetadata()->setCurrent([
             'actor' => $this->getActorClassName(),
             'env' => $this->env,
-            'modules' => $this->moduleContainer->all(),
+            'modules' => $this->moduleContainer->all()
         ]);
-
         if ($test instanceof TestCaseWrapper) {
             $di->set(new Scenario($test));
 
@@ -208,14 +215,8 @@ class SuiteManager
                 $testCase->setMetadata($test->getMetadata());
             }
         }
-
         if ($test instanceof ScenarioDriven) {
             $test->preload();
         }
-    }
-
-    private function dispatch(string $event): void
-    {
-        $this->dispatcher->dispatch(new Event\SuiteEvent($this->suite, $this->settings), $event);
     }
 }

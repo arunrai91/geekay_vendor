@@ -30,12 +30,14 @@ class Swatches
         $this->filterSettingHelper = $filterSettingHelper;
     }
 
-    public function aroundIsSwatchAttribute(
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function afterIsSwatchAttribute(
         Data $subject,
-        Closure $closure,
+        bool $isSwatchAttribute,
         Attribute $attribute
     ): bool {
-        $isSwatchAttribute = $closure($attribute);
         $filterSetting = $this->filterSettingHelper->getSettingByAttribute($attribute);
 
         if (!$isSwatchAttribute) {

@@ -39,7 +39,7 @@ class FlagsManager
         return (int)$result;
     }
 
-    public function setFirstModuleRun(int $value = null): void
+    public function setFirstModuleRun(?int $value = null): void
     {
         $value = $value ?? time();
         $this->saveFlag(self::FIRST_MODULE_RUN, (string)$value);
@@ -50,7 +50,7 @@ class FlagsManager
         return (int)$this->getFlag(self::LAST_UPDATE);
     }
 
-    public function setLastUpdate(int $value = null): void
+    public function setLastUpdate(?int $value = null): void
     {
         $value = $value ?? time();
         $this->saveFlag(self::LAST_UPDATE, (string)$value);
@@ -61,7 +61,7 @@ class FlagsManager
         return (int)$this->getFlag(self::REMOVE_DATE);
     }
 
-    public function setLastRemoval(int $value = null): void
+    public function setLastRemoval(?int $value = null): void
     {
         $value = $value ?? time();
         $this->saveFlag(self::REMOVE_DATE, (string)$value);

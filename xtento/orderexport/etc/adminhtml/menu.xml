@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Xtento_OrderExport::configuration" title="Order Export Module" module="Xtento_OrderExport" sortOrder="130" parent="Xtento_XtCore::extensions" action="adminhtml/system_config/edit/section/orderexport" resource="Xtento_OrderExport::configuration"/>
+        <add id="Xtento_OrderExport::menu" title="Sales Export" module="Xtento_OrderExport" sortOrder="100" parent="Magento_Sales::sales" resource="Xtento_OrderExport::menu"/>
+        <add id="Xtento_OrderExport::manual" title="Manual Export" module="Xtento_OrderExport" sortOrder="10" parent="Xtento_OrderExport::menu" action="xtento_orderexport/manual/index" resource="Xtento_OrderExport::manual"/>
+        <add id="Xtento_OrderExport::log" title="Execution Log" module="Xtento_OrderExport" sortOrder="20" parent="Xtento_OrderExport::menu" action="xtento_orderexport/log/index" resource="Xtento_OrderExport::log"/>
+        <add id="Xtento_OrderExport::profile" title="Export Profiles" module="Xtento_OrderExport" sortOrder="30" parent="Xtento_OrderExport::menu" action="xtento_orderexport/profile/index" resource="Xtento_OrderExport::profile"/>
+        <add id="Xtento_OrderExport::destination" title="Export Destinations" module="Xtento_OrderExport" sortOrder="40" parent="Xtento_OrderExport::menu" action="xtento_orderexport/destination/index" resource="Xtento_OrderExport::destination"/>
+    </menu>
+</config>
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            %!uniqueid!%
+ * Last Modified: 2017-08-03T15:38:31+00:00
+ * File:          etc/adminhtml/menu.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

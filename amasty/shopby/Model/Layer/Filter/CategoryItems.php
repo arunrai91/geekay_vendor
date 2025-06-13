@@ -12,17 +12,17 @@ class CategoryItems implements \IteratorAggregate, \Countable
     /**
      * @var array
      */
-    protected $items = [];
+    private array $items = [];
 
     /**
      * @var string
      */
-    protected $startPath = '';
+    private string $startPath = '';
 
     /**
      * @var int
      */
-    protected $countAllItems = 0;
+    private int $countAllItems = 0;
 
     /**
      * @param string|null $path

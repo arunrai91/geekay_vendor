@@ -7,70 +7,49 @@
 
 namespace Amasty\Shopby\Plugin\Framework\Url;
 
-use Amasty\ShopbyBrand\Helper\Content;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Store\Model\ScopeInterface;
+use Amasty\Shopby\Model\Request as ShopbyRequest;
+use Amasty\Shopby\Model\Resolver as ShopbyResolver;
+use Magento\Catalog\Model\Layer;
+use Magento\Catalog\Model\Layer\Resolver as LayerResolver;
+use Magento\Framework\Url\QueryParamsResolverInterface;
 
 class RouteParamsResolver
 {
     /**
-     * @var \Amasty\Shopby\Model\Resolver
+     * @var ShopbyResolver
      */
-    protected $amResolver;
+    private ShopbyResolver $amResolver;
 
     /**
-     * @var \Magento\Catalog\Model\Layer\Resolver
+     * @var LayerResolver
      */
-    protected $layerResolver;
+    private LayerResolver $layerResolver;
 
     /**
-     * @var \Magento\Catalog\Model\Layer
+     * @var Layer|null
      */
-    protected $layer;
+    private ?Layer $layer = null;
 
     /**
-     * @var \Magento\Framework\Url\QueryParamsResolverInterface
+     * @var QueryParamsResolverInterface
      */
-    protected $queryParamsResolver;
+    private QueryParamsResolverInterface $queryParamsResolver;
 
     /**
-     * @var \Amasty\Shopby\Model\Request
+     * @var ShopbyRequest
      */
-    protected $shopbyRequest;
+    private ShopbyRequest $shopbyRequest;
 
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-
-    /**
-     * @var Content
-     */
-    private $contentHelper;
-
-    /**
-     * RouteParamsResolver constructor.
-     * @param \Magento\Catalog\Model\Layer\Resolver $layerResolver
-     * @param \Amasty\Shopby\Model\Resolver $amResolver
-     * @param \Magento\Framework\Url\QueryParamsResolverInterface $queryParamsResolver
-     * @param \Amasty\Shopby\Model\Request $shopbyRequest
-     * @param ScopeConfigInterface $scopeConfig
-     * @param Content $contentHelper
-     */
     public function __construct(
-        \Magento\Catalog\Model\Layer\Resolver $layerResolver,
-        \Amasty\Shopby\Model\Resolver $amResolver,
-        \Magento\Framework\Url\QueryParamsResolverInterface $queryParamsResolver,
-        \Amasty\Shopby\Model\Request $shopbyRequest,
-        ScopeConfigInterface $scopeConfig,
-        Content $contentHelper
+        LayerResolver $layerResolver,
+        ShopbyResolver $amResolver,
+        QueryParamsResolverInterface $queryParamsResolver,
+        ShopbyRequest $shopbyRequest
     ) {
         $this->amResolver = $amResolver;
         $this->layerResolver = $layerResolver;
         $this->queryParamsResolver = $queryParamsResolver;
         $this->shopbyRequest = $shopbyRequest;
-        $this->scopeConfig = $scopeConfig;
-        $this->contentHelper = $contentHelper;
     }
 
     /**
@@ -116,9 +95,9 @@ class RouteParamsResolver
     }
 
     /**
-     * @return \Magento\Catalog\Model\Layer
+     * @return Layer
      */
-    protected function getLayer()
+    private function getLayer()
     {
         if (!$this->layer) {
             $this->layer = $this->amResolver->loadFromParent($this->layerResolver)->get();

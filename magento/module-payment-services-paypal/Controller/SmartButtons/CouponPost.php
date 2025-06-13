@@ -1,77 +1,99 @@
 <?php
-/************************************************************************
- *
- * Copyright 2024 Adobe
- * All Rights Reserved.
- *
- * NOTICE: All information contained herein is, and remains
- * the property of Adobe and its suppliers, if any. The intellectual
- * and technical concepts contained herein are proprietary to Adobe
- * and its suppliers and are protected by all applicable intellectual
- * property laws, including trade secret and copyright laws.
- * Dissemination of this information or reproduction of this material
- * is strictly forbidden unless prior written permission is obtained
- * from Adobe.
- * ************************************************************************
- */
-declare(strict_types=1);
 
 namespace Magento\PaymentServicesPaypal\Controller\SmartButtons;
 
-use Magento\Checkout\Model\Cart;
-use Magento\Checkout\Model\Session;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Checkout\Model\Cart;
+use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Data\Form\FormKey\Validator;
-use Magento\PaymentServicesPaypal\Model\SmartButtons\Checkout;
 use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\SalesRule\Model\CouponFactory;
-use Magento\Store\Model\StoreManagerInterface;
+use Magento\Quote\Api\CartTotalRepositoryInterface;
+use Magento\Checkout\Api\PaymentInformationManagementInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Customer\Model\Session as CustomerSession; // Import CustomerSession
 
 /**
+ * Class CouponPost
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class CouponPost extends \Magento\Checkout\Controller\Cart\CouponPost
+class CouponPost extends \Magento\Framework\App\Action\Action implements HttpPostActionInterface
 {
     /**
-     * @var Checkout
+     * @var Cart
      */
-    private $checkout;
+    protected $cart;
+
+    /**
+     * @var JsonFactory
+     */
+    protected $resultJsonFactory;
+
+    /**
+     * @var Validator
+     */
+    protected $formKeyValidator;
+
+    /**
+     * @var CartRepositoryInterface
+     */
+    protected $cartRepository;
+
+    /**
+     * @var CartTotalRepositoryInterface
+     */
+    protected $cartTotalRepository;
+
+    /**
+     * @var PaymentInformationManagementInterface
+     */
+    protected $paymentInformationManagement;
+
+    /**
+     * @var Quote
+     */
+    protected $quote;
+
+    /**
+     * @var CustomerSession
+     */
+    protected $customerSession; // Declare the property
 
     /**
      * @param Context $context
-     * @param ScopeConfigInterface $scopeConfig
-     * @param Session $checkoutSession
-     * @param StoreManagerInterface $storeManager
-     * @param Validator $formKeyValidator
      * @param Cart $cart
-     * @param Checkout $checkout
-     * @param CouponFactory $couponFactory
-     * @param CartRepositoryInterface $quoteRepository
+     * @param JsonFactory $resultJsonFactory
+     * @param Validator $formKeyValidator
+     * @param CartRepositoryInterface $cartRepository
+     * @param CartTotalRepositoryInterface $cartTotalRepository
+     * @param PaymentInformationManagementInterface $paymentInformationManagement
+     * @param Quote $quote
+     * @param CustomerSession $customerSession // Add CustomerSession to constructor
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         Context $context,
-        ScopeConfigInterface $scopeConfig,
-        Session $checkoutSession,
-        StoreManagerInterface $storeManager,
-        Validator $formKeyValidator,
         Cart $cart,
-        Checkout $checkout,
-        CouponFactory $couponFactory,
-        CartRepositoryInterface $quoteRepository
+        JsonFactory $resultJsonFactory,
+        Validator $formKeyValidator,
+        CartRepositoryInterface $cartRepository,
+        CartTotalRepositoryInterface $cartTotalRepository,
+        PaymentInformationManagementInterface $paymentInformationManagement,
+        Quote $quote,
+        CustomerSession $customerSession // Add this argument
     ) {
-        parent::__construct(
-            $context,
-            $scopeConfig,
-            $checkoutSession,
-            $storeManager,
-            $formKeyValidator,
-            $cart,
-            $couponFactory,
-            $quoteRepository
-        );
+        $this->cart = $cart;
+        $this->resultJsonFactory = $resultJsonFactory;
+        $this->formKeyValidator = $formKeyValidator;
+        $this->cartRepository = $cartRepository;
+        $this->cartTotalRepository = $cartTotalRepository;
+        $this->paymentInformationManagement = $paymentInformationManagement;
+        $this->quote = $quote;
+        $this->customerSession = $customerSession; // Assign to the property
 
-        $this->checkout = $checkout;
+        parent::__construct($context); // Ensure $context is passed to parent
     }
 
     /**

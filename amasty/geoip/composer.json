@@ -2,11 +2,11 @@
     "name": "amasty/geoip",
     "description": "Amasty Geoip Data",
     "require": {
-        "php": ">=7.3",
-        "amasty/base": ">=1.17.0"
+        "php": ">=7.4",
+        "amasty/base": ">=1.18.1"
     },
     "type": "magento2-module",
-    "version": "1.7.0",
+    "version": "1.7.1",
     "license": [
         "proprietary"
     ],

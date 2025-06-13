@@ -14,9 +14,8 @@ use Magento\Framework\View\Element\Template;
 
 class SliderStyle extends Template
 {
-    protected function _construct()
-    {
-        parent::_construct();
-        $this->setTemplate('Amasty_Shopby::system/config/field/style.phtml');
-    }
+    /**
+     * @var string
+     */
+    protected $_template = 'Amasty_Shopby::system/config/field/style.phtml';
 }

@@ -65,7 +65,7 @@ class Notification extends Field
     /**
      * @return bool
      */
-    protected function isSetNotification()
+    private function isSetNotification()
     {
         $value = $this->config->getEnabledNotificationTypes();
 

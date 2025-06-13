@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Amasty\ShopbyBase\Helper;
 
 use Amasty\ShopbyBase\Model\FilterSetting\FilterResolver;
-use Amasty\ShopbyBase\Model\FilterSettingFactory;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -23,26 +22,19 @@ class FilterSetting
     public const ATTR_PREFIX = 'attr_';
 
     /**
-     * @var  FilterSettingFactory
-     */
-    protected $settingFactory;
-
-    /**
      * @var FilterResolver
      */
-    private $filterResolver;
+    private FilterResolver $filterResolver;
 
     /**
      * @var ScopeConfigInterface
      */
-    private $scopeConfig;
+    private ScopeConfigInterface $scopeConfig;
 
     public function __construct(
-        FilterSettingFactory $settingFactory,
         FilterResolver $filterResolver,
         ScopeConfigInterface $scopeConfig
     ) {
-        $this->settingFactory = $settingFactory;
         $this->filterResolver = $filterResolver;
         $this->scopeConfig = $scopeConfig;
     }
@@ -53,17 +45,17 @@ class FilterSetting
         if (!self::isFilterCode($attributeCode)) {
             return self::ATTR_PREFIX . $attributeCode;
         }
-        
+
         return $attributeCode;
     }
-    
+
     // phpcs:ignore Magento2.Functions.StaticFunction.StaticFunction
     public static function convertToAttributeCode(string $filterCode): string
     {
         if (self::isFilterCode($filterCode)) {
             return substr($filterCode, 5);
         }
-        
+
         return $filterCode;
     }
 

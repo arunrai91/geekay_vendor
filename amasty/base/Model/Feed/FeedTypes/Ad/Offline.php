@@ -44,7 +44,7 @@ class Offline
      */
     public function getOfflineData($market = false)
     {
-        /** @var string $etcDir */
+        /** @var string $etcDirPath */
         $etcDirPath = $this->moduleReader->getModuleDir(
             \Magento\Framework\Module\Dir::MODULE_ETC_DIR,
             'Amasty_Base'

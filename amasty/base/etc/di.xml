@@ -18,6 +18,12 @@
     <preference for="Amasty\Base\Api\Data\InstanceHashInterface" type="Amasty\Base\Model\InstanceHash\InstanceHash"/>
     <preference for="Amasty\Base\Api\InstanceHashRepositoryInterface" type="Amasty\Base\Model\InstanceHash\Repository"/>
 
+    <type name="Amasty\Base\Model\SysInfo\Command\LicenceService\ProcessLicenseValidationResponse">
+        <arguments>
+            <argument name="dateTime" xsi:type="object">Magento\Framework\Stdlib\DateTime\DateTime\Proxy</argument>
+        </arguments>
+    </type>
+
     <type name="Amasty\Base\Model\Response\OctetResponseInterfaceFactory">
         <arguments>
             <argument name="responseFactoryAssociationMap" xsi:type="array">
@@ -156,6 +162,16 @@
                 <item name="AmBase::sendSysInfo" xsi:type="object">Amasty\Base\Console\Command\SendSysInfo</item>
                 <item name="AmBase::registerLicenceKey" xsi:type="object">Amasty\Base\Console\Command\RegisterLicenceKey</item>
             </argument>
+        </arguments>
+    </type>
+    <type name="Amasty\Base\Console\Command\SendSysInfo">
+        <arguments>
+            <argument name="sendSysInfo" xsi:type="object">Amasty\Base\Model\SysInfo\Command\LicenceService\SendSysInfo\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Amasty\Base\Console\Command\RegisterLicenceKey">
+        <arguments>
+            <argument name="registerLicenceKey" xsi:type="object">Amasty\Base\Model\SysInfo\Command\LicenceService\RegisterLicenceKey\Proxy</argument>
         </arguments>
     </type>
     <!-- CLI Configuration End -->

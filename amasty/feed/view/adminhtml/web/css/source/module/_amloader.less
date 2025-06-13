@@ -23,11 +23,11 @@
         }
 
         & > .amloader-spinner {
-            position: relative;
-            .lib-css(width, @amloader__size);
             .lib-css(height, @amloader__size);
+            .lib-css(width, @amloader__size);
             margin: auto;
-            .lib-css(transform, rotate(-90deg));
+            position: relative;
+            transform: rotate(-90deg);
         }
 
         .amloader-title {
@@ -37,31 +37,33 @@
 
     .amloader-dot-container {
         & {
+            .lib-css(height, @amloader-dot__size);
+            left: 50%;
             position: absolute;
             top: 50%;
-            left: 50%;
-            width: 50%;
-            .lib-css(height, @amloader-dot__size);
             transform-origin: 0 0;
+            width: 50%;
         }
 
         & > .amloader-dot {
-            float: right;
-            .lib-css(width, @amloader-dot__size);
-            .lib-css(height, @amloader-dot__size);
             .lib-css(background, @amloader-dot__color);
+            .lib-css(height, @amloader-dot__size);
+            .lib-css(width, @amloader-dot__size);
             border-radius: 100%;
-            .lib-css(transform, scale(.5, .5), 1);
+            float: right;
+            transform: scale(.5, .5);
         }
     }
 
 
-    // Generation of animation and transformation styles of loader dots
+    //  Generation of animation and transformation styles of loader dots
     .generate-dot(@dot-number: 1) when (@dot-number =< @amloader-count-of-dots) {
+        /* phpcs:ignore Magento2.Less.BracesFormatting */
         .dot-@{dot-number}-container {
-            .lib-css(transform, rotate((360deg / @amloader-count-of-dots) * (@dot-number - 1)) translateY(-50%), 1);
+            transform: rotate((360deg / @amloader-count-of-dots) * (@dot-number - 1)) translateY(-50%);
         }
 
+        /* phpcs:ignore Magento2.Less.BracesFormatting */
         .dot-@{dot-number} {
             .animation(scale-dot @amloader-animation-duration -(@amloader-animation-duration / @amloader-count-of-dots) * (@amloader-count-of-dots - @dot-number) infinite);
         }
@@ -70,12 +72,12 @@
     }
 
     .generate-dot();
-    // End of generation loop
+    //  End of generation loop
 
     @keyframes scale-dot {
         0%,
         100% {
-            transform: scale(0.5, 0.5);
+            transform: scale(.5, .5);
         }
         50% {
             transform: scale(1, 1);

@@ -20,33 +20,29 @@ class Category
     /**
      * @var array
      */
-    protected $_customizers;
+    private array $customizers;
 
     /**
      * @var ObjectManagerInterface
      */
-    private $objectManager;
+    private ObjectManagerInterface $objectManager;
 
-    /**
-     * @param ObjectManagerInterface $objectManager
-     * @param array $customizers
-     */
-    public function __construct(ObjectManagerInterface $objectManager, $customizers = [])
+    public function __construct(ObjectManagerInterface $objectManager, array $customizers = [])
     {
         $this->objectManager = $objectManager;
-        $this->_customizers = $customizers;
+        $this->customizers = $customizers;
     }
 
     /**
      * @param string $customizer
      * @param CatalogCategory $category
      */
-    protected function _modifyData($customizer, CatalogCategory $category)
+    private function modifyData($customizer, CatalogCategory $category)
     {
-        if (array_key_exists($customizer, $this->_customizers)) {
-            $object = $this->objectManager->get($this->_customizers[$customizer]);
+        if (array_key_exists($customizer, $this->customizers)) {
+            $object = $this->objectManager->get($this->customizers[$customizer]);
             if ($object instanceof Category\CustomizerInterface) {
-                /** @var $object  Category\CustomizerInterface */
+                /** @var Category\CustomizerInterface $object */
                 $object->prepareData($category);
             }
         }
@@ -58,10 +54,10 @@ class Category
      */
     public function prepareData(CatalogCategory $category)
     {
-        $this->_modifyData('seo', $category);
-        $this->_modifyData('brand', $category);
-        $this->_modifyData('page', $category);
-        $this->_modifyData('filter', $category);
-        $this->_modifyData('seoLast', $category);
+        $this->modifyData('seo', $category);
+        $this->modifyData('brand', $category);
+        $this->modifyData('page', $category);
+        $this->modifyData('filter', $category);
+        $this->modifyData('seoLast', $category);
     }
 }

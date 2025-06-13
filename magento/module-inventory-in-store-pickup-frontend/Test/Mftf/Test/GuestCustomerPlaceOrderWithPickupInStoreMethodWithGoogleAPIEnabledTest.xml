@@ -15,6 +15,7 @@
             <description value="As a guest customer place an order with Pickup In store method along with Google API enabled."/>
             <testCaseId value="AC-1798"/>
             <severity value="CRITICAL"/>
+            <group value="guest_checkout"/>
         </annotations>
         <before>
             <!--Enable Store pickup-->

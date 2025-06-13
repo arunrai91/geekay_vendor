@@ -58,7 +58,7 @@ class InventoryResolver
         ResourceConnection $resource,
         Manager $moduleManager,
         ObjectManagerInterface $objectManager,
-        ProductMetadataInterface $productMetadata = null
+        ?ProductMetadataInterface $productMetadata = null
     ) {
         $this->resource = $resource;
         $this->moduleManager = $moduleManager;

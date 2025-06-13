@@ -70,7 +70,7 @@ class External implements ActionInterface
         DimensionProviderInterface $dimensionProvider,
         LoggerInterface $logger,
         array $data,
-        IsElasticEngine $isElasticEngine = null
+        ?IsElasticEngine $isElasticEngine = null
     ) {
         $this->appState = $appState;
         $this->logger = $logger;

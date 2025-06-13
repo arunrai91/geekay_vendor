@@ -3,6 +3,7 @@
 "Add New","Add New"
 subscribeText,subscribeText
 "Unlock functionality","Unlock functionality"
+"Copy to clipboard","Copy to clipboard"
 "Incompatibility with 3rd party module %1 found. To avoid possible conflicts, we strongly recommend turning it off with the following command: ""%2"". <a href=""%3"" target=""_blank"">Contact</a> our Support team for more information.","Incompatibility with 3rd party module %1 found. To avoid possible conflicts, we strongly recommend turning it off with the following command: ""%2"". <a href=""%3"" target=""_blank"">Contact</a> our Support team for more information."
 Extension,Extension
 Download,Download
@@ -75,6 +76,7 @@ Unsubscribe,Unsubscribe
 "Also recommended for your store","Also recommended for your store"
 "Invalid Request.","Invalid Request."
 "All Store Views","All Store Views"
+"Unknown template type","Unknown template type"
 "Entity config not found for given path %1.","Entity config not found for given path %1."
 "Amasty notice: Some Amasty extensions are being used without a valid license. To resolve this issue, please visit <a href=""%1"">Configuration</a> and review the details in the License Status column.","Amasty notice: Some Amasty extensions are being used without a valid license. To resolve this issue, please visit <a href=""%1"">Configuration</a> and review the details in the License Status column."
 "Amasty notice: Some Amasty subscriptions can be renewed due to inactive statuses. For more information, please refer to the License Status column in the <a href=""%1"">Configuration</a> section.","Amasty notice: Some Amasty subscriptions can be renewed due to inactive statuses. For more information, please refer to the License Status column in the <a href=""%1"">Configuration</a> section."
@@ -152,6 +154,7 @@ Search,Search
 "Sorry, no products were found.","Sorry, no products were found."
 Hide,Hide
 "Check Your Subscriptions","Check Your Subscriptions"
+"Buy a License","Buy a License"
 "Amasty Extensions","Amasty Extensions"
 "Amasty Marketplace","Amasty Marketplace"
 Amasty,Amasty
@@ -159,6 +162,10 @@ Amasty,Amasty
 "Instance Registration","Instance Registration"
 "Production Environment","Production Environment"
 "In case you have any questions regarding the license registration process, refer to this detailed <a href=""https://support.amasty.com/portal/en/kb/articles/i-see-messages-in-my-account-and-admin-area-that-license-registration-is-required-what-should-i-do"" target=""_blank"">instruction</a>.","In case you have any questions regarding the license registration process, refer to this detailed <a href=""https://support.amasty.com/portal/en/kb/articles/i-see-messages-in-my-account-and-admin-area-that-license-registration-is-required-what-should-i-do"" target=""_blank"">instruction</a>."
+"System Instance Key","System Instance Key"
+"System Instance Key is required in case of contacting support service.
+                        Please enter this key in the corresponding field when submitting a request.","System Instance Key is required in case of contacting support service.
+                        Please enter this key in the corresponding field when submitting a request."
 "Installed Extensions","Installed Extensions"
 Notifications,Notifications
 "Update Frequency","Update Frequency"

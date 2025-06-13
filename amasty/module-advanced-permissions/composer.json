@@ -3,10 +3,10 @@
     "description": "Advanced Permissions by Amasty",
     "require": {
         "php": ">=7.3",
-        "amasty/base": ">=1.18.1"
+        "amasty/base": ">=1.19.1"
     },
     "type": "magento2-module",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "license": [
         "proprietary"
     ],

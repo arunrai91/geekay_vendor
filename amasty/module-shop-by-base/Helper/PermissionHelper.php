@@ -12,6 +12,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Module\Manager;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class PermissionHelper extends AbstractHelper
 {
@@ -41,15 +42,15 @@ class PermissionHelper extends AbstractHelper
     private $moduleManager;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
-    protected $storeManager;
+    private $storeManager;
 
     public function __construct(
         Context $context,
         \Magento\Customer\Model\Session $customerSession,
         \Amasty\ShopbyBase\Model\Di\Wrapper $permissionModel,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager
     ) {
         parent::__construct($context);
         $this->customerSession = $customerSession;

@@ -45,12 +45,12 @@ class CacheableAdapter implements AdapterInterface
         return $this->buildUrl($this->cache[$routePath], $routeParams);
     }
 
-    public function isApplicable(string $routePath = null, array $routeParams = null): bool
+    public function isApplicable(?string $routePath = null, ?array $routeParams = null): bool
     {
         return $this->originalAdapter->isApplicable($routePath, $routeParams);
     }
 
-    private function getClearUrl(string $routePath = null, array $routeParams = null): string
+    private function getClearUrl(?string $routePath = null, ?array $routeParams = null): string
     {
         $routeParams['_query'] = [];
         return $this->originalAdapter->getUrl($routePath, $routeParams);

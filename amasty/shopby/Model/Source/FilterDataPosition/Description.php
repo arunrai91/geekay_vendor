@@ -14,8 +14,8 @@ class Description extends Source\AbstractFilterDataPosition implements \Magento\
     /**
      * @return void
      */
-    protected function _setLabel()
+    public function initLabel()
     {
-        $this->_label = __('Category Description');
+        $this->setLabel(__('Category Description'));
     }
 }

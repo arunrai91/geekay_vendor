@@ -98,7 +98,7 @@ class ProductPriceDataMapper implements DataMapperInterface
         return $this->customerGroupIds;
     }
 
-    private function getProductPriceData(array $productIds = [], int $storeId = null): array
+    private function getProductPriceData(array $productIds = [], ?int $storeId = null): array
     {
         $result = [];
         if (!empty($productIds)) {

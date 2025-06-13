@@ -51,9 +51,15 @@ class Annotation
      */
     public static function forClass(object|string $class): self
     {
-        $className = is_object($class) ? $class::class : $class;
-        static::$reflectedClasses[$className] ??= new ReflectionClass($className);
-        return new self(static::$reflectedClasses[$className]);
+        if (is_object($class)) {
+            $class = $class::class;
+        }
+
+        if (!isset(static::$reflectedClasses[$class])) {
+            static::$reflectedClasses[$class] = new ReflectionClass($class);
+        }
+
+        return new self(static::$reflectedClasses[$class]);
     }
 
     public static function forMethod(object|string $class, string $method): self
@@ -66,7 +72,10 @@ class Annotation
      */
     public static function fetchAnnotationsFromDocblock(string $annotation, string $docblock): array
     {
-        return preg_match_all(sprintf(self::$regex, $annotation), $docblock, $m) ? $m[1] : [];
+        if (preg_match_all(sprintf(self::$regex, $annotation), $docblock, $matched)) {
+            return $matched[1];
+        }
+        return [];
     }
 
     /**
@@ -74,20 +83,23 @@ class Annotation
      */
     public static function fetchAllAnnotationsFromDocblock(string $docblock): array
     {
-        if (!preg_match_all(sprintf(self::$regex, '(\w+)'), $docblock, $matched)) {
-            return [];
-        }
-
         $annotations = [];
-        foreach ($matched[1] as $i => $annotation) {
-            $annotations[$annotation][] = $matched[2][$i] ?? '';
+        if (!preg_match_all(sprintf(self::$regex, '(\w+)'), $docblock, $matched)) {
+            return $annotations;
+        }
+        foreach ($matched[1] as $k => $annotation) {
+            if (!isset($annotations[$annotation])) {
+                $annotations[$annotation] = [];
+            }
+            $annotations[$annotation][] = $matched[2][$k];
         }
         return $annotations;
     }
 
     public function __construct(ReflectionClass $reflectionClass)
     {
-        $this->currentReflectedItem = $this->reflectedClass = $reflectionClass;
+        $this->currentReflectedItem = $reflectionClass;
+        $this->reflectedClass = $reflectionClass;
     }
 
     public function method(string $method): self
@@ -98,52 +110,65 @@ class Annotation
 
     public function fetch(string $annotation): ?string
     {
-        if (($attr = $this->attribute($annotation)) instanceof ReflectionAttribute) {
-            return $attr->getArguments()[0] ?? '';
+        $attr = $this->attribute($annotation);
+        if ($attr instanceof ReflectionAttribute) {
+            $arguments = $attr->getArguments();
+            if ($arguments === []) {
+                return '';
+            }
+            return $arguments[0];
         }
-
-        $matches = self::fetchAnnotationsFromDocblock($annotation, (string)$this->currentReflectedItem->getDocComment());
-        return $matches[0] ?? null;
+        $docBlock = (string)$this->currentReflectedItem->getDocComment();
+        if (preg_match(sprintf(self::$regex, $annotation), $docBlock, $matched)) {
+            return $matched[1];
+        }
+        return null;
     }
 
     public function fetchAll(string $annotation): array
     {
-        if (($attr = $this->attribute($annotation)) instanceof ReflectionAttribute) {
+        $attr = $this->attribute($annotation);
+        if ($attr instanceof ReflectionAttribute) {
             if (!$attr->isRepeated()) {
                 return $attr->getArguments();
             }
-
+            $attrs = $this->attributes();
             if ($annotation === 'example') {
-                $annotation = 'examples';
+                $annotation = 'examples'; // we renamed this annotation
             }
-            $attrClass = "Codeception\\Attribute\\" . ucfirst($annotation);
-            $attrs = array_filter($this->attributes(), static fn($a): bool => $a->getName() === $attrClass);
-
-            return $annotation === 'examples'
-                ? array_map(static fn($a) => $a->getArguments(), $attrs)
-                : array_merge(...array_map(static fn($a) => $a->getArguments(), $attrs));
+            $name = ucfirst($annotation);
+            $attrs = array_filter($attrs, fn ($a): bool => $a->getName() === "Codeception\\Attribute\\$name");
+            if ($annotation === 'examples') {
+                return array_map(fn (ReflectionAttribute $a): array => $a->getArguments(), $attrs);
+            }
+            return array_merge(...array_map(fn (ReflectionAttribute $a): array => $a->getArguments(), $attrs));
         }
-
-        return self::fetchAnnotationsFromDocblock($annotation, (string)$this->currentReflectedItem->getDocComment());
+        $docBlock = (string)$this->currentReflectedItem->getDocComment();
+        if (preg_match_all(sprintf(self::$regex, $annotation), $docBlock, $matched)) {
+            return $matched[1];
+        }
+        return [];
     }
 
     public function attributes(): array
     {
-        return array_filter(
-            $this->currentReflectedItem->getAttributes(),
-            static fn(ReflectionAttribute $a): bool => str_starts_with($a->getName(), 'Codeception\\Attribute\\')
-        );
+        $attrs = $this->currentReflectedItem->getAttributes();
+        $attrs = array_filter($attrs);
+        return array_filter($attrs, fn (ReflectionAttribute $a): bool => str_starts_with($a->getName(), 'Codeception\\Attribute\\'));
     }
 
     public function attribute(string $name): ?ReflectionAttribute
     {
-        $search = "Codeception\\Attribute\\" . ucfirst($name === 'example' ? 'examples' : $name);
-        foreach ($this->attributes() as $attr) {
-            if ($attr->getName() === $search) {
-                return $attr;
-            }
+        $attrs = $this->attributes();
+        if ($name === 'example') {
+            $name = 'examples'; // we renamed this annotation
         }
-        return null;
+        $name = ucfirst($name);
+        $attrs = array_filter($attrs, fn ($a): bool => $a->getName() === "Codeception\\Attribute\\$name");
+        if ($attrs === []) {
+            return null;
+        }
+        return reset($attrs);
     }
 
     public function raw(): string|false
@@ -159,14 +184,16 @@ class Annotation
     public static function arrayValue(string $annotation): ?array
     {
         $annotation = trim($annotation);
-        $first      = $annotation[0] ?? '';
+        $openingBrace = substr($annotation, 0, 1);
 
-        if (in_array($first, ['{', '['])) {
+        // json-style data format
+        if (in_array($openingBrace, ['{', '['])) {
             return json_decode($annotation, true, 512, JSON_THROW_ON_ERROR);
         }
 
-        if ($first === '(') {
-            preg_match_all('#(\w+)\s*=\s*"(.*?)"\s*[,)]#', $annotation, $matches, PREG_SET_ORDER);
+        // doctrine-style data format
+        if ($openingBrace === '(') {
+            preg_match_all('#(\w+)\s*?=\s*?"(.*?)"\s*?[,)]#', $annotation, $matches, PREG_SET_ORDER);
             $data = [];
             foreach ($matches as $item) {
                 $data[$item[1]] = $item[2];

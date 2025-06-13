@@ -16,5 +16,5 @@ interface AdapterInterface
      */
     public function getUrl($routePath = null, $routeParams = null);
 
-    public function isApplicable(string $routePath = null, array $routeParams = null): bool;
+    public function isApplicable(?string $routePath = null, ?array $routeParams = null): bool;
 }

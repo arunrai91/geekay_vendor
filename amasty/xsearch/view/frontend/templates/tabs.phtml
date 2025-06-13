@@ -6,6 +6,7 @@
  */ if ($block->isTabsEnabled()): ?>
     <?php
         /** @var \Amasty\Xsearch\Block\Search\Tab $block */ $collection = $block->getTabs();
+        /** @var \Magento\Framework\Escaper $escaper */
     ?>
     <?php if ($collection): ?>
         <?php $searchResultHtml = $block->getChildHtml('search.result'); ?>
@@ -39,6 +40,7 @@
 
             <div class="amsearch-products-tab data item content"
                  id="tabs-amasty_search_products_tab"
+                 aria-label="<?= $escaper->escapeHtmlAttr(__('Search Tab')) ?>"
                  data-role="content">
                 <?= /* @noEscape */ $searchResultHtml ?>
             </div>

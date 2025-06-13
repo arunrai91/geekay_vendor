@@ -10,17 +10,17 @@ declare(strict_types=1);
 
 namespace Amasty\ShopbyBase\Block\Adminhtml\Option;
 
-class StoreSwitcher extends \Magento\Backend\Block\Widget\Form\Generic
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form as WidgetForm;
+
+class StoreSwitcher extends WidgetForm
 {
-    /**
-     * @return $this
-     */
-    protected function _prepareForm()
+    public function prepareForm(): StoreSwitcher
     {
-        /** @var \Magento\Framework\Data\Form $form */
         $optionId = $this->getRequest()->getParam('option_id');
         $attributeCode = $this->getRequest()->getParam('attribute_code');
-        $form = $this->_formFactory->create(
+
+        /** @var \Magento\Framework\Data\Form $form */
+        $form = $this->getDataFormFactory()->create(
             [
                 'data' => [
                     'id' => 'preview_form',
@@ -35,6 +35,7 @@ class StoreSwitcher extends \Magento\Backend\Block\Widget\Form\Generic
         $form->addField('preview_selected_store', 'hidden', ['name' => 'store', 'id'=>'preview_selected_store']);
 
         $this->setForm($form);
-        return parent::_prepareForm();
+
+        return parent::prepareForm();
     }
 }

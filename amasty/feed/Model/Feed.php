@@ -723,7 +723,7 @@ class Feed extends AbstractExtensibleModel implements FeedInterface
     }
 
     public function setExtensionAttributes(
-        FeedExtensionInterface $extensionAttributes = null
+        ?FeedExtensionInterface $extensionAttributes = null
     ): FeedInterface {
         return $this->_setExtensionAttributes($extensionAttributes);
     }

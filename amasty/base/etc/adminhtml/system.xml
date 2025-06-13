@@ -39,6 +39,16 @@
                     <backend_model>Amasty\Base\Model\Config\Backend\Serialized\LicenseRegistrationArraySerialized</backend_model>
                     <config_path>amasty_base/instance_registration/license_registration</config_path>
                 </field>
+                <field id="system_instance_key" translate="label comment" sortOrder="30" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>System Instance Key</label>
+                    <comment><![CDATA[
+                        System Instance Key is required in case of contacting support service.
+                        Please enter this key in the corresponding field when submitting a request.
+                    ]]></comment>
+                    <frontend_model>Amasty\Base\Block\Adminhtml\System\Config\Form\Field\SystemInstanceKey</frontend_model>
+                    <backend_model>Amasty\Base\Model\Config\Backend\SystemInstanceKey</backend_model>
+                </field>
             </group>
             <group id="extensions" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="0"
                    showInStore="0">

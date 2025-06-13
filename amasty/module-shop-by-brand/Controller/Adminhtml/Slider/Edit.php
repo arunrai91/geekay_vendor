@@ -10,33 +10,46 @@ declare(strict_types=1);
 
 namespace Amasty\ShopbyBrand\Controller\Adminhtml\Slider;
 
+use Amasty\ShopbyBrand\Model\Request\BrandRegistry;
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Result\PageFactory;
-use Magento\Framework\Registry as CoreRegistry;
-use Amasty\ShopbyBrand\Controller\RegistryConstants;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Amasty\ShopbyBase\Helper\OptionSetting;
 
 class Edit extends Action
 {
-    /** @var CoreRegistry */
-    private $coreRegistry = null;
-
-    /** @var PageFactory */
+    /**
+     * @var PageFactory
+     */
     private $resultPageFactory;
 
-    /** @var  OptionSetting */
+    /**
+     * @var  OptionSetting
+     */
     private $settingHelper;
 
+    /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
+    /**
+     * @var BrandRegistry
+     */
+    private BrandRegistry $brandRegistry;
+
     public function __construct(
-        Action\Context $context,
         PageFactory $resultPageFactory,
-        CoreRegistry $registry,
-        OptionSetting $optionSetting
+        OptionSetting $optionSetting,
+        BrandRegistry $brandRegistry,
+        Context $context
     ) {
         $this->resultPageFactory = $resultPageFactory;
-        $this->coreRegistry = $registry;
         $this->settingHelper = $optionSetting;
+        $this->request = $context->getRequest();
+        $this->brandRegistry = $brandRegistry;
         parent::__construct($context);
     }
 
@@ -58,8 +71,8 @@ class Edit extends Action
         try {
             $model = $this->loadSettingModel();
             $model->setData('id', $model->getData('option_setting_id'));
-            $this->coreRegistry->register(RegistryConstants::FEATURED, $model);
-            /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+            $this->brandRegistry->set($model);
+            /** @var \Magento\Backend\Model\View\Result\Page $result */
             $result = $this->resultPageFactory->create();
             $result->addBreadcrumb(__('Manage Brand Slider'), __('Manage Brand Slider'));
             $result->addBreadcrumb(
@@ -83,9 +96,9 @@ class Edit extends Action
      */
     private function loadSettingModel()
     {
-        $attributeCode = $this->getRequest()->getParam('attribute_code');
-        $optionId = (int) $this->getRequest()->getParam('option_id');
-        $storeId = (int) $this->getRequest()->getParam('store', 0);
+        $attributeCode = $this->request->getParam('attribute_code');
+        $optionId = (int) $this->request->getParam('option_id');
+        $storeId = (int) $this->request->getParam('store', 0);
         if (!$attributeCode || !$optionId) {
             throw new NoSuchEntityException();
         }

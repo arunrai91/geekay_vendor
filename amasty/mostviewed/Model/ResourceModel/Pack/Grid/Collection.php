@@ -14,6 +14,14 @@ use Amasty\Mostviewed\Model\ResourceModel\Pack\Analytic\Sales\GetAggregatedTable
 use Magento\Framework\Api\Search\AggregationInterface;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Amasty\Mostviewed\Model\ResourceModel\Pack\Collection as PackCollection;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
+use Magento\Framework\Data\Collection\EntityFactoryInterface;
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\View\Element\UiComponent\DataProvider\Document;
+use Psr\Log\LoggerInterface;
 
 class Collection extends PackCollection implements SearchResultInterface
 {
@@ -29,26 +37,26 @@ class Collection extends PackCollection implements SearchResultInterface
     /**
      * @var AggregationInterface
      */
-    private $aggregations;
+    private AggregationInterface $aggregations;
 
     /**
      * @var GetAggregatedAnalyticTable
      */
-    private $getAggregatedAnalyticTable;
+    private GetAggregatedAnalyticTable $getAggregatedAnalyticTable;
 
     public function __construct(
-        \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
+        EntityFactoryInterface $entityFactory,
+        LoggerInterface $logger,
+        FetchStrategyInterface $fetchStrategy,
+        ManagerInterface $eventManager,
         $mainTable,
         $eventPrefix,
         $eventObject,
         $resourceModel,
         GetAggregatedAnalyticTable $getAggregatedAnalyticTable,
-        $model = \Magento\Framework\View\Element\UiComponent\DataProvider\Document::class,
-        $connection = null,
-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+        $model = Document::class,
+        ?AdapterInterface $connection = null,
+        ?AbstractDb $resource = null
     ) {
         parent::__construct(
             $entityFactory,
@@ -86,7 +94,7 @@ class Collection extends PackCollection implements SearchResultInterface
     /**
      * {@inheritdoc}
      */
-    public function setItems(array $items = null)
+    public function setItems(?array $items = null)
     {
         return $this;
     }
@@ -110,7 +118,7 @@ class Collection extends PackCollection implements SearchResultInterface
     /**
      * {@inheritdoc}
      */
-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+    public function setSearchCriteria(?SearchCriteriaInterface $searchCriteria = null)
     {
         return $this;
     }

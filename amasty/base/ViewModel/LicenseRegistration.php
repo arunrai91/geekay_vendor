@@ -54,7 +54,7 @@ class LicenseRegistration implements ArgumentInterface
         UrlInterface $url,
         MessageFactory $messageFactory,
         RequestInterface $request,
-        Config $configProvider = null
+        ?Config $configProvider = null
     ) {
         $this->getCurrentLicenseValidation = $getCurrentLicenseValidation;
         $this->url = $url;

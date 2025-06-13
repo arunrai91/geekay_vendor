@@ -10,31 +10,23 @@ namespace Amasty\ShopbySeo\Helper;
 use Amasty\Shopby\Model\Layer\Filter\Resolver\FilterRequestDataResolver;
 use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
 use Amasty\ShopbyBase\Model\Integration\ShopbySeo\GetConfigProvider;
+use Amasty\ShopbySeo\Model\Request\RobotsRegistry;
 use Amasty\ShopbySeo\Model\Source\IndexMode;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\DataObject;
 use Magento\Framework\View\Page\Config as PageConfig;
-use Magento\Framework\Registry;
 use Magento\Store\Model\ScopeInterface;
 use Amasty\ShopbyBase\Model\Integration\IntegrationFactory;
 use Amasty\ShopbySeo\Model\ConfigProvider;
 
 class Meta extends AbstractHelper
 {
-    public const AMSHOPBYSEO_FOLLOW = 'amshopbyseo_follow';
-
     /**
      * @var \Amasty\Shopby\Helper\Data
      */
     private $dataHelper;
-
-    /**
-     * @var Registry
-     */
-    private $registry;
 
     /**
      * @var boolean
@@ -66,23 +58,27 @@ class Meta extends AbstractHelper
      */
     private $filterRequestDataResolver;
 
+    /**
+     * @var RobotsRegistry
+     */
+    private RobotsRegistry $robotsRegistry;
+
     public function __construct(
         Context $context,
         \Amasty\Shopby\Helper\Data $dataHelper,
-        Registry $registry,
         \Magento\Framework\App\Request\Http $request,
         IntegrationFactory $integrationFactory,
         GetConfigProvider $getConfigProvider,
-        FilterRequestDataResolver $filterRequestDataResolver = null
+        FilterRequestDataResolver $filterRequestDataResolver,
+        RobotsRegistry $robotsRegistry
     ) {
         parent::__construct($context);
         $this->dataHelper = $dataHelper;
-        $this->registry = $registry;
         $this->request = $request;
         $this->integrationFactory = $integrationFactory;
         $this->configProvider = $getConfigProvider->execute();
-        $this->filterRequestDataResolver = $filterRequestDataResolver
-            ?? ObjectManager::getInstance()->get(FilterRequestDataResolver::class);
+        $this->filterRequestDataResolver = $filterRequestDataResolver;
+        $this->robotsRegistry = $robotsRegistry;
     }
 
     /**
@@ -110,7 +106,7 @@ class Meta extends AbstractHelper
         }
         $this->isFollowingAllowed = $follow;
         $this->pageConfig->setRobots($robots);
-        $this->registry->register(self::AMSHOPBYSEO_FOLLOW, $robots);
+        $this->robotsRegistry->set($robots);
     }
 
     /**
@@ -270,7 +266,7 @@ class Meta extends AbstractHelper
      * @param string $mode
      * @return bool
      */
-    protected function isNofollowBySingleMode($data, $mode = '')
+    private function isNofollowBySingleMode($data, $mode = '')
     {
         /** @var FilterInterface $filter */
         $filter = $data['filter'];

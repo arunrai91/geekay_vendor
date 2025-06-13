@@ -52,10 +52,11 @@ class RequestManager
 
     /**
      * @param string $domain
-     * @return RegisteredInstance|SimpleDataObject
+     * @param string|null $oldKey
+     * @return SimpleDataObject
      * @throws LocalizedException
      */
-    public function registerInstance(string $domain, ?string $oldKey = null): RegisteredInstance
+    public function registerInstance(string $domain, ?string $oldKey = null): SimpleDataObject
     {
         $curl = $this->prepareCurl();
         $url = $this->urlBuilder->build('/api/v1/instance/registration');
@@ -67,7 +68,7 @@ class RequestManager
         $postParams = json_encode($params);
 
         $response = $curl->request($url, $postParams);
-        if (!in_array($response->getData('code'), [200, 204])) {
+        if (!in_array($response->getData('code'), [200, 204], false)) {
             throw new LocalizedException(__('Invalid request.'));
         }
 
@@ -90,7 +91,7 @@ class RequestManager
         $postParams = json_encode($postParams);
 
         $response = $curl->request($url, $postParams);
-        if (!in_array($response->getData('code'), [200, 204])) {
+        if (!in_array($response->getData('code'), [200, 204], false)) {
             throw new LocalizedException(__('Invalid request.'));
         }
     }
@@ -100,7 +101,6 @@ class RequestManager
      * @see RequestManager::pingRequest
      * @param string $systemInstanceKey
      * @return void
-     * @throws LocalizedException
      */
     public function ping(string $systemInstanceKey): void
     {

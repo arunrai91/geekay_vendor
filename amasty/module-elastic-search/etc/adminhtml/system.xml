@@ -100,6 +100,7 @@
                 <depends>
                     <field id="*/connection/engine" separator=",">amasty_elastic,amasty_elastic_8,amasty_elastic_opensearch</field>
                 </depends>
+                <frontend_model>Amasty\ElasticSearch\Block\Adminhtml\System\Config\CatalogGroup</frontend_model>
                 <field id="wildcard_mode" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Wildcard Type</label>
                     <comment>Specify the type of the autocomplete suggestion - the part of a word which will be auto-completed. Shoppers can input a half-finished word and get a relevant result.</comment>

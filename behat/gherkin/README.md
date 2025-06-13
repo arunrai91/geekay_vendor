@@ -1,16 +1,20 @@
-# Behat Gherkin Parser
+Behat Gherkin Parser
+====================
 
-This is the php Gherkin parser for Behat. It comes bundled with more than 40 native languages (see `i18n.php`) support
-and clean architecture.
+This is the php Gherkin parser for Behat. It comes bundled with more than 40 native languages
+(see `i18n.php`) support & clean architecture.
 
-## Useful Links
+Useful Links
+------------
 
-- [Behat Site](https://behat.org)
+- Official Google Group is at [http://groups.google.com/group/behat](http://groups.google.com/group/behat)
+- IRC channel on [#freenode](http://freenode.net/) is `#behat`
 - [Note on Patches/Pull Requests](CONTRIBUTING.md)
 
-## Usage Example
+Usage Example
+-------------
 
-```php
+``` php
 <?php
 
 $keywords = new Behat\Gherkin\Keywords\ArrayKeywords(array(
@@ -45,14 +49,16 @@ $parser = new Behat\Gherkin\Parser($lexer);
 $feature = $parser->parse(file_get_contents('some.feature'));
 ```
 
-## Installing Dependencies
+Installing Dependencies
+-----------------------
 
-```shell
-curl https://getcomposer.org/installer | php
-php composer.phar update
+``` bash
+$> curl http://getcomposer.org/installer | php
+$> php composer.phar update
 ```
 
-## Contributors
+Contributors
+------------
 
 * Konstantin Kudryashov [everzet](http://github.com/everzet) [lead developer]
 * Other [awesome developers](https://github.com/Behat/Gherkin/graphs/contributors)

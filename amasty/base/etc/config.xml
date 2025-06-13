@@ -35,6 +35,9 @@
             <media_storage_configuration>
                 <allowed_resources>
                     <amasty>amasty</amasty>
+                    <media_gallery_image_folders>
+                        <amasty>amasty</amasty>
+                    </media_gallery_image_folders>
                 </allowed_resources>
             </media_storage_configuration>
         </system>

@@ -19,48 +19,58 @@ use Amasty\Feed\Model\Field\CustomFieldsValidatorFactory;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
 use Magento\CatalogImportExport\Model\Export\RowCustomizerInterface;
+use Magento\Framework\App\ObjectManager;
+use Magento\Store\Model\StoreManagerInterface;
 
 class CustomField implements RowCustomizerInterface
 {
     /**
      * @var Export
      */
-    private $export;
+    private Export $export;
 
     /**
      * @var MergedAttributeProcessor
      */
-    private $mergedAttributeProcessor;
+    private MergedAttributeProcessor $mergedAttributeProcessor;
 
     /**
      * @var array
      */
-    private $processedFields = [];
+    private array $processedFields = [];
 
     /**
      * @var CustomFieldsValidator|null
      */
-    private $validator;
+    private ?CustomFieldsValidator $validator;
 
     /**
      * @var CustomFieldsProcessor|null
      */
-    private $customFieldsProcessor;
+    private ?CustomFieldsProcessor $customFieldsProcessor;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private StoreManagerInterface $storeManager;
 
     public function __construct(
         Export $export,
         MergedAttributeProcessor $mergedAttributeProcessor,
         CustomFieldsValidator $customFieldsValidator,
-        CustomFieldsProcessor $customFieldsProcessor
+        CustomFieldsProcessor $customFieldsProcessor,
+        ?StoreManagerInterface $storeManager = null
     ) {
         $this->export = $export;
         $this->mergedAttributeProcessor = $mergedAttributeProcessor;
         $this->validator = $customFieldsValidator;
         $this->customFieldsProcessor = $customFieldsProcessor;
+        $this->storeManager = $storeManager ?? ObjectManager::getInstance()->get(StoreManagerInterface::class);
     }
 
     public function prepareData($collection, $productIds)
     {
+        $this->storeManager->setCurrentStore($collection->getStoreId());
         if (!$this->checkValidator($collection)) {
             return $this;
         }

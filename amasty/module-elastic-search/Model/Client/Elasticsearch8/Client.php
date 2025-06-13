@@ -64,7 +64,7 @@ class Client implements ClientInterface
     {
         try {
             return $this->getElasticsearchClient()->count($query)->asArray()['count'] ?? 0;
-        } catch (\Elasticsearch\Common\Exceptions\Missing404Exception $e) {
+        } catch (ClientResponseException $e) {
             $message = __('Elasticsearch index not found. Run "bin/magento indexer:reindex catalogsearch_fulltext".');
             throw new AmastyMissing404Exception($message->render(), 0, $e);
         }

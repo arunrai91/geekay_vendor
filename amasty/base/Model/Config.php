@@ -52,7 +52,7 @@ class Config extends ConfigProviderAbstract
         ScopeConfigInterface $scopeConfig,
         WriterInterface $configWriter,
         ReinitableConfigInterface $reinitableConfig,
-        Serializer $serializer = null
+        ?Serializer $serializer = null
     ) {
         parent::__construct($scopeConfig);
         $this->configWriter = $configWriter;

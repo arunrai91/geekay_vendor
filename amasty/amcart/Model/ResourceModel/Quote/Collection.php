@@ -30,8 +30,8 @@ class Collection extends \Magento\Quote\Model\ResourceModel\Quote\Collection
         ManagerInterface $eventManager,
         Snapshot $entitySnapshot,
         ConfigProvider $configProvider,
-        AdapterInterface $connection = null,
-        AbstractDb $resource = null
+        ?AdapterInterface $connection = null,
+        ?AbstractDb $resource = null
     ) {
         $this->configProvider = $configProvider;
         parent::__construct(

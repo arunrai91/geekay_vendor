@@ -108,7 +108,7 @@ class ResolveBrandUrl
 
         $this->emulation->startEnvironmentEmulation($store->getStoreId(), Area::AREA_FRONTEND, true);
         $this->dataPersistor->set(Data::SHOPBY_SWITCHER_STORE_ID, $store->getId());
-        $currentUrl = $this->urlAdapter->getUrl('*/*/*', $params, true);
+        $currentUrl = $this->urlAdapter->getUrl('*/*/*', $params);
         $this->dataPersistor->clear(Data::SHOPBY_SWITCHER_STORE_ID);
         $this->emulation->stopEnvironmentEmulation();
 

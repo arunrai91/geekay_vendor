@@ -77,7 +77,7 @@ class RuleQuote extends AbstractModel implements RuleQuoteInterface
         HistoryRepositoryInterface $historyRepository,
         RuleRepositoryInterface $ruleRepository,
         ResourceModel\RuleQuote\CollectionFactory $ruleQuoteCollectionFactory,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->historyCollectionFactory = $historyCollectionFactory;

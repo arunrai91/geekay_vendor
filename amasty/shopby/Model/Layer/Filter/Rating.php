@@ -201,8 +201,9 @@ class Rating extends AbstractFilter implements CustomFilterInterface
             return __('Not Yet Rated');
         }
         /** @var \Magento\Framework\View\Element\Template $block */
-        $block = $this->blockFactory->createBlock(\Magento\Framework\View\Element\Template::class);
-        $block->setTemplate('Amasty_Shopby::layer/filter/item/rating.phtml');
+        $block = $this->blockFactory->createBlock(\Magento\Framework\View\Element\Template::class, ['data' => [
+            'template' => 'Amasty_Shopby::layer/filter/item/rating.phtml'
+        ]]);
         $block->setData('star', $countStars);
         $html = $block->toHtml();
         return $html;

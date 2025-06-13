@@ -3,14 +3,14 @@
     "description": "Shop by Brand by Amasty",
     "require": {
         "php": ">=7.3.0",
-        "amasty/base": ">=1.17.0",
-        "amasty/module-shop-by-base": ">=2.17.0"
+        "amasty/base": ">=1.19.1",
+        "amasty/module-shop-by-base": ">=3.0.0"
     },
     "suggest": {
         "amasty/module-shop-by-brand-graphql": "Install module-shop-by-brand-graphql module to activate GraphQl and Shop By Brand integration."
     },
     "type": "magento2-module",
-    "version": "2.19.1",
+    "version": "3.0.0",
     "license": [
         "proprietary"
     ],

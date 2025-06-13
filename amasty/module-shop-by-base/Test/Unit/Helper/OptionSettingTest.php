@@ -58,7 +58,7 @@ class OptionSettingTest extends \PHPUnit\Framework\TestCase
     {
         $this->optionSettingHelper = $this->getMockBuilder(OptionSetting::class)
             ->disableOriginalConstructor()
-            ->setMethods($methods)
+            ->onlyMethods($methods)
             ->getMockForAbstractClass();
 
         $this->optionSettingRepository = $this->createMock(

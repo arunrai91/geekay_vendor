@@ -18,12 +18,12 @@ use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
 use Amasty\ShopbyBase\Api\Data\OptionSettingInterfaceFactory as OptionSettingFactory;
 use Amasty\ShopbyBase\Model\Category\Manager as CategoryManager;
 use Amasty\ShopbyBase\Model\Meta\GetReplacedMetaData;
+use Amasty\ShopbyBase\Model\Request\Registry as ShopbyBaseRegistry;
 use Amasty\ShopbyPage\Model\Page as PageEntity;
 use Magento\Catalog\Model\Category as CategoryModel;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\ObjectManager;
 use Magento\Store\Model\ScopeInterface;
 
 class Content extends AbstractHelper implements CategoryDataSetterInterface
@@ -50,11 +50,6 @@ class Content extends AbstractHelper implements CategoryDataSetterInterface
      * @var \Amasty\Shopby\Model\Layer\FilterList
      */
     private $filterList;
-
-    /**
-     * @var \Magento\Framework\Registry
-     */
-    private $registry;
 
     /**
      * @var \Amasty\ShopbyBase\Helper\OptionSetting
@@ -126,12 +121,16 @@ class Content extends AbstractHelper implements CategoryDataSetterInterface
      */
     private $optionSettingFactory;
 
+    /**
+     * @var ShopbyBaseRegistry
+     */
+    private ShopbyBaseRegistry $shopbyBaseRegistry;
+
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Catalog\Model\Layer\Resolver $layerResolver,
         \Amasty\Shopby\Model\Layer\FilterList $filterList,
         \Magento\Store\Model\StoreManager $storeManager,
-        \Magento\Framework\Registry $registry,
         \Magento\Framework\View\Page\Config $pageConfig,
         \Amasty\ShopbyBase\Helper\OptionSetting $optionHelper,
         \Amasty\Shopby\Model\Request $amshopbyRequest,
@@ -141,14 +140,14 @@ class Content extends AbstractHelper implements CategoryDataSetterInterface
         GetReplacedMetaData $getReplacedMetaData,
         GetSelectedFiltersSettings $getSelectedFilters,
         IsBrandPage $isBrandPage,
-        ?OptionSettingFactory $optionSettingFactory = null
+        OptionSettingFactory $optionSettingFactory,
+        ShopbyBaseRegistry $shopbyBaseRegistry
     ) {
         parent::__construct($context);
         $this->pageConfig = $pageConfig;
         $this->layer = $layerResolver->get();
         $this->filterList = $filterList;
         $this->_storeId = $storeManager->getStore()->getId();
-        $this->registry = $registry;
         $this->_helper = $dataHelper;
         $this->_optionHelper = $optionHelper;
         $this->amshopbyRequest = $amshopbyRequest;
@@ -158,8 +157,8 @@ class Content extends AbstractHelper implements CategoryDataSetterInterface
         $this->initCategoryDataSettings();
         $this->getSelectedFilters = $getSelectedFilters;
         $this->isBrandPage = $isBrandPage;
-        $this->optionSettingFactory = $optionSettingFactory
-            ?? ObjectManager::getInstance()->get(OptionSettingFactory::class);
+        $this->optionSettingFactory = $optionSettingFactory;
+        $this->shopbyBaseRegistry = $shopbyBaseRegistry;
     }
 
     private function initCategoryDataSettings()
@@ -312,7 +311,7 @@ class Content extends AbstractHelper implements CategoryDataSetterInterface
     /**
      * Set category data from currently applied filters.
      * @param CategoryModel $category
-     * @return $this;
+     * @return $this
      */
     public function setCategoryData(CategoryModel $category)
     {
@@ -320,7 +319,7 @@ class Content extends AbstractHelper implements CategoryDataSetterInterface
             return $this;
         }
 
-        if (is_object($this->registry->registry(PageEntity::MATCHED_PAGE))) {
+        if ($this->shopbyBaseRegistry->registry(PageEntity::MATCHED_PAGE)) {
             return $this;
         }
 

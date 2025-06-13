@@ -51,7 +51,7 @@ class Info extends Fieldset
     /**
      * @var Field|null
      */
-    protected $fieldRenderer;
+    private $fieldRenderer;
 
     /**
      * @var ModuleInfoProvider
@@ -220,7 +220,7 @@ class Info extends Fieldset
         return $this->_localeDate->date($inputTime)->format('Y-m-d H:i:s \U\T\CP');
     }
 
-    protected function getFieldHtml(
+    private function getFieldHtml(
         AbstractElement $fieldset,
         string $fieldName,
         Phrase $label,

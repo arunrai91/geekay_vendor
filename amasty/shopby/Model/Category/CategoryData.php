@@ -109,4 +109,20 @@ class CategoryData extends DataObject implements CategoryDataInterface
     {
         $this->setData(self::PERMISSIONS, $permissions);
     }
+
+    /**
+     * @return string
+     */
+    public function getRequestPath(): string
+    {
+        return (string)$this->getDataByKey(self::REQUEST_PATH);
+    }
+
+    /**
+     * @param string $requestPath
+     */
+    public function setRequestPath(string $requestPath): void
+    {
+        $this->setData(self::REQUEST_PATH, $requestPath);
+    }
 }

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Amasty\ShopbySeo\Model\UrlParser\Url;
 
+use Amasty\ShopbySeo\Model\ConfigProvider;
 use Amasty\ShopbySeo\Model\UrlRewrite\IsExist as IsUrlRewriteExist;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Module\Manager;
@@ -28,7 +29,9 @@ class IsAllowed
         'customer/',
         'checkout/',
         'catalogsearch',
-        'stores/store'
+        'stores/store',
+        'amasty_fpc/reports/',
+        'amcookie/cookie/cookies'
     ];
 
     /**
@@ -49,17 +52,24 @@ class IsAllowed
     /**
      * @var Manager
      */
-    protected $moduleManager;
+    private $moduleManager;
+
+    /**
+     * @var ConfigProvider
+     */
+    private $configProvider;
 
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         IsUrlRewriteExist $isUrlRewriteExist,
         Manager $moduleManager,
+        ConfigProvider $configProvider,
         array $skipIdentifiers = []
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->isUrlRewriteExist = $isUrlRewriteExist;
         $this->moduleManager = $moduleManager;
+        $this->configProvider = $configProvider;
         $this->skipIdentifiers = array_merge($this->skipIdentifiers, array_values($skipIdentifiers));
     }
 
@@ -89,6 +99,8 @@ class IsAllowed
         && $this->moduleManager->isEnabled('Amasty_Xsearch')) {
             $this->skipIdentifiers[] = $this->getConfigValue('amasty_xsearch/general/seo_key');
         }
+
+        $this->skipIdentifiers = array_merge($this->skipIdentifiers, $this->configProvider->getIgnoredUrls());
 
         $this->skipIdentifiersUpdated = true;
     }

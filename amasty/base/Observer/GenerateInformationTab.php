@@ -116,7 +116,7 @@ class GenerateInformationTab implements ObserverInterface
     /**
      * @return string
      */
-    protected function getLogoHtml()
+    private function getLogoHtml()
     {
         $src = $this->assetRepo->getUrl('Amasty_Base::images/amasty_logo.svg');
         if ($this->moduleInfoProvider->isOriginMarketplace()) {
@@ -198,7 +198,7 @@ class GenerateInformationTab implements ObserverInterface
     /**
      * @return string|null
      */
-    protected function getCurrentVersion()
+    private function getCurrentVersion()
     {
         $data = $this->moduleInfoProvider->getModuleInfo($this->getModuleCode());
 
@@ -227,7 +227,7 @@ class GenerateInformationTab implements ObserverInterface
     /**
      * @return string
      */
-    protected function getChangeLogLink()
+    private function getChangeLogLink()
     {
         return $this->getModuleLink()
             . $this->getSeoParams() . 'changelog_' . $this->getModuleCode() . '#changelog';
@@ -308,7 +308,7 @@ class GenerateInformationTab implements ObserverInterface
      *
      * @return bool
      */
-    protected function isLastVersion($currentVer)
+    private function isLastVersion($currentVer)
     {
         $result = true;
 
@@ -326,7 +326,7 @@ class GenerateInformationTab implements ObserverInterface
     /**
      * @return string
      */
-    protected function getModuleName()
+    private function getModuleName()
     {
         $result = '';
 
@@ -352,7 +352,7 @@ class GenerateInformationTab implements ObserverInterface
      *
      * @return string
      */
-    protected function findResourceName($config)
+    private function findResourceName($config)
     {
         $result = '';
         $currentNode = null;

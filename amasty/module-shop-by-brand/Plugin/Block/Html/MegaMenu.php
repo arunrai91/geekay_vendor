@@ -43,14 +43,16 @@ class MegaMenu extends Topmenu
      */
     public function getBrandLink($items, $displaySetting)
     {
-        $position = $this->scopeConfig->getValue(
+        $position = $this->getScopeConfig()->getValue(
             'amshopby_brand/general/topmenu_enabled',
             ScopeInterface::SCOPE_STORE
         );
 
         if ($this->isEnabled() && $position == $displaySetting) {
             $data = $this->_getNodeAsArray();
-            $data['content'] = $this->brandsPopup->isShowPopup() ? $this->brandsPopup->getOnlyContent() : null;
+            $data['content'] = $this->getBrandsPopupBlock()->isShowPopup()
+                ? $this->getBrandsPopupBlock()->getOnlyContent()
+                : null;
             $data['width'] = 1;
             $items[] = $data;
         }
@@ -61,13 +63,13 @@ class MegaMenu extends Topmenu
     /**
      * @return bool
      */
-    protected function isEnabled()
+    public function isEnabled()
     {
-        $topMenuEnabled = $this->scopeConfig->getValue(
+        $topMenuEnabled = $this->getScopeConfig()->getValue(
             'amshopby_brand/general/topmenu_enabled',
             ScopeInterface::SCOPE_STORE
         );
-        $brandExist = $this->scopeConfig->getValue(
+        $brandExist = $this->getScopeConfig()->getValue(
             'amshopby_brand/general/attribute_code',
             ScopeInterface::SCOPE_STORE
         );

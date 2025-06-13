@@ -7,23 +7,26 @@
 
 namespace Amasty\Base\Setup;
 
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\AggregatedFieldDataConverter;
+use Magento\Framework\DB\FieldToConvert;
+use Magento\Framework\ObjectManagerInterface;
 
 class SerializedFieldDataConverter
 {
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     private $objectManager;
 
     /**
-     * @var \Magento\Framework\App\ResourceConnection
+     * @var ResourceConnection
      */
     private $connectionResource;
 
     public function __construct(
-        \Magento\Framework\ObjectManagerInterface $objectManager,
-        \Magento\Framework\App\ResourceConnection $connectionResource
+        ObjectManagerInterface $objectManager,
+        ResourceConnection $connectionResource
     ) {
         $this->objectManager = $objectManager;
         $this->connectionResource = $connectionResource;
@@ -33,13 +36,13 @@ class SerializedFieldDataConverter
      * Convert metadata from serialized to JSON format:
      *
      * @param string|string[] $tableName
-     * @param string          $identifierField
+     * @param string $identifierField
      * @param string|string[] $fields
      * @return void
      */
     public function convertSerializedDataToJson($tableName, $identifierField, $fields)
     {
-        /** @var AggregatedFieldDataConverter $aggregatedFieldConverter */
+        /** @var AggregatedFieldDataConverter $fieldConverter */
         $fieldConverter = $this->objectManager->get(AggregatedFieldDataConverter::class);
         $convertData = [];
 
@@ -59,19 +62,17 @@ class SerializedFieldDataConverter
 
     /**
      * @param string|string[] $tableName
-     * @param string          $identifierField
-     * @param string          $field
-     * @return \Magento\Framework\DB\FieldToConvert
+     * @param string $identifierField
+     * @param string $field
+     * @return FieldToConvert
      */
     protected function getConvertedData($tableName, $identifierField, $field)
     {
-        $instance = new \Magento\Framework\DB\FieldToConvert(
+        return new FieldToConvert(
             \Magento\Framework\DB\DataConverter\SerializedToJson::class,
             $this->connectionResource->getTableName($tableName),
             $identifierField,
             $field
         );
-
-        return $instance;
     }
 }

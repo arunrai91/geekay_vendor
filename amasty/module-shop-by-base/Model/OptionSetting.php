@@ -34,20 +34,20 @@ class OptionSetting extends \Magento\Framework\Model\AbstractModel implements Op
     /**
      * @var AttributeRepository
      */
-    protected $attributeRepository;
+    private AttributeRepository $attributeRepository;
 
     /**
      * @var WidgetFilter
      */
-    private $filter;
+    private WidgetFilter $filter;
 
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
         AttributeRepository $attributeRepository,
         WidgetFilter $filter,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->attributeRepository = $attributeRepository;
@@ -173,6 +173,11 @@ class OptionSetting extends \Magento\Framework\Model\AbstractModel implements Op
      * @return array
      */
     public function getIdentities()
+    {
+        return [self::CACHE_TAG . '_' . $this->getValue()];
+    }
+
+    public function getCacheTags(): array
     {
         return [self::CACHE_TAG . '_' . $this->getValue()];
     }
@@ -519,10 +524,10 @@ class OptionSetting extends \Magento\Framework\Model\AbstractModel implements Op
     public function removeImage($isSlider = false)
     {
         if ($isSlider) {
-            return ObjectManager::getInstance()->get(ImageFileResolver::class)->resolveRemoveSliderImage($this);
+            ObjectManager::getInstance()->get(ImageFileResolver::class)->resolveRemoveSliderImage($this);
         }
 
-        return ObjectManager::getInstance()->get(ImageFileResolver::class)->resolveRemoveImage($this);
+        ObjectManager::getInstance()->get(ImageFileResolver::class)->resolveRemoveImage($this);
     }
 
     /**
@@ -597,7 +602,7 @@ class OptionSetting extends \Magento\Framework\Model\AbstractModel implements Op
     }
 
     /**
-     * @param string $filterCode
+     * @param string $attributeCode
      * @param int $optionId
      * @param int $storeId
      * @param array $data

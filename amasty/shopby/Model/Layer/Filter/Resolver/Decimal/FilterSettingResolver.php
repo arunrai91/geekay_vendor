@@ -24,26 +24,31 @@ class FilterSettingResolver
     public const NUMBERS_AFTER_POINT = 2;
 
     /**
-     * @var string
+     * @var PriceCurrencyInterface
      */
-    private $currencySymbol;
+    private PriceCurrencyInterface $priceCurrency;
 
     /**
      * @var DefaultFilterSettingResolver
      */
-    private $settingResolver;
+    private DefaultFilterSettingResolver $settingResolver;
 
     /**
      * @var StoreManagerInterface
      */
-    private $storeManager;
+    private StoreManagerInterface $storeManager;
+
+    /**
+     * @var string|null
+     */
+    private ?string $currencySymbol = null;
 
     public function __construct(
         PriceCurrencyInterface $priceCurrency,
         DefaultFilterSettingResolver $settingResolver,
         StoreManagerInterface $storeManager
     ) {
-        $this->currencySymbol = $priceCurrency->getCurrencySymbol();
+        $this->priceCurrency = $priceCurrency;
         $this->settingResolver = $settingResolver;
         $this->storeManager = $storeManager;
     }
@@ -73,7 +78,7 @@ class FilterSettingResolver
     {
         $filterSetting = $this->settingResolver->getFilterSetting($filter);
         return $filterSetting->getUnitsLabelUseCurrencySymbol()
-            ? $this->currencySymbol
+            ? $this->getCurrentCurrencySymbol()
             : $filterSetting->getUnitsLabel();
     }
 
@@ -81,12 +86,10 @@ class FilterSettingResolver
     {
         $filterSetting = $this->settingResolver->getFilterSetting($filter);
         if ($filterSetting->getUnitsLabelUseCurrencySymbol()) {
-            /** @var PriceCurrencyInterface $priceCurrency */
-            $priceCurrency = \Magento\Framework\App\ObjectManager::getInstance()->get(PriceCurrencyInterface::class);
             $trialValue = '345';
 
             //label position can be customized by "currency_display_options_forming" event. Trigger it.
-            $formattedExample = $priceCurrency->format($trialValue, false, 0);
+            $formattedExample = $this->priceCurrency->format($trialValue, false, 0);
 
             $labelPosition = strpos($formattedExample, $trialValue) !== 0
                 ? PositionLabel::POSITION_BEFORE
@@ -128,5 +131,14 @@ class FilterSettingResolver
     private function isFromToDisplayMode(?int $displayMode): bool
     {
         return in_array($displayMode, [DisplayMode::MODE_SLIDER, DisplayMode::MODE_FROM_TO_ONLY]);
+    }
+
+    private function getCurrentCurrencySymbol(): string
+    {
+        if ($this->currencySymbol === null) {
+            $this->currencySymbol = $this->priceCurrency->getCurrencySymbol();
+        }
+
+        return $this->currencySymbol;
     }
 }

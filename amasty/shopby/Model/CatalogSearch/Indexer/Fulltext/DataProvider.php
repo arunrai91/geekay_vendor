@@ -49,7 +49,7 @@ class DataProvider
     private $storeManager;
 
     /**
-     * @var Resource
+     * @var ResourceConnection
      */
     private $resource;
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Codeception\Command;
 
 use Codeception\Configuration;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use function codecept_data_dir;
 use function codecept_output_dir;
 use function codecept_root_dir;
+use function implode;
+use function preg_replace;
+use function print_r;
 
 /**
  * Validates and prints Codeception config.
@@ -37,10 +39,6 @@ use function codecept_root_dir;
  * * `codecept config:validate -o "reporters: report: \Custom\Reporter" --report`: use custom reporter
  *
  */
-#[AsCommand(
-    name: 'config:validate',
-    description: 'Validates and prints Codeception config'
-)]
 class ConfigValidate extends Command
 {
     use Shared\ConfigTrait;
@@ -48,7 +46,7 @@ class ConfigValidate extends Command
 
     protected function configure(): void
     {
-        $this
+        $this->setDescription('Validates and prints config to screen')
             ->addArgument('suite', InputArgument::OPTIONAL, 'To show suite configuration')
             ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Use custom path for config')
             ->addOption('override', 'o', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Override config values');

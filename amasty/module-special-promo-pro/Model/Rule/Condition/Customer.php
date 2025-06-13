@@ -57,7 +57,7 @@ class Customer extends \Magento\Rule\Model\Condition\AbstractCondition
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Customer\Model\Session $customerSession,
         array $data = [],
-        CustomerRepositoryInterface $customerRepositoryInterface = null // TODO not optional
+        ?CustomerRepositoryInterface $customerRepositoryInterface = null // TODO not optional
     ) {
         $this->resource = $resource;
         $this->customerFactory = $customerFactory;

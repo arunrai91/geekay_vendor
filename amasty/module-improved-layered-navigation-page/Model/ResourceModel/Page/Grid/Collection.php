@@ -20,7 +20,7 @@ class Collection extends PageCollection implements SearchResultInterface
     /**
      * @var AggregationInterface
      */
-    protected $_aggregations;
+    private $aggregations;
 
     public function __construct(
         \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
@@ -34,7 +34,7 @@ class Collection extends PageCollection implements SearchResultInterface
         $resourceModel,
         $model = \Magento\Framework\View\Element\UiComponent\DataProvider\Document::class,
         $connection = null,
-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+        ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
     ) {
         parent::__construct(
             $entityFactory,
@@ -56,15 +56,17 @@ class Collection extends PageCollection implements SearchResultInterface
      */
     public function getAggregations()
     {
-        return $this->_aggregations;
+        return $this->aggregations;
     }
 
     /**
      * @param AggregationInterface $aggregations
+     * @return Collection
      */
     public function setAggregations($aggregations)
     {
-        $this->_aggregations = $aggregations;
+        $this->aggregations = $aggregations;
+        return $this;
     }
 
     /**
@@ -84,7 +86,7 @@ class Collection extends PageCollection implements SearchResultInterface
      * @return $this
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+    public function setSearchCriteria(?\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
     {
         return $this;
     }
@@ -118,7 +120,7 @@ class Collection extends PageCollection implements SearchResultInterface
      * @return $this
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function setItems(array $items = null)
+    public function setItems(?array $items = null)
     {
         return $this;
     }

@@ -19,9 +19,9 @@ use Magento\Store\Model\StoreManagerInterface;
 class Tooltip extends Template implements WidgetInterface, IdentityInterface
 {
     /**
-     * @var FilterSettingInterface
+     * @var FilterSettingInterface|null
      */
-    protected $filterSetting;
+    private ?FilterSettingInterface $filterSetting = null;
 
     /**
      * @var string
@@ -123,7 +123,7 @@ class Tooltip extends Template implements WidgetInterface, IdentityInterface
     {
         return sprintf(
             '<span class="tooltip amshopby-filter-tooltip" title="{content}"><img src="%s" alt="{content}"></span>',
-            $this->escapeUrl($this->getTooltipUrl())
+            $this->_escaper->escapeUrl($this->getTooltipUrl())
         );
     }
 

@@ -15,15 +15,8 @@ class CategoryFilter extends \Magento\Backend\Block\Template implements Renderer
     /**
      * @var \Magento\Eav\Model\Config
      */
-    protected $eavConfig;
+    private $eavConfig;
 
-    /**
-     * CategoryFilter constructor.
-     *
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Eav\Model\Config               $eavConfig
-     * @param array                                   $data
-     */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Eav\Model\Config $eavConfig,

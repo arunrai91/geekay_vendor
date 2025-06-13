@@ -11,6 +11,7 @@ use Amasty\Mostviewed\Api\GroupRepositoryInterface;
 use Amasty\Mostviewed\Model\ConfigProvider;
 use Amasty\Mostviewed\Model\Group;
 use Amasty\Mostviewed\Model\ProductProvider;
+use Amasty\Mostviewed\Model\Validation\Group\GroupValidator;
 use Amasty\Mostviewed\ViewModel\Related\ShiftResolverViewModel;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\AbstractProduct;
@@ -37,42 +38,47 @@ class Related extends AbstractProduct implements IdentityInterface, BlockInterfa
     /**
      * @var null|ProductCollection
      */
-    private $productCollection = null;
+    private ?ProductCollection $productCollection = null;
 
     /**
      * @var GroupRepositoryInterface
      */
-    private $groupRepository;
+    private GroupRepositoryInterface $groupRepository;
 
     /**
      * @var ProductProvider
      */
-    private $productProvider;
+    private ProductProvider $productProvider;
 
     /**
      * @var Visibility
      */
-    private $catalogProductVisibility;
+    private Visibility $catalogProductVisibility;
 
     /**
      * @var Quote
      */
-    private $quoteHelper;
+    private Quote $quoteHelper;
 
     /**
-     * @var ConfigProvider
+     * @var ConfigProvider|null
      */
-    private $configProvider;
+    private ConfigProvider $configProvider;
 
     /**
-     * @var ShiftResolverViewModel
+     * @var ShiftResolverViewModel|null
      */
-    private $shiftResolverViewModel;
+    private ShiftResolverViewModel $shiftResolverViewModel;
 
     /**
-     * @var EncoderInterface
+     * @var EncoderInterface|null
      */
-    private $urlEncoder;
+    private ?EncoderInterface $urlEncoder;
+
+    /**
+     * @var GroupValidator|null
+     */
+    private ?GroupValidator $groupValidator;
 
     public function __construct(
         GroupRepositoryInterface $groupRepository,
@@ -83,7 +89,8 @@ class Related extends AbstractProduct implements IdentityInterface, BlockInterfa
         array $data = [],
         ?ConfigProvider $configProvider = null,
         ?ShiftResolverViewModel $shiftResolverViewModel = null,
-        ?EncoderInterface $urlEncoder = null
+        ?EncoderInterface $urlEncoder = null,
+        ?GroupValidator $groupValidator = null
     ) {
         parent::__construct($context, $data);
         $this->groupRepository = $groupRepository;
@@ -95,10 +102,12 @@ class Related extends AbstractProduct implements IdentityInterface, BlockInterfa
             ?? ObjectManager::getInstance()->get(ShiftResolverViewModel::class);
         $this->urlEncoder = $urlEncoder
             ?? ObjectManager::getInstance()->get(EncoderInterface::class);
+        $this->groupValidator = $groupValidator
+            ?? ObjectManager::getInstance()->get(GroupValidator::class);
     }
 
     /**
-     * @return ProductCollection
+     * @return ProductCollection|null
      */
     public function getProductCollection()
     {
@@ -209,7 +218,9 @@ class Related extends AbstractProduct implements IdentityInterface, BlockInterfa
         if ($this->getGroupId()) { //custom block
             try {
                 $group = $this->groupRepository->getById($this->getGroupId());
-                $group = $this->groupRepository->validateGroup($group);
+                if (!$this->groupValidator->validateGroup($group)) {
+                    return false;
+                }
 
                 //do not show if position was changed in group configuration
                 if ($group && $group->getBlockPosition() !== BlockPosition::CUSTOM) {
@@ -220,8 +231,9 @@ class Related extends AbstractProduct implements IdentityInterface, BlockInterfa
             }
         }
 
-        if (!$group && $entityId) {
-            $group = $this->groupRepository->getGroupByIdAndPosition($entityId, $this->getPosition(), $shift);
+        $position = $this->getPosition();
+        if (!$group && $entityId && $position !== null) {
+            $group = $this->groupRepository->getGroupByIdAndPosition($entityId, $position, $shift);
         }
 
         return $group;

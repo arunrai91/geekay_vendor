@@ -80,8 +80,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @param  StreamFactoryInterface $factory Factory to use to produce a PSR-7
      *     stream with which to seed a PSR-7 UploadedFileInterface.
      * @return self
@@ -93,8 +91,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @return null|StreamFactoryInterface
      */
     public function getStreamFactory()
@@ -103,8 +99,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @param  string $target Target file path or directory
      * @return self
      */
@@ -120,8 +114,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @return string Target file path or directory
      */
     public function getTarget()
@@ -130,8 +122,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @param  UploadedFileFactoryInterface $factory Factory to use to produce
      *     filtered PSR-7 UploadedFileInterface instances.
      * @return self
@@ -143,8 +133,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @return null|UploadedFileFactoryInterface
      */
     public function getUploadFileFactory()
@@ -153,8 +141,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @param  bool $flag When true, this filter will use the $_FILES['name']
      *                       as the target filename.
      *                       Otherwise, it uses the default 'target' rules.
@@ -167,8 +153,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @return bool
      */
     public function getUseUploadName()
@@ -177,8 +161,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @param  bool $flag When true, this filter will use the original file
      *                    extension for the target filename
      * @return self
@@ -190,8 +172,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @return bool
      */
     public function getUseUploadExtension()
@@ -200,8 +180,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @param  bool $flag Shall existing files be overwritten?
      * @return self
      */
@@ -212,8 +190,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @return bool
      */
     public function getOverwrite()
@@ -222,8 +198,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @param  bool $flag Shall target files have a random postfix attached?
      * @return self
      */
@@ -234,8 +208,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated Since 2.41.0. This method will be removed in 3.0 without replacement
-     *
      * @return bool
      */
     public function getRandomize()
@@ -279,8 +251,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated This method will be inaccessible in 3.0 once this class is marked final
-     *
      * @param  string $sourceFile Source file path
      * @param  string $targetFile Target file path
      * @throws Exception\RuntimeException
@@ -303,8 +273,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated This method will be inaccessible in 3.0 once this class is marked final
-     *
      * @param  string $targetFile Target file path
      * @return void
      * @throws Exception\InvalidArgumentException
@@ -325,8 +293,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated This method will be inaccessible in 3.0 once this class is marked final
-     *
      * @param string $source
      * @param string|null $clientFileName
      * @return string
@@ -374,8 +340,6 @@ class RenameUpload extends AbstractFilter
     }
 
     /**
-     * @deprecated This method will be inaccessible in 3.0 once this class is marked final
-     *
      * @param  string $source
      * @param  string $filename
      * @return string

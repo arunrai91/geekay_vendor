@@ -24,17 +24,17 @@ class GetAggregatedTable
     /**
      * @var ResourceConnection
      */
-    private $resourceConnection;
+    private ResourceConnection $resourceConnection;
 
     /**
      * @var ConfigProvider
      */
-    private $configProvider;
+    private ConfigProvider $configProvider;
 
     /**
      * @var GetAggregatedByPackTable
      */
-    private $getAggregatedByPackTable;
+    private GetAggregatedByPackTable $getAggregatedByPackTable;
 
     public function __construct(
         GetAggregatedByPackTable $getAggregatedByPackTable,
@@ -49,20 +49,18 @@ class GetAggregatedTable
     public function execute(): Select
     {
         $orderTable = $this->resourceConnection->getTableName('sales_order');
+        $packAnalyticOrderStatuses = $this->configProvider->getPackAnalyticOrderStatuses();
+        $condition = sprintf('pack_sales.%s = sales_order.entity_id', PackHistoryTable::ORDER_COLUMN);
 
-        $table = $this->getAggregatedByPackTable->execute()->join(
-            ['sales_order' => $orderTable],
-            sprintf(
-                'pack_sales.%s = sales_order.entity_id AND sales_order.status IN (%s)',
-                PackHistoryTable::ORDER_COLUMN,
-                $this->resourceConnection->getConnection()->quoteInto(
-                    '?',
-                    $this->configProvider->getPackAnalyticOrderStatuses()
-                )
-            ),
-            []
-        )->group('pack_id');
+        if (!empty($packAnalyticOrderStatuses)) {
+            $condition .= sprintf(
+                ' AND sales_order.status IN (%s)',
+                $this->resourceConnection->getConnection()->quoteInto('?', $packAnalyticOrderStatuses)
+            );
+        }
 
-        return $table;
+        return $this->getAggregatedByPackTable->execute()
+            ->join(['sales_order' => $orderTable], $condition)
+            ->group('pack_id');
     }
 }

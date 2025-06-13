@@ -28,7 +28,6 @@ class Mapper
     }
 
     /**
-     *
      * @param MagentoMapper|MagentoMapper5|MirasvitMapper $subject
      * @param array $query
      * @return array

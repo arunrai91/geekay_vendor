@@ -32,7 +32,7 @@ class PageTest extends \PHPUnit\Framework\TestCase
     public function setUp(): void
     {
         $this->model = $this->getMockBuilder(Page::class)
-            ->setMethods(['lookupStoreIds', 'getConnection', 'getTable'])
+            ->onlyMethods(['getConnection', 'lookupStoreIds', 'getTable'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
@@ -50,7 +50,7 @@ class PageTest extends \PHPUnit\Framework\TestCase
         $connection->expects($this->once())->method('delete')->willReturn(true);
 
         $object = $this->getMockBuilder(\Magento\Framework\Model\AbstractModel::class)
-            ->setMethods(['getStoreId'])
+            ->addMethods(['getStoreId'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $object->expects($this->any())->method('getStoreId')->willReturn(2);
@@ -67,7 +67,7 @@ class PageTest extends \PHPUnit\Framework\TestCase
         $this->model->expects($this->any())->method('getConnection')->willReturn($connection);
         $connection->expects($this->once())->method('insertMultiple')->willReturn(false);
         $object = $this->getMockBuilder(\Magento\Framework\Model\AbstractModel::class)
-            ->setMethods(['getStoreId'])
+            ->addMethods(['getStoreId'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $object->expects($this->any())->method('getStoreId')->willReturn([1, 2]);
@@ -80,7 +80,7 @@ class PageTest extends \PHPUnit\Framework\TestCase
     public function testResolveStoresInfo()
     {
         $object = $this->getMockBuilder(\Magento\Framework\Model\AbstractModel::class)
-            ->setMethods(['getStoreId', 'getStores'])
+            ->addMethods(['getStoreId', 'getStores'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $object->expects($this->any())->method('getStores')->will($this->onConsecutiveCalls([], [2]));

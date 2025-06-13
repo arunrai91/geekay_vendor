@@ -149,4 +149,136 @@
                 type="Amasty\Shopby\Plugin\Catalog\Model\Config\Source\LayoutList\AddPromoLayoutOptions" />
     </type>
     <!--Promo features end-->
+
+    <!-- import entities promo start -->
+    <virtualType name="AmastyShopbyPageImport" type="Amasty\ImportCore\Import\Config\DemoEntityConfig">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_code" xsi:type="string">amshopby_page</item>
+                <item name="name" xsi:type="string">Amasty Improved Layered Navigation Page</item>
+                <item name="group" xsi:type="string">Amasty Improved Layered Navigation</item>
+                <item name="is_hidden_in_lists" xsi:type="boolean">false</item>
+                <item name="additional_data" xsi:type="array">
+                    <item name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:improved_layered_navigation&amp;utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=suggest_iln#additional_packages_provided_in_composer_suggestions</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AmastyShopbyPageStoreImport" type="Amasty\ImportCore\Import\Config\DemoEntityConfig">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_code" xsi:type="string">amshopby_page_store</item>
+                <item name="name" xsi:type="string">Amasty Improved Layered Navigation Page Store</item>
+                <item name="group" xsi:type="string">Amasty Improved Layered Navigation</item>
+                <item name="is_hidden_in_lists" xsi:type="boolean">false</item>
+                <item name="additional_data" xsi:type="array">
+                    <item name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:improved_layered_navigation&amp;utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=suggest_iln#additional_packages_provided_in_composer_suggestions</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AmastyShopbyFilterSettingImport" type="Amasty\ImportCore\Import\Config\DemoEntityConfig">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_code" xsi:type="string">amshopby_filter_setting</item>
+                <item name="name" xsi:type="string">Amasty Shopby Filter Setting Import Entity</item>
+                <item name="group" xsi:type="string">Amasty Shopby Setting</item>
+                <item name="is_hidden_in_lists" xsi:type="boolean">false</item>
+                <item name="additional_data" xsi:type="array">
+                    <item name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:improved_layered_navigation&amp;utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=suggest_iln#additional_packages_provided_in_composer_suggestions</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AmastyShopbyOptionSettingImport" type="Amasty\ImportCore\Import\Config\DemoEntityConfig">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_code" xsi:type="string">amshopby_option_setting</item>
+                <item name="name" xsi:type="string">Amasty Shopby Option Setting Import Entity</item>
+                <item name="group" xsi:type="string">Amasty Shopby Setting</item>
+                <item name="is_hidden_in_lists" xsi:type="boolean">false</item>
+                <item name="additional_data" xsi:type="array">
+                    <item name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:improved_layered_navigation&amp;utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=suggest_iln#additional_packages_provided_in_composer_suggestions</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\ImportCore\Import\Config\DemoEntitiesPool">
+        <arguments>
+            <argument name="demoEntities" xsi:type="array">
+                <item name="amshopby_page" xsi:type="object">AmastyShopbyPageImport</item>
+                <item name="amshopby_page_store" xsi:type="object">AmastyShopbyPageStoreImport</item>
+                <item name="amshopby_filter_setting" xsi:type="object">AmastyShopbyFilterSettingImport</item>
+                <item name="amshopby_option_setting" xsi:type="object">AmastyShopbyOptionSettingImport</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- import entities promo end -->
+
+    <!-- export entities promo start -->
+    <virtualType name="AmastyShopbyPageExport" type="Amasty\ExportCore\Export\Config\DemoEntityConfig">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_code" xsi:type="string">amshopby_page</item>
+                <item name="name" xsi:type="string">Amasty Improved Layered Navigation Page</item>
+                <item name="group" xsi:type="string">Amasty Improved Layered Navigation</item>
+                <item name="is_hidden_in_lists" xsi:type="boolean">false</item>
+                <item name="additional_data" xsi:type="array">
+                    <item name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:improved_layered_navigation&amp;utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=suggest_iln#additional_packages_provided_in_composer_suggestions</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AmastyShopbyPageStoreExport" type="Amasty\ExportCore\Export\Config\DemoEntityConfig">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_code" xsi:type="string">amshopby_page_store</item>
+                <item name="name" xsi:type="string">Amasty Improved Layered Navigation Page Store</item>
+                <item name="group" xsi:type="string">Amasty Improved Layered Navigation</item>
+                <item name="is_hidden_in_lists" xsi:type="boolean">false</item>
+                <item name="additional_data" xsi:type="array">
+                    <item name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:improved_layered_navigation&amp;utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=suggest_iln#additional_packages_provided_in_composer_suggestions</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AmastyShopbyFilterSettingExport" type="Amasty\ExportCore\Export\Config\DemoEntityConfig">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_code" xsi:type="string">amasty_shopby_filter_setting</item>
+                <item name="name" xsi:type="string">Amasty Shopby Filter Setting Export Entity</item>
+                <item name="group" xsi:type="string">Amasty Shopby Setting</item>
+                <item name="is_hidden_in_lists" xsi:type="boolean">false</item>
+                <item name="additional_data" xsi:type="array">
+                    <item name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:improved_layered_navigation&amp;utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=suggest_iln#additional_packages_provided_in_composer_suggestions</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AmastyShopbyOptionSettingExport" type="Amasty\ExportCore\Export\Config\DemoEntityConfig">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_code" xsi:type="string">amasty_shopby_option_setting</item>
+                <item name="name" xsi:type="string">Amasty Shopby Option Setting Export Entity</item>
+                <item name="group" xsi:type="string">Amasty Shopby Setting</item>
+                <item name="is_hidden_in_lists" xsi:type="boolean">false</item>
+                <item name="additional_data" xsi:type="array">
+                    <item name="promoLink" xsi:type="string">https://amasty.com/docs/doku.php?id=magento_2:improved_layered_navigation&amp;utm_source=extension&amp;utm_medium=backend&amp;utm_campaign=suggest_iln#additional_packages_provided_in_composer_suggestions</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\ExportCore\Export\Config\DemoEntitiesPool">
+        <arguments>
+            <argument name="demoEntities" xsi:type="array">
+                <item name="amshopby_page" xsi:type="object">AmastyShopbyPageExport</item>
+                <item name="amshopby_page_store" xsi:type="object">AmastyShopbyPageStoreExport</item>
+                <item name="amshopby_filter_setting" xsi:type="object">AmastyShopbyFilterSettingExport</item>
+                <item name="amshopby_option_setting" xsi:type="object">AmastyShopbyOptionSettingExport</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- export entities promo end -->
 </config>

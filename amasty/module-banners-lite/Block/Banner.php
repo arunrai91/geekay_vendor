@@ -47,7 +47,7 @@ class Banner extends Template
         Serializer $serializerBase, //@deprecated backward compatibility
         ConfigProvider $configProvider,
         array $data = [],
-        ImageProcessor $imageProcessor = null //todo: move to not optional
+        ?ImageProcessor $imageProcessor = null //todo: move to not optional
     ) {
         parent::__construct($context, $data);
         $this->banners = $banners;

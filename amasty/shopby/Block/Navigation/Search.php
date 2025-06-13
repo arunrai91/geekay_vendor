@@ -44,14 +44,15 @@ class Search extends \Magento\LayeredNavigation\Block\Navigation
     protected function _beforeToHtml()
     {
         $layout = $this->getLayout();
+        /** @var \Magento\Framework\View\Element\Template $block */
         $block = $layout->getBlock(Navigation::NAME);
 
-        if (!$block || !$block->getDisplay()) {
+        if (!$block || !$block->getData('display')) {
             $this->toolbarModel->resolveSearchLayoutToolbar($layout);
 
             return parent::_beforeToHtml();
         }
-        
+
         return $this;
     }
 }

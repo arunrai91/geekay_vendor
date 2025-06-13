@@ -99,8 +99,8 @@ class TemplateBuilder
         EmailTemplateResolver $emailTemplateResolver,
         FormatManager $formatManager,
         UrlManager $urlManager,
-        EventManagerInterface $eventManager = null,
-        ConfigProvider $configProvider = null
+        ?EventManagerInterface $eventManager = null,
+        ?ConfigProvider $configProvider = null
     ) {
         $this->magentoVersion = $magentoVersion;
         $this->legacyTemplateProcessor = $legacyTemplateProcessor;

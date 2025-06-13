@@ -59,8 +59,8 @@ class SendSysInfo
         ChangedDataPersistor $changedDataPersistor,
         Converter $converter,
         RequestManager $requestManager,
-        Collector $collector = null,
-        ProcessLicenseValidationResponse $processLicenseValidationResponse = null
+        ?Collector $collector = null,
+        ?ProcessLicenseValidationResponse $processLicenseValidationResponse = null
     ) {
         $this->registeredInstanceRepository = $registeredInstanceRepository;
         $this->changedDataPersistor = $changedDataPersistor;

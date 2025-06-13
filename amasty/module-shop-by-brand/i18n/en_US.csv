@@ -77,6 +77,8 @@ General,General
 "URL Key","URL Key"
 "Adds a key before brand name in URL like /[key]/brand-name.html.","Adds a key before brand name in URL like /[key]/brand-name.html."
 "Choose CMS Page","Choose CMS Page"
+"Search Engine Bucket Size","Search Engine Bucket Size"
+"Indicate how many brands will be handled by the search engine for the display on the frontend. Increasing the bucket size might influence the website’s performance.","Indicate how many brands will be handled by the search engine for the display on the frontend. Increasing the bucket size might influence the website’s performance."
 "Brands Item Label","Brands Item Label"
 "Used in top menu and account links.","Used in top menu and account links."
 "Display tooltip","Display tooltip"

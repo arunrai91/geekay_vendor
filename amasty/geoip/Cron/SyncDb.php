@@ -80,8 +80,8 @@ class SyncDb
         IpLogSaver $ipLogSaver,
         DateTime $dateTime,
         LoggerInterface $logger,
-        LicenseInvalidMessage $licenseInvalidMessage = null, // TODO move to not optional
-        ConfigProvider $configProvider = null // TODO move to not optional
+        ?LicenseInvalidMessage $licenseInvalidMessage = null, // TODO move to not optional
+        ?ConfigProvider $configProvider = null // TODO move to not optional
     ) {
         $this->updateBatcher = $updateBatcher;
         $this->patchTablesDataCollector = $patchTablesDataCollector;

@@ -34,6 +34,7 @@
             <children_categories>
                 <image_size>100</image_size>
                 <items_per_slide>5</items_per_slide>
+                <infinity_loop>0</infinity_loop>
             </children_categories>
             <meta>
                 <add_title>after</add_title>
@@ -87,7 +88,7 @@
                 <category_tree_depth>1</category_tree_depth>
                 <subcategories_view>1</subcategories_view>
                 <subcategories_expand>1</subcategories_expand>
-                <render_all_categories_tree>1</render_all_categories_tree>
+                <render_all_categories_tree>0</render_all_categories_tree>
                 <render_categories_level>3</render_categories_level>
                 <position>0</position>
                 <top_position>0</top_position>

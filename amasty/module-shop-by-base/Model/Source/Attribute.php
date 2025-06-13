@@ -15,25 +15,22 @@ class Attribute implements ArrayInterface
     /**
      * @var EavConfig
      */
-    protected $_eavConfig;
+    private EavConfig $eavConfig;
 
     /**
-     * @var array
+     * @var array|null
      */
-    protected $_attributes;
+    private ?array $attributes = null;
 
     /**
-     * @var int
+     * @var int|null
      */
-    protected $_skipAttributeId;
+    private ?int $skipAttributeId = null;
 
-    /**
-     * @param EavConfig $eavConfig
-     */
     public function __construct(
         EavConfig $eavConfig
     ) {
-        $this->_eavConfig = $eavConfig;
+        $this->eavConfig = $eavConfig;
     }
 
     /**
@@ -61,10 +58,10 @@ class Attribute implements ArrayInterface
      */
     public function toArray($boolean = 1)
     {
-        if ($this->_attributes === null) {
-            $this->_attributes = [];
+        if ($this->attributes === null) {
+            $this->attributes = [];
             /** @var \Magento\Eav\Model\ResourceModel\Entity\Attribute\Collection $collection */
-            $collection = $this->_eavConfig->getEntityType(
+            $collection = $this->eavConfig->getEntityType(
                 \Magento\Catalog\Model\Product::ENTITY
             )->getAttributeCollection();
 
@@ -74,19 +71,19 @@ class Attribute implements ArrayInterface
                 []
             )->addFieldToFilter('catalog_eav.is_filterable', ['neq' =>  0]);
 
-            if ($this->_skipAttributeId !== null) {
-                $collection->addFieldToFilter('main_table.attribute_id', ['neq' => $this->_skipAttributeId]);
+            if ($this->skipAttributeId !== null) {
+                $collection->addFieldToFilter('main_table.attribute_id', ['neq' => $this->skipAttributeId]);
             }
             if (!$boolean) {
                 $collection->addFieldToFilter('main_table.frontend_input', ['neq' => 'boolean']);
             }
             /** @var \Magento\Eav\Model\Attribute $item */
             foreach ($collection as $item) {
-                $this->_attributes[$item->getId()] = $item->getFrontendLabel();
+                $this->attributes[$item->getId()] = $item->getFrontendLabel();
             }
         }
 
-        return $this->_attributes;
+        return $this->attributes;
     }
 
     /**
@@ -95,7 +92,7 @@ class Attribute implements ArrayInterface
      */
     public function skipAttributeId($skipAttributeId)
     {
-        $this->_skipAttributeId = $skipAttributeId;
+        $this->skipAttributeId = (int)$skipAttributeId;
         return $this;
     }
 }

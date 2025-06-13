@@ -7,8 +7,15 @@
 
 namespace Amasty\ShopbyBase\Block\Widget\Form\Element;
 
+use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
+
 class Dependence extends \Magento\Backend\Block\Widget\Form\Element\Dependence
 {
+    /**
+     * @var JsonSerializer
+     */
+    private JsonSerializer $jsonSerializer;
+
     /**
      * @var \Amasty\ShopbyBase\Model\Source\DisplayMode
      */
@@ -30,6 +37,7 @@ class Dependence extends \Magento\Backend\Block\Widget\Form\Element\Dependence
     private $groupFields = [];
 
     public function __construct(
+        JsonSerializer $jsonSerializer,
         \Magento\Backend\Block\Context $context,
         \Magento\Framework\Json\EncoderInterface $jsonEncoder,
         \Magento\Config\Model\Config\Structure\Element\Dependency\FieldFactory $fieldFactory,
@@ -38,6 +46,7 @@ class Dependence extends \Magento\Backend\Block\Widget\Form\Element\Dependence
     ) {
         parent::__construct($context, $jsonEncoder, $fieldFactory, $data);
         $this->displayModeSource = $displayModeSource;
+        $this->jsonSerializer = $jsonSerializer;
     }
 
     /**
@@ -65,12 +74,12 @@ class Dependence extends \Magento\Backend\Block\Widget\Form\Element\Dependence
         $config = [];
         $configItems = [$this->getGroupValues(), $this->getGroupFields(), $this->getFieldSets()];
         foreach ($configItems as $item) {
-            $config[] = $item ? $this->_jsonEncoder->encode($item) : 'null';
+            $config[] = $item ? $this->jsonSerializer->serialize($item) : 'null';
         }
 
         $config = implode(', ', $config);
         $config = $this->_getDependsJson() . ', ' . $config .
-            ($this->_configOptions ? ', ' . $this->_jsonEncoder->encode($this->_configOptions) : '');
+            ($this->_configOptions ? ', ' . $this->jsonSerializer->serialize($this->_configOptions) : '');
 
         return $config;
     }

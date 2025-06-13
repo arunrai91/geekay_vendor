@@ -14,9 +14,7 @@ use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
 use Amasty\ShopbyBase\Api\Data\FilterSettingRepositoryInterface;
 use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
-use Magento\Catalog\Model\Product;
 use Magento\Eav\Api\Data\AttributeInterface;
-use Magento\Eav\Model\Config;
 use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
 
@@ -25,17 +23,16 @@ class FilterResolver
     /**
      * @var FilterSettingRepositoryInterface
      */
-    private $filterSettingRepository;
+    private FilterSettingRepositoryInterface $filterSettingRepository;
 
     /**
      * @var LoggerInterface
      */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         FilterSettingRepositoryInterface $filterSettingRepository,
-        LoggerInterface $logger,
-        ?Config $eavConfig // @deprecated
+        LoggerInterface $logger
     ) {
         $this->filterSettingRepository = $filterSettingRepository;
         $this->logger = $logger;

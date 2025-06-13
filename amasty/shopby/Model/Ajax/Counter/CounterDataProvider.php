@@ -45,13 +45,13 @@ class CounterDataProvider
      */
     public function execute(): array
     {
+        /** @var \Magento\Framework\View\Element\Template $products */
         $products = $this->layout->getBlock('category.products');
         if (!$products) {
             $products = $this->layout->getBlock('search.result');
         }
 
         $productList = $products->getChildBlock('product_list') ?: $products->getChildBlock('search_result_list');
-
         if (!$productList) {
             throw new LogicException('Unable to find product_list or search_result_list blocks');
         }

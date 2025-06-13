@@ -19,12 +19,12 @@ class UrlParser extends AbstractHelper
     /**
      * @var  Data
      */
-    protected $seoHelper;
+    private $seoHelper;
 
     /**
      * @var string
      */
-    protected $aliasDelimiter;
+    private $aliasDelimiter;
 
     /**
      * @var Config
@@ -140,7 +140,7 @@ class UrlParser extends AbstractHelper
      * @param array $aliases
      * @return array
      */
-    protected function parseAliases($aliases)
+    private function parseAliases($aliases)
     {
         $attributeOptionsData = $this->seoOptions->getData();
         $filterWord = $this->seoHelper->getFilterWord();
@@ -150,10 +150,12 @@ class UrlParser extends AbstractHelper
         }
         $params = [];
 
+        $parsedAliases = [];
         foreach ($aliases as $currentAlias) {
             foreach ($attributeOptionsData as $attributeCode => $optionsData) {
                 foreach ($optionsData as $optionId => $alias) {
                     if ($alias === $currentAlias) {
+                        $parsedAliases[] = $currentAlias;
                         $params = $this->addParsedOptionToParams($optionId, $attributeCode, $params);
                         continue 3;
                     }
@@ -161,7 +163,15 @@ class UrlParser extends AbstractHelper
             }
         }
 
-        return $params;
+        foreach ($aliases as $key => $alias) {
+            if ($alias === UrlHelper::CATEGORY_FILTER_PARAM) {
+                unset($aliases[$key]);
+                break;
+            }
+        }
+
+        return implode($this->aliasDelimiter, $aliases) === implode($this->aliasDelimiter, $parsedAliases)
+            ? $params : [];
     }
 
     /**
@@ -169,7 +179,7 @@ class UrlParser extends AbstractHelper
      * @param string $seoPart
      * @return array
      */
-    protected function parseAliasesOldAlgorythm($aliases, $seoPart)
+    private function parseAliasesOldAlgorythm($aliases, $seoPart)
     {
         $attributeOptionsData = $this->seoOptions->getData();
         $filterWord = $this->seoHelper->getFilterWord();
@@ -214,7 +224,7 @@ class UrlParser extends AbstractHelper
      * @param $params
      * @return mixed
      */
-    protected function addParsedOptionToParams($value, $paramName, $params)
+    private function addParsedOptionToParams($value, $paramName, $params)
     {
         if (array_key_exists($paramName, $params)) {
             $params[$paramName] .= ',' . $value;

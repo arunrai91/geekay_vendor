@@ -133,7 +133,7 @@ class Adapter implements AdapterInterface
         return null;
     }
 
-    public function isApplicable(string $routePath = null, array $routeParams = null): bool
+    public function isApplicable(?string $routePath = null, ?array $routeParams = null): bool
     {
         $brandAttributeCode = $this->configProvider->getBrandAttributeCode();
         $routePath = trim($routePath, '/');

@@ -67,9 +67,10 @@ class Viewed extends Template
      */
     public function getBlockSelector()
     {
-        $selector = '.block.' . $this->_data['block_type'];
         if ($this->_data['products_filter'] === null) {
             $selector = '#amrelated-block-' . $this->getBlockId();
+        } else {
+            $selector = str_replace('-rule', '', '.block.' . $this->_data['block_type']);
         }
 
         return $selector;

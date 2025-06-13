@@ -7,7 +7,7 @@ namespace Codeception\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final readonly class After
+final class After
 {
     public function __construct(string ...$methodNames)
     {

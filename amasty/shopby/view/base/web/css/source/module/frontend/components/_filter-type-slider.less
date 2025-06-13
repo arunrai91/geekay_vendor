@@ -38,12 +38,16 @@
 @amshopby-filter-slider__dark__background: #4a4948;
 @amshopby-filter-slider__dark__size: 10px;
 @amshopby-filter-slider__dark__height: 3px;
+@amshopby-filter-filter__price__color: #494949;
 
 //
 //  Mixins
 //  --------------------------------------------------
 
-.amshopby-tooltip-corner(@_width, @_offset) {
+.amshopby-tooltip-corner(
+    @_width,
+    @_offset
+) {
     & {
         position: absolute;
         top: @_offset;
@@ -133,7 +137,7 @@
         }
 
         .amshopby-slider-tooltip {
-            border: 1px solid #fff;
+            border: 1px solid @color-white;
             border-radius: 2px;
             bottom: ~'calc(100% + 7px)';
             box-sizing: border-box;
@@ -218,7 +222,7 @@
         .am-filter-price {
             background-clip: padding-box;
             border: 1px solid @amshopby-filter-slider__light__background;
-            color: #494949;
+            color: @amshopby-filter-filter__price__color;
             font-size: 14px;
             height: @amshopby-filter-fromto__height;
             letter-spacing: .03em;
@@ -246,9 +250,9 @@
     }
 
     .amshopby-input-wrapper .amshopby-currency {
-        background: #fff;
+        background: @color-white;
         bottom: ~'calc(100% - 10px)';
-        color: #494949;
+        color: @amshopby-filter-filter__price__color;
         font-size: 14px;
         left: 4px;
         letter-spacing: .03em;
@@ -258,7 +262,7 @@
     }
 
     .amshopby-slider-tooltip {
-        color: #fff;
+        color: @color-white;
     }
 
     .ui-slider-handle:not(.ui-state-hover):not(.ui-state-active) {
@@ -418,7 +422,7 @@
         }
 
         .amshopby-slider-corner {
-            background: #fff;
+            background: @color-white;
             border-color: @amshopby-filter-slider__light__background;
         }
 
@@ -436,7 +440,7 @@
             & {
                 background: @amshopby-filter-slider__dark__background;
                 height: @amshopby-filter-slider__dark__height;
-                margin: 0 ceil(@amshopby-filter-slider__dark__size / 2);
+                margin: 0 5px;
             }
 
             &:before,
@@ -446,11 +450,11 @@
             }
 
             &:before {
-                left: -(floor(@amshopby-filter-slider__dark__size / 2));
+                left: -5px;
             }
 
             &:after {
-                right: -(floor(@amshopby-filter-slider__dark__size / 2));
+                right: -5px;
             }
         }
 
@@ -462,7 +466,7 @@
             border-radius: 2px;
             height: 15px;
             top: -6px;
-            transform: translateX(-(@amshopby-filter-slider__dark__size / 2));
+            transform: translateX(-5px);
             width: @amshopby-filter-slider__dark__size;
         }
     }

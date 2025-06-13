@@ -10,7 +10,6 @@ use Codeception\SuiteManager;
 use Codeception\Test\Cest;
 use Codeception\Test\Interfaces\Descriptive;
 use Codeception\Test\Interfaces\ScenarioDriven;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,10 +30,6 @@ use function preg_replace;
  * * `codecept g:scenarios acceptance --format html` - in html format
  * * `codecept g:scenarios acceptance --path doc` - generate scenarios to `doc` dir
  */
-#[AsCommand(
-    name: 'generate:scenarios',
-    description: 'Generates text representation for all scenarios'
-)]
 class GenerateScenarios extends Command
 {
     use Shared\FileSystemTrait;
@@ -42,7 +37,7 @@ class GenerateScenarios extends Command
 
     protected function configure(): void
     {
-        $this
+        $this->setDescription('Generates text representation for all scenarios')
             ->addArgument('suite', InputArgument::REQUIRED, 'suite from which texts should be generated')
             ->addOption('path', 'p', InputOption::VALUE_REQUIRED, 'Use specified path as destination instead of default')
             ->addOption('single-file', '', InputOption::VALUE_NONE, 'Render all scenarios to only one file')

@@ -1,0 +1,55 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Lib Swiper Js by Amasty
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+?>
+<script>
+    (function () {
+        let amSwiperProcessed = false;
+
+        window.addEventListener('load-amswiper', () => {
+            if (amSwiperProcessed) {
+                window?.Swiper && window.dispatchEvent(new CustomEvent('amswiper-loaded', {}));
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = '<?= $escaper->escapeUrl(
+                $block->getViewFileUrl('Amasty_LibSwiperJs::js/vendor/swiper/swiper.min.js')
+            ) ?>';
+            script.async = true;
+            document.body.appendChild(script);
+
+            amSwiperProcessed = true;
+
+            script.onload = () => {
+                window.dispatchEvent(new CustomEvent('amswiper-loaded', {}));
+            }
+
+            const stylesHref = '<?= $escaper->escapeUrl(
+                $block->getViewFileUrl('Amasty_LibSwiperJs::vendor/swiper/swiper.min.css')
+            ) ?>';
+
+            if (document.querySelector(`link[href="${stylesHref}"]`)) {
+                return;
+            }
+
+            const styles = document.createElement('link');
+            styles.rel = 'stylesheet';
+            styles.type = 'text/css';
+            styles.href = stylesHref;
+
+            document.head.appendChild(styles);
+        });
+    }());
+</script>

@@ -14,7 +14,7 @@ class CategoryRepository
     /**
      * Categories filter multiselect
      *
-     * @param CategoryRepository $subject
+     * @param MagentoCategoryRepository $subject
      * @param $categoryId
      * @param null $storeId
      * @return array

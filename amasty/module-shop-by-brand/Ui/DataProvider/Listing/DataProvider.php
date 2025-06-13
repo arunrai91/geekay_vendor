@@ -77,7 +77,7 @@ class DataProvider extends AbstractDataProvider
     }
 
     /**
-     * @return \int[]
+     * @return int[]
      */
     public function getAllIds()
     {

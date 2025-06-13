@@ -34,7 +34,7 @@ class FileUrlOctetResponse extends AbstractOctetResponse
         Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
         App\Http\Context $context,
         Stdlib\DateTime $dateTime,
-        ConfigInterface $sessionConfig = null
+        ?ConfigInterface $sessionConfig = null
     ) {
         $this->fileReadFactory = $fileReadFactory;
 

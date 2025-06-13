@@ -15,6 +15,7 @@ use Amasty\ShopbyBase\Model\OptionSettingRepository;
 use Amasty\ShopbyBase\Model\ResourceModel\OptionSetting\Collection;
 use Amasty\ShopbyBase\Model\ResourceModel\OptionSetting\CollectionFactory as OptionSettingCollectionFactory;
 use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Backend\App\Action\Context;
 use Magento\Ui\Component\MassAction\Filter;
@@ -37,6 +38,11 @@ class MassAction extends Action
      */
     private $optionSettingRepository;
 
+    /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
     public function __construct(
         Context $context,
         Filter $filter,
@@ -47,6 +53,7 @@ class MassAction extends Action
         $this->collectionFactory = $collectionFactory;
         $this->filter = $filter;
         $this->optionSettingRepository = $optionSettingRepository;
+        $this->request = $context->getRequest();
     }
 
     /**
@@ -57,7 +64,7 @@ class MassAction extends Action
      */
     public function execute()
     {
-        $value = (bool) $this->getRequest()->getParam('value');
+        $value = (bool) $this->request->getParam('value');
         $collection = $this->filter->getCollection($this->collectionFactory->create());
         $collectionSize = $collection->getSize();
 

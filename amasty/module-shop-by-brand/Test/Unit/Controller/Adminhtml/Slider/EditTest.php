@@ -46,10 +46,11 @@ class EditTest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
-        $context = $this->createMock(\Magento\Backend\App\Action\Context::class);
         $this->request = $this->createMock(\Magento\Framework\App\RequestInterface::class);
         $this->settingHelper = $this->createMock(\Amasty\ShopbyBase\Helper\OptionSetting::class);
         $this->optionSetting = $this->createMock(\Amasty\ShopbyBase\Api\Data\OptionSettingInterface::class);
+        $context = $this->createMock(\Magento\Backend\App\Action\Context::class);
+        $context->expects($this->any())->method('getRequest')->willReturn($this->request);
 
         $this->controller = $this->getObjectManager()->getObject(
             Edit::class,
@@ -58,7 +59,6 @@ class EditTest extends \PHPUnit\Framework\TestCase
                 'settingHelper' => $this->settingHelper,
             ]
         );
-        $this->setProperty($this->controller, '_request', $this->request);
     }
 
     /**
@@ -67,11 +67,6 @@ class EditTest extends \PHPUnit\Framework\TestCase
     public function testLoadSettingModel()
     {
         $this->request->expects($this->exactly(3))->method('getParam')
-            ->withConsecutive(
-                ['attribute_code'],
-                ['option_id'],
-                ['store', 0]
-            )
             ->willReturnOnConsecutiveCalls(
                 'test',
                 1,
@@ -94,11 +89,6 @@ class EditTest extends \PHPUnit\Framework\TestCase
     public function testLoadSettingModelWithoutData()
     {
         $this->request->expects($this->exactly(3))->method('getParam')
-            ->withConsecutive(
-                ['attribute_code'],
-                ['option_id'],
-                ['store', 0]
-            )
             ->willReturnOnConsecutiveCalls(
                 false,
                 false,
@@ -118,11 +108,6 @@ class EditTest extends \PHPUnit\Framework\TestCase
     {
         $this->settingHelper->expects($this->any())->method('getSettingByValue')->willReturn($this->optionSetting);
         $this->request->expects($this->exactly(3))->method('getParam')
-            ->withConsecutive(
-                ['attribute_code'],
-                ['option_id'],
-                ['store', 0]
-            )
             ->willReturnOnConsecutiveCalls(
                 'test',
                 null,

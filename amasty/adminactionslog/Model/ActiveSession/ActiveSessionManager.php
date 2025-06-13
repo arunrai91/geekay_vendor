@@ -82,7 +82,7 @@ class ActiveSessionManager implements ActiveSessionManagerInterface
         AdminSessionInfoResource $adminSessionInfoResource,
         ScopeConfigInterface $scopeConfig,
         ActiveSessionCollectionFactory $activeSessionCollectionFactory,
-        ActiveSessionResource $activeSession = null
+        ?ActiveSessionResource $activeSession = null
     ) {
         $this->sessionUserDataProvider = $sessionUserDataProvider;
         $this->activeSessionRepository = $activeSessionRepository;
@@ -117,7 +117,7 @@ class ActiveSessionManager implements ActiveSessionManagerInterface
         }
     }
 
-    public function terminate(string $sessionId = null): void
+    public function terminate(?string $sessionId = null): void
     {
         if ($sessionId === null) {
             $sessionId = $this->sessionUserDataProvider->getSessionId();

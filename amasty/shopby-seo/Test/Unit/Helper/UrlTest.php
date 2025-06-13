@@ -46,7 +46,7 @@ class UrlTest extends \PHPUnit\Framework\TestCase
     {
         $this->url = $this->getMockBuilder(Url::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getSeoSuffix', 'isSeoUrlEnabled'])
+            ->onlyMethods(['getSeoSuffix', 'isSeoUrlEnabled'])
             ->getMockForAbstractClass();
 
         $this->request = $this->getObjectManager()

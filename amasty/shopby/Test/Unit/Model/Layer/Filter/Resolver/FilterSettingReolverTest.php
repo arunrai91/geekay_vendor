@@ -43,7 +43,7 @@ class FilterSettingReolverTest extends \PHPUnit\Framework\TestCase
     {
         $this->model = $this->getMockBuilder(FilterSettingResolver::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getFilterSetting'])
+            ->onlyMethods(['getFilterSetting'])
             ->getMock();
     }
 

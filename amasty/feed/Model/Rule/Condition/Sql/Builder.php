@@ -47,7 +47,7 @@ class Builder extends \Magento\Rule\Model\Condition\Sql\Builder
     public function __construct(
         ExpressionFactory $expressionFactory,
         EavConfig $eavConfig,
-        AttributeRepositoryInterface $attributeRepository = null
+        ?AttributeRepositoryInterface $attributeRepository = null
     ) {
         parent::__construct($expressionFactory, $attributeRepository);
         $this->eavConfig = $eavConfig;

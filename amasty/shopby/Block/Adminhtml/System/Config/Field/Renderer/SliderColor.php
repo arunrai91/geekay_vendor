@@ -34,6 +34,11 @@ class SliderColor extends Template
      */
     private $json;
 
+    /**
+     * @var string
+     */
+    protected $_template = 'Amasty_Shopby::system/config/field/color.phtml';
+
     public function __construct(
         ConfigProvider $configProvider,
         SliderStyleSource $sliderStyle,
@@ -45,12 +50,6 @@ class SliderColor extends Template
         $this->configProvider = $configProvider;
         $this->sliderStyle = $sliderStyle;
         $this->json = $json;
-    }
-
-    protected function _construct()
-    {
-        parent::_construct();
-        $this->setTemplate('Amasty_Shopby::system/config/field/color.phtml');
     }
 
     public function getSliderStyleOptions(): string

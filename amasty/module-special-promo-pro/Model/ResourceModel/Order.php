@@ -29,7 +29,7 @@ class Order extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     public function __construct(
         \Magento\Framework\Model\ResourceModel\Db\Context $context,
         $connectionName = null,
-        CacheInterface $cache = null // TODO: move to not optional argument and remove OM
+        ?CacheInterface $cache = null // TODO: move to not optional argument and remove OM
     ) {
         $this->cache = $cache ?? ObjectManager::getInstance()->get(CacheInterface::class);
         parent::__construct($context, $connectionName);

@@ -186,7 +186,7 @@ class Slider implements ArgumentInterface
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function isWishlistAllowed(Product $product = null): bool
+    public function isWishlistAllowed(?Product $product = null): bool
     {
         return $this->wishlistHelper->isAllow();
     }

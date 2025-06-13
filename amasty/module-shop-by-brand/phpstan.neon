@@ -1,0 +1,54 @@
+parameters:
+    checkExplicitMixedMissingReturn: true
+    checkPhpDocMissingReturn: true
+    reportUnmatchedIgnoredErrors: false
+    scanDirectories:
+        - %rootDir%/../../../dev/tests/static/framework/tests/unit/testsuite/Magento
+        - %rootDir%/../../../dev/tests/integration/framework/tests/unit/testsuite/Magento
+        - %rootDir%/../../../dev/tests/api-functional/_files/Magento
+    bootstrapFiles:
+        - %rootDir%/../../../dev/tests/static/framework/autoload.php
+        - %rootDir%/../../../dev/tests/integration/framework/autoload.php
+        - %rootDir%/../../../dev/tests/api-functional/framework/autoload.php
+        - %rootDir%/../../../dev/tests/setup-integration/framework/autoload.php
+        - %rootDir%/../../../dev/tests/static/framework/Magento/PhpStan/autoload.php
+    ignoreErrors:
+    # Optional module deps
+        -
+            message: '#^Parameter.*has invalid type Amasty\\ElasticSearch\\.*\.#'
+            paths:
+                - Plugin/ElasticSearch/*
+        -
+            message: '#^Parameter.*has invalid type Amasty\\ShopbySeo\\.*\.#'
+            paths:
+                - Plugin/ShopbySeo/*
+        -
+            message: '#^.* unknown class Magento\\SharedCatalog\\*.#'
+            paths:
+                - Model/Brand/ListDataProvider/LoadItems*
+        -
+            message: '#^Class Magento\\SharedCatalog\\.* not found.#'
+            paths:
+                - Model/Brand/ListDataProvider/LoadItems*
+        -
+            message: '#^.* unknown class Amasty\\XmlSitemap\\*.#'
+            paths:
+                - Model/XmlSitemap/Source/*
+        -
+            message: '#^Parameter.*has invalid type Amasty\\MegaMenuLite\\.*\.#'
+            paths:
+                - Plugin/Block/Html/MegaMenu*
+        -
+            message: '#^Parameter.*has invalid type Amasty\\Xsearch\\.*\.#'
+            paths:
+                - Plugin/Xsearch/*
+
+services:
+    -
+        class: Magento\PhpStan\Reflection\Php\DataObjectClassReflectionExtension
+        tags: {phpstan.broker.methodsClassReflectionExtension: {priority: 100}}
+
+    errorFormatter.filtered:
+        class: Magento\PhpStan\Formatters\FilteredErrorFormatter
+        arguments:
+            tableErrorFormatter: @errorFormatter.table

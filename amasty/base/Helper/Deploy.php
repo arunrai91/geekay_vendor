@@ -15,17 +15,17 @@ class Deploy extends AbstractHelper
     /**
      * @var \Magento\Framework\Filesystem\Directory\Write
      */
-    protected $rootWrite;
+    private $rootWrite;
 
     /**
      * @var \Magento\Framework\Filesystem\Directory\Read
      */
-    protected $rootRead;
+    private $rootRead;
 
     /**
      * @var \Magento\Framework\Filesystem
      */
-    protected $filesystem;
+    private $filesystem;
 
     public const DEFAULT_FILE_PERMISSIONS = 0666;
     public const DEFAULT_DIR_PERMISSIONS = 0777;
@@ -82,7 +82,7 @@ class Deploy extends AbstractHelper
         }
     }
 
-    protected function getNewFilePath($filePath, $fromPath, $toPath)
+    private function getNewFilePath($filePath, $fromPath, $toPath)
     {
         return str_replace($fromPath, $toPath, $filePath);
     }

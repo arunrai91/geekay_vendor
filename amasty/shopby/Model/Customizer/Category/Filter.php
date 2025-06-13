@@ -14,16 +14,13 @@ use Amasty\ShopbyBase\Model\Customizer\Category\CustomizerInterface;
 class Filter implements CustomizerInterface
 {
     /**
-     * @var CustomizerInterface
+     * @var CategoryDataSetterInterface
      */
-    protected $_contentHelper;
+    private CategoryDataSetterInterface $contentHelper;
 
-    /**
-     * @param CategoryDataSetterInterface $contentHelper
-     */
     public function __construct(CategoryDataSetterInterface $contentHelper)
     {
-        $this->_contentHelper = $contentHelper;
+        $this->contentHelper = $contentHelper;
     }
 
     /**
@@ -32,7 +29,7 @@ class Filter implements CustomizerInterface
      */
     public function prepareData(Category $category)
     {
-        $this->_contentHelper->setCategoryData($category);
+        $this->contentHelper->setCategoryData($category);
         return $this;
     }
 }

@@ -48,7 +48,7 @@ class Page implements ArrayInterface
     private function scopeData()
     {
         $existingIdentifiers = [];
-        $result = [['value' => '', 'label' => ' ']];
+        $result = [];
         $collection = $this->collectionFactory->create();
         foreach ($collection as $item) {
             $identifier = $item->getData('identifier');

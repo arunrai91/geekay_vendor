@@ -64,8 +64,8 @@ class HistoryFromRuleQuoteFactory
         CouponForHistoryFactory $couponForHistoryFactory,
         HistoryFactory $historyFactory,
         RuleFactory $salesRuleFactory,
-        EncryptorInterface $encryptor = null,
-        Random $random = null
+        ?EncryptorInterface $encryptor = null,
+        ?Random $random = null
     ) {
         $this->dateTime = $dateTime;
         $this->configProvider = $configProvider;

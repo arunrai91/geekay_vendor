@@ -55,6 +55,22 @@
             </argument>
         </arguments>
     </type>
+
+    <virtualType name="Amasty\Base\Model\System\Message\Mage248FixNotification" type="Amasty\Base\Model\System\Message\CloseableNotification">
+        <arguments>
+            <argument name="displayValidator" xsi:type="object">Amasty\Base\Model\System\Message\DisplayValidator\Mage248FixValidator</argument>
+            <argument name="identity" xsi:type="string">AMASTY_MAGE248FIX_NTOFICIATION</argument>
+            <argument name="message" xsi:type="string"><![CDATA[<p>Amasty Notice: After upgrading to <strong>Magento 2.4.8</strong>, you may encounter frontend and Admin Panel issues related to caching, styles, and table prefix processing, which can impact site functionality and layout.</p><p>To resolve these and improve compatibility with <strong>Amasty extensions</strong>, install the ‘amasty/module-mage-248-fix’ module via composer using the command: <strong>composer require amasty/module-mage-248-fix -W</strong>.</p> <p>For more details on all the issues addressed by the module, refer to the <strong>README</strong> file within the extension.</p><p>{{closeLink}}</p>]]></argument>
+            <argument name="closeLinkText" xsi:type="string"><![CDATA[Click on the link <a href="">to ignore this notification</a>]]></argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\Notification\MessageList">
+        <arguments>
+            <argument name="messages" xsi:type="array">
+                <item name="mage248fix" xsi:type="string">Amasty\Base\Model\System\Message\Mage248FixNotification</item>
+            </argument>
+        </arguments>
+    </type>
     <type name="Magento\Config\Block\System\Config\Edit">
         <plugin name="Amasty_Base::removeSaveButton" type="Amasty\Base\Plugin\Config\Block\System\Config\Edit\RemoveSaveButton"/>
     </type>

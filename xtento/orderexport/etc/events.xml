@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="xtento_orderexport_sales_order_service_place_after">
+        <observer name="xtento_orderexport_sales_order_service_place_after" instance="Xtento\OrderExport\Observer\SalesOrderServicePlaceAfterObserver" shared="false"/>
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="xtento_orderexport_sales_order_save_after" instance="Xtento\OrderExport\Observer\SalesOrderSaveAfterObserver" shared="false"/>
+    </event>
+    <event name="sales_order_place_after">
+        <observer name="xtento_orderexport_sales_order_place_after" instance="Xtento\OrderExport\Observer\SalesOrderPlaceAfterObserver" shared="false"/>
+    </event>
+    <event name="sales_order_payment_place_end">
+        <observer name="xtento_orderexport_sales_order_payment_place_end" instance="Xtento\OrderExport\Observer\SalesOrderPaymentPlaceEndObserver" shared="false"/>
+    </event>
+    <event name="sales_order_invoice_register">
+        <observer name="xtento_orderexport_sales_order_invoice_register" instance="Xtento\OrderExport\Observer\SalesOrderInvoiceRegisterObserver" shared="false"/>
+    </event>
+    <event name="sales_order_invoice_pay">
+        <observer name="xtento_orderexport_sales_order_invoice_pay" instance="Xtento\OrderExport\Observer\SalesOrderInvoicePayObserver" shared="false"/>
+    </event>
+    <event name="sales_order_shipment_save_after">
+        <observer name="xtento_orderexport_sales_order_shipment_save_after" instance="Xtento\OrderExport\Observer\SalesOrderShipmentSaveAfterObserver" shared="false"/>
+    </event>
+    <event name="sales_order_creditmemo_save_after">
+        <observer name="xtento_orderexport_sales_order_creditmemo_save_after" instance="Xtento\OrderExport\Observer\SalesOrderCreditmemoSaveAfterObserver" shared="false"/>
+    </event>
+    <event name="customer_save_after">
+        <observer name="xtento_orderexport_customer_save_after" instance="Xtento\OrderExport\Observer\CustomerSaveAfterObserver" shared="false"/>
+        <observer name="xtento_orderexport_customer_save_after_registration" instance="Xtento\OrderExport\Observer\CustomerSaveAfterRegistrationObserver" shared="false"/>
+    </event>
+    <event name="customer_address_save_after">
+        <observer name="xtento_orderexport_customer_address_save_after_registration" instance="Xtento\OrderExport\Observer\CustomerAddressSaveAfterObserver" shared="false"/>
+    </event>
+    <event name="admin_sales_order_address_update">
+        <observer name="xtento_orderexport_admin_sales_order_address_update" instance="Xtento\OrderExport\Observer\AdminSalesOrderAddressUpdateObserver" shared="false"/>
+    </event>
+</config>
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            %!uniqueid!%
+ * Last Modified: 2020-02-10T13:21:38+00:00
+ * File:          etc/events.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

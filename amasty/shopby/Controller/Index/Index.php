@@ -7,90 +7,76 @@
 
 namespace Amasty\Shopby\Controller\Index;
 
+use Amasty\ShopbyBase\Model\Category\Manager as CategoryManager;
+use Magento\Catalog\Model\Design as CatalogDesign;
+use Magento\Catalog\Model\Session as CatalogSession;
+use Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator;
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\View\Result\PageFactory;
 use Magento\Theme\Block\Html\Breadcrumbs;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
 
-class Index extends \Magento\Framework\App\Action\Action
+class Index implements HttpGetActionInterface
 {
     /**
-     * @var \Magento\Framework\Registry
+     * @var ResponseInterface
      */
-    protected $coreRegistry = null;
+    private ResponseInterface $response;
 
     /**
-     * @var \Magento\Catalog\Model\Session
+     * @var CatalogSession
      */
-    protected $catalogSession;
+    private CatalogSession $catalogSession;
 
     /**
-     * @var \Magento\Catalog\Model\Design
+     * @var CatalogDesign
      */
-    protected $catalogDesign;
+    private CatalogDesign $catalogDesign;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var CategoryUrlPathGenerator
      */
-    protected $storeManager;
+    private CategoryUrlPathGenerator $categoryUrlPathGenerator;
 
     /**
-     * @var \Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator
+     * @var PageFactory
      */
-    protected $categoryUrlPathGenerator;
+    private PageFactory $resultPageFactory;
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @var ForwardFactory
      */
-    protected $resultPageFactory;
+    private ForwardFactory $resultForwardFactory;
 
     /**
-     * @var \Magento\Framework\Controller\Result\ForwardFactory
+     * @var  CategoryManager
      */
-    protected $resultForwardFactory;
-
-    /**
-     * @var \Magento\Catalog\Model\Layer\Resolver
-     */
-    protected $layerResolver;
-
-    /**
-     * @var \Magento\Catalog\Api\CategoryRepositoryInterface
-     */
-    protected $categoryRepository;
-
-    /**
-     * @var  \Amasty\ShopbyBase\Model\Category\Manager
-     */
-    protected $categoryManager;
+    private CategoryManager $categoryManager;
 
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Catalog\Model\Design $catalogDesign,
-        \Magento\Catalog\Model\Session $catalogSession,
-        \Magento\Framework\Registry $coreRegistry,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator $categoryUrlPathGenerator,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory,
-        \Magento\Catalog\Model\Layer\Resolver $layerResolver,
-        \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
-        \Amasty\ShopbyBase\Model\Category\Manager $categoryManager
+        Context $context,
+        CatalogDesign $catalogDesign,
+        CatalogSession $catalogSession,
+        CategoryUrlPathGenerator $categoryUrlPathGenerator,
+        PageFactory $resultPageFactory,
+        ForwardFactory $resultForwardFactory,
+        CategoryManager $categoryManager
     ) {
-        parent::__construct($context);
-        $this->storeManager = $storeManager;
         $this->catalogDesign = $catalogDesign;
         $this->catalogSession = $catalogSession;
-        $this->coreRegistry = $coreRegistry;
         $this->categoryUrlPathGenerator = $categoryUrlPathGenerator;
         $this->resultPageFactory = $resultPageFactory;
         $this->resultForwardFactory = $resultForwardFactory;
-        $this->layerResolver = $layerResolver;
-        $this->categoryRepository = $categoryRepository;
         $this->categoryManager = $categoryManager;
+        $this->response = $context->getResponse();
     }
 
     /**
      * @return bool|\Magento\Catalog\Api\Data\CategoryInterface
      */
-    protected function _initCategory()
+    private function initCategory()
     {
         return $this->categoryManager->init($this);
     }
@@ -101,7 +87,8 @@ class Index extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        $category = $this->_initCategory();
+        /** @var \Magento\Catalog\Model\Category $category */
+        $category = $this->initCategory();
         if (!$category) {
             return $this->resultForwardFactory->create()->forward('noroute');
         }
@@ -147,7 +134,8 @@ class Index extends \Magento\Framework\App\Action\Action
         }
 
         /** @var Breadcrumbs $breadcrumbsBlock */
-        if ($breadcrumbsBlock = $page->getLayout()->getBlock('breadcrumbs')) {
+        $breadcrumbsBlock = $page->getLayout()->getBlock('breadcrumbs');
+        if ($breadcrumbsBlock) {
             $breadcrumbsBlock->addCrumb(
                 'all-products',
                 [
@@ -158,5 +146,15 @@ class Index extends \Magento\Framework\App\Action\Action
         }
 
         return $page;
+    }
+
+    /**
+     * Retrieve response object
+     *
+     * @return ResponseInterface
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 }

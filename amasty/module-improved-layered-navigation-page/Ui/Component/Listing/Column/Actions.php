@@ -17,7 +17,7 @@ class Actions extends Column
     /**
      * @var UrlInterface
      */
-    protected $urlBuilder;
+    private UrlInterface $urlBuilder;
 
     public function __construct(
         ContextInterface $context,
@@ -56,7 +56,7 @@ class Actions extends Column
      *
      * @return array
      */
-    protected function getEditUrlConfig($id)
+    private function getEditUrlConfig($id)
     {
         return [
             'href' => $this->urlBuilder->getUrl(

@@ -27,19 +27,21 @@ class TryTo extends Assertion implements GeneratedStep
 
     public static function getTemplate(Template $template): ?Template
     {
-        $action = (string) $template->getVar('action');
+        $action = $template->getVar('action');
 
-        if (
-            str_starts_with($action, 'have') ||
-            str_starts_with($action, 'am')   ||
-            str_starts_with($action, 'wait') ||
-            str_starts_with($action, 'grab')
-        ) {
-            return null;
+        if ((str_starts_with($action, 'have')) || (str_starts_with($action, 'am'))) {
+            return null; // dont try on conditions
         }
 
-        $conditionalDoc = "* [!] Test won't be stopped on fail. Error won't be logged \n     "
-            . $template->getVar('doc');
+        if (str_starts_with($action, 'wait')) {
+            return null; // dont try on waiters
+        }
+
+        if (str_starts_with($action, 'grab')) {
+            return null; // dont on grabbers
+        }
+
+        $conditionalDoc = "* [!] Test won't be stopped on fail. Error won't be logged \n     " . $template->getVar('doc');
 
         return $template
             ->place('doc', $conditionalDoc)

@@ -7,22 +7,30 @@
 
 namespace Amasty\ElasticSearch\Model\Adminhtml\System\Config\Backend;
 
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Indexer\IndexerRegistry;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Registry;
+
 class LongTail extends \Magento\Framework\App\Config\Value
 {
     /**
-     * @var \Magento\Framework\Indexer\IndexerRegistry
+     * @var IndexerRegistry
      */
-    protected $indexerRegistry;
+    protected IndexerRegistry $indexerRegistry;
 
     public function __construct(
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\App\Config\ScopeConfigInterface $config,
-        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
-        \Magento\Framework\Indexer\IndexerRegistry $indexerRegistry,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
-        array $data = []
+        Context              $context,
+        Registry             $registry,
+        ScopeConfigInterface $config,
+        TypeListInterface    $cacheTypeList,
+        IndexerRegistry      $indexerRegistry,
+        ?AbstractResource    $resource = null,
+        ?AbstractDb          $resourceCollection = null,
+        array                $data = []
     ) {
         $this->indexerRegistry = $indexerRegistry;
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);

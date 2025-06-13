@@ -15,7 +15,7 @@ class ExtensionsProvider
     /**
      * @var array|null
      */
-    protected $modulesData = null;
+    private $modulesData = null;
 
     /**
      * @var FeedTypes\Extensions

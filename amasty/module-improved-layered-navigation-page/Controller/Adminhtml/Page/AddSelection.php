@@ -11,6 +11,8 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Catalog\Model\Config as CatalogConfig;
 use Magento\Catalog\Model\Product;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\View\LayoutInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Registry as CoreRegistry;
@@ -26,49 +28,54 @@ class AddSelection extends Action
     /**
      * @var CatalogConfig
      */
-    protected $_catalogConfig;
+    private CatalogConfig $catalogConfig;
 
     /**
      * @var JsonFactory
      */
-    protected $_resultJsonFactory;
+    private JsonFactory $resultJsonFactory;
 
     /**
      * @var FormFactory
      */
-    protected $_formFactory;
+    private FormFactory $formFactory;
 
     /**
      * @var TabSelectionFactory
      */
-    protected $_tabSelectionFactory;
+    private TabSelectionFactory $tabSelectionFactory;
 
     /**
      * @var SourceAttribute
      */
-    protected $_sourceAttribute;
+    private SourceAttribute $sourceAttribute;
 
     /**
-     * @param Context $context
-     * @param JsonFactory $resultJsonFactory
-     * @param CatalogConfig $catalogConfig
-     * @param FormFactory $formFactory
-     * @param TabSelectionFactory $tabSelectionFactory
-     * @param SourceAttribute $sourceAttribute
+     * @var RequestInterface
      */
+    private RequestInterface $request;
+
+    /**
+     * @var LayoutInterface
+     */
+    private LayoutInterface $layout;
+
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
         CatalogConfig $catalogConfig,
         FormFactory $formFactory,
         TabSelectionFactory $tabSelectionFactory,
-        SourceAttribute $sourceAttribute
+        SourceAttribute $sourceAttribute,
+        LayoutInterface $layout
     ) {
-        $this->_resultJsonFactory = $resultJsonFactory;
-        $this->_catalogConfig = $catalogConfig;
-        $this->_formFactory = $formFactory;
-        $this->_tabSelectionFactory = $tabSelectionFactory;
-        $this->_sourceAttribute = $sourceAttribute;
+        $this->resultJsonFactory = $resultJsonFactory;
+        $this->catalogConfig = $catalogConfig;
+        $this->formFactory = $formFactory;
+        $this->tabSelectionFactory = $tabSelectionFactory;
+        $this->sourceAttribute = $sourceAttribute;
+        $this->request = $context->getRequest();
+        $this->layout = $layout;
 
         parent::__construct($context);
     }
@@ -88,19 +95,19 @@ class AddSelection extends Action
     public function execute()
     {
         try {
-            $counter = $this->getRequest()->getParam('counter');
+            $counter = $this->request->getParam('counter');
             $attribute = $this->loadAttribute();
 
             /** @var \Magento\Framework\Data\FormFactory $form */
-            $form = $this->_formFactory->create();
+            $form = $this->formFactory->create();
 
-            /** @var \Magento\Backend\Block\Widget\Form $widgetForm */
-            $widgetForm = $this->_view->getLayout()->createBlock(\Magento\Backend\Block\Widget\Form::class)
-                ->setForm($this->_formFactory->create());
+            /** @var \Amasty\ShopbyBase\Block\Adminhtml\Widget\Form $widgetForm */
+            $widgetForm = $this->layout->createBlock(\Amasty\ShopbyBase\Block\Adminhtml\Widget\Form::class)
+                ->setForm($this->formFactory->create());
 
-            $attributes = $this->_sourceAttribute->toArray();
+            $attributes = $this->sourceAttribute->toArray();
 
-            $tab = $this->_tabSelectionFactory->create();
+            $tab = $this->tabSelectionFactory->create();
 
             $fieldset = $tab->addSelectionControls(
                 $counter + 1,
@@ -118,7 +125,7 @@ class AddSelection extends Action
             $response = ['error' => true, 'message' => $e->getMessage() . __('We can\'t fetch attribute options.')];
         }
 
-        $resultJson = $this->_resultJsonFactory->create();
+        $resultJson = $this->resultJsonFactory->create();
         $resultJson->setData($response);
         return $resultJson;
     }
@@ -129,8 +136,8 @@ class AddSelection extends Action
      */
     private function loadAttribute()
     {
-        $attributeId = $this->getRequest()->getParam('id');
-        $attribute = $this->_catalogConfig->getAttribute(Product::ENTITY, $attributeId);
+        $attributeId = $this->request->getParam('id');
+        $attribute = $this->catalogConfig->getAttribute(Product::ENTITY, $attributeId);
 
         if (!$attribute->getId()) {
             throw new LocalizedException(__('Attribute does n\'t exists'));

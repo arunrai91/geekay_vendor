@@ -7,21 +7,29 @@
 
 namespace Amasty\ShopbyBrand\Block\Catalog\Product\ProductList;
 
-use Magento\Catalog\Block\Product\AbstractProduct;
-use Magento\Catalog\Block\Product\Context;
+use Magento\Catalog\Block\Product\Image;
+use Magento\Catalog\Block\Product\ImageFactory;
+use Magento\Catalog\Helper\Product\Compare as CompareHelper;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\CatalogInventory\Helper\Stock;
+use Magento\Checkout\Helper\Cart as CartHelper;
 use Magento\Customer\Model\Context as CustomerContext;
 use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Pricing\Render;
+use Magento\Framework\Registry;
 use Magento\Framework\Url\Helper\Data as UrlHelper;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Wishlist\Helper\Data as WishlistHelper;
 
-class MoreFrom extends AbstractProduct implements IdentityInterface
+class MoreFrom extends Template implements IdentityInterface
 {
     public const DEFAULT_PRODUCT_LIMIT = 7;
 
@@ -75,6 +83,31 @@ class MoreFrom extends AbstractProduct implements IdentityInterface
      */
     private $httpContext;
 
+    /**
+     * @var Registry
+     */
+    private Registry $registry;
+
+    /**
+     * @var ImageFactory
+     */
+    private ImageFactory $imageFactory;
+
+    /**
+     * @var WishlistHelper
+     */
+    private WishlistHelper $wishlistHelper;
+
+    /**
+     * @var CompareHelper
+     */
+    private CompareHelper $compareHelper;
+
+    /**
+     * @var CartHelper
+     */
+    private CartHelper $cartHelper;
+
     public function __construct(
         Context $context,
         CollectionFactory $productCollectionFactory,
@@ -85,8 +118,13 @@ class MoreFrom extends AbstractProduct implements IdentityInterface
         \Amasty\ShopbyBrand\Model\ConfigProvider $configProvider,
         \Amasty\ShopbyBrand\Model\Attribute $brandAttribute,
         UrlHelper $urlHelper,
-        array $data = [],
-        HttpContext $httpContext = null// TODO move to not optional
+        ImageFactory $imageFactory,
+        Registry $registry,
+        WishlistHelper $wishlistHelper,
+        CompareHelper $compareHelper,
+        CartHelper $cartHelper,
+        HttpContext $httpContext,
+        array $data = []
     ) {
         parent::__construct($context, $data);
         $this->productCollectionFactory = $productCollectionFactory;
@@ -97,8 +135,12 @@ class MoreFrom extends AbstractProduct implements IdentityInterface
         $this->configProvider = $configProvider;
         $this->brandAttribute = $brandAttribute;
         $this->urlHelper = $urlHelper;
-        // OM for backward compatibility
-        $this->httpContext = $httpContext ?? ObjectManager::getInstance()->get(HttpContext::class);
+        $this->registry = $registry;
+        $this->imageFactory = $imageFactory;
+        $this->wishlistHelper = $wishlistHelper;
+        $this->compareHelper = $compareHelper;
+        $this->cartHelper = $cartHelper;
+        $this->httpContext = $httpContext;
     }
 
     /**
@@ -144,7 +186,7 @@ class MoreFrom extends AbstractProduct implements IdentityInterface
     {
         $items = [];
         if (!$this->itemCollection) {
-            $this->_prepareData();
+            $this->prepareData();
         }
 
         if ($this->itemCollection) {
@@ -158,7 +200,7 @@ class MoreFrom extends AbstractProduct implements IdentityInterface
     /**
      * @return $this
      */
-    protected function _prepareData()
+    private function prepareData()
     {
         $attributeValue = $this->getBrandValue();
 
@@ -238,7 +280,7 @@ class MoreFrom extends AbstractProduct implements IdentityInterface
     /**
      * @return bool
      */
-    protected function isEnabled()
+    private function isEnabled()
     {
         return $this->configProvider->isMoreFromEnabled($this->getStoreId());
     }
@@ -250,7 +292,7 @@ class MoreFrom extends AbstractProduct implements IdentityInterface
     {
         $title = $this->configProvider->getTitleMoreFrom($this->getStoreId());
         preg_match_all('@\{(.+?)\}@', $title, $matches);
-        if (isset($matches[1]) && !empty($matches[1])) {
+        if (!empty($matches[1])) {
             foreach ($matches[1] as $match) {
                 $value = '';
                 switch ($match) {
@@ -262,18 +304,16 @@ class MoreFrom extends AbstractProduct implements IdentityInterface
             }
         }
 
-        $title = $title ?: __('More from this Brand');
-
-        return $title;
+        return $title ?: __('More from this Brand');
     }
 
     /**
      * Retrieve product post data for buy request
      *
-     * @param \Magento\Catalog\Model\Product $product
+     * @param Product $product
      * @return string
      */
-    public function getProductPostData(\Magento\Catalog\Model\Product $product): string
+    public function getProductPostData(Product $product): string
     {
         $postData = ['product' => $product->getEntityId()];
         if (!$product->getTypeInstance()->isPossibleBuyFromList($product)) {
@@ -314,20 +354,14 @@ class MoreFrom extends AbstractProduct implements IdentityInterface
         return $this->postHelper;
     }
 
-    /**
-     * @return \Magento\Catalog\Helper\Product\Compare
-     */
-    public function getCompareHelper()
+    public function getCompareHelper(): CompareHelper
     {
-        return $this->_compareProduct;
+        return $this->compareHelper;
     }
 
-    /**
-     * @return \Magento\Wishlist\Helper\Data
-     */
-    public function getWishlistHelper()
+    public function getWishlistHelper(): WishlistHelper
     {
-        return $this->_wishlistHelper;
+        return $this->wishlistHelper;
     }
 
     /**
@@ -341,5 +375,91 @@ class MoreFrom extends AbstractProduct implements IdentityInterface
     private function getCurrentCustomerGroupId(): int
     {
         return (int)$this->httpContext->getValue(CustomerContext::CONTEXT_GROUP);
+    }
+
+    public function getProduct()
+    {
+        if (!$this->hasData('product')) {
+            $this->setData('product', $this->registry->registry('product'));
+        }
+        return $this->getData('product');
+    }
+
+    public function getImage(Product $product, string $imageId, array $attributes = []): Image
+    {
+        return $this->imageFactory->create($product, $imageId, $attributes);
+    }
+
+    public function getAddToCartUrl(Product $product, array $additional = []): string
+    {
+        if (!$product->getTypeInstance()->isPossibleBuyFromList($product)) {
+            if (!isset($additional['_escape'])) {
+                $additional['_escape'] = true;
+            }
+            if (!isset($additional['_query'])) {
+                $additional['_query'] = [];
+            }
+            $additional['_query']['options'] = 'cart';
+
+            return $this->getProductUrl($product, $additional);
+        }
+
+        return $this->cartHelper->getAddUrl($product, $additional);
+    }
+
+    public function getProductUrl(Product $product, array $additional = []): string
+    {
+        if ($this->hasProductUrl($product)) {
+            if (!isset($additional['_escape'])) {
+                $additional['_escape'] = true;
+            }
+
+            return $product->getUrlModel()->getUrl($product, $additional);
+        }
+
+        return '#';
+    }
+
+    public function hasProductUrl(Product $product): bool
+    {
+        if ($product->getVisibleInSiteVisibilities()) {
+            return true;
+        }
+
+        if ($product->hasUrlDataObject()) {
+            if (in_array($product->hasUrlDataObject()->getVisibility(), $product->getVisibleInSiteVisibilities())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function getProductPrice(Product $product): string
+    {
+        return $this->getProductPriceHtml(
+            $product,
+            FinalPrice::PRICE_CODE
+        );
+    }
+
+    public function getProductPriceHtml(
+        Product $product,
+        string $priceType,
+        string $renderZone = Render::ZONE_ITEM_LIST,
+        array $arguments = []
+    ): string {
+        if (!isset($arguments['zone'])) {
+            $arguments['zone'] = $renderZone;
+        }
+
+        /** @var Render $priceRender */
+        $priceRender = $this->getLayout()->getBlock('product.price.render.default');
+        $price = '';
+        if ($priceRender) {
+            $price = $priceRender->render($priceType, $product, $arguments);
+        }
+
+        return $price;
     }
 }

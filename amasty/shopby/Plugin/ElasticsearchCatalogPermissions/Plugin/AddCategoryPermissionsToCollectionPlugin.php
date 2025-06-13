@@ -104,7 +104,7 @@ class AddCategoryPermissionsToCollectionPlugin
     public function beforeGetFacetedData(
         Collection $productCollection,
         string $field,
-        SearchResultInterface $searchResult = null
+        ?SearchResultInterface $searchResult = null
     ) {
         $this->execute($productCollection);
 
@@ -177,17 +177,6 @@ class AddCategoryPermissionsToCollectionPlugin
     {
         return $productCollection->getFlag(self::PERMISSION_FILTER_ADDED_FLAG)
             || !$this->moduleManager->isEnabled('Magento_ElasticsearchCatalogPermissions')
-            || !class_exists(AddCategoryPermissionsToCollection::class)
-            || $this->isCurrentEngineMysql();
-    }
-
-    /**
-     * Check if current engine is MYSQL.
-     *
-     * @return bool
-     */
-    private function isCurrentEngineMysql()
-    {
-        return $this->engineResolver->getCurrentSearchEngine() === EngineResolver::CATALOG_SEARCH_MYSQL_ENGINE;
+            || !class_exists(AddCategoryPermissionsToCollection::class);
     }
 }

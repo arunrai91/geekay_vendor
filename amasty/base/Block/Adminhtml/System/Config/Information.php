@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Amasty\Base\Block\Adminhtml\System\Config;
 
+use Amasty\Base\Block\Adminhtml\System\Config\InformationBlocks\Basic;
 use Magento\Backend\Block\Context;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Config\Block\System\Config\Form\Fieldset;
@@ -72,6 +73,7 @@ class Information extends Fieldset
         $layout->generateXml();
         $layout->generateElements();
 
+        /** @var Basic $basicBlock */
         $basicBlock = $layout->getBlock('aminfotab.basic');
         if ($basicBlock) {
             $basicBlock->setData('element', $element);

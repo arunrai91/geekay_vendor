@@ -21,17 +21,17 @@ class BrandsPopup extends \Amasty\ShopbyBrand\Block\Widget\BrandList
     /**
      * @var bool
      */
-    protected $shouldWrap = true;
+    private bool $shouldWrap = true;
 
     /**
      * @var bool
      */
-    protected $portoTheme = false;
+    private bool $portoTheme = false;
 
     /**
      * @var bool
      */
-    protected $ultimoTheme = false;
+    private bool $ultimoTheme = false;
 
     /**
      * @return string
@@ -47,7 +47,7 @@ class BrandsPopup extends \Amasty\ShopbyBrand\Block\Widget\BrandList
      */
     public function isShowPopup()
     {
-        return (bool)$this->helper->getModuleConfig('general/brands_popup');
+        return (bool)$this->getHelper()->getModuleConfig('general/brands_popup');
     }
 
     /**
@@ -55,7 +55,7 @@ class BrandsPopup extends \Amasty\ShopbyBrand\Block\Widget\BrandList
      */
     public function getLabel()
     {
-        return $this->helper->getBrandLabel();
+        return $this->getHelper()->getBrandLabel();
     }
 
     /**
@@ -63,7 +63,7 @@ class BrandsPopup extends \Amasty\ShopbyBrand\Block\Widget\BrandList
      */
     public function getAllBrandsUrl()
     {
-        return $this->helper->getAllBrandsUrl();
+        return $this->getHelper()->getAllBrandsUrl();
     }
 
     /**
@@ -86,7 +86,7 @@ class BrandsPopup extends \Amasty\ShopbyBrand\Block\Widget\BrandList
         $path = $this->getRequest()->getOriginalPathInfo();
         if ($path && $path !== '/') {
             $isAllBrandsPage = strpos(
-                $this->helper->getAllBrandsUrl(),
+                $this->getHelper()->getAllBrandsUrl(),
                 $path
             ) !== false;
         } else {
@@ -130,7 +130,7 @@ class BrandsPopup extends \Amasty\ShopbyBrand\Block\Widget\BrandList
         return $this->ultimoTheme;
     }
 
-    protected function getConfigValuesPath(): string
+    public function getConfigValuesPath(): string
     {
         return self::CONFIG_VALUES_PATH;
     }

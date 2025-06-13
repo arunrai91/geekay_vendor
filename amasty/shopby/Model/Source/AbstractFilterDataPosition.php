@@ -17,16 +17,16 @@ abstract class AbstractFilterDataPosition implements \Magento\Framework\Option\A
     /**
      * @var string
      */
-    protected $_label;
+    private $label;
 
     /**
      * @return mixed
      */
-    abstract protected function _setLabel();
+    abstract public function initLabel();
 
     public function __construct()
     {
-        $this->_setLabel();
+        $this->initLabel();
     }
 
     /**
@@ -37,20 +37,25 @@ abstract class AbstractFilterDataPosition implements \Magento\Framework\Option\A
         return [
             [
                 'value' => self::BEFORE,
-                'label' => __('Before %1', $this->_label)
+                'label' => __('Before %1', $this->label)
             ],
             [
                 'value' => self::AFTER,
-                'label' => __('After %1', $this->_label)
+                'label' => __('After %1', $this->label)
             ],
             [
                 'value' => self::REPLACE,
-                'label' => __('Replace %1', $this->_label)
+                'label' => __('Replace %1', $this->label)
             ],
             [
                 'value' => self::DO_NOT_ADD,
                 'label' => __('Do Not Add')
             ]
         ];
+    }
+
+    public function setLabel($label)
+    {
+        $this->label = $label;
     }
 }

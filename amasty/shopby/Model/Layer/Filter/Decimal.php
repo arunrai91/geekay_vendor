@@ -332,8 +332,8 @@ class Decimal extends \Magento\CatalogSearch\Model\Layer\Filter\Decimal implemen
             if (empty($facetedItemData)
                 && isset($this->facetedData['data']['count'])
                 && $this->facetedData['data']['count']
+                && isset($from, $to)
             ) {
-
                 $this->facetedData = [
                     $from . '_' . $to => [
                         'value' => $from . '_' . $to,
@@ -427,7 +427,6 @@ class Decimal extends \Magento\CatalogSearch\Model\Layer\Filter\Decimal implemen
     /**
      * @param $fromPrice
      * @param $toPrice
-     * @return \Magento\Framework\Phrase
      */
     private function getRangeLabel(float $fromPrice, float $toPrice): string
     {

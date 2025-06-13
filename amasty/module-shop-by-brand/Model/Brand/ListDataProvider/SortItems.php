@@ -37,7 +37,7 @@ class SortItems
 
     /**
      * @param BrandDataInterface $itemA
-     * @param BrandDataInterface $b
+     * @param BrandDataInterface $itemB
      *
      * @return int
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod) used in usort

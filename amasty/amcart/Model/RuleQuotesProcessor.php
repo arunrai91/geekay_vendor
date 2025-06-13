@@ -113,7 +113,7 @@ class RuleQuotesProcessor
         BatchLoader $batchLoader,
         EventManagerInterface $eventManager,
         FlagManager $flagManager,
-        EmailValidator $emailValidator = null
+        ?EmailValidator $emailValidator = null
     ) {
         $this->quoteCollectionFactory = $quoteCollectionFactory;
         $this->ruleCollectionFactory = $ruleCollectionFactory;

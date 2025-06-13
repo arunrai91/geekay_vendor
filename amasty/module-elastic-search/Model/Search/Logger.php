@@ -44,15 +44,15 @@ class Logger
     }
 
     /**
-     * @param RequestInterface $request
-     * @param QueryResponse $response
+     * @param RequestInterface|null $request
+     * @param QueryResponse|null $response
      * @param array $rawRequestQuery
      * @param array $rawResponseQuery
      * @return $this
      */
     public function log(
-        RequestInterface $request = null,
-        QueryResponse $response = null,
+        ?RequestInterface $request = null,
+        ?QueryResponse $response = null,
         array $rawRequestQuery = [],
         array $rawResponseQuery = []
     ) {
@@ -73,15 +73,15 @@ class Logger
     }
 
     /**
-     * @param RequestInterface $request
-     * @param QueryResponse $response
+     * @param RequestInterface|null $request
+     * @param QueryResponse|null $response
      * @param array $rawRequestQuery
      * @param array $rawResponseQuery
      * @return $this
      */
     private function logRequest(
-        RequestInterface $request = null,
-        QueryResponse $response = null,
+        ?RequestInterface $request = null,
+        ?QueryResponse $response = null,
         array $rawRequestQuery = [],
         array $rawResponseQuery = []
     ) {

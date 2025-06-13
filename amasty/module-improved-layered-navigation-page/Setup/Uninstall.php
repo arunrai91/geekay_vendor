@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Amasty\ShopbyPage\Setup;
 
 use Amasty\ShopbyPage\Api\Data\PageInterface;
-use Amasty\ShopbyPage\Model\Data\Page;
+use Amasty\ShopbyPage\Model\Page\ImagesManager;
 use Amasty\ShopbyPage\Model\ResourceModel\Page\Collection;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
@@ -50,6 +50,6 @@ class Uninstall implements UninstallInterface
     private function deleteImages(): void
     {
         $mediaDir = $this->filesystem->getDirectoryWrite(DirectoryList::MEDIA);
-        $mediaDir->delete(Page::IMAGES_DIR);
+        $mediaDir->delete(ImagesManager::IMAGES_DIR);
     }
 }

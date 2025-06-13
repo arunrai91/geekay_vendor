@@ -7,35 +7,46 @@
 
 namespace Amasty\Xsearch\Model\System\Config\Backend;
 
+use Amasty\Base\Model\Serializer;
+use Amasty\Xsearch\Helper\Data;
 use Amasty\Xsearch\Model\CustomSearchAttributes;
 use Amasty\Xsearch\Model\System\Config\AttributeWeight;
+use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
+use Magento\Catalog\Model\ResourceModel\Attribute;
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Math\Random;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Registry;
 
 class Weight extends \Magento\Framework\App\Config\Value
 {
 
     /**
-     * @var \Magento\Framework\Math\Random
+     * @var Random
      */
     private $mathRandom;
 
     /**
-     * @var \Magento\Catalog\Api\ProductAttributeRepositoryInterface
+     * @var ProductAttributeRepositoryInterface
      */
     private $attributeRepository;
 
     /**
-     * @var \Amasty\Xsearch\Helper\Data
+     * @var Data
      */
     private $xSearchHelper;
 
     /**
-     * @var \Magento\Catalog\Model\ResourceModel\Attribute
+     * @var Attribute
      */
     private $attributeResource;
 
     /**
-     * @var \Amasty\Base\Model\Serializer
+     * @var Serializer
      */
     private $serializer;
 
@@ -51,36 +62,36 @@ class Weight extends \Magento\Framework\App\Config\Value
 
     /**
      * Weight constructor.
-     * @param \Magento\Catalog\Api\ProductAttributeRepositoryInterface $attributeRepository
-     * @param \Amasty\Xsearch\Helper\Data $xSearchHelper
-     * @param \Magento\Framework\Model\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
-     * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
-     * @param \Magento\Framework\Math\Random $mathRandom
-     * @param \Magento\Catalog\Model\ResourceModel\Attribute $attributeResource
-     * @param \Amasty\Base\Model\Serializer $serializer
-     * @param \Magento\Framework\Model\ResourceModel\AbstractResource|null $resource
-     * @param \Magento\Framework\Data\Collection\AbstractDb|null $resourceCollection
+     * @param ProductAttributeRepositoryInterface $attributeRepository
+     * @param Data $xSearchHelper
+     * @param Context $context
+     * @param Registry $registry
+     * @param ScopeConfigInterface $config
+     * @param TypeListInterface $cacheTypeList
+     * @param Random $mathRandom
+     * @param Attribute $attributeResource
+     * @param Serializer $serializer
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
      * @param array $data
-     * @param AttributeWeight $attributeWeight
-     * @param CustomSearchAttributes $customSearchAttributes
+     * @param AttributeWeight|null $attributeWeight
+     * @param CustomSearchAttributes|null $customSearchAttributes
      */
     public function __construct(
-        \Magento\Catalog\Api\ProductAttributeRepositoryInterface $attributeRepository,
-        \Amasty\Xsearch\Helper\Data $xSearchHelper,
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\App\Config\ScopeConfigInterface $config,
-        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
-        \Magento\Framework\Math\Random $mathRandom,
-        \Magento\Catalog\Model\ResourceModel\Attribute $attributeResource,
-        \Amasty\Base\Model\Serializer $serializer,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ProductAttributeRepositoryInterface $attributeRepository,
+        Data $xSearchHelper,
+        Context $context,
+        Registry $registry,
+        ScopeConfigInterface $config,
+        TypeListInterface $cacheTypeList,
+        Random $mathRandom,
+        Attribute $attributeResource,
+        Serializer $serializer,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = [],
-        AttributeWeight $attributeWeight = null, // TODO move to not optional
-        CustomSearchAttributes $customSearchAttributes = null
+        ?AttributeWeight $attributeWeight = null, // TODO move to not optional
+        ?CustomSearchAttributes $customSearchAttributes = null
     ) {
         $this->mathRandom = $mathRandom;
         $this->attributeRepository = $attributeRepository;

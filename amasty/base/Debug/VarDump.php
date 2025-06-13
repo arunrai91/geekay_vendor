@@ -123,7 +123,13 @@ class VarDump
         }
         foreach ($reflection->getProperties() as $property) {
             $property->setAccessible(true);
-            $propertyValue = $property->getValue($object);
+            try {
+                $propertyValue = $property->getValue($object);
+            } catch (\Throwable $e) {
+                //should be replaced to ReflectionProperty::isInitialized check after end of php 7.3 support
+                $propertyValue = null;
+            }
+
             switch (strtolower(gettype($propertyValue))) {
                 case 'object':
                     $amastyDump->properties[$property->name] = self::castObject($propertyValue, $level + 1);

@@ -74,7 +74,7 @@ class ConfigProvider extends ConfigProviderAbstract
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         Serializer $serializer,
-        Manager $moduleManager = null // TODO move to not optional
+        ?Manager $moduleManager = null // TODO move to not optional
     ) {
         parent::__construct($scopeConfig);
         $this->serializer = $serializer;

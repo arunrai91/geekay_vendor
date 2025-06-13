@@ -2,11 +2,6 @@ name: CI
 
 on: [push, pull_request]
 
-permissions:
-  contents: read
-  actions: read
-  id-token: none
-
 jobs:
   composer:
     runs-on: ubuntu-latest
@@ -15,13 +10,13 @@ jobs:
         php: [ 8.1, 8.2, 8.3, 8.4 ]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
           path: /tmp/composer-cache
-          key: ${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
 
       - name: Composer install
         uses: php-actions/composer@v6
@@ -29,12 +24,12 @@ jobs:
           php_version: ${{ matrix.php }}
 
       - name: Archive build
-        run: mkdir /tmp/github-actions/ && tar --exclude=".git" -cvf /tmp/github-actions/build.tar ./
+        run: mkdir /tmp/github-actions/ && tar -cvf /tmp/github-actions/build.tar ./
 
       - name: Upload build archive for test runners
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
-          name: build-artifact-${{ matrix.php }}
+          name: build-artifact
           path: /tmp/github-actions
 
   phpunit:
@@ -48,9 +43,9 @@ jobs:
       coverage: ${{ steps.store-coverage.outputs.coverage_text }}
 
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
-          name: build-artifact-${{ matrix.php }}
+          name: build-artifact
           path: /tmp/github-actions
 
       - name: Extract build archive
@@ -67,31 +62,28 @@ jobs:
           coverage_clover: _coverage/clover.xml
 
       - name: Store coverage data
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
-          name: code-coverage-${{ matrix.php }}-${{ github.run_number }}
+          name: code-coverage
           path: _coverage
 
   coverage:
     runs-on: ubuntu-latest
     needs: [ phpunit ]
-    strategy:
-      matrix:
-        php: [ 8.1, 8.2, 8.3, 8.4 ]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
-          name: code-coverage-${{ matrix.php }}-${{ github.run_number }}
+          name: code-coverage
           path: _coverage
 
       - name: Output coverage
         run: cat "_coverage/coverage.txt"
 
       - name: Upload to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v3
 
   phpstan:
     runs-on: ubuntu-latest
@@ -101,9 +93,9 @@ jobs:
         php: [ 8.1, 8.2, 8.3, 8.4 ]
 
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
-          name: build-artifact-${{ matrix.php }}
+          name: build-artifact
           path: /tmp/github-actions
 
       - name: Extract build archive
@@ -124,9 +116,9 @@ jobs:
         php: [ 8.1, 8.2, 8.3, 8.4 ]
 
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
-          name: build-artifact-${{ matrix.php }}
+          name: build-artifact
           path: /tmp/github-actions
 
       - name: Extract build archive
@@ -148,9 +140,9 @@ jobs:
         php: [ 8.1, 8.2, 8.3, 8.4 ]
 
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
-          name: build-artifact-${{ matrix.php }}
+          name: build-artifact
           path: /tmp/github-actions
 
       - name: Extract build archive
@@ -166,15 +158,12 @@ jobs:
   remove_old_artifacts:
     runs-on: ubuntu-latest
 
-    permissions:
-      actions: write
-
     steps:
       - name: Remove old artifacts for prior workflow runs on this repository
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api "/repos/${{ github.repository }}/actions/artifacts" | jq ".artifacts[] | select(.name | startswith(\"build-artifact\")) | .id" > artifact-id-list.txt
+          gh api "/repos/${{ github.repository }}/actions/artifacts?name=build-artifact" | jq ".artifacts[] | select(.name == \"build-artifact\") | .id" > artifact-id-list.txt
           while read id
           do
             echo -n "Deleting artifact ID $id ... "

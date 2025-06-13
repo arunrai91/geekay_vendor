@@ -64,7 +64,7 @@ class ProductCountTest extends \PHPUnit\Framework\TestCase
         $collectionFactory->expects($this->any())->method('create')->willReturn($this->collection);
         $this->categoryRepository = $this->createMock(\Magento\Catalog\Api\CategoryRepositoryInterface::class);
         $this->storeMock = $this->getMockBuilder(StoreInterface::class)
-            ->setMethods(['getRootCategoryId'])
+            ->addMethods(['getRootCategoryId'])
             ->getMockForAbstractClass();
 
         $this->model = $this->getObjectManager()->getObject(

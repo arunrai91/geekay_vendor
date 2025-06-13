@@ -13,7 +13,6 @@ namespace Amasty\ShopbyBrand\Model;
 use Magento\Catalog\Api\Data\ProductAttributeInterface;
 use Magento\Catalog\Model\Product\Attribute\Repository as AttributeRepository;
 use Magento\Eav\Api\Data\AttributeOptionInterface;
-use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -50,7 +49,7 @@ class Attribute
     }
 
     /**
-     * @return ProductAttributeInterface|IdentityInterface|null
+     * @return ProductAttributeInterface|null
      */
     public function getAttribute(): ?ProductAttributeInterface
     {

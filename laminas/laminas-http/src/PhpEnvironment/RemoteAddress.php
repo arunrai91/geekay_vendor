@@ -70,6 +70,7 @@ class RemoteAddress
     /**
      * Set list of trusted proxy addresses
      *
+     * @param  array $trustedProxies
      * @return $this
      */
     public function setTrustedProxies(array $trustedProxies)

@@ -7,10 +7,9 @@ namespace Codeception\Util;
 use function array_key_exists;
 use function explode;
 use function is_array;
-use function preg_quote;
-use function preg_replace_callback;
+use function preg_match_all;
 use function sprintf;
-use function strval;
+use function str_replace;
 
 /**
  * Basic template engine used for generating initial Cept/Cest/Test files.
@@ -18,19 +17,13 @@ use function strval;
 class Template
 {
     private array $vars = [];
-    private readonly string $regex;
 
     public function __construct(
-        private readonly string $template,
+        private string $template,
         private readonly string $placeholderStart = '{{',
         private readonly string $placeholderEnd = '}}',
         private readonly ?string $encoderFunction = null,
     ) {
-        $this->regex = sprintf(
-            '~%s([\w\.]+)%s~',
-            preg_quote($this->placeholderStart, '~'),
-            preg_quote($this->placeholderEnd, '~'),
-        );
     }
 
     /**
@@ -60,22 +53,34 @@ class Template
      */
     public function produce(): string
     {
-        return preg_replace_callback($this->regex, function (array $match): string {
+        $result = $this->template;
+        $regex = sprintf('~%s([\w\.]+)%s~m', $this->placeholderStart, $this->placeholderEnd);
+
+        $matched = preg_match_all($regex, $result, $matches, PREG_SET_ORDER);
+        if (!$matched) {
+            return $result;
+        }
+
+        foreach ($matches as $match) { // fill in placeholders
             $placeholder = $match[1];
-            $value       = $this->vars;
+            $value = $this->vars;
 
             foreach (explode('.', trim($placeholder, '\'"')) as $segment) {
                 if (is_array($value) && array_key_exists($segment, $value)) {
                     $value = $value[$segment];
                 } else {
-                    return $match[0];
+                    continue 2;
                 }
             }
-            $value = $this->encoderFunction !== null
-                ? ($this->encoderFunction)($value)
-                : $value;
 
-            return is_string($value) ? $value : strval($value);
-        }, $this->template);
+            if ($this->encoderFunction !== null) {
+                $value = ($this->encoderFunction)($value);
+            } elseif (!is_string($value)) {
+                $value = (string)$value;
+            }
+
+            $result = str_replace($this->placeholderStart . $placeholder . $this->placeholderEnd, $value, $result);
+        }
+        return $result;
     }
 }

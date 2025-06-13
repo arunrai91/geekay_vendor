@@ -225,7 +225,7 @@ class LogEntry extends AbstractExtensibleModel implements LogEntryInterface
     }
 
     public function setExtensionAttributes(
-        LogEntryExtensionInterface $extensionAttributes = null
+        ?LogEntryExtensionInterface $extensionAttributes = null
     ): LogEntryInterface {
         return $this->_setExtensionAttributes($extensionAttributes);
     }

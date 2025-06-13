@@ -279,4 +279,9 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(self::FORCED_IP);
     }
+
+    public function _resetState(): void
+    {
+        $this->_cacheEnabled = null;
+    }
 }

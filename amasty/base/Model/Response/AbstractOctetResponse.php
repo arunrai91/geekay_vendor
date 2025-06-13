@@ -30,12 +30,12 @@ abstract class AbstractOctetResponse extends App\Response\Http implements OctetR
     /**
      * @var DownloadOutput
      */
-    protected $downloadHelper;
+    private $downloadHelper;
 
     /**
      * @var ReadInterface
      */
-    protected $readResource;
+    private $readResource;
 
     public function __construct(
         DownloadOutput $downloadHelper,
@@ -45,7 +45,7 @@ abstract class AbstractOctetResponse extends App\Response\Http implements OctetR
         Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
         App\Http\Context $context,
         Stdlib\DateTime $dateTime,
-        ConfigInterface $sessionConfig = null
+        ?ConfigInterface $sessionConfig = null
     ) {
         $this->downloadHelper = $downloadHelper;
         $this->initHeaders();

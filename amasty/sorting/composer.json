@@ -3,8 +3,8 @@
     "description": "Improved Sorting by Amasty",
     "require": {
         "php": ">=7.3",
-        "amasty/base": ">=1.18.0",
-        "amasty/module-composite-product-price-indexer": ">=1.0.1"
+        "amasty/base": ">=1.18.1",
+        "amasty/module-composite-product-price-indexer": ">=1.0.2"
     },
     "suggest": {
         "amasty/improved-sorting-graphql": "Install improved-sorting-graphql module to activate GraphQl and Sorting integration.",
@@ -14,7 +14,7 @@
         "amasty/cron-schedule-list": "*"
     },
     "type": "magento2-module",
-    "version": "2.15.0",
+    "version": "2.15.1",
     "license": [
         "proprietary"
     ],

@@ -26,9 +26,11 @@ class PrepareTest implements EventSubscriberInterface
 
     public function prepare(TestEvent $event): void
     {
-        $test    = $event->getTest();
-        $prepareMethods = $test->getMetadata()->getParam('prepare') ?: [];
-        if ($prepareMethods === []) {
+        $test = $event->getTest();
+
+        $prepareMethods = $test->getMetadata()->getParam('prepare');
+
+        if (!$prepareMethods) {
             return;
         }
         /** @var Di $di */

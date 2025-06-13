@@ -60,7 +60,7 @@ class VisitHistoryManager implements VisitHistoryManagerInterface
         $this->visitHistoryEntryRepository->save($visitHistoryEntryModel);
     }
 
-    public function endVisit(string $sessionId = null): void
+    public function endVisit(?string $sessionId = null): void
     {
         $sessionId = $sessionId ?: $this->sessionUserDataProvider->getSessionId();
         $visitHistoryEntryModel = $this->visitHistoryEntryRepository->getBySessionId($sessionId);
@@ -68,7 +68,7 @@ class VisitHistoryManager implements VisitHistoryManagerInterface
         $this->visitHistoryEntryRepository->save($visitHistoryEntryModel);
     }
 
-    public function clear(int $period = null): void
+    public function clear(?int $period = null): void
     {
         $this->visitHistoryEntryRepository->clean($period);
     }

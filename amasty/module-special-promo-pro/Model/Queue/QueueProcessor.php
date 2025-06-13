@@ -52,7 +52,7 @@ class QueueProcessor
         CollectionFactory $salesruleCollectionFactory,
         CustomerRepositoryInterface $customerRepository,
         QuoteFactory $quoteFactory,
-        Customer $customerResource = null // TODO not optional
+        ?Customer $customerResource = null // TODO not optional
     ) {
         $this->quoteRepository = $quoteRepository;
         $this->salesruleCollectionFactory = $salesruleCollectionFactory;

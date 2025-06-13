@@ -4,9 +4,26 @@
 
 define([
     'uiComponent',
-    'mage/translate'
-], function (Component, $t) {
+    'mage/translate',
+    'Amasty_Base/js/extensions/action-link-resolver'
+], function (Component, $t, actionLinkResolver) {
     'use strict';
+
+    /**
+     * @typedef {Object} ModuleInfo
+     * @property {string} code
+     * @property {string} name
+     * @property {boolean} has_update
+     * @property {boolean} is_solution
+     * @property {string} version
+     * @property {string} last_version
+     * @property {[{ type: string, content: string }]} messages
+     * @property {string} module_url
+     * @property {string} update_url
+     * @property {string} upgrade_url
+     * @property {string} plan_label
+     * @property {{type: string, status: string}} verify_status
+     */
 
     return Component.extend({
         defaults: {
@@ -16,15 +33,13 @@ define([
                 filterButtons: 'Amasty_Base/extensions/filter-buttons',
                 table: 'Amasty_Base/extensions/table'
             },
+            subscription: {
+                faqUrl: 'https://amasty.com/knowledge-base/what-does-each-product-license-status-in-the-base-extension-mean'
+            },
             modulesData: [],
             update: [],
             solutions: [],
             shouldRenderLicenseStatus: false,
-            subscription: {
-                statusTypesToCheck: ['warning', 'error'],
-                url: 'https://amasty.com/amasty_recurring/customer/subscriptions',
-                faqUrl: 'https://amasty.com/knowledge-base/what-does-each-product-license-status-in-the-base-extension-mean'
-            },
             stateValues: {
                 default: 'default',
                 solutions: 'solutions',
@@ -113,30 +128,11 @@ define([
         },
 
         /**
-         * @param {Object} module
-         * @returns {Object|null}
+         * @param {ModuleInfo} module
+         * @returns {ActionLinkData}
          */
         getActionLink: function (module) {
-            const actionLinkData = {
-                text: null,
-                url: null
-            };
-
-            const isNeedCheckSubscription = this.isNeedCheckSubscription(module);
-            if (module.upgrade_url || isNeedCheckSubscription) {
-                actionLinkData.text = isNeedCheckSubscription ? $t('Check Your Subscriptions') : $t('Upgrade Your Plan');
-                actionLinkData.url = isNeedCheckSubscription ? this.subscription.url : module.upgrade_url;
-            }
-
-            return actionLinkData;
-        },
-
-        /**
-         * @param {Object} module
-         * @returns {boolean}
-         */
-        isNeedCheckSubscription: function (module) {
-            return this.subscription.statusTypesToCheck.includes(module.verify_status?.type);
+            return actionLinkResolver.getActionLinkData(module);
         }
     });
 });

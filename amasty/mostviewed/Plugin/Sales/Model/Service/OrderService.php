@@ -107,7 +107,7 @@ class OrderService
         ClickCollector $collector,
         GroupRepositoryInterface $ruleRepository,
         AppendProductAnalyticSales $appendProductAnalyticSales,
-        DateTime $dateTime = null
+        ?DateTime $dateTime = null
     ) {
         $this->clickRepository = $clickRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;

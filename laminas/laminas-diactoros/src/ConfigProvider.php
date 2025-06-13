@@ -20,6 +20,8 @@ class ConfigProvider
 
     /**
      * Retrieve configuration for laminas-diactoros.
+     *
+     * @return array
      */
     public function __invoke(): array
     {

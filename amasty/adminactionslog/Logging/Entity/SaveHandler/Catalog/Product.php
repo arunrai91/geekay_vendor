@@ -16,6 +16,7 @@ use Amasty\AdminActionsLog\Logging\Util\Ignore\ArrayFilter;
 use Amasty\AdminActionsLog\Model\Catalog\Model\Product\Gallery\LogImages;
 use Amasty\AdminActionsLog\Model\LogEntry\LogEntry;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Model\AbstractModel;
 
 class Product extends Common
 {
@@ -48,7 +49,8 @@ class Product extends Common
         'updated_at',
         'has_options',
         'required_options',
-        'quantity_and_stock_status'
+        'quantity_and_stock_status',
+        'is_changed_categories'
     ];
 
     /**
@@ -84,24 +86,54 @@ class Product extends Common
     }
 
     /**
-     * @param \Magento\Framework\Model\AbstractModel $object
+     * @param AbstractModel $object
      * @return array
      */
     public function processBeforeSave($object): array
     {
         $this->logImages->processGalleryBeforeSave($object);
+        $preparedData = parent::processBeforeSave($object);
+        $this->prepareCurrentCategories((array)$object->getData(), (array)$object->getOrigData(), $preparedData);
 
-        return parent::processBeforeSave($object);
+        return $preparedData;
     }
 
     /**
-     * @param \Magento\Framework\Model\AbstractModel $object
+     * @param AbstractModel $object
      * @return array
      */
     public function processAfterSave($object): array
     {
         $this->logImages->processGalleryAfterSave($object);
+        $preparedData = parent::processAfterSave($object);
+        $newData = (array)$object->getData();
 
-        return parent::processAfterSave($object);
+        if (isset($newData['category_ids'])
+            && is_array($newData['category_ids'])
+        ) {
+            $preparedData['category_ids'] = implode(',', $newData['category_ids']);
+        }
+
+        return $preparedData;
+    }
+
+    private function prepareCurrentCategories(array $data, array $orig, array &$preparedData): void
+    {
+        if (!isset($data['category_ids']) || !is_array($data['category_ids'])) {
+            return;
+        }
+
+        if (!isset($orig['category_ids']) || !is_array($orig['category_ids'])) {
+            $preparedData['category_ids'] = implode(',', $data['category_ids']);
+            return;
+        }
+
+        // looking for difference between two category arrays
+        if (count($orig['category_ids']) !== count($data['category_ids'])
+            || array_diff($orig['category_ids'], $data['category_ids']) !== []) {
+            $preparedData['category_ids'] = implode(',', $orig['category_ids']);
+        } else {
+            $preparedData['category_ids'] = implode(',', $data['category_ids']);
+        }
     }
 }

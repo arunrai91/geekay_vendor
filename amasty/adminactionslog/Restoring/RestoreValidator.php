@@ -22,7 +22,7 @@ class RestoreValidator
 
     public function __construct(
         ?array $notRestorableCategories = null, // @deprecated
-        RestoreValidatorProvider $restoreValidatorProvider = null
+        ?RestoreValidatorProvider $restoreValidatorProvider = null
     ) {
         // OM for backward compatibility
         $this->restoreValidatorProvider = $restoreValidatorProvider

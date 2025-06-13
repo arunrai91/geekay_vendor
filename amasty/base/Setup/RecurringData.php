@@ -66,9 +66,9 @@ class RecurringData implements InstallDataInterface
         Manager $moduleManager,
         Status $moduleStatus,
         array $modulesToDisable = [],
-        RegisterLicenceKey $registerLicenceKeyCommand = null,
-        State $appState = null,
-        LoggerInterface $logger = null
+        ?RegisterLicenceKey $registerLicenceKeyCommand = null,
+        ?State $appState = null,
+        ?LoggerInterface $logger = null
     ) {
         $this->moduleManager = $moduleManager;
         $this->moduleStatus = $moduleStatus;

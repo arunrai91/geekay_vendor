@@ -126,7 +126,7 @@ class ProductProvider
      * @param Group $group
      * @param $entity
      *
-     * @return Collection|bool
+     * @return Collection|null
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getAppliedProducts(Group $group, $entity)
@@ -158,7 +158,7 @@ class ProductProvider
 
     /**
      * @param Group $group
-     * @return \Amasty\Mostviewed\Model\ResourceModel\Product\Collection|bool
+     * @return \Amasty\Mostviewed\Model\ResourceModel\Product\Collection
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     private function getProductCollection(Group $group)
@@ -320,7 +320,10 @@ class ProductProvider
     }
 
     /**
-     * @return Collection|bool
+     * @param Collection $collection
+     * @param Product $product
+     * @return Collection|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityExceptio
      */
     private function applyViewedTogether(Collection $collection, Product $product)
     {
@@ -355,14 +358,17 @@ class ProductProvider
                 new \Zend_Db_Expr('FIELD(e.entity_id, ' . implode(',', $products) . ')')
             );
         } else {
-            $collection = false;
+            $collection = null;
         }
 
         return $collection;
     }
 
     /**
-     * @return Collection|bool
+     * @param Collection $collection
+     * @param Product $product
+     * @return Collection|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityExceptio
      */
     private function applyBoughtTogether(Collection $collection, Product $product)
     {
@@ -385,7 +391,7 @@ class ProductProvider
         }
 
         if (empty($data)) {
-            $collection = false;
+            $collection = null;
         } else {
             $views = [];
             $products = [];

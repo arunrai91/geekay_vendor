@@ -85,7 +85,7 @@ class RouterTest extends \PHPUnit\Framework\TestCase
     private function getRequestMock()
     {
         $request = $this->getMockBuilder(RequestInterface::class)
-            ->setMethods(['setMetaData', 'getUserParams', 'getQuery', 'isAjax'])
+            ->addMethods(['setMetaData', 'getUserParams', 'getQuery', 'isAjax'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 

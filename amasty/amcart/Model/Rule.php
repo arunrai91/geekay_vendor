@@ -148,7 +148,7 @@ class Rule extends AbstractModel implements RuleInterface
         ScheduleCollectionFactory $scheduleCollectionFactory,
         ScheduleEmailTemplateRepositoryInterface $emailTemplateRepository,
         ScheduleEmailTemplateInterfaceFactory $emailTemplateFactory,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);

@@ -7,10 +7,9 @@
 
 namespace Amasty\ShopbyPage\Block\Adminhtml\Page\Edit\Tab\Selection;
 
+use Amasty\ShopbyPage\Model\Request\Page\SelectionAttributeRegistry;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget;
-use Magento\Framework\Registry;
-use Amasty\ShopbyPage\Controller\RegistryConstants;
 use Magento\Eav\Model\Entity\Attribute\AbstractAttribute;
 
 /**
@@ -26,37 +25,32 @@ class Value extends Widget
     protected $_template = 'attribute/value.phtml';
 
     /**
-     * @var Registry
+     * @var AbstractAttribute|null
      */
-    protected $_coreRegistry;
+    private ?AbstractAttribute $eavAttribute = null;
 
     /**
-     * @var AbstractAttribute
+     * @var int|null
      */
-    protected $_eavAttribute;
-
-    /**
-     * @var  int
-     */
-    protected $_attributeIdx;
+    private ?int $attributeIdx = null;
 
     /**
      * @var  mixed
      */
-    protected $_attributeValue;
+    private $attributeValue;
 
     /**
-     * @param Context $context
-     * @param Registry $registry
-     * @param array $data
+     * @var SelectionAttributeRegistry
      */
+    private SelectionAttributeRegistry $selectionAttributeRegistry;
+
     public function __construct(
+        SelectionAttributeRegistry $selectionAttributeRegistry,
         Context $context,
-        Registry $registry,
         array $data = []
     ) {
-        $this->_coreRegistry = $registry;
         parent::__construct($context, $data);
+        $this->selectionAttributeRegistry = $selectionAttributeRegistry;
     }
 
     /**
@@ -65,10 +59,10 @@ class Value extends Widget
      */
     public function getEavAttribute()
     {
-        if ($this->_eavAttribute === null) {
-            $this->_eavAttribute = $this->_coreRegistry->registry(RegistryConstants::ATTRIBUTE);
+        if ($this->eavAttribute === null) {
+            $this->eavAttribute = $this->selectionAttributeRegistry->getAttribute();
         }
-        return $this->_eavAttribute;
+        return $this->eavAttribute;
     }
 
     /**
@@ -77,7 +71,7 @@ class Value extends Widget
      */
     public function setEavAttribute(AbstractAttribute $attribute)
     {
-        $this->_eavAttribute = $attribute;
+        $this->eavAttribute = $attribute;
         return $this;
     }
 
@@ -102,10 +96,10 @@ class Value extends Widget
      */
     public function getEavAttributeIdx()
     {
-        if ($this->_attributeIdx === null) {
-            $this->_attributeIdx = $this->_coreRegistry->registry(RegistryConstants::ATTRIBUTE_IDX);
+        if ($this->attributeIdx === null) {
+            $this->attributeIdx = $this->selectionAttributeRegistry->getAttributeIdx();
         }
-        return $this->_attributeIdx;
+        return $this->attributeIdx;
     }
 
     /**
@@ -114,7 +108,7 @@ class Value extends Widget
      */
     public function setEavAttributeIdx($idx)
     {
-        $this->_attributeIdx = $idx;
+        $this->attributeIdx = $idx;
         return $this;
     }
 
@@ -124,7 +118,7 @@ class Value extends Widget
      */
     public function setEavAttributeValue($value)
     {
-        $this->_attributeValue = $value;
+        $this->attributeValue = $value;
         return $this;
     }
 
@@ -133,7 +127,7 @@ class Value extends Widget
      */
     public function getEavAttributeValue()
     {
-        return $this->_attributeValue;
+        return $this->attributeValue;
     }
 
     /**

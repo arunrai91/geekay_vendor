@@ -2,8 +2,8 @@
     "name": "amasty/mostviewed",
     "description": "Automatic Related Products By Amasty",
     "require": {
-        "php": ">=7.3",
-        "amasty/base": ">=1.17.0",
+        "php": ">=7.4",
+        "amasty/base": ">=1.19.1",
         "amasty/cron-schedule-list": "*"
     },
     "suggest": {
@@ -11,7 +11,7 @@
         "amasty/module-mostviewed-mftf-3": "Install mostviewed-mftf-3 module to be able to run Mostviewed MFTF tests for Magento 2.4.0+ version"
     },
     "type": "magento2-module",
-    "version": "2.21.0",
+    "version": "2.21.2",
     "license": [
         "proprietary"
     ],

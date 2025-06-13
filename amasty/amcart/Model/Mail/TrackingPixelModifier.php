@@ -29,7 +29,7 @@ class TrackingPixelModifier
 
     public function __construct(
         Url $urlBuilder,
-        StoreManagerInterface $storeManager = null
+        ?StoreManagerInterface $storeManager = null
     ) {
         $this->urlBuilder = $urlBuilder;
         // OM for backward compatibility

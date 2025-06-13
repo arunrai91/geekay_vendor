@@ -1,4 +1,3 @@
-"Canonical link is not visible for NOINDEX pages.","Canonical link is not visible for NOINDEX pages."
 "Need help with the setting? Please consult the <a target=""_blank"" href=""%1"">user guide</a> to configure properly.","Need help with the setting? Please consult the <a target=""_blank"" href=""%1"">user guide</a> to configure properly."
 "To get these settings working properly please make sure you have enabled the Canonical Meta Tag <a target=""_blank"" href=""%1"">here</a> (Stores > Configuration > Catalog > Search Engine Optimizations).","To get these settings working properly please make sure you have enabled the Canonical Meta Tag <a target=""_blank"" href=""%1"">here</a> (Stores > Configuration > Catalog > Search Engine Optimizations)."
 " | Page %1"," | Page %1"
@@ -46,6 +45,12 @@ Enable,Enable
 "Replace Special Characters With","Replace Special Characters With"
 "Separate Attribute Options With","Separate Attribute Options With"
 "For example, if a customer selects 3 options for the attribute `color`, the URL will look like http://example.com/red-green-blue.html.","For example, if a customer selects 3 options for the attribute `color`, the URL will look like http://example.com/red-green-blue.html."
+"Ignore URLs with Pass Info Request","Ignore URLs with Pass Info Request"
+"URLs with a Path Info that starts with the specified value will be excluded from SEO processing by the module.
+                        For example, in the URL https://faq-and-product-questions-m2.magento-demo.amasty.com/knowledge-base/do-you-provide-the-same-day-delivery-to-new-york/, to exclude Knowledge Base URLs from processing, enter 'knowledge-base' in the setting.
+                        Specify each on a new line.","URLs with a Path Info that starts with the specified value will be excluded from SEO processing by the module.
+                        For example, in the URL https://faq-and-product-questions-m2.magento-demo.amasty.com/knowledge-base/do-you-provide-the-same-day-delivery-to-new-york/, to exclude Knowledge Base URLs from processing, enter 'knowledge-base' in the setting.
+                        Specify each on a new line."
 "Robots Tag Control","Robots Tag Control"
 "Allow the Module to Modify Robots Meta Tag","Allow the Module to Modify Robots Meta Tag"
 "Noindex when Multiple Attribute Filters Applied","Noindex when Multiple Attribute Filters Applied"
@@ -58,6 +63,8 @@ Enable,Enable
 "Set the structure of canonical urls for category pages.","Set the structure of canonical urls for category pages."
 "Brand Pages","Brand Pages"
 """all-product"" Page","""all-product"" Page"
+"Add Canonical URL for Noindex Pages","Add Canonical URL for Noindex Pages"
+"If enabled, canonical URLs will be added to the NOINDEX pages.","If enabled, canonical URLs will be added to the NOINDEX pages."
 "Pagination Settings","Pagination Settings"
 "Use Prev/Next Tags for Improved Navigation Pages","Use Prev/Next Tags for Improved Navigation Pages"
 "Set 'Yes' to use rel=“next” and rel=“prev” tags and point Google where the next or the previous pages are. Please click <a target=""blank"" href=""https://webmasters.googleblog.com/2011/09/pagination-with-relnext-and-relprev.html"">here</a> to learn more details.","Set 'Yes' to use rel=“next” and rel=“prev” tags and point Google where the next or the previous pages are. Please click <a target=""blank"" href=""https://webmasters.googleblog.com/2011/09/pagination-with-relnext-and-relprev.html"">here</a> to learn more details."

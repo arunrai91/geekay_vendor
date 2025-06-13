@@ -58,7 +58,7 @@ class AdsProvider
      *
      * @return int
      */
-    protected function sortByPriority($currentElement, $nextElement)
+    private function sortByPriority($currentElement, $nextElement)
     {
         if ($currentElement['priority'] == $nextElement['priority']) {
             return 0;

@@ -21,11 +21,6 @@ class FilterSettingProxy implements FilterSettingInterface
     /**
      * @var string
      */
-    protected $_eventPrefix = 'amshopby_filter_setting';
-
-    /**
-     * @var string
-     */
     private $attributeCode;
 
     /**

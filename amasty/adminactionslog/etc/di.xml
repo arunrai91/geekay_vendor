@@ -134,9 +134,6 @@
 
     <preference for="Amasty\AdminActionsLog\Model\VisitHistoryEntry\DetailLoaderInterface"
                 type="Amasty\AdminActionsLog\Model\VisitHistoryEntry\Detail\FullDetailLoader"/>
-
-    <preference for="Amasty\AdminActionsLog\Notification\Type\Email\ConfigInterface"
-                type="Amasty\AdminActionsLog\Notification\Type\Email\Config"/>
     <!-- Preferences End -->
 
     <type name="Amasty\AdminActionsLog\Ui\Component\Listing\Column\LogEntryActions">
@@ -145,6 +142,69 @@
                 <item name="edit" xsi:type="const">Amasty\AdminActionsLog\Model\OptionSource\LogEntryTypes::TYPE_EDIT</item>
                 <item name="new" xsi:type="const">Amasty\AdminActionsLog\Model\OptionSource\LogEntryTypes::TYPE_NEW</item>
                 <item name="restore" xsi:type="const">Amasty\AdminActionsLog\Model\OptionSource\LogEntryTypes::TYPE_RESTORE</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Catalog\Model\Product\Action">
+        <plugin name="Amasty_AdminActionsLog::processMassStatus" type="Amasty\AdminActionsLog\Plugin\Catalog\Model\Product\ActionPlugin"/>
+    </type>
+
+    <virtualType name="AmActionLog_EntitySaveBeforeHandlerConfig" type="Amasty\AdminActionsLog\Logging\ActionType\TypeConfig">
+        <arguments>
+            <argument name="actionsRegExp" xsi:type="array">
+                <item name="all" xsi:type="string">.*</item>
+            </argument>
+            <argument name="validators" xsi:type="array">
+                <item name="log_allowed" xsi:type="object">Amasty\AdminActionsLog\Logging\ActionType\Validation\LoggingAllowedValidator</item>
+                <item name="class_ignore" xsi:type="object">Amasty\AdminActionsLog\Logging\ActionType\Validation\ObjectClassValidator</item>
+            </argument>
+            <argument name="event" xsi:type="const">Amasty\AdminActionsLog\Api\Logging\MetadataInterface::EVENT_SAVE_BEFORE</argument>
+            <argument name="priority" xsi:type="number">1000</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AmActionLog_EntitySaveAfterHandlerConfig" type="Amasty\AdminActionsLog\Logging\ActionType\TypeConfig">
+        <arguments>
+            <argument name="actionsRegExp" xsi:type="array">
+                <item name="all" xsi:type="string">.*</item>
+            </argument>
+            <argument name="validators" xsi:type="array">
+                <item name="log_allowed" xsi:type="object">Amasty\AdminActionsLog\Logging\ActionType\Validation\LoggingAllowedValidator</item>
+                <item name="class_ignore" xsi:type="object">Amasty\AdminActionsLog\Logging\ActionType\Validation\ObjectClassValidator</item>
+            </argument>
+            <argument name="event" xsi:type="const">Amasty\AdminActionsLog\Api\Logging\MetadataInterface::EVENT_SAVE_AFTER</argument>
+            <argument name="priority" xsi:type="number">1000</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AmActionLog_EntityDeleteHandlerConfig" type="Amasty\AdminActionsLog\Logging\ActionType\TypeConfig">
+        <arguments>
+            <argument name="actionsRegExp" xsi:type="array">
+                <item name="all" xsi:type="string">.*</item>
+            </argument>
+            <argument name="validators" xsi:type="array">
+                <item name="log_allowed" xsi:type="object">Amasty\AdminActionsLog\Logging\ActionType\Validation\LoggingAllowedValidator</item>
+                <item name="class_ignore" xsi:type="object">Amasty\AdminActionsLog\Logging\ActionType\Validation\ObjectClassValidator</item>
+            </argument>
+            <argument name="event" xsi:type="const">Amasty\AdminActionsLog\Api\Logging\MetadataInterface::EVENT_DELETE</argument>
+            <argument name="priority" xsi:type="number">1000</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\AdminActionsLog\Logging\ActionType\HandlerResolver">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="entity_save_before" xsi:type="array">
+                    <item name="handlerClass" xsi:type="string">Amasty\AdminActionsLog\Logging\ActionType\BeforeSave\Entity</item>
+                    <item name="config" xsi:type="object">AmActionLog_EntitySaveBeforeHandlerConfig</item>
+                </item>
+                <item name="entity_save_after" xsi:type="array">
+                    <item name="handlerClass" xsi:type="string">Amasty\AdminActionsLog\Logging\ActionType\AfterSave\Entity</item>
+                    <item name="config" xsi:type="object">AmActionLog_EntitySaveAfterHandlerConfig</item>
+                </item>
+                <item name="entity_delete" xsi:type="array">
+                    <item name="handlerClass" xsi:type="string">Amasty\AdminActionsLog\Logging\ActionType\Delete\Entity</item>
+                    <item name="config" xsi:type="object">AmActionLog_EntityDeleteHandlerConfig</item>
+                </item>
             </argument>
         </arguments>
     </type>

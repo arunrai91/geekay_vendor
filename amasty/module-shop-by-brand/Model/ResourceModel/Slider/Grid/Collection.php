@@ -8,6 +8,7 @@
 namespace Amasty\ShopbyBrand\Model\ResourceModel\Slider\Grid;
 
 use Amasty\ShopbyBase\Helper\FilterSetting;
+use Amasty\ShopbyBase\Model\StoreData\ScopedFieldsProvider;
 use Amasty\ShopbyBrand\Model\ConfigProvider;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\Search\AggregationInterface;
@@ -26,12 +27,12 @@ class Collection extends BrandCollection implements SearchResultInterface
     /**
      * @var AggregationInterface
      */
-    protected $_aggregations;
+    private AggregationInterface $aggregations;
 
     /**
      * @var ConfigProvider
      */
-    private $configProvider;
+    private ConfigProvider $configProvider;
 
     public function __construct(
         EntityFactoryInterface $entityFactory,
@@ -40,13 +41,14 @@ class Collection extends BrandCollection implements SearchResultInterface
         ManagerInterface $eventManager,
         ConfigProvider $configProvider,
         Option\CollectionFactory $optionCollectionFactory,
+        ScopedFieldsProvider $scopedFieldsProvider,
         $mainTable,
         $eventPrefix,
         $eventObject,
         $resourceModel,
         $model = Document::class,
         $connection = null,
-        AbstractDb $resource = null
+        ?AbstractDb $resource = null
     ) {
         parent::__construct(
             $entityFactory,
@@ -54,6 +56,7 @@ class Collection extends BrandCollection implements SearchResultInterface
             $fetchStrategy,
             $eventManager,
             $optionCollectionFactory,
+            $scopedFieldsProvider,
             $connection,
             $resource
         );
@@ -62,14 +65,14 @@ class Collection extends BrandCollection implements SearchResultInterface
         $this->_init($model, $resourceModel);
         $this->configProvider = $configProvider;
         $this->setMainTable($mainTable);
-        $this->_prepareCollection();
+        $this->prepareCollection();
     }
 
     /**
      * add current attribute and default store_id filters
      * @return $this
      */
-    protected function _prepareCollection()
+    private function prepareCollection()
     {
         $this->addFilterToMap('brand_code', OptionSettingInterface::ATTRIBUTE_CODE);
         $this->addAttributeFilter();
@@ -95,7 +98,7 @@ class Collection extends BrandCollection implements SearchResultInterface
         return $this;
     }
 
-    protected function addAttributeFilter()
+    private function addAttributeFilter()
     {
         $this->addFieldToFilter(
             OptionSettingInterface::ATTRIBUTE_CODE,
@@ -129,7 +132,7 @@ class Collection extends BrandCollection implements SearchResultInterface
      */
     public function getAggregations()
     {
-        return $this->_aggregations;
+        return $this->aggregations;
     }
 
     /**
@@ -138,7 +141,7 @@ class Collection extends BrandCollection implements SearchResultInterface
      */
     public function setAggregations($aggregations)
     {
-        $this->_aggregations = $aggregations;
+        $this->aggregations = $aggregations;
         return $this;
     }
 
@@ -159,7 +162,7 @@ class Collection extends BrandCollection implements SearchResultInterface
      * @return $this
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+    public function setSearchCriteria(?\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
     {
         return $this;
     }
@@ -193,7 +196,7 @@ class Collection extends BrandCollection implements SearchResultInterface
      * @return $this
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function setItems(array $items = null)
+    public function setItems(?array $items = null)
     {
         return $this;
     }

@@ -12,8 +12,10 @@ use Magento\Eav\Model\Entity\Attribute;
 
 class BrandAttribute implements \Magento\Framework\Option\ArrayInterface
 {
-    /** @var  CollectionFactory */
-    protected $collectionFactory;
+    /**
+     * @var CollectionFactory
+     */
+    private CollectionFactory $collectionFactory;
 
     public function __construct(CollectionFactory $collectionFactory)
     {
@@ -28,7 +30,7 @@ class BrandAttribute implements \Magento\Framework\Option\ArrayInterface
     public function toOptionArray()
     {
         $options = [];
-        foreach ($this->_getOptions() as $optionValue => $optionLabel) {
+        foreach ($this->getOptions() as $optionValue => $optionLabel) {
             $options[] = ['value' => $optionValue, 'label' => $optionLabel];
         }
         return $options;
@@ -41,10 +43,10 @@ class BrandAttribute implements \Magento\Framework\Option\ArrayInterface
      */
     public function toArray()
     {
-        return $this->_getOptions();
+        return $this->getOptions();
     }
 
-    protected function _getOptions()
+    private function getOptions()
     {
         $collection = $this->collectionFactory->create();
         $collection->addIsFilterableFilter();

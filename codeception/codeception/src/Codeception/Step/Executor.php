@@ -12,11 +12,13 @@ class Executor extends CodeceptionStep
 {
     public function __construct(protected Closure $callable, array $arguments = [])
     {
-        parent::__construct('execute callable function', $arguments);
+        parent::__construct('execute callable function', []);
     }
 
     public function run(?ModuleContainer $container = null)
     {
-        return ($this->callable)();
+        $callable = $this->callable;
+
+        return $callable();
     }
 }

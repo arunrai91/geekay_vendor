@@ -21,7 +21,7 @@ class Save extends ShopbyBaseOptionSave
         return $this->_authorization->isAllowed('Amasty_ShopbyBrand::slider');
     }
 
-    protected function _redirectRefer()
+    public function redirectRefer()
     {
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);

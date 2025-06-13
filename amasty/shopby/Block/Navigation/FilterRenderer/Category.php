@@ -37,22 +37,22 @@ class Category extends \Magento\Framework\View\Element\Template
     /**
      * @var  FilterSetting
      */
-    protected $settingHelper;
+    private $settingHelper;
 
     /**
      * @var ShopbyHelper
      */
-    protected $helper;
+    private $helper;
 
     /**
      * @var CategoryHelper
      */
-    protected $categoryHelper;
+    private $categoryHelper;
 
     /**
      * @var \Magento\Catalog\Model\Layer
      */
-    protected $layer;
+    private $layer;
 
     /**
      * @var UrlResolverInterface
@@ -78,6 +78,11 @@ class Category extends \Magento\Framework\View\Element\Template
      * @var MobileConfigResolver
      */
     private $mobileConfigResolver;
+
+    /**
+     * @var string
+     */
+    protected $_template = self::TEMPLATE_STORAGE_PATH;
 
     public function __construct(
         Context $context,
@@ -111,8 +116,6 @@ class Category extends \Magento\Framework\View\Element\Template
     public function render($path = null)
     {
         $this->setPath($path);
-        $this->setTemplate(self::TEMPLATE_STORAGE_PATH);
-
         return $this->toHtml();
     }
 
@@ -137,8 +140,15 @@ class Category extends \Magento\Framework\View\Element\Template
      */
     public function checkedFilter(FilterItem $filterItem)
     {
-        return $this->helper->isFilterItemSelected($filterItem)
-            || $filterItem->getValue() == $this->layer->getCurrentCategory()->getId();
+        if ($this->helper->isFilterItemSelected($filterItem)) {
+            return true;
+        }
+
+        if ($this->getInputType() === 'checkbox') {
+            return false;
+        }
+
+        return $filterItem->getValue() == $this->layer->getCurrentCategory()->getId();
     }
 
     /**

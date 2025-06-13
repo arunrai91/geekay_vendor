@@ -83,11 +83,12 @@ class ProductProviderTest extends \PHPUnit\Framework\TestCase
         $boughtTogetherIndex = $this->createMock(BoughtTogetherIndex::class);
         $this->sortingMethodsProvider = $this->getMockBuilder(Wrapper::class)
             ->disableOriginalConstructor()
-            ->setMethods(['isAvailable', 'getMethodByCode'])
+            ->addMethods(['getMethodByCode'])
+            ->onlyMethods(['isAvailable'])
             ->getMock();
 
         $type = $this->getMockBuilder(\Magento\Catalog\Model\Product\Type\AbstractType::class)
-            ->setMethods(['getAssociatedProductIds', 'getUsedProductIds', 'getOptionsIds', 'getSelectionsCollection'])
+            ->addMethods(['getAssociatedProductIds', 'getUsedProductIds', 'getOptionsIds', 'getSelectionsCollection'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 

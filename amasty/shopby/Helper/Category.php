@@ -8,10 +8,13 @@
 namespace Amasty\Shopby\Helper;
 
 use Amasty\Shopby\Model\Source\RenderCategoriesLevel;
+use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
 use Amasty\ShopbyBase\Model\Category\Manager;
 use Amasty\ShopbyBase\Model\FilterSetting\IsMultiselect;
 use GuzzleHttp\Promise\Is;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Magento\Catalog\Model\Category as CategoryModel;
+use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Framework\App\Helper\Context;
@@ -29,39 +32,39 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     public const CATEGORY_FILTER_PARAM = 'cat';
 
     /**
-     * @var \Amasty\ShopbyBase\Api\Data\FilterSettingInterface
+     * @var FilterSettingInterface|null
      */
-    protected $setting;
+    private ?FilterSettingInterface $setting = null;
 
     /**
-     * @var \Amasty\ShopbyBase\Model\Category\Manager\Proxy
+     * @var Manager
      */
-    protected $categoryManager;
+    private Manager $categoryManager;
 
     /**
-     * @var \Magento\Catalog\Model\Layer
+     * @var Layer|null
      */
-    protected $layer;
+    private ?Layer $layer = null;
 
     /**
      * @var Resolver
      */
-    private $layerResolver;
+    private Resolver $layerResolver;
 
     /**
      * @var CategoryRepositoryInterface
      */
-    protected $categoryRepository;
+    private CategoryRepositoryInterface $categoryRepository;
 
     /**
-     * @var \Magento\Catalog\Model\Category
+     * @var CategoryModel|null
      */
-    protected $startCategory;
+    private ?CategoryModel $startCategory = null;
 
     /**
      * @var CollectionFactory
      */
-    protected $categoryCollectionFactory;
+    private CollectionFactory $categoryCollectionFactory;
 
     /**
      * @var array
@@ -71,15 +74,17 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @var ImageModel
      */
-    protected $image;
+    private ImageModel $image;
 
-    /** @var FilterSetting  */
-    private $settingHelper;
+    /**
+     * @var FilterSetting
+     */
+    private FilterSetting $settingHelper;
 
     /**
      * @var IsMultiselect
      */
-    private $isMultiselect;
+    private IsMultiselect $isMultiselect;
 
     public function __construct(
         Context $context,
@@ -126,7 +131,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return $this
      */
-    protected function init()
+    private function init()
     {
         if ($this->getSetting()->getCategoryTreeDepth() ==  self::MIN_CATEGORY_DEPTH
             && !$this->getSetting()->getRenderAllCategoriesTree()
@@ -161,7 +166,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string $imageType
      * @return string|null
      */
-    protected function getCategoryImage($categoryId, $imageType = 'thumbnail')
+    private function getCategoryImage($categoryId, $imageType = 'thumbnail')
     {
         if (empty($this->categoryImageById[$imageType])) {
             $collection = $this->categoryCollectionFactory->create();
@@ -285,7 +290,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return \Amasty\ShopbyBase\Api\Data\FilterSettingInterface
+     * @return FilterSettingInterface
      */
     public function getSetting()
     {
@@ -297,7 +302,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return \Magento\Catalog\Model\Layer
+     * @return Layer
      */
     public function getLayer()
     {

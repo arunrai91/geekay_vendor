@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="xtento_orderexport" frontName="xtento_orderexport">
+            <module name="Xtento_OrderExport" before="Magento_Backend"/>
+        </route>
+    </router>
+</config>
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            %!uniqueid!%
+ * Last Modified: 2016-03-02T21:03:02+00:00
+ * File:          etc/adminhtml/routes.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

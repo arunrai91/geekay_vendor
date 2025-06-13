@@ -9,6 +9,7 @@ namespace Amasty\ShopbyPage\Model\ResourceModel\Page;
 
 use \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Magento\Store\Model\Store;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Collection extends AbstractCollection
 {
@@ -20,9 +21,9 @@ class Collection extends AbstractCollection
     protected $_idFieldName = 'page_id';
 
     /**
-     * @var \Magento\Store\Model\StoreManager
+     * @var StoreManagerInterface
      */
-    protected $_storeManager;
+    private StoreManagerInterface $storeManager;
 
     /**
      * Define resource model
@@ -41,11 +42,11 @@ class Collection extends AbstractCollection
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
         \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\DB\Adapter\AdapterInterface $connection = null,
-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+        StoreManagerInterface $storeManager,
+        ?\Magento\Framework\DB\Adapter\AdapterInterface $connection = null,
+        ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
     ) {
-        $this->_storeManager = $storeManager;
+        $this->storeManager = $storeManager;
 
         parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $connection, $resource);
     }
@@ -85,7 +86,7 @@ class Collection extends AbstractCollection
      *
      * @return void
      */
-    protected function joinStoreRelationTable($tableName, $linkField)
+    private function joinStoreRelationTable($tableName, $linkField)
     {
         if ($this->getFilter('store_id')) {
             $this->getSelect()->join(
@@ -159,7 +160,7 @@ class Collection extends AbstractCollection
      *
      * @return array
      */
-    protected function getStoreData($linkField, $linkedIds)
+    private function getStoreData($linkField, $linkedIds)
     {
         $connection = $this->getConnection();
         $select = $connection->select()
@@ -181,16 +182,16 @@ class Collection extends AbstractCollection
      * @return array
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function getStoreDataForItem($data)
+    private function getStoreDataForItem($data)
     {
         $storeIdKey = array_search(Store::DEFAULT_STORE_ID, $data, true);
         if ($storeIdKey !== false) {
-            $stores = $this->_storeManager->getStores(false, true);
+            $stores = $this->storeManager->getStores(false, true);
             $storeId = current($stores)->getId();
             $storeCode = key($stores);
         } else {
             $storeId = current($data);
-            $storeCode = $this->_storeManager->getStore($storeId)->getCode();
+            $storeCode = $this->storeManager->getStore($storeId)->getCode();
         }
 
         return [$storeId, $storeCode];

@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="xtento_orderexport_destination" resource="default" engine="innodb" comment="Xtento_OrderExport Destination table">
+    <column xsi:type="int" name="destination_id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+    <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Name"/>
+    <column xsi:type="varchar" name="type" nullable="false" length="255" comment="Type"/>
+    <column xsi:type="varchar" name="hostname" nullable="false" length="255" comment="Hostname"/>
+    <column xsi:type="smallint" name="port" padding="4" unsigned="true" nullable="true" identity="false" comment="Port" onCreate="migrateDataFrom(port)"/>
+    <column xsi:type="varchar" name="username" nullable="false" length="255" comment="Username"/>
+    <column xsi:type="varchar" name="password" nullable="false" length="255" comment="Password"/>
+    <column xsi:type="smallint" name="timeout" padding="6" unsigned="false" nullable="false" identity="false" default="15" comment="Timeout"/>
+    <column xsi:type="varchar" name="path" nullable="false" length="255" comment="Path"/>
+    <column xsi:type="varchar" name="ftp_type" nullable="false" length="20" comment="FTP Server Type"/>
+    <column xsi:type="boolean" name="ftp_pasv" nullable="false" comment="FTP Use Passive Mode"/>
+    <column xsi:type="varchar" name="email_sender" nullable="false" length="255" comment="E-Mail Sender"/>
+    <column xsi:type="varchar" name="email_recipient" nullable="false" length="255" comment="E-Mail Recipient"/>
+    <column xsi:type="varchar" name="email_subject" nullable="false" length="255" comment="E-Mail Subject"/>
+    <column xsi:type="mediumtext" name="email_body" nullable="false" comment="E-Mail Body"/>
+    <column xsi:type="smallint" name="email_html" padding="6" unsigned="false" nullable="false" identity="false" default="1" comment="E-Mail HTML"/>
+    <column xsi:type="smallint" name="email_attach_files" padding="6" unsigned="false" nullable="false" identity="false" default="1" comment="E-Mail Attach Files"/>
+    <column xsi:type="varchar" name="custom_class" nullable="false" length="255" comment="Custom Class"/>
+    <column xsi:type="varchar" name="custom_function" nullable="false" length="255" comment="Custom Function"/>
+    <column xsi:type="boolean" name="last_result" nullable="false" comment="Last Result"/>
+    <column xsi:type="text" name="last_result_message" nullable="false" comment="Last Result Message"/>
+    <column xsi:type="timestamp" name="last_modification" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Last Modification"/>
+    <column xsi:type="boolean" name="email_send_files_separately" nullable="false" comment="Send each attachment separately"/>
+    <column xsi:type="boolean" name="ftp_ignorepasvaddress" nullable="false" comment="FTP Ignore PASV Address"/>
+    <column xsi:type="varchar" name="email_bcc" nullable="false" length="255" comment="E-Mail BCC"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="destination_id"/>
+    </constraint>
+  </table>
+  <table name="xtento_orderexport_log" resource="default" engine="innodb" comment="Xtento_OrderExport Log table">
+    <column xsi:type="int" name="log_id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+    <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+    <column xsi:type="int" name="profile_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Profile ID"/>
+    <column xsi:type="mediumtext" name="files" nullable="false" comment="Exported Files"/>
+    <column xsi:type="text" name="destination_ids" nullable="false" comment="Destination IDs"/>
+    <column xsi:type="int" name="export_type" padding="11" unsigned="false" nullable="false" identity="false" comment="Export Type (ID)"/>
+    <column xsi:type="varchar" name="export_event" nullable="false" length="255" comment="Export Event"/>
+    <column xsi:type="int" name="records_exported" padding="11" unsigned="false" nullable="false" identity="false" comment="Records Exported"/>
+    <column xsi:type="smallint" name="result" padding="6" unsigned="false" nullable="false" identity="false" comment="Export Result"/>
+    <column xsi:type="mediumtext" name="result_message" nullable="false" comment="Export Result Message"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="log_id"/>
+    </constraint>
+    <index referenceId="XTENTO_ORDEREXPORT_LOG_PROFILE_ID_CREATED_AT" indexType="btree">
+      <column name="profile_id"/>
+      <column name="created_at"/>
+    </index>
+  </table>
+  <table name="xtento_orderexport_profile" resource="default" engine="innodb" comment="Xtento_OrderExport Profile table">
+    <column xsi:type="int" name="profile_id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+    <column xsi:type="varchar" name="entity" nullable="false" length="255" comment="Export Entity"/>
+    <column xsi:type="boolean" name="enabled" nullable="false" comment="Profile Enabled"/>
+    <column xsi:type="text" name="name" nullable="false" comment="Profile Name"/>
+    <column xsi:type="text" name="destination_ids" nullable="false" comment="Destination IDs"/>
+    <column xsi:type="timestamp" name="last_execution" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Last Execution"/>
+    <column xsi:type="timestamp" name="last_modification" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Last Modification"/>
+    <column xsi:type="mediumtext" name="conditions_serialized" nullable="false" comment="Conditions / Filters"/>
+    <column xsi:type="text" name="store_ids" nullable="false" comment="Store IDs"/>
+    <column xsi:type="text" name="export_fields" nullable="false" comment="Export Fields (deprecated)"/>
+    <column xsi:type="text" name="customer_groups" nullable="false" comment="Customer Groups"/>
+    <column xsi:type="boolean" name="export_one_file_per_object" nullable="false" comment="Export one file per object"/>
+    <column xsi:type="boolean" name="export_filter_new_only" nullable="false" comment="Export filter: New objects only"/>
+    <column xsi:type="date" name="export_filter_datefrom" comment="Export filter: Date from"/>
+    <column xsi:type="date" name="export_filter_dateto" comment="Export filter: Date to"/>
+    <column xsi:type="int" name="export_filter_older_x_minutes" padding="11" unsigned="false" nullable="true" identity="false" comment="Export filter: Older than X minutes"/>
+    <column xsi:type="int" name="export_filter_last_x_days" padding="11" unsigned="false" nullable="true" identity="false" comment="Export filter: Last X days only"/>
+    <column xsi:type="text" name="export_filter_status" nullable="false" comment="Export filter: Status"/>
+    <column xsi:type="text" name="export_filter_product_type" nullable="false" comment="Export filter: Product type"/>
+    <column xsi:type="varchar" name="export_action_change_status" nullable="false" length="255" comment="Export action: Change status"/>
+    <column xsi:type="text" name="export_action_add_comment" nullable="true" comment="Export action: Add comment"/>
+    <column xsi:type="boolean" name="export_action_cancel_order" nullable="false" comment="Export action: Cancel order"/>
+    <column xsi:type="boolean" name="export_action_invoice_order" nullable="false" comment="Export action: Invoice order"/>
+    <column xsi:type="boolean" name="export_action_invoice_notify" nullable="false" comment="Export action: Invoice - notify customer"/>
+    <column xsi:type="boolean" name="export_action_ship_order" nullable="false" comment="Export action: Ship order"/>
+    <column xsi:type="boolean" name="export_action_ship_notify" nullable="false" comment="Export action: Ship - notify customer"/>
+    <column xsi:type="boolean" name="save_files_manual_export" nullable="false" default="true" comment="Save files on destinations for manual exports"/>
+    <column xsi:type="boolean" name="export_empty_files" nullable="false" comment="Export empty files"/>
+    <column xsi:type="boolean" name="manual_export_enabled" nullable="false" default="true" comment="Manual export enabled"/>
+    <column xsi:type="boolean" name="start_download_manual_export" nullable="false" default="true" comment="Start download after manual export"/>
+    <column xsi:type="boolean" name="save_files_local_copy" nullable="false" default="true" comment="Save local copies of exports"/>
+    <column xsi:type="text" name="event_observers" nullable="false" comment="Events observed"/>
+    <column xsi:type="boolean" name="cronjob_enabled" nullable="false" comment="Cronjob export enabled"/>
+    <column xsi:type="text" name="cronjob_frequency" nullable="false" comment="Cronjob frequency"/>
+    <column xsi:type="text" name="cronjob_custom_frequency" nullable="false" comment="Cronjob custom frequency expression"/>
+    <column xsi:type="varchar" name="output_type" nullable="false" length="255" default="xsl" comment="Export output generator"/>
+    <column xsi:type="varchar" name="filename" nullable="false" length="255" comment="Export filename (only All-fields-in-XML)"/>
+    <column xsi:type="varchar" name="encoding" nullable="false" length="255" comment="Export file encoding (only All-fields-in-XML)"/>
+    <column xsi:type="mediumtext" name="xsl_template" nullable="false" comment="XSL Template"/>
+    <column xsi:type="text" name="test_id" nullable="false" comment="Test export IDs"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="profile_id"/>
+    </constraint>
+  </table>
+  <table name="xtento_orderexport_profile_history" resource="default" engine="innodb" comment="Xtento_OrderExport Log table">
+    <column xsi:type="int" name="history_id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+    <column xsi:type="int" name="profile_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Profile ID"/>
+    <column xsi:type="int" name="log_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Log ID"/>
+    <column xsi:type="varchar" name="entity" nullable="false" length="255" comment="Export Entity"/>
+    <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Exported entity ID"/>
+    <column xsi:type="timestamp" name="exported_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Exported At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="history_id"/>
+    </constraint>
+    <index referenceId="XTENTO_ORDEREXPORT_PROFILE_HISTORY_ENTITY_ENTITY_ID" indexType="btree">
+      <column name="entity"/>
+      <column name="entity_id"/>
+    </index>
+    <index referenceId="XTENTO_ORDEREXPORT_PROFILE_HISTORY_PROFILE_ID" indexType="btree">
+      <column name="profile_id"/>
+    </index>
+    <index referenceId="XTENTO_ORDEREXPORT_PROFILE_HISTORY_ENTITY_ID" indexType="btree">
+      <column name="entity_id"/>
+    </index>
+  </table>
+</schema>
+
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            %!uniqueid!%
+ * Last Modified: 2022-06-23T21:41:40+00:00
+ * File:          etc/db_schema.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

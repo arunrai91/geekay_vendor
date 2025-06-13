@@ -1,5 +1,5 @@
 <!-- ko if: rules -->
-<!-- ko foreach: {data: rules, as: 'rule', afterRender: showDiscountArrow} -->
+<!-- ko foreach: {data: rules, as: 'rule', afterRender: setInitialState.bind($data)} -->
 <tr class="total-rules">
     <th class="mark" scope="row">
         <span class="rule-name" data-bind="text:rule.rule_name"></span>

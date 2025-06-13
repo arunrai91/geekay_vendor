@@ -2,15 +2,15 @@
     "name": "amasty/module-special-promo-pro",
     "description": "Special Promotions Pro by Amasty",
     "require": {
-        "php": ">=7.3",
-        "amasty/base": ">=1.18.0",
+        "php": ">=7.4",
+        "amasty/base": ">=1.19.1",
         "amasty/module-special-promo": ">=2.14.0"
     },
     "suggest": {
         "amasty/module-graphql-application-server-compatibility": "Install this package for compatibility with GraphQL Application Server."
     },
     "type": "magento2-module",
-    "version": "2.17.0",
+    "version": "2.17.1",
     "license": [
         "proprietary"
     ],

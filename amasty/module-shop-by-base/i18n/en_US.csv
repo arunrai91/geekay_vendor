@@ -1,4 +1,10 @@
 %1,%1
+Back,Back
+Reset,Reset
+Delete,Delete
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Save,Save
+label,label
 "A brand with the same URL alias already exists. Please enter a unique value.","A brand with the same URL alias already exists. Please enter a unique value."
 "You saved the item.","You saved the item."
 "Something went wrong while saving the item data. Please review the error log.","Something went wrong while saving the item data. Please review the error log."

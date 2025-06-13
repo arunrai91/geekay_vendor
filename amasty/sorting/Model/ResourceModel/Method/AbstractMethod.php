@@ -89,7 +89,7 @@ abstract class AbstractMethod extends AbstractDb implements MethodInterface
         $connectionName = null,
         $methodCode = '',
         $methodName = '',
-        AbstractDb $indexResource = null,
+        ?AbstractDb $indexResource = null,
         $data = []
     ) {
         $this->scopeConfig = $context->getScopeConfig();

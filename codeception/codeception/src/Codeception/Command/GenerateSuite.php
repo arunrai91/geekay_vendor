@@ -8,7 +8,6 @@ use Codeception\Configuration;
 use Codeception\Lib\Generator\Actor as ActorGenerator;
 use Codeception\Util\Template;
 use Exception;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,10 +27,6 @@ use function ucfirst;
  * * `codecept g:suite frontend Front` -> frontend + FrontTester
  *
  */
-#[AsCommand(
-    name: 'generate:suite',
-    description: 'Generates new test suite'
-)]
 class GenerateSuite extends Command
 {
     use Shared\FileSystemTrait;
@@ -40,7 +35,7 @@ class GenerateSuite extends Command
 
     protected function configure(): void
     {
-        $this
+        $this->setDescription('Generates new test suite')
             ->addArgument('suite', InputArgument::REQUIRED, 'suite to be generated')
             ->addArgument('actor', InputArgument::OPTIONAL, 'name of new actor class');
     }
@@ -65,6 +60,7 @@ class GenerateSuite extends Command
         $this->createDirectoryFor($dir . $suite);
 
         if ($config['settings']['bootstrap']) {
+            // generate bootstrap file
             $this->createFile(
                 $dir . $suite . DIRECTORY_SEPARATOR . $config['settings']['bootstrap'],
                 "<?php\n",
@@ -91,7 +87,8 @@ EOF;
         $file = $this->createDirectoryFor(Configuration::supportDir(), $actor) . $this->getShortClassName($actor) . '.php';
         $this->createFile($file, $content);
 
-        $output->writeln("Actor <info>{$actor}</info> was created in {$file}");
+        $output->writeln("Actor <info>" . $actor . "</info> was created in {$file}");
+
         $output->writeln("Suite config <info>{$suite}.suite.yml</info> was created.");
         $output->writeln(' ');
         $output->writeln("Next steps:");

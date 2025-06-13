@@ -17,15 +17,9 @@ class SeparatorChecker extends \Magento\Config\Block\System\Config\Form\Field
     private $userGuide = 'https://amasty.com/docs/doku.php?id=magento_2:improved_layered_navigation#seo_settings';
 
     /**
-     * @return $this
+     * @var string
      */
-    protected function _prepareLayout()
-    {
-        parent::_prepareLayout();
-        $this->setTemplate('Amasty_ShopbySeo::system/config/checker.phtml');
-
-        return $this;
-    }
+    protected $_template = 'Amasty_ShopbySeo::system/config/checker.phtml';
 
     /**
      * @param AbstractElement $element

@@ -23,6 +23,7 @@ use Amasty\Shopby\Model\Source\DisplayMode;
 use Amasty\ShopbyBase\Model\FilterSetting\IsApplyFlyOut;
 use Amasty\ShopbyBase\Model\FilterSetting\IsMultiselect;
 use Amasty\ShopbyBase\Model\FilterSetting\IsShowProductQuantities;
+use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework\View\Element\Template\Context;
@@ -35,39 +36,39 @@ class FilterRenderer extends \Magento\LayeredNavigation\Block\Navigation\FilterR
     public const TOP_NAV_RENDERER_NAME = 'amshopby.catalog.topnav.renderer';
 
     /**
-     * @var  FilterSetting
+     * @var FilterSetting
      */
-    protected $settingHelper;
+    private FilterSetting $settingHelper;
 
     /**
      * @var  UrlBuilder
      */
-    protected $urlBuilder;
+    private UrlBuilder $urlBuilder;
 
     /**
-     * @var  FilterInterface
+     * @var FilterInterface|null
      */
-    protected $filter;
+    private ?FilterInterface $filter = null;
 
     /**
-     * @var \Amasty\ShopbyBase\Api\Data\FilterSettingInterface
+     * @var FilterSettingInterface|null
      */
-    private $filterSetting;
+    private ?FilterSettingInterface $filterSetting = null;
 
     /**
      * @var ShopbyHelper
      */
-    protected $helper;
+    private ShopbyHelper $helper;
 
     /**
      * @var Category
      */
-    protected $categoryHelper;
+    private Category $categoryHelper;
 
     /**
-     * @var \Magento\Catalog\Model\Layer
+     * @var Layer
      */
-    protected $layer;
+    private Layer $layer;
 
     /**
      * @var IsApplyFlyOut
@@ -169,7 +170,7 @@ class FilterRenderer extends \Magento\LayeredNavigation\Block\Navigation\FilterR
      *
      * @return string
      */
-    protected function getShowMoreHtml(FilterSettingInterface $setting)
+    private function getShowMoreHtml(FilterSettingInterface $setting)
     {
         return $this->settingHelper->getShowMoreButtonBlock($setting)->toHtml();
     }
@@ -179,7 +180,7 @@ class FilterRenderer extends \Magento\LayeredNavigation\Block\Navigation\FilterR
      *
      * @return string
      */
-    protected function getCategoryTreeHtml(FilterInterface $filter)
+    private function getCategoryTreeHtml(FilterInterface $filter)
     {
         return $this->getLayout()
             ->createBlock(\Amasty\Shopby\Block\Navigation\FilterRenderer\Category::class)
@@ -207,7 +208,7 @@ class FilterRenderer extends \Magento\LayeredNavigation\Block\Navigation\FilterR
      * @param FilterSettingInterface $filterSetting
      * @return string
      */
-    protected function getTemplateByFilterSetting(FilterSettingInterface $filterSetting)
+    private function getTemplateByFilterSetting(FilterSettingInterface $filterSetting)
     {
         switch ($filterSetting->getDisplayMode()) {
             case DisplayMode::MODE_SLIDER:
@@ -227,7 +228,7 @@ class FilterRenderer extends \Magento\LayeredNavigation\Block\Navigation\FilterR
      * @param FilterSettingInterface $filterSetting
      * @return string
      */
-    protected function getCustomTemplateForCategoryFilter(FilterSettingInterface $filterSetting)
+    private function getCustomTemplateForCategoryFilter(FilterSettingInterface $filterSetting)
     {
         switch ($filterSetting->getDisplayMode()) {
             case DisplayMode::MODE_DROPDOWN:
@@ -334,7 +335,7 @@ class FilterRenderer extends \Magento\LayeredNavigation\Block\Navigation\FilterR
     }
 
     /**
-     * @return \Amasty\ShopbyBase\Api\Data\FilterSettingInterface
+     * @return FilterSettingInterface
      */
     public function getFilterSetting()
     {

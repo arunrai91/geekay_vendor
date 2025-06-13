@@ -19,24 +19,9 @@ class OnSale implements DataMapperInterface
     public const FIELD_NAME = 'am_on_sale';
 
     /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
-     */
-    private $productCollectionFactory;
-
-    /**
-     * @var \Amasty\Shopby\Model\Layer\Filter\OnSale\Helper
-     */
-    private $onSaleHelper;
-
-    /**
      * @var \Magento\Customer\Model\ResourceModel\Group\CollectionFactory
      */
     private $customerGrouprCollectionFactory;
-
-    /**
-     * @var array
-     */
-    private $onSaleProductIds = [];
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -52,6 +37,16 @@ class OnSale implements DataMapperInterface
      * @var \Amasty\Shopby\Model\Search\DataProvider\Product\OnSaleProvider
      */
     private $onSaleProvider;
+
+    /**
+     * @var int[]|null
+     */
+    private $customerGroupIds;
+
+    /**
+     * @var array
+     */
+    private $onSaleProductIds = [];
 
     public function __construct(
         \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $customerGroupCollectionFactory,
@@ -75,12 +70,13 @@ class OnSale implements DataMapperInterface
      */
     public function map($entityId, array $entityIndexData, $storeId, $context = []): array
     {
-        $collection = $this->customerGrouprCollectionFactory->create();
         $mappedData = [];
         $websiteId = $this->storeManager->getStore($storeId)->getWebsiteId();
-        foreach ($collection as $item) {
-            $mappedData[self::FIELD_NAME . '_' . $item->getId() . '_' . $websiteId] =
-                    (int)$this->onSaleProvider->isProductOnSale((int) $entityId, (int) $storeId, (int) $item->getId());
+        foreach ($this->getCustomerGroupIds() as $customerGroupId) {
+            $mappedData[self::FIELD_NAME . '_' . $customerGroupId . '_' . $websiteId] = (int)in_array(
+                $entityId,
+                $this->onSaleProductIds[$storeId][$customerGroupId] ?? []
+            );
         }
         return $mappedData;
     }
@@ -97,5 +93,40 @@ class OnSale implements DataMapperInterface
     public function getFieldName(): string
     {
         return self::FIELD_NAME;
+    }
+
+    /**
+     * @param int $storeId
+     * @param int[] $productIds
+     */
+    public function preloadCacheData(int $storeId, array $productIds): void
+    {
+        foreach ($this->getCustomerGroupIds() as $customerGroupId) {
+            $this->onSaleProductIds[$storeId][$customerGroupId] = $this->onSaleProvider->loadOnSaleProductIds(
+                $storeId,
+                $customerGroupId,
+                $productIds
+            );
+        }
+    }
+
+    public function clearCacheData(): void
+    {
+        $this->onSaleProductIds = [];
+    }
+
+    /**
+     * @return int[]
+     */
+    private function getCustomerGroupIds(): array
+    {
+        if ($this->customerGroupIds === null) {
+            $collection = $this->customerGrouprCollectionFactory->create();
+            $this->customerGroupIds = array_map(function ($customerGroupId) {
+                return (int)$customerGroupId;
+            }, $collection->getAllIds());
+        }
+
+        return $this->customerGroupIds;
     }
 }

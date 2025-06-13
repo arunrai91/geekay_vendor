@@ -7,7 +7,7 @@
 
 namespace Amasty\Shopby\Block\Adminhtml\Product\Attribute\Edit\Tab\Shopby;
 
-use Magento\Backend\Block\Widget\Form\Renderer\Fieldset\Element;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Renderer\Fieldset\Element;
 use Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
 
 class Multiselect extends Element implements RendererInterface

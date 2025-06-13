@@ -12,34 +12,34 @@ namespace Amasty\ShopbyBase\Block\Adminhtml\Option;
 
 use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
 use Amasty\ShopbyBase\Block\Adminhtml\Form\Renderer\Fieldset\Element;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form as WidgetForm;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Element\ElementCreator;
 use Amasty\ShopbyBase\Helper\OptionSetting;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Data\FormFactory;
-use Magento\Framework\Registry;
-use Magento\Framework\View\Element\BlockInterface;
 
 /**
  * @api
  */
-class Settings extends \Magento\Backend\Block\Widget\Form\Generic
+class Settings extends WidgetForm
 {
     /**
      * @var OptionSetting
      */
-    protected $settingHelper;
+    private OptionSetting $settingHelper;
 
     public function __construct(
-        Context $context,
-        Registry $registry,
-        FormFactory $formFactory,
         OptionSetting $settingHelper,
+        FormFactory $formFactory,
+        ElementCreator $creator,
+        Context $context,
         array $data = []
     ) {
         $this->settingHelper = $settingHelper;
-        parent::__construct($context, $registry, $formFactory, $data);
+        parent::__construct($formFactory, $creator, $context, $data);
     }
 
-    protected function _prepareForm()
+    public function prepareForm(): Settings
     {
         $attributeCode = $this->getRequest()->getParam(FilterSettingInterface::ATTRIBUTE_CODE);
         $optionId = (int) $this->getRequest()->getParam('option_id');
@@ -48,7 +48,7 @@ class Settings extends \Magento\Backend\Block\Widget\Form\Generic
         $model->setCurrentStoreId($storeId);
 
         /** @var \Magento\Framework\Data\Form $form */
-        $form = $this->_formFactory->create(
+        $form = $this->getDataFormFactory()->create(
             [
                 'data' => [
                     'id' => 'edit_options_form',
@@ -78,7 +78,8 @@ class Settings extends \Magento\Backend\Block\Widget\Form\Generic
 
         $form->setValues($model->getData());
         $this->setForm($form);
-        return parent::_prepareForm();
+
+        return parent::prepareForm();
     }
 
     private function getRenderer(): Element

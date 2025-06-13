@@ -258,7 +258,7 @@ class Attribute extends AbstractFilter
         $b['label'] = (string)$b['label'];
         $pattern = '@^(\d+)@';
         if (preg_match($pattern, $a['label'], $ma) && preg_match($pattern, $b['label'], $mb)) {
-            $r = $ma[1] - $mb[1];
+            $r = (int)$ma[1] - (int)$mb[1];
             if ($r != 0) {
                 return $r;
             }
@@ -400,7 +400,7 @@ class Attribute extends AbstractFilter
      *
      * @return array
      */
-    protected function convertOptionsFacetedData($optionsFacetedData)
+    private function convertOptionsFacetedData($optionsFacetedData)
     {
         $attributeValue = $this->filterRequestDataResolver->getFilterParam($this);
         if ($attributeValue) {
@@ -420,7 +420,7 @@ class Attribute extends AbstractFilter
      *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function generateOptionsFacetedData()
+    private function generateOptionsFacetedData()
     {
         /** @var \Amasty\Shopby\Model\ResourceModel\Fulltext\Collection $productCollectionOrigin */
         $productCollectionOrigin = $this->getLayer()->getProductCollection();

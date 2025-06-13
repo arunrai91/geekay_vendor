@@ -9,6 +9,8 @@ namespace Amasty\Shopby\Model\Source\Attribute;
 
 use Magento\Framework\Option\ArrayInterface;
 use Magento\Eav\Model\Config as EavConfig;
+use Magento\Swatches\Helper\Media as SwatchHelper;
+use Magento\Swatches\Model\ResourceModel\Swatch\CollectionFactory as SwatchCollectionFactory;
 
 class Option implements ArrayInterface
 {
@@ -19,55 +21,41 @@ class Option implements ArrayInterface
     /**
      * @var EavConfig
      */
-    protected $eavConfig;
+    private EavConfig $eavConfig;
 
     /**
      * @var array
      */
-    protected $options;
+    private $options;
 
     /**
      * @var int
      */
-    protected $skipAttributeId;
+    private $skipAttributeId;
 
     /**
-     * @var \Magento\Swatches\Model\SwatchFactory
+     * @var SwatchHelper
      */
-    protected $swatchFactory;
-
-    /**
-     * @var \Magento\Store\Model\StoreManager
-     */
-    protected $storeManager;
-
-    /**
-     * @var \Magento\Swatches\Helper\Media
-     */
-    protected $swatchHelper;
+    private SwatchHelper $swatchHelper;
 
     /**
      * @var null
      */
-    protected $swatchesByOptionId = null;
+    private $swatchesByOptionId = null;
 
     /**
-     * Option constructor.
-     * @param EavConfig $eavConfig
-     * @param \Magento\Swatches\Model\SwatchFactory $swatchFactory
-     * @param \Magento\Store\Model\StoreManager $storeManager
-     * @param \Magento\Swatches\Helper\Media $swatchHelper
+     * @var SwatchCollectionFactory
      */
+    private SwatchCollectionFactory $swatchCollectionFactory;
+
     public function __construct(
         EavConfig $eavConfig,
-        \Magento\Swatches\Model\SwatchFactory $swatchFactory,
-        \Magento\Store\Model\StoreManager $storeManager,
-        \Magento\Swatches\Helper\Media $swatchHelper
+        SwatchHelper $swatchHelper,
+        SwatchCollectionFactory $swatchCollectionFactory
     ) {
         $this->eavConfig = $eavConfig;
-        $this->swatchFactory = $swatchFactory;
-        $this->storeManager = $storeManager;
         $this->swatchHelper = $swatchHelper;
+        $this->swatchCollectionFactory = $swatchCollectionFactory;
     }
 
     /**
@@ -154,12 +142,12 @@ class Option implements ArrayInterface
      * @param int $optionId
      * @return mixed|null
      */
-    protected function getSwatchByOptionId($optionId)
+    private function getSwatchByOptionId($optionId)
     {
         if ($this->swatchesByOptionId === null) {
             $this->swatchesByOptionId = [];
-            $collection = $this->swatchFactory->create()->getCollection()
-                ->addFieldToFilter('store_id', 0);
+            $collection = $this->swatchCollectionFactory->create();
+            $collection->addFieldToFilter('store_id', 0);
             foreach ($collection as $item) {
                 $this->swatchesByOptionId[$item->getOptionId()] = $item;
             }
@@ -175,7 +163,6 @@ class Option implements ArrayInterface
      */
     public function getCollection($boolean = 1)
     {
-        /** @var \Magento\Eav\Model\Attribute $attribute */
         $collection = $this->eavConfig->getEntityType(
             \Magento\Catalog\Model\Product::ENTITY
         )->getAttributeCollection();

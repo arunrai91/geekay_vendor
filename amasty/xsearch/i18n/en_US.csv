@@ -59,6 +59,7 @@ SKU,SKU
 "Enter Keyword or Item","Enter Keyword or Item"
 cart_label,cart_label
 Products,Products
+"Search Tab","Search Tab"
 "Field must have valid hex color code.","Field must have valid hex color code."
 "Clear Field","Clear Field"
 "The argument must be a function","The argument must be a function"

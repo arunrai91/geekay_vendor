@@ -51,7 +51,7 @@ class PackListTest extends \PHPUnit\Framework\TestCase
         $storeManager = $this->createMock(\Magento\Store\Model\StoreManagerInterface::class);
         $select = $this->createMock(Select::class);
         $packRepository = $this->getMockBuilder(PackRepositoryInterface::class)
-            ->setMethods(['getList'])
+            ->onlyMethods(['getList'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $searchCriteriaBuilder = $this->createMock(SearchCriteriaBuilder::class);

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <update handle="xtento_orderexport_history_grid_block"/>
+    <container name="root" label="Root">
+        <block class="Xtento\OrderExport\Block\Adminhtml\History" name="adminhtml.orderexport.history.grid.container">
+            <action method="removeButton">
+                <argument name="buttonId" xsi:type="string">add</argument>
+            </action>
+            <referenceBlock name="adminhtml.block.orderexport.history.grid">
+                <arguments>
+                    <argument name="grid_url" xsi:type="url" path="*/profile/history">
+                        <param name="_current">1</param>
+                    </argument>
+                </arguments>
+            </referenceBlock>
+            <referenceBlock name="adminhtml.orderexport.history.grid.columnSet">
+                <arguments>
+                    <argument name="rowUrl" xsi:type="null"/>
+                </arguments>
+            </referenceBlock>
+            <referenceBlock name="adminhtml.orderexport.history.grid.massaction" remove="true"/>
+        </block>
+    </container>
+</layout>
+
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            %!uniqueid!%
+ * Last Modified: 2016-03-02T21:07:01+00:00
+ * File:          view/adminhtml/layout/xtento_orderexport_profile_history.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

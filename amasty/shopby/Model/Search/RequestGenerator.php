@@ -18,19 +18,17 @@ use Magento\Framework\Search\Request\QueryInterface;
 class RequestGenerator extends \Magento\CatalogSearch\Model\Search\RequestGenerator
 {
     public const FAKE_SUFFIX = '_amshopby_filter_';
+
     /**
      * @var FilterSetting
      */
-    protected $settingHelper;
+    private FilterSetting $settingHelper;
 
     /**
      * @var IsMultiselect
      */
-    private $isMultiselect;
+    private IsMultiselect $isMultiselect;
 
-    /**
-     * @param CollectionFactory $productAttributeCollectionFactory
-     */
     public function __construct(
         CollectionFactory $productAttributeCollectionFactory,
         FilterSetting $settingHelper,
@@ -63,7 +61,7 @@ class RequestGenerator extends \Magento\CatalogSearch\Model\Search\RequestGenera
      * @param $container
      * @return array
      */
-    protected function generateFakeRequest($attributeType, $container)
+    private function generateFakeRequest($attributeType, $container)
     {
         $request = [];
         foreach ($this->getSearchableAttributes() as $attribute) {

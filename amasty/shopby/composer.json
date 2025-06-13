@@ -2,16 +2,16 @@
     "name": "amasty/shopby",
     "description": "Improved Layered Navigation by Amasty",
     "require": {
-        "php": ">=7.3.0",
-        "amasty/base": ">=1.17.0",
+        "php": ">=7.4.0",
+        "amasty/base": ">=1.19.1",
         "magento/module-layered-navigation": ">=100.2.0",
         "magento/module-catalog-search": ">=101.0.2",
         "magento/module-swatches": ">=100.2.0",
-        "amasty/module-shop-by-base": ">=2.17.0",
-        "amasty/module-shop-by-brand": ">=2.18.0",
-        "amasty/shopby-seo": ">=2.16.0",
-        "amasty/module-improved-layered-navigation-page": ">=2.8.2",
-        "amasty/module-composite-product-price-indexer": ">=1.0.1"
+        "amasty/module-shop-by-base": ">=3.0.0",
+        "amasty/module-shop-by-brand": ">=3.0.0",
+        "amasty/shopby-seo": ">=3.0.0",
+        "amasty/module-improved-layered-navigation-page": ">=3.0.0",
+        "amasty/module-composite-product-price-indexer": ">=1.0.2"
     },
     "suggest": {
         "amasty/shopby-graphql": "Install shopby-graph-ql module to activate GraphQl and Shopby integration.",
@@ -20,7 +20,7 @@
         "amasty/module-mage-2.4.5-fix": "Install module-mage-2.4.5-fix to fix bugs with Product Collection Changes that were added in 2.4.5 version."
     },
     "type": "magento2-module",
-    "version": "3.2.2",
+    "version": "4.0.0",
     "license": [
         "proprietary"
     ],

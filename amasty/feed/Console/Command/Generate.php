@@ -93,7 +93,7 @@ class Generate extends AbstractSetupCommand
         Config $config,
         State $state,
         JobManagerFactory $jobManagerFactory,
-        LockManager $lockManager = null,
+        ?LockManager $lockManager = null,
         $name = null
     ) {
         $this->feedRepository = $feedRepository;

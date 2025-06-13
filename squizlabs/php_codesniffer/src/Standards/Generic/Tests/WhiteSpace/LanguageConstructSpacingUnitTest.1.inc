@@ -102,6 +102,3 @@ yield
 // Closure use should be ignored. These are subject to their own rules.
 $cl = function() use ($b) {};
 $cl = function() use($b) {};
-
-goto MyName;
-goto    MyName;

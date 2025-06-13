@@ -81,7 +81,7 @@ class PromoFieldset extends Fieldset
         string $moduleName,
         array $promoConfig = [],
         array $data = [],
-        XssStringEscaper $xssEscaper = null // TODO move to not optional
+        ?XssStringEscaper $xssEscaper = null // TODO move to not optional
     ) {
         parent::__construct($context, $authSession, $jsHelper, $data);
 

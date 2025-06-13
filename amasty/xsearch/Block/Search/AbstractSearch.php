@@ -348,7 +348,9 @@ abstract class AbstractSearch extends Template
      */
     protected function replaceVariables(&$currentHtml)
     {
-        $currentHtml = preg_replace('@\{{(.+?)\}}@', '', $currentHtml);
+        if ($currentHtml !== null) {
+            $currentHtml = preg_replace('@\{{(.+?)\}}@', '', $currentHtml);
+        }
     }
 
     /**

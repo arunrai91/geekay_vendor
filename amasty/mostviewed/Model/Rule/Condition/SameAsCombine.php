@@ -7,15 +7,21 @@
 
 namespace Amasty\Mostviewed\Model\Rule\Condition;
 
-class SameAsCombine extends \Magento\CatalogRule\Model\Rule\Condition\Combine
+class SameAsCombine extends \Magento\Rule\Model\Condition\Combine
 {
+    /**
+     * @var ProductFactory
+     */
+    private ProductFactory $productFactory;
+
     public function __construct(
         \Magento\Rule\Model\Condition\Context $context,
-        \Amasty\Mostviewed\Model\Rule\Condition\ProductFactory $conditionFactory,
+        ProductFactory $conditionFactory,
         array $data = []
     ) {
-        parent::__construct($context, $conditionFactory, $data);
-        null;//fix code standard
+        $this->productFactory = $conditionFactory;
+        parent::__construct($context, $data);
+        $this->setType(\Magento\CatalogRule\Model\Rule\Condition\Combine::class);
     }
 
     /**
@@ -23,7 +29,7 @@ class SameAsCombine extends \Magento\CatalogRule\Model\Rule\Condition\Combine
      */
     public function getNewChildSelectOptions()
     {
-        $productAttributes = $this->_productFactory->create()->loadAttributeOptions()->getAttributeOption();
+        $productAttributes = $this->productFactory->create()->loadAttributeOptions()->getAttributeOption();
 
         $attributes = [];
         foreach ($productAttributes as $code => $label) {

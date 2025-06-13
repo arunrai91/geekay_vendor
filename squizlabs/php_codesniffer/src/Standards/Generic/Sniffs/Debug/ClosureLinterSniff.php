@@ -13,11 +13,10 @@ namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Debug;
 
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Common;
 
-class ClosureLinterSniff implements Sniff, DeprecatedSniff
+class ClosureLinterSniff implements Sniff
 {
 
     /**
@@ -115,42 +114,6 @@ class ClosureLinterSniff implements Sniff, DeprecatedSniff
         return $phpcsFile->numTokens;
 
     }//end process()
-
-
-    /**
-     * Provide the version number in which the sniff was deprecated.
-     *
-     * @return string
-     */
-    public function getDeprecationVersion()
-    {
-        return 'v3.9.0';
-
-    }//end getDeprecationVersion()
-
-
-    /**
-     * Provide the version number in which the sniff will be removed.
-     *
-     * @return string
-     */
-    public function getRemovalVersion()
-    {
-        return 'v4.0.0';
-
-    }//end getRemovalVersion()
-
-
-    /**
-     * Provide a custom message to display with the deprecation.
-     *
-     * @return string
-     */
-    public function getDeprecationMessage()
-    {
-        return 'Support for scanning JavaScript files will be removed completely in v4.0.0.';
-
-    }//end getDeprecationMessage()
 
 
 }//end class

@@ -42,22 +42,36 @@ class OnSaleProvider
     public function getOnSaleProductIds(int $storeId, int $groupId): array
     {
         if (!isset($this->onSaleProductIds[$storeId][$groupId])) {
-            /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $collection */
-            $collection = $this->productCollectionFactory->create();
-            $collection->addStoreFilter($storeId);
-            $collection->addPriceData($groupId);
-
-            $select = $collection->getSelect();
-            $select->where('price_index.final_price < price_index.price');
-            $select->group('e.entity_id');
-            $select->reset(\Magento\Framework\DB\Select::COLUMNS);
-            $select->columns(['id' => 'e.entity_id']);
-
-            $result = $collection->getConnection()->fetchCol($select);
-
-            $this->onSaleProductIds[$storeId][$groupId] = !empty($result) ? array_map('intval', $result) : [];
+            $this->onSaleProductIds[$storeId][$groupId] = $this->loadOnSaleProductIds($storeId, $groupId);
         }
-        
+
         return $this->onSaleProductIds[$storeId][$groupId];
+    }
+
+    /**
+     * @param int $storeId
+     * @param int $groupId
+     * @param int[]|null $productIds
+     * @return int[]
+     */
+    public function loadOnSaleProductIds(int $storeId, int $groupId, ?array $productIds = null): array
+    {
+        /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $collection */
+        $collection = $this->productCollectionFactory->create();
+        $collection->addStoreFilter($storeId);
+        $collection->addPriceData($groupId);
+        if ($productIds) {
+            $collection->addIdFilter($productIds);
+        }
+
+        $select = $collection->getSelect();
+        $select->where('price_index.final_price < price_index.price');
+        $select->group('e.entity_id');
+        $select->reset(\Magento\Framework\DB\Select::COLUMNS);
+        $select->columns(['id' => 'e.entity_id']);
+
+        $result = $collection->getConnection()->fetchCol($select);
+
+        return !empty($result) ? array_map('intval', $result) : [];
     }
 }

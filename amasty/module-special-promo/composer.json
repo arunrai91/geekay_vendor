@@ -3,7 +3,7 @@
     "description": "Special Promotions by Amasty",
     "require": {
         "php": ">=7.3",
-        "amasty/base": ">=1.18.0",
+        "amasty/base": ">=1.19.1",
         "amasty/module-banners-lite": ">=1.2.1",
         "amasty/rgrid": "*"
     },
@@ -13,7 +13,7 @@
         "amasty/module-graphql-application-server-compatibility": "Install this package for compatibility with GraphQL Application Server."
     },
     "type": "magento2-module",
-    "version": "2.16.0",
+    "version": "2.16.1",
     "license": [
         "proprietary"
     ],

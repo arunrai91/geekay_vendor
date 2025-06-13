@@ -2,12 +2,12 @@
     "name": "amasty/module-improved-layered-navigation-page",
     "description": "Improved Layered Navigation by Amasty - Page sub-module",
     "require": {
-        "php": ">=7.3.0",
-        "amasty/base": ">=1.17.0",
-        "amasty/module-shop-by-base": ">=2.17.0"
+        "php": ">=7.4.0",
+        "amasty/base": ">=1.19.1",
+        "amasty/module-shop-by-base": ">=3.0.0"
     },
     "type": "magento2-module",
-    "version": "2.8.2",
+    "version": "3.0.0",
     "license": [
         "proprietary"
     ],

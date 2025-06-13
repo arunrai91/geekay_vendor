@@ -302,7 +302,7 @@ class SwatchRenderer extends RenderLayered implements RendererInterface
     {
         $pattern = '@^(\d+)@';
         if (preg_match($pattern, $a['label'], $ma) && preg_match($pattern, $b['label'], $mb)) {
-            $r = $ma[1] - $mb[1];
+            $r = (int)$ma[1] - (int)$mb[1];
             if ($r != 0) {
                 return $r;
             }
@@ -381,7 +381,7 @@ class SwatchRenderer extends RenderLayered implements RendererInterface
      * @param $swatchOption
      * @return array
      */
-    protected function getUnusedOptionGroup($swatchOption)
+    public function getUnusedOptionGroup($swatchOption)
     {
         $customStyle = '';
         $linkToOption = $this->buildUrl($this->eavAttribute->getAttributeCode(), $swatchOption->getGroupCode());

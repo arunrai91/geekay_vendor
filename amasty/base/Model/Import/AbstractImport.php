@@ -92,8 +92,8 @@ abstract class AbstractImport extends AbstractEntity
         ProcessingErrorAggregatorInterface $errorAggregator,
         ResourceConnection $resource,
         array $data = [],
-        MagentoVersion $magentoVersion = null,
-        ImportCounter $importCounter = null
+        ?MagentoVersion $magentoVersion = null,
+        ?ImportCounter $importCounter = null
     ) {
         if (empty($entityTypeCode)) {
             throw new \Amasty\Base\Exceptions\EntityTypeCodeNotSet();
@@ -241,7 +241,7 @@ abstract class AbstractImport extends AbstractEntity
     protected function processImport()
     {
         /**
-         * Import fix. Errors less then ProcessingError::ERROR_LEVEL_CRITICAL validateRow as true.
+         * Import fix. Errors less than ProcessingError::ERROR_LEVEL_CRITICAL validateRow as true.
          * Skip them because Import button is active.
          */
         $this->isImport = true;
@@ -257,12 +257,12 @@ abstract class AbstractImport extends AbstractEntity
             }
 
             /** ImportCounter @since 1.9.6 */
-            $result = $behavior->execute($importData, $this->importCounter);
+            $result = $behavior->execute($importData);
             /** Backward compatibility */
-            if (is_object($result)) {
-                $this->importCounter->incrementCreated($result->getCountItemsCreated() ?: 0);
-                $this->importCounter->incrementUpdated($result->getCountItemsUpdated() ?: 0);
-                $this->importCounter->incrementDeleted($result->getCountItemsDeleted() ?: 0);
+            if ($result && is_object($result)) {
+                $this->importCounter->incrementCreated($result->getData('count_items_created') ?: 0);
+                $this->importCounter->incrementUpdated($result->getData('count_items_updated') ?: 0);
+                $this->importCounter->incrementDeleted($result->getData('count_items_deleted') ?: 0);
             }
         }
         $this->countItemsCreated = $this->importCounter->getCreatedCount();

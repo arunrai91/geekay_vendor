@@ -11,6 +11,7 @@
         <before>
             <comment userInput="BIC" stepKey="enableFlatRate" />
             <actionGroup ref="AdminDisableWYSIWYGActionGroup" stepKey="disableWYSYWYG"/>
+            <actionGroup ref="AdminEnableGuestCheckoutActionGroup" stepKey="enableGuestCheckout"/>
             <magentoCLI command="config:set {{TurnOnManageStockConfig.path}} {{TurnOnManageStockConfig.value}}" stepKey="enableStockManagement"/>
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex">
                 <argument name="indices" value=""/>
@@ -29,6 +30,7 @@
         <after>
             <comment userInput="BIC" stepKey="disableFlatRate" />
             <actionGroup ref="AdminEnableWYSIWYGActionGroup" stepKey="enableWYSYWYG"/>
+            <actionGroup ref="AdminDisableGuestCheckoutActionGroup" stepKey="disableGuestCheckout"/>
             <magentoCLI command="config:set {{TurnOffManageStockConfig.path}} {{TurnOffManageStockConfig.value}}" stepKey="disableStockManagement"/>
             <comment userInput="BIC" stepKey="reindex" />
             <comment userInput="BIC" stepKey="cleanCache" />

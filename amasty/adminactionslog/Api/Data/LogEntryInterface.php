@@ -205,5 +205,5 @@ interface LogEntryInterface extends ExtensibleDataInterface
      *
      * @return \Amasty\AdminActionsLog\Api\Data\LogEntryInterface
      */
-    public function setExtensionAttributes(LogEntryExtensionInterface $extensionAttributes = null): LogEntryInterface;
+    public function setExtensionAttributes(?LogEntryExtensionInterface $extensionAttributes = null): LogEntryInterface;
 }

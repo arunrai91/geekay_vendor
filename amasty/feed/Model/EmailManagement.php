@@ -47,8 +47,8 @@ class EmailManagement extends AbstractModel
         Registry $registry,
         TimezoneInterface $timezone,
         EmailAddress $emailAddressValidator,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->transportBuilder = $transportBuilder;

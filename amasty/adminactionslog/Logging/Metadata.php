@@ -38,8 +38,8 @@ class Metadata implements MetadataInterface
     public function __construct(
         RequestInterface $request,
         string $eventName,
-        object $loggingObject = null,
-        string $storageEntityKey = null
+        ?object $loggingObject = null,
+        ?string $storageEntityKey = null
     ) {
         $this->request = $request;
         $this->eventName = $eventName;

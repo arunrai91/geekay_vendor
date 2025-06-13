@@ -10,45 +10,18 @@ declare(strict_types=1);
 
 namespace Amasty\ShopbyBase\Model\FilterSetting;
 
-use Amasty\ShopbyBase\Helper\Data;
-use Amasty\ShopbyBase\Model\Integration\ShopbyBrand\GetConfigProvider;
 use Amasty\ShopbyBase\Model\Source\DisplayMode;
-use Amasty\ShopbyBrand\Model\ConfigProvider;
-use Magento\Framework\Registry;
 
 class IsMultiselect
 {
-    /**
-     * @var Registry
-     */
-    private $registry;
-
-    /**
-     * @var ConfigProvider|null
-     */
-    private $brandConfigProvider;
-
-    public function __construct(
-        Registry $registry,
-        GetConfigProvider $getConfigProvider
-    ) {
-        $this->registry = $registry;
-        $this->brandConfigProvider = $getConfigProvider->execute();
-    }
-
     public function execute(?string $attributeCode, ?bool $isMultiselect, ?int $displayMode): bool
     {
-        if (!$this->brandConfigProvider || !$attributeCode) {
+        if (!$attributeCode) {
             return false;
         }
 
-        $allProducts = $this->registry->registry(Data::SHOPBY_CATEGORY_INDEX);
-        $isBrandOnAllProducts = $attributeCode === $this->brandConfigProvider->getBrandAttributeCode()
-            && isset($allProducts);
-
         return $isMultiselect
-            && $this->isDisplayTypeAllowsMultiselect($displayMode)
-            && !$isBrandOnAllProducts;
+            && $this->isDisplayTypeAllowsMultiselect($displayMode);
     }
 
     private function isDisplayTypeAllowsMultiselect(int $displayMode): bool

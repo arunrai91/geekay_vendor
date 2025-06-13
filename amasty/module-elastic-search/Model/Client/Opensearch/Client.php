@@ -54,7 +54,7 @@ class Client implements ClientInterface
             return $this->getOpenSearchClient()->search($query);
         } catch (Missing404Exception $e) {
             $message = __('Opensearch index not found. Run "bin/magento indexer:reindex catalogsearch_fulltext".');
-            throw new AmastyMissing404Exception($message, 0, $e);
+            throw new AmastyMissing404Exception($message->render(), 0, $e);
         }
     }
 
@@ -66,7 +66,7 @@ class Client implements ClientInterface
         try {
             unset($query['type']);
             return $this->getOpenSearchClient()->count($query)['count'] ?? 0;
-        } catch (\Elasticsearch\Common\Exceptions\Missing404Exception $e) {
+        } catch (Missing404Exception $e) {
             $message = __('Opensearch index not found. Run "bin/magento indexer:reindex catalogsearch_fulltext".');
             throw new AmastyMissing404Exception($message->render(), 0, $e);
         }
@@ -119,7 +119,7 @@ class Client implements ClientInterface
             $message = __('Opensearch server not found. Check "Stores > Configuration'
                 . ' > Amasty Elastic Search > Connection" and make sure that "Test Connection"'
                 .' is successfull with appropriate host name and port.');
-            throw new AmastyNoNodesAvailableException($message, 0, $e);
+            throw new AmastyNoNodesAvailableException($message->render(), 0, $e);
         }
     }
 

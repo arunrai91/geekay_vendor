@@ -53,14 +53,13 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
         FetchStrategyInterface $fetchStrategy,
         ManagerInterface $eventManager,
         Option\CollectionFactory $optionCollectionFactory,
-        AdapterInterface $connection = null,
-        AbstractDb $resource = null,
-        ?ScopedFieldsProvider $scopedFieldsProvider = null //TODO: move to not optional
+        ScopedFieldsProvider $scopedFieldsProvider,
+        ?AdapterInterface $connection = null,
+        ?AbstractDb $resource = null
     ) {
         parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $connection, $resource);
         $this->optionCollectionFactory = $optionCollectionFactory;
-        $this->scopedFieldsProvider = $scopedFieldsProvider
-            ?? ObjectManager::getInstance()->get(ScopedFieldsProvider::class);
+        $this->scopedFieldsProvider = $scopedFieldsProvider;
     }
 
     /**

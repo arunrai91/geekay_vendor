@@ -65,12 +65,12 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     public function testModifyData()
     {
         $category = $this->getObjectManager()->getObject(CatalogCategory::class);
-        $this->invokeMethod($this->model, '_modifyData', ['seo', $category]);
+        $this->invokeMethod($this->model, 'modifyData', ['seo', $category]);
 
         $this->assertTrue($category->getData('seo'));
 
         $category = $this->getObjectManager()->getObject(CatalogCategory::class);
-        $this->invokeMethod($this->model, '_modifyData', ['brand', $category]);
+        $this->invokeMethod($this->model, 'modifyData', ['brand', $category]);
 
         $this->assertEmpty($category->getData());
     }

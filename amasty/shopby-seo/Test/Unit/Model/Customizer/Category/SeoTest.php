@@ -71,7 +71,7 @@ class SeoTest extends \PHPUnit\Framework\TestCase
 
         $this->rootCategory = $this->getMockBuilder(
             \Magento\Catalog\Model\Category::class)
-            ->setMethods(['getId', 'getUrl'])
+            ->onlyMethods(['getId', 'getUrl'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 

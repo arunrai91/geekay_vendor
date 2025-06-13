@@ -17,7 +17,7 @@ class GetCustomerIp
     /**
      * @var string[]
      */
-    protected $addressPath = [
+    private $addressPath = [
         'HTTP_X_REAL_IP',
         'HTTP_CLIENT_IP',
         'HTTP_X_FORWARDED_FOR'

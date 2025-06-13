@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Amasty\ShopbySeo\Model;
 
 use Amasty\ShopbyBase\Model\Cache\Type;
+use Amasty\ShopbySeo\Model\Attribute\GetSeoAttributeMap;
 use Amasty\ShopbySeo\Model\SeoOptionsModifier\SeoModifierInterface;
 use Amasty\ShopbySeo\Model\SeoOptionsModifier\UniqueBuilder;
 use Magento\Framework\App\Cache\StateInterface;
@@ -58,19 +59,17 @@ class SeoOptions
     private $uniqueBuilder;
 
     /**
-     * @param Json $json
-     * @param StoreManagerInterface $storeManager
-     * @param CacheInterface $cache
-     * @param StateInterface $cacheState
-     * @param UniqueBuilder $uniqueBuilder
-     * @param SeoModifierInterface[] $modifiers
+     * @var GetSeoAttributeMap
      */
+    private $getSeoAttributeMap;
+
     public function __construct(
         Json $json,
         StoreManagerInterface $storeManager,
         CacheInterface $cache,
         StateInterface $cacheState,
         UniqueBuilder $uniqueBuilder,
+        GetSeoAttributeMap $getSeoAttributeMap,
         array $modifiers = []
     ) {
         $this->json = $json;
@@ -79,6 +78,7 @@ class SeoOptions
         $this->cacheState = $cacheState;
         $this->modifiers = $modifiers;
         $this->uniqueBuilder = $uniqueBuilder;
+        $this->getSeoAttributeMap = $getSeoAttributeMap;
     }
 
     public function getData(): array
@@ -112,7 +112,7 @@ class SeoOptions
     {
         $storeId = $this->getCurrentStoreId();
         $this->optionsSeoData[$storeId] = [];
-        $attributeIds = [];
+        $attributeIds = $this->getSeoAttributeMap->execute();
         /** @var SeoModifierInterface $modifier */
         foreach ($this->modifiers as $modifier) {
             $modifier->modify($this->optionsSeoData, $storeId, $attributeIds);

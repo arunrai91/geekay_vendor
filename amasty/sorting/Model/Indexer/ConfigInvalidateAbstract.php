@@ -7,9 +7,14 @@
 
 namespace Amasty\Sorting\Model\Indexer;
 
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Config\Value;
+use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\Indexer\AbstractProcessor;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
 
-class ConfigInvalidateAbstract extends \Magento\Framework\App\Config\Value
+class ConfigInvalidateAbstract extends Value
 {
     /**
      * @var AbstractProcessor
@@ -19,11 +24,11 @@ class ConfigInvalidateAbstract extends \Magento\Framework\App\Config\Value
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\App\Config\ScopeConfigInterface $config,
-        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
+        ScopeConfigInterface $config,
+        TypeListInterface $cacheTypeList,
         AbstractProcessor $indexProcessor,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);

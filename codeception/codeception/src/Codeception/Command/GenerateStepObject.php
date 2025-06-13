@@ -6,7 +6,6 @@ namespace Codeception\Command;
 
 use Codeception\Configuration;
 use Codeception\Lib\Generator\StepObject as StepObjectGenerator;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,10 +23,6 @@ use function ucfirst;
  * * `codecept g:stepobject acceptance UserSteps --silent` - skip action questions
  *
  */
-#[AsCommand(
-    name: 'generate:stepobject',
-    description: 'Generates empty StepObject class'
-)]
 class GenerateStepObject extends Command
 {
     use Shared\FileSystemTrait;
@@ -35,7 +30,7 @@ class GenerateStepObject extends Command
 
     protected function configure(): void
     {
-        $this
+        $this->setDescription('Generates empty StepObject class')
             ->addArgument('suite', InputArgument::REQUIRED, 'Suite for StepObject')
             ->addArgument('step', InputArgument::REQUIRED, 'StepObject name')
             ->addOption('silent', '', InputOption::VALUE_NONE, 'Skip verification question');

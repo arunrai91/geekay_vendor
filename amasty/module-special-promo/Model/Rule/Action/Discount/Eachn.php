@@ -121,7 +121,7 @@ abstract class Eachn extends AbstractRule
     protected function getBundleDiscountCoefficientForFixDiscount(
         Rule $rule,
         AbstractItem $item,
-        float $itemQty = null
+        ?float $itemQty = null
     ): float {
         $baseSum = $this->getBaseSum($item);
         if (null === $itemQty) {

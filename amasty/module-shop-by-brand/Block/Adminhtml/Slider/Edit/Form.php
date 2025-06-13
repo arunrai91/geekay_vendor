@@ -12,25 +12,45 @@ namespace Amasty\ShopbyBrand\Block\Adminhtml\Slider\Edit;
 
 use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
 use Amasty\ShopbyBase\Block\Adminhtml\Form\Renderer\Fieldset\Element;
-use Amasty\ShopbyBrand\Controller\RegistryConstants;
-use Magento\Framework\View\Element\BlockInterface;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form as WidgetForm;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Element\ElementCreator;
+use Amasty\ShopbyBase\Model\OptionSetting as OptionSettingModel;
+use Amasty\ShopbyBrand\Model\Request\BrandRegistry;
+use Magento\Backend\Block\Template\Context;
+use Magento\Framework\Data\FormFactory;
 
-class Form extends \Magento\Backend\Block\Widget\Form\Generic
+class Form extends WidgetForm
 {
-    protected function _prepareForm()
+    /**
+     * @var BrandRegistry
+     */
+    private BrandRegistry $brandRegistry;
+
+    public function __construct(
+        BrandRegistry $brandRegistry,
+        FormFactory $formFactory,
+        ElementCreator $creator,
+        Context $context,
+        array $data = []
+    ) {
+        parent::__construct($formFactory, $creator, $context, $data);
+        $this->brandRegistry = $brandRegistry;
+    }
+
+    public function prepareForm(): Form
     {
         $attributeCode = $this->getRequest()->getParam(FilterSettingInterface::ATTRIBUTE_CODE);
         $optionId = $this->getRequest()->getParam('option_id');
         $storeId = $this->getRequest()->getParam('store', 0);
-        /** @var \Amasty\ShopbyPage\Api\Data\PageInterface $model */
-        $model = $this->_coreRegistry->registry(RegistryConstants::FEATURED);
+        /** @var OptionSettingModel $model */
+        $model = $this->brandRegistry->get();
         $urlParams = [
             'option_id' => (int)$optionId,
             'attribute_code' => $attributeCode,
             'store' => (int)$storeId
         ];
         /** @var \Magento\Framework\Data\Form $form */
-        $form = $this->_formFactory->create(
+        $form = $this->getDataFormFactory()->create(
             [
                 'data' => [
                     'id' => 'edit_form',
@@ -58,7 +78,8 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
 
         $form->setValues($model->getData());
         $this->setForm($form);
-        return parent::_prepareForm();
+
+        return parent::prepareForm();
     }
 
     private function getRenderer(): Element

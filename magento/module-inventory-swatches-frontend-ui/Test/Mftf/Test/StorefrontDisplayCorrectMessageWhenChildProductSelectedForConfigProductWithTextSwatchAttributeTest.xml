@@ -20,6 +20,7 @@
             <group value="swatches"/>
             <group value="msi"/>
             <group value="single_mode"/>
+            <group value="guest_checkout"/>
         </annotations>
         <before>
             <!-- Create product attribute with 3 variations -->

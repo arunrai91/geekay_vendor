@@ -8,20 +8,20 @@
 namespace Amasty\ShopbyPage\Block\Adminhtml\Page\Edit\Tab;
 
 use Amasty\ShopbyPage\Api\Data\PageInterface;
-use Amasty\ShopbyPage\Controller\RegistryConstants;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form as WidgetForm;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Element\ElementCreator;
 use Amasty\ShopbyPage\Model\Config\Source\Robots;
+use Amasty\ShopbyPage\Model\Request\Page\Registry as PageRegistry;
 use Magento\Backend\Block\Template\Context;
-use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Framework\Api\ExtensibleDataObjectConverter;
 use Magento\Framework\Data\Form;
 use Magento\Framework\Data\FormFactory;
-use Magento\Framework\Registry;
 
 /**
  * @api
  */
-class Meta extends Generic implements TabInterface
+class Meta extends WidgetForm implements TabInterface
 {
     /**
      * @var ExtensibleDataObjectConverter
@@ -33,17 +33,24 @@ class Meta extends Generic implements TabInterface
      */
     private $robotsConfig;
 
+    /**
+     * @var PageRegistry
+     */
+    private PageRegistry $pageRegistry;
+
     public function __construct(
-        Context $context,
-        Registry $registry,
-        FormFactory $formFactory,
         ExtensibleDataObjectConverter $extensibleDataObjectConverter,
         Robots $robotsConfig,
+        FormFactory $formFactory,
+        ElementCreator $creator,
+        PageRegistry $pageRegistry,
+        Context $context,
         array $data = []
     ) {
         $this->extensibleDataObjectConverter = $extensibleDataObjectConverter;
         $this->robotsConfig = $robotsConfig;
-        parent::__construct($context, $registry, $formFactory, $data);
+        $this->pageRegistry = $pageRegistry;
+        parent::__construct($formFactory, $creator, $context, $data);
     }
 
     /**
@@ -82,18 +89,13 @@ class Meta extends Generic implements TabInterface
         return false;
     }
 
-    /**
-     * Prepare form
-     *
-     * @return $this
-     */
-    protected function _prepareForm()
+    public function prepareForm(): Meta
     {
         /** @var Form $form */
-        $form = $this->_formFactory->create();
+        $form = $this->getDataFormFactory()->create();
 
         /** @var PageInterface $model */
-        $model = $this->_coreRegistry->registry(RegistryConstants::PAGE);
+        $model = $this->pageRegistry->get();
 
         $fieldset = $form->addFieldset(
             'meta_fieldset',
@@ -165,6 +167,6 @@ class Meta extends Generic implements TabInterface
 
         $this->setForm($form);
 
-        return parent::_prepareForm();
+        return parent::prepareForm();
     }
 }

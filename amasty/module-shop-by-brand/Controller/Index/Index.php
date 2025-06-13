@@ -7,114 +7,109 @@
 
 namespace Amasty\ShopbyBrand\Controller\Index;
 
+use Amasty\ShopbyBase\Model\Category\Manager as CategoryManager;
+use Amasty\ShopbyBrand\Helper\Data as BrandHelper;
+use Magento\Catalog\Model\Design as CatalogDesign;
+use Magento\Catalog\Model\Session as CatalogSession;
+use Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator;
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\Event\ManagerInterface as EventManager;
+use Magento\Framework\View\Result\PageFactory;
 use Magento\Theme\Block\Html\Breadcrumbs;
 
-class Index extends \Magento\Framework\App\Action\Action
+class Index implements HttpGetActionInterface
 {
     /**
-     * @var \Magento\Framework\Registry
+     * @var CatalogSession
      */
-    protected $coreRegistry = null;
+    private CatalogSession $catalogSession;
 
     /**
-     * @var \Magento\Catalog\Model\Session
+     * @var CatalogDesign
      */
-    protected $catalogSession;
+    private CatalogDesign $catalogDesign;
 
     /**
-     * @var \Magento\Catalog\Model\Design
+     * @var CategoryUrlPathGenerator
      */
-    protected $catalogDesign;
+    private CategoryUrlPathGenerator $categoryUrlPathGenerator;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var PageFactory
      */
-    protected $storeManager;
+    private PageFactory $resultPageFactory;
 
     /**
-     * @var \Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator
+     * @var ForwardFactory
      */
-    protected $categoryUrlPathGenerator;
+    private ForwardFactory $resultForwardFactory;
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @var  CategoryManager
      */
-    protected $resultPageFactory;
+    private CategoryManager $categoryManager;
 
     /**
-     * @var \Magento\Framework\Controller\Result\ForwardFactory
+     * @var BrandHelper
      */
-    protected $resultForwardFactory;
+    private BrandHelper $brandHelper;
 
     /**
-     * @var \Magento\Catalog\Model\Layer\Resolver
+     * @var RequestInterface
      */
-    protected $layerResolver;
+    private RequestInterface $request;
 
     /**
-     * @var \Magento\Catalog\Api\CategoryRepositoryInterface
+     * @var EventManager
      */
-    protected $categoryRepository;
-
-    /**
-     * @var  \Amasty\ShopbyBase\Model\Category\Manager
-     */
-    protected $categoryManager;
-
-    /**
-     * @var \Amasty\ShopbyBrand\Helper\Data
-     */
-    private $brandHelper;
+    private EventManager $eventManager;
 
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Catalog\Model\Design $catalogDesign,
-        \Magento\Catalog\Model\Session $catalogSession,
-        \Magento\Framework\Registry $coreRegistry,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator $categoryUrlPathGenerator,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory,
-        \Magento\Catalog\Model\Layer\Resolver $layerResolver,
-        \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
-        \Amasty\ShopbyBase\Model\Category\Manager $categoryManager,
-        \Amasty\ShopbyBrand\Helper\Data $brandHelper
+        CatalogDesign $catalogDesign,
+        CatalogSession $catalogSession,
+        CategoryUrlPathGenerator $categoryUrlPathGenerator,
+        PageFactory $resultPageFactory,
+        ForwardFactory $resultForwardFactory,
+        CategoryManager $categoryManager,
+        BrandHelper $brandHelper,
+        RequestInterface $request,
+        EventManager $eventManager
     ) {
-        parent::__construct($context);
-        $this->storeManager = $storeManager;
         $this->catalogDesign = $catalogDesign;
         $this->catalogSession = $catalogSession;
-        $this->coreRegistry = $coreRegistry;
         $this->categoryUrlPathGenerator = $categoryUrlPathGenerator;
         $this->resultPageFactory = $resultPageFactory;
         $this->resultForwardFactory = $resultForwardFactory;
-        $this->layerResolver = $layerResolver;
-        $this->categoryRepository = $categoryRepository;
         $this->categoryManager = $categoryManager;
         $this->brandHelper = $brandHelper;
+        $this->request = $request;
+        $this->eventManager = $eventManager;
     }
 
     /**
      * @return bool|\Magento\Catalog\Api\Data\CategoryInterface
      */
-    protected function _initCategory()
+    private function initCategory()
     {
         return $this->categoryManager->init($this);
     }
 
     /**
-     * @return $this|\Magento\Framework\View\Result\Page
+     * @return \Magento\Framework\Controller\Result\Forward|\Magento\Framework\View\Result\Page
      */
     public function execute()
     {
         $this->initBrand();
-        $category = $this->_initCategory();
+        /** @var \Magento\Catalog\Model\Category $category */
+        $category = $this->initCategory();
         if (!$category) {
             return $this->resultForwardFactory->create()->forward('noroute');
         }
 
         $settings = $this->catalogDesign->getDesignSettings($category);
-        $this->_eventManager->dispatch('amshopby_brand_page_init_design', ['design_settings' => $settings]);
+        $this->eventManager->dispatch('amshopby_brand_page_init_design', ['design_settings' => $settings]);
 
         // apply custom design
         if ($settings->getCustomDesign()) {
@@ -157,8 +152,8 @@ class Index extends \Magento\Framework\App\Action\Action
         }
 
         /** @var Breadcrumbs $breadcrumbsBlock */
-        if ($breadcrumbsBlock = $page->getLayout()->getBlock('breadcrumbs')) {
-
+        $breadcrumbsBlock = $page->getLayout()->getBlock('breadcrumbs');
+        if ($breadcrumbsBlock) {
             $brandsTitle = $this->brandHelper->getModuleConfig('general/menu_item_label') ?: __('Brands');
             $breadcrumbsBlock->addCrumb(
                 'brands',
@@ -186,8 +181,8 @@ class Index extends \Magento\Framework\App\Action\Action
      */
     private function initBrand()
     {
-        if ($id = $this->getRequest()->getParam('id', false)) {
-            $this->getRequest()->setParams([$this->brandHelper->getBrandAttributeCode() => $id]);
+        if ($id = $this->request->getParam('id', false)) {
+            $this->request->setParams([$this->brandHelper->getBrandAttributeCode() => $id]);
         }
         return $this;
     }

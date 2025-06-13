@@ -12,8 +12,11 @@ namespace Amasty\Feed\Model\Field;
 
 use Amasty\Feed\Model\Config\Source\CustomFieldType;
 use Amasty\Feed\Model\Export\Utils\MergedAttributeProcessor;
+use Amasty\Feed\Model\InventoryResolver;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class CustomFieldsProcessor
 {
@@ -23,19 +26,26 @@ class CustomFieldsProcessor
     /**
      * @var MergedAttributeProcessor
      */
-    private $mergedAttributeProcessor;
+    private MergedAttributeProcessor $mergedAttributeProcessor;
 
     /**
      * @var ProductResource
      */
-    private $productResource;
+    private ProductResource $productResource;
+
+    /**
+     * @var InventoryResolver
+     */
+    private InventoryResolver $inventoryResolver;
 
     public function __construct(
         MergedAttributeProcessor $mergedAttributeProcessor,
-        ProductResource $productResource
+        ProductResource $productResource,
+        ?InventoryResolver $inventoryResolver = null
     ) {
         $this->mergedAttributeProcessor = $mergedAttributeProcessor;
         $this->productResource = $productResource;
+        $this->inventoryResolver = $inventoryResolver ?? ObjectManager::getInstance()->get(InventoryResolver::class);
     }
 
     public function process(ProductInterface $product, Condition $rule): string
@@ -87,7 +97,15 @@ class CustomFieldsProcessor
         }
 
         if ($currentAttribute === 'quantity_and_stock_status') {
-            $attributeValue = (int)($dataRow['qty'] ?? 0);
+            try {
+                $stockData = $this->inventoryResolver->getInventoryData([$product->getEntityId()]);
+                if (!empty($stockData)) {
+                    $item = $stockData[array_key_first($stockData)];
+                    $attributeValue = (int)($item['qty'] ?? 0);
+                }
+            } catch (NoSuchEntityException $e) {
+                null;
+            }
         } elseif ($product->getAttributeText($currentAttribute) && !is_array($productAttribute)) {
             $attributeValue = $product->getAttributeText($currentAttribute);
         } elseif (!is_array($productAttribute)) {

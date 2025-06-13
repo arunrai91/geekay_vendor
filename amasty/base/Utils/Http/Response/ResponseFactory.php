@@ -58,7 +58,7 @@ class ResponseFactory
             // phpcs:disable Magento2.Functions.DiscouragedFunction.Discouraged
             $path = parse_url($url, PHP_URL_PATH);
             $entityConfig = $this->configPool->get($path);
-            if ($entityConfig->getType() == 'array') {
+            if ($entityConfig->getType() === 'array') {
                 $object = [];
                 foreach ($response as $row) {
                     $object[] = $this->converter->convertToObject($row, $entityConfig);
@@ -67,7 +67,7 @@ class ResponseFactory
                 $object = $this->converter->convertToObject($response, $entityConfig);
             }
         } catch (NotFoundException $e) {
-            $object = $this->simpleDataObjectFactory->create(['data' => $response ?? []]);
+            $object = $this->simpleDataObjectFactory->create(['data' => $response]);
         }
 
         return $object;

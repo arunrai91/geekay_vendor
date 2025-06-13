@@ -29,6 +29,7 @@ class ConfigProvider extends ConfigProviderAbstract
     public const BRAND_URL_KEY = 'general/url_key';
     public const TOOLTIP_ENABLED = 'general/tooltip_enabled';
     public const EXCLUDE_EMPTY_SITEMAP_BRAND = 'general/exclude_empty_sitemap_brand';
+    public const BRAND_BUCKET_SIZE = 'general/brand_bucket_size';
 
     /**
      * Product Page group settings path
@@ -204,5 +205,10 @@ class ConfigProvider extends ConfigProviderAbstract
     {
         $urlKeyValue = $this->getValue(self::BRAND_URL_KEY, $storeId);
         return $urlKeyValue ?: null;
+    }
+
+    public function getBrandBucketSize(): int
+    {
+        return (int)$this->getValue(self::BRAND_BUCKET_SIZE) ?: 500;
     }
 }

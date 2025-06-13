@@ -15,6 +15,7 @@ use Amasty\Shopby\Model\Source\FilterPlacedBlock;
 use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
 use Amasty\ShopbyBase\Model\FilterSetting\FilterResolver;
 use Amasty\ShopbyBase\Model\FilterSettingRepository;
+use Amasty\ShopbyBase\Model\Request\Registry as ShopbyBaseRegistry;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
 use Magento\Catalog\Model\Layer\Search;
@@ -22,7 +23,6 @@ use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Amasty\Shopby\Model\Source\VisibleInCategory;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\ObjectManagerInterface;
-use Magento\Framework\Registry;
 use Magento\Framework\View\LayoutInterface;
 
 class FilterList extends Layer\FilterList
@@ -59,11 +59,6 @@ class FilterList extends Layer\FilterList
     private $filtersApplied = false;
 
     /**
-     * @var  Registry
-     */
-    private $registry;
-
-    /**
      * @var Request
      */
     private $shopbyRequest;
@@ -88,23 +83,27 @@ class FilterList extends Layer\FilterList
      */
     private $filterRepository;
 
+    /**
+     * @var ShopbyBaseRegistry
+     */
+    private ShopbyBaseRegistry $shopbyBaseRegistry;
+
     public function __construct(
         ObjectManagerInterface $objectManager,
         FilterableAttributeListInterface $filterableAttributes,
         MagentoVersion $magentoVersion,
         Http $request,
-        Registry $registry,
         Request $shopbyRequest,
         Config $config,
         LayoutInterface $layout,
         FilterResolver $filterResolver,
         FilterSettingRepository $filterRepository,
+        ShopbyBaseRegistry $shopbyBaseRegistry,
         array $filters = [],
         $place = self::PLACE_SIDEBAR
     ) {
         $this->currentPlace = $place;
         $this->request = $request;
-        $this->registry = $registry;
         $this->shopbyRequest = $shopbyRequest;
         $this->config = $config;
         $this->layout = $layout;
@@ -129,6 +128,7 @@ class FilterList extends Layer\FilterList
 
         $this->filterResolver = $filterResolver;
         $this->filterRepository = $filterRepository;
+        $this->shopbyBaseRegistry = $shopbyBaseRegistry;
     }
 
     /**
@@ -157,10 +157,10 @@ class FilterList extends Layer\FilterList
      */
     public function getAllFilters(Layer $layer)
     {
-        $allFilters = $this->registry->registry(self::ALL_FILTERS_KEY);
+        $allFilters = $this->shopbyBaseRegistry->registry(self::ALL_FILTERS_KEY);
         if ($allFilters === null) {
             $allFilters = $this->generateAllFilters($layer);
-            $this->registry->register(self::ALL_FILTERS_KEY, $allFilters);
+            $this->shopbyBaseRegistry->register(self::ALL_FILTERS_KEY, $allFilters);
         }
 
         $allFilters = $this->removeCategoryFilter($allFilters);
@@ -173,7 +173,7 @@ class FilterList extends Layer\FilterList
      *
      * @return array
      */
-    protected function generateAllFilters(Layer $layer)
+    private function generateAllFilters(Layer $layer)
     {
         $filters = parent::getFilters($layer);
         $listAdditionalFilters = $this->getAdditionalFilters($layer);
@@ -188,7 +188,7 @@ class FilterList extends Layer\FilterList
      *
      * @return array
      */
-    protected function removeCategoryFilter($allFilters)
+    private function removeCategoryFilter($allFilters)
     {
         if (!$this->config->isCategoryFilterEnabled()) {
             foreach ($allFilters as $id => $filter) {
@@ -206,7 +206,7 @@ class FilterList extends Layer\FilterList
      * @param Layer $layer
      * @return array
      */
-    protected function filterByPlace(array $filters, Layer $layer)
+    private function filterByPlace(array $filters, Layer $layer)
     {
         $filters = array_filter($filters, function ($filter) use ($layer) {
             if ($this->isOneColumnLayout($layer)) {
@@ -228,7 +228,7 @@ class FilterList extends Layer\FilterList
      *
      * @return int
      */
-    protected function getFilterBlockPosition(FilterInterface $filter)
+    private function getFilterBlockPosition(FilterInterface $filter)
     {
         return $this->filterResolver->resolveByFilter($filter)->getBlockPosition();
     }
@@ -237,7 +237,7 @@ class FilterList extends Layer\FilterList
      * @param Layer $layer
      * @return bool
      */
-    protected function isOneColumnLayout(Layer $layer)
+    private function isOneColumnLayout(Layer $layer)
     {
         return $this->getPageLayout($layer) == self::ONE_COLUMN_LAYOUT;
     }
@@ -259,7 +259,7 @@ class FilterList extends Layer\FilterList
      * @return bool
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function matchFilters(array $listFilters, Layer $layer)
+    public function matchFilters(array $listFilters, Layer $layer)
     {
         if ($this->filtersMatched) {
             return false;
@@ -291,7 +291,7 @@ class FilterList extends Layer\FilterList
      *
      * @return bool
      */
-    protected function checkFilterVisibility(FilterSettingInterface $setting, $currentCategoryId)
+    private function checkFilterVisibility(FilterSettingInterface $setting, $currentCategoryId)
     {
         $visible = true;
         if ($setting->getVisibleInCategories() === VisibleInCategory::ONLY_IN_SELECTED_CATEGORIES
@@ -314,7 +314,7 @@ class FilterList extends Layer\FilterList
      *
      * @return bool
      */
-    protected function checkFilterByDependency(FilterSettingInterface $setting)
+    private function checkFilterByDependency(FilterSettingInterface $setting)
     {
         $matched = true;
         if ($attributesFilter = $setting->getAttributesFilter()) {
@@ -358,7 +358,7 @@ class FilterList extends Layer\FilterList
      * @return array
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function getStateAttributesIds()
+    private function getStateAttributesIds()
     {
         $ids = [];
 
@@ -377,7 +377,7 @@ class FilterList extends Layer\FilterList
      *
      * @return int
      */
-    protected function getFilterModelId($key)
+    private function getFilterModelId($key)
     {
         $filter = $this->filterRepository->loadByAttributeCode($key);
         $filterModel = $filter ? $filter->getAttributeModel() : false;
@@ -389,7 +389,7 @@ class FilterList extends Layer\FilterList
      * @return array
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function getActiveOptionIds()
+    private function getActiveOptionIds()
     {
         $ids = [];
 
@@ -411,7 +411,7 @@ class FilterList extends Layer\FilterList
      *
      * @return array
      */
-    protected function getAdditionalFilters(Layer $layer)
+    public function getAdditionalFilters(Layer $layer)
     {
         $additionalFilters = [];
         if ($this->isCustomFilterEnabled('stock') && $this->config->isEnabledShowOutOfStock()) {
@@ -449,7 +449,7 @@ class FilterList extends Layer\FilterList
      * @param string $filterKey
      * @return bool
      */
-    protected function isCustomFilterEnabled($filterKey)
+    private function isCustomFilterEnabled($filterKey)
     {
         return (bool)$this->config->getModuleConfig($filterKey . '_filter/enabled');
     }
@@ -459,7 +459,7 @@ class FilterList extends Layer\FilterList
      * @param $listAdditionalFilters
      * @return array
      */
-    protected function insertAdditionalFilters($listStandartFilters, $listAdditionalFilters)
+    private function insertAdditionalFilters($listStandartFilters, $listAdditionalFilters)
     {
         if (count($listAdditionalFilters) == 0) {
             return $listStandartFilters;

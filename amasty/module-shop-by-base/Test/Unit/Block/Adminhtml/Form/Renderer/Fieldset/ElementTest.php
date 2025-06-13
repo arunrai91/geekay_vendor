@@ -61,9 +61,9 @@ class ElementTest extends \PHPUnit\Framework\TestCase
             }
         );
 
-        $this->model = $this->createPartialMock(Element::class, ['getDataObject']);
+        $this->model = $this->createPartialMock(Element::class, ['getDataObject', 'getElement']);
         $this->model->expects($this->any())->method('getDataObject')->willReturnReference($this->dataObject);
-        $this->setProperty($this->model, '_element', $element, Element::class);
+        $this->model->expects($this->any())->method('getElement')->willReturn($element);
     }
 
     /**

@@ -59,6 +59,6 @@ class CustomFilters
                 break;
         }
 
-        return $config;
+        return $config ?? [];
     }
 }

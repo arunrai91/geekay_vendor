@@ -57,13 +57,13 @@ class RegisteredInstanceRepository
     private $url;
 
     public function __construct(
-        FlagRepository $flagRepository = null, //@deprecated
+        FlagRepository $flagRepository, //backward compatibility
         SerializerInterface $serializer,
         DataObjectHelper $dataObjectHelper,
         RegisteredInstanceFactory $registeredInstanceFactory,
-        Repository $instanceDataRepository = null,
-        InstanceDataFactory $instanceDataFactory = null,
-        UrlInterface $url = null
+        ?Repository $instanceDataRepository = null,
+        ?InstanceDataFactory $instanceDataFactory = null,
+        ?UrlInterface $url = null
     ) {
         $this->serializer = $serializer;
         $this->dataObjectHelper = $dataObjectHelper;
@@ -120,6 +120,6 @@ class RegisteredInstanceRepository
             PHP_URL_HOST
         );
 
-        return $registeredDomain !== $currentDomain || empty($currentDomain);
+        return ltrim($registeredDomain, 'w.') !== ltrim($currentDomain, 'w.') || empty($currentDomain);
     }
 }

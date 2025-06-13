@@ -43,8 +43,8 @@ class FileOctetResponse extends AbstractOctetResponse
         Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
         App\Http\Context $context,
         Stdlib\DateTime $dateTime,
-        ConfigInterface $sessionConfig = null,
-        Filesystem $filesystem = null
+        ?ConfigInterface $sessionConfig = null,
+        ?Filesystem $filesystem = null
     ) {
         $this->fileReadFactory = $fileReadFactory;
         $this->filesystem = $filesystem ?? ObjectManager::getInstance()->get(Filesystem::class);

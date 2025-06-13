@@ -31,8 +31,8 @@ class SafeMode extends \Magento\Framework\App\Config\Value
         Registry $registry,
         ScopeConfigInterface $scopeConfig,
         TypeListInterface $cacheTypeList,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->messageManager = $messageManager;

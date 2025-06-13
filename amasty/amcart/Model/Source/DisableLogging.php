@@ -37,8 +37,8 @@ class DisableLogging extends \Magento\Framework\App\Config\Value
         TypeListInterface $cacheTypeList,
         ModelImport $import,
         GeoipHelper $geoipHelper,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->import = $import;

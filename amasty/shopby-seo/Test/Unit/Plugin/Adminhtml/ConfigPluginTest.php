@@ -9,6 +9,7 @@ namespace Amasty\ShopbySeo\Test\Unit\Plugin\Adminhtml;
 
 use Amasty\ShopbySeo\Plugin\Adminhtml\ConfigPlugin;
 use Amasty\ShopbySeo\Test\Unit\Traits;
+use Magento\Framework\Filter\FilterManager;
 
 /**
  * Class ConfigPlugin
@@ -56,10 +57,10 @@ class ConfigPluginTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
-        $filter = $this->createPartialMock(
-            \Magento\Framework\Filter\FilterManager::class,
-            ['translitUrl']
-        );
+        $filter = $this->getMockBuilder(FilterManager::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['translitUrl'])
+            ->getMockForAbstractClass();
         $moduleHelper = $this->createMock(\Amasty\ShopbySeo\Helper\Data::class);
         $filter->expects($this->any())->method('translitUrl')->willReturn('test-value');
         $moduleHelper->expects($this->any())->method('isModuleEnabled')->willReturn($isModuleEnable);

@@ -89,7 +89,8 @@ class MessagesTest extends \PHPUnit\Framework\TestCase
     {
         $this->block = $this->createPartialMock(Messages::class, ['generateNamesContent', 'escapeHtml']);
         $message = $this->getMockBuilder(\Amasty\Mostviewed\Block\Checkout\Cart\Messages::class)
-            ->setMethods(['getDiscount', 'escapeHtml', 'getMessage'])
+            ->addMethods(['getDiscount'])
+            ->onlyMethods(['escapeHtml', 'getMessage'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 

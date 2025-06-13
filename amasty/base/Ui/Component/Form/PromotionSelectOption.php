@@ -55,7 +55,7 @@ class PromotionSelectOption
         string $label = '',
         string $value = '',
         array $optionGroup = [],
-        string $link = null,
+        string $link = '',
         array $additionalOptionParams = []
     ) {
         $this->moduleManager = $moduleManager;

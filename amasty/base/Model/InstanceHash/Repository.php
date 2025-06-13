@@ -25,7 +25,7 @@ class Repository implements InstanceHashRepositoryInterface
     private $instanceHashResource;
 
     /**
-     * @var InstanceDataInterfaceFactory
+     * @var InstanceHashInterfaceFactory
      */
     private $instanceHashFactory;
 
@@ -39,13 +39,13 @@ class Repository implements InstanceHashRepositoryInterface
 
     public function get(string $code): InstanceHashInterface
     {
-        $instanceData = $this->instanceHashFactory->create();
-        $this->instanceHashResource->load($instanceData, $code, InstanceHashInterface::CODE);
-        if (!$instanceData->getId()) {
+        $instanceHash = $this->instanceHashFactory->create();
+        $this->instanceHashResource->load($instanceHash, $code, InstanceHashInterface::CODE);
+        if (!$instanceHash->getId()) {
             throw new NoSuchEntityException(__('Instance Hash Data with code "%1" not found.', $code));
         }
 
-        return $instanceData;
+        return $instanceHash;
     }
 
     public function save(InstanceHashInterface $instanceHash): void

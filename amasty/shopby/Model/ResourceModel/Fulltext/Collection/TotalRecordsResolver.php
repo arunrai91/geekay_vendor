@@ -48,7 +48,7 @@ class TotalRecordsResolver
 
     /**
      * @param array $data
-     * @return MysqlTotalRecordsResolver|ElasticTotalRecordsResolver|
+     * @return MysqlTotalRecordsResolver|ElasticTotalRecordsResolver
      */
     public function getResolver(array $data)
     {

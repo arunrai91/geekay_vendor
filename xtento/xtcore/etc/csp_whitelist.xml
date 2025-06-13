@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="frame-src">
+            <values>
+                <value id="xtento-frame" type="host">www.xtento.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="xtento" type="host">www.xtento.com</value>
+                <value id="xtento-cdn" type="host">cdn.xtento.com</value>
+            </values>
+        </policy>
+        <policy id="script-src">
+            <values>
+                <value id="xtento-scripts" type="host">www.xtento.com</value>
+                <value id="xtento-scripts-cdn" type="host">cdn.xtento.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>
+<!--
+/**
+ * Product:       Xtento_XtCore
+ * ID:            %!uniqueid!%
+ * Last Modified: 2021-01-19T20:48:18+00:00
+ * File:          etc/csp_whitelist.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

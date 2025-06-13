@@ -438,8 +438,8 @@ class Collection extends \Magento\Catalog\Model\ResourceModel\Product\Collection
 
         $this->printLogQuery($printQuery, $logQuery);
 
+        $query = $this->getSelect();
         try {
-            $query = $this->getSelect();
             $rows = $this->_fetchAll($query);
         } catch (\Exception $e) {
             $this->printLogQuery(false, true, $query);
@@ -519,10 +519,9 @@ class Collection extends \Magento\Catalog\Model\ResourceModel\Product\Collection
     }
 
     /**
-     * @param SearchCriteriaBuilderProvider|null $searchCriteriaBuilder
      * @return MysqlSearchCriteriaResolver|ElasticSearchCriteriaResolver
      */
-    private function getSearchCriteriaResolver(SearchCriteriaBuilderProvider $searchCriteriaBuilderProvider = null)
+    private function getSearchCriteriaResolver(?SearchCriteriaBuilderProvider $searchCriteriaBuilderProvider = null)
     {
         $builder = $searchCriteriaBuilderProvider
             ? $searchCriteriaBuilderProvider->create()

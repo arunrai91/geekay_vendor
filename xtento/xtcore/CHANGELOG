@@ -1,0 +1,119 @@
+Xtento_XtCore
+
+-------------
+  CHANGELOG
+-------------
+
+===== 2.0.0 =====
+ * Initial stable M2 release
+
+===== 2.0.1 =====
+ + Added cron scheduler
+ * Various bug fixes, code optimizations
+ * Compatibility with Magento 2.0.2
+
+===== 2.0.2 =====
+ * Code optimizations
+ * Removed unnecessary, commented code
+
+===== 2.0.3 =====
+ * Established compatibility with Magento code compilation, some injected dependencies were declared twice or in $context already
+ * Fixed Magento Enterprise Edition check
+ * Code optimizations
+
+===== 2.0.4 =====
+ * Compatibility with Magento 2.1.0 established
+
+===== 2.0.5 =====
+ * Fixed bug related to date/timestamp to store timezone conversion in Date helper, timezone was wrong
+
+===== 2.0.6 =====
+ * Fixed bug with regards to wrong css path for base_admin.min.css file
+
+===== 2.0.7 =====
+ + Added warning in module configuration at System > Configuration if module output is disabled via "Disable Module Output" at System > Configuration > Advanced > Advanced
+
+===== 2.0.8 =====
+ + Added method getMagentoVersion (as a wrapper) in Helper\Utils.
+
+===== 2.0.9 =====
+ + Compatibility with Magento 2.2 established
+
+===== 2.1.0 =====
+ * Switched to 2.x.0 version schema so composer upgrades XtCore to "next-significant-release" version (applies for composer upgrades)
+ * Next release: 2.2.0
+
+===== 2.2.0 =====
+ * Fixed issue during install script that happened in some installations
+
+===== 2.3.0 =====
+ * Established compatibility with Magento B2B
+
+===== 2.4.0 =====
+ * Established compatibility with Magento 2.3
+
+===== 2.5.0 =====
+ + Added additional debug information in XtCore configuration section
+ * Bugfix release
+ * Removed unnecessary admin URL retrieval
+
+===== 2.6.0 =====
+ * Removed PclZip library from module. Old, outdated and not required anymore.
+ * Module code updated to comply with Magento Coding Standard as of August 2019
+ * Removed silenced errors ("@function") entirely. Improved logging in such cases so those errors are logged/reported.
+ * Logging improvements
+
+===== 2.7.0 =====
+ + Added ability to define cronjobs (those added by our extensions) in their own cron groups
+
+===== 2.8.0 =====
+ * Established compatibility with Magento 2.2.10 / 2.3.3
+ * Established compatibility with PHP 7.3
+ * Fixed an issue in 2.2.10/2.3.3 that lead to HTML being shown instead of a logo in the system configuration
+
+===== 2.9.0 =====
+ * Fixed an issue related to ZIP creation where under certain conditions ZIP files cannot be created
+
+===== 2.10.0 =====
+ * Established compatibility with Magento 2.4.0 and 2.3.5-p2
+ * Established compatibility with PHP 7.4, dropped support for PHP 5.x
+
+===== 2.11.0 =====
+ + Added Content Security Policy (CSP) support. XTENTO resources are whitelisted so our images/scripts can be loaded.
+
+===== 2.12.0 =====
+ * Removed phpinfo from debug information section due to possibly sensitive information being disclosed
+
+===== 2.13.0 =====
+ * Established compatibility with Magento 2.3.7-p3 / 2.4.3-p2 / 2.4.4
+ * Established compatibility with PHP 8.1
+
+===== 2.14.0 =====
+ * Further PHP 8.1 fixes
+
+===== 2.15.0 =====
+ * Converted database install scripts to db_schema.xml - please check this upgrade carefully and take a DB backup before upgrading
+ * Dropped support for Magento 2.2.x. Earliest supported version is 2.3.x now.
+
+===== 2.16.0 =====
+ * Converted data patch scripts to new format
+
+===== 2.17.0 =====
+ * Fixed error "Area code not set" during installation/upgrade
+ * Established compatibility with Magento 2.4.5, 2.4.4-p1, 2.4.3-p3, 2.3.7-p4
+
+===== 2.18.0 =====
+ * Established compatibility with Magento 2.4.6 / 2.4.5-p2 / 2.4.4-p3
+ * Established compatibility with PHP 8.2
+
+===== 2.19.0 =====
+ * Fixed an issue with Zend compatibility in Magento 2.4.6
+
+===== 2.20.0 =====
+ * Established compatibility with Magento 2.4.7 / 2.4.6-p5 / 2.4.5-p7 / 2.4.4-p8
+ * Established compatibility with PHP 8.3
+
+===== 2.21.0 =====
+ * Established compatibility with Magento 2.4.8
+ * Dropped support for versions older than Magento 2.4.6
+ * Established compatibility with PHP 8.4

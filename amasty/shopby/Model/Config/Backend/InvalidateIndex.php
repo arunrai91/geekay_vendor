@@ -31,8 +31,8 @@ class InvalidateIndex extends \Magento\Framework\App\Config\Value
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
         Processor $indexProcessor,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
@@ -44,7 +44,10 @@ class InvalidateIndex extends \Magento\Framework\App\Config\Value
      */
     public function afterSave()
     {
-        $this->_getResource()->addCommitCallback([$this, 'processValue']);
+        if ($this->_resource) {
+            $this->_resource->addCommitCallback([$this, 'processValue']);
+        }
+
         return parent::afterSave();
     }
 

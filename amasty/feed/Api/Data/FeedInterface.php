@@ -660,6 +660,6 @@ interface FeedInterface extends ExtensibleDataInterface
      * @return \Amasty\Feed\Api\Data\FeedInterface
      */
     public function setExtensionAttributes(
-        FeedExtensionInterface $extensionAttributes = null
+        ?FeedExtensionInterface $extensionAttributes = null
     ): FeedInterface;
 }

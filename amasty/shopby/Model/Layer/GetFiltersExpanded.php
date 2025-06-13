@@ -113,7 +113,7 @@ class GetFiltersExpanded
     /**
      * @return array|\Magento\Catalog\Model\Layer\Filter\AbstractFilter[]
      */
-    protected function getFilters()
+    private function getFilters()
     {
         return $this->filterList->getFilters($this->catalogLayer);
     }

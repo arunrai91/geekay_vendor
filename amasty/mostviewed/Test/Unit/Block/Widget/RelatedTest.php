@@ -52,7 +52,7 @@ class RelatedTest extends \PHPUnit\Framework\TestCase
     protected function setup(): void
     {
         $this->request = $this->getMockBuilder(\Magento\Framework\App\RequestInterface::class)
-            ->setMethods(['getFullActionName'])
+            ->addMethods(['getFullActionName'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $this->coreRegistry = $this->createMock(\Magento\Framework\Registry::class);

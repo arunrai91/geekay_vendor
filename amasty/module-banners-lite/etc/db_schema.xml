@@ -17,6 +17,10 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="entity_id"/>
     </constraint>
+    <constraint xsi:type="unique" referenceId="AMASTY_BANNERS_LITE_BANNER_DATA_SALESRULE_ID_BANNER_TYPE">
+        <column name="salesrule_id"/>
+        <column name="banner_type"/>
+    </constraint>
     <index referenceId="AMASTY_BANNERS_LITE_BANNER_DATA_SALESRULE_ID" indexType="btree">
       <column name="salesrule_id"/>
     </index>

@@ -7,6 +7,8 @@
 
 namespace Amasty\Sorting\Model\ResourceModel;
 
+use Magento\CatalogInventory\Api\Data\StockStatusInterface;
+
 class Inventory extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
@@ -74,10 +76,19 @@ class Inventory extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         if ($this->moduleManager->isEnabled('Magento_Inventory')) {
             $stockStatus = $this->getMsiStock($productSku, $websiteCode);
         } else {
-            $stockStatus = $this->getStockItem($productSku, $websiteCode)->getIsInStock();
+            $stockStatus = $this->getStockStatusObject($productSku, $websiteCode)->getStockStatus();
         }
 
         return $stockStatus;
+    }
+
+    /**
+     * Get stock status object for case when MSI disabled
+     * (use cataloginventory_stock_status table)
+     */
+    private function getStockStatusObject(string $productSku, string $websiteCode): StockStatusInterface
+    {
+        return $this->stockRegistry->getStockStatusBySku($productSku, $websiteCode);
     }
 
     /**

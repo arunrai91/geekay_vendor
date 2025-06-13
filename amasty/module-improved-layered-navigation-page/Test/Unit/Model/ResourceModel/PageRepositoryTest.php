@@ -32,12 +32,11 @@ class PageRepositoryTest extends \PHPUnit\Framework\TestCase
     public function setUp(): void
     {
         $serializer = $this->createMock(\Amasty\Base\Model\Serializer::class);
-        $pageFactory = $this->createMock(\Amasty\ShopbyPage\Model\PageFactory::class);
+        $pageFactory = $this->createMock(\Amasty\ShopbyPage\Api\Data\PageInterfaceFactory::class);
         $pageResourceModel = $this->createMock(\Amasty\ShopbyPage\Model\ResourceModel\Page::class);
         $page = $this->createMock(\Magento\Framework\Model\AbstractModel::class);
         $serializer->expects($this->any())->method('serialize')->with([1, 2, 3])->willReturn('a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}');
         $serializer->expects($this->any())->method('unserialize')
-            ->withConsecutive(['a:3:{i:0;i:a;i:1;i:b;i:2;i:c;}'], ['s:1:"a";'], ['s:1:"b";'], ['s:1:"c";'])
             ->willReturnOnConsecutiveCalls(['s:1:"a";', 's:1:"b";', 's:1:"c";'], 'a', 'b', 'c');
 
         $pageFactory->expects($this->any())->method('create')->willReturn($page);
@@ -111,7 +110,7 @@ class PageRepositoryTest extends \PHPUnit\Framework\TestCase
         $result = [
             'store_id' => '',
             'stores' => '',
-            'categories' => '',
+            'categories' => ['0'],
             'conditions' => []
         ];
         $this->invokeMethod($this->model, 'normalizeInputData', [&$data]);
@@ -138,7 +137,7 @@ class PageRepositoryTest extends \PHPUnit\Framework\TestCase
     {
         $data = '';
         $this->invokeMethod($this->model, 'processCategoryField', [&$data]);
-        $this->assertEquals('', $data);
+        $this->assertEquals(['0'], $data);
 
         $data = '1, 2';
         $this->invokeMethod($this->model, 'processCategoryField', [&$data]);

@@ -14,8 +14,8 @@ class MetaDescription extends Source\AbstractFilterDataPosition implements \Mage
     /**
      * @return void
      */
-    protected function _setLabel()
+    public function initLabel()
     {
-        $this->_label = __('Meta-Description');
+        $this->setLabel(__('Meta-Description'));
     }
 }

@@ -13,15 +13,13 @@ class Collection
 {
     /**
      * @param \Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection $subject
-     * @param \Closure $closure
      * @param $column
      * @param $value
      * @return mixed
      * @SuppressWarnings(PHPMD.UnusedFormatParameter)
      */
-    public function aroundGetItemByColumnValue(
+    public function beforeGetItemByColumnValue(
         \Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection $subject,
-        \Closure $closure,
         $column,
         $value
     ) {
@@ -30,6 +28,7 @@ class Collection
         ) {
             $value = substr($value, 0, $pos);
         }
-        return $closure($column, $value);
+
+        return [$column, $value];
     }
 }

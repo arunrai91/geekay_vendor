@@ -281,7 +281,7 @@ class Price extends \Magento\CatalogSearch\Model\Layer\Filter\Price implements F
         }
         $this->applyFilter($validateFilter ?? $filter);
 
-        if (!empty($filter) && !is_array($filter)) {
+        if (!is_array($filter)) {
             $filterSetting = $this->filterSettingResolver->getFilterSetting($this);
             if ($filterSetting->getDisplayMode() == DisplayMode::MODE_SLIDER) {
                 $this->getLayer()->getProductCollection()->addFieldToFilter('price', $filter);
@@ -340,7 +340,7 @@ class Price extends \Magento\CatalogSearch\Model\Layer\Filter\Price implements F
      * @param float|string $toPrice
      * @return string|\Magento\Framework\Phrase
      */
-    protected function renderRangeLabel($fromPrice, $toPrice)
+    private function renderRangeLabel($fromPrice, $toPrice)
     {
         $delta = $this->decimalFilterRequestDataResolver->getDelta($this);
         $fromPrice = $this->decimalFilterSettingResolver->calculatePrice($this, (float) $fromPrice, $delta);

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Xtento_OrderExport::js/orderexport.js"/>
+    </head>
+    <body>
+        <referenceContainer name="page.content">
+            <block before="page_main_actions" class="Xtento\OrderExport\Block\Adminhtml\Widget\Menu" name="orderexport.menu"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Xtento\OrderExport\Block\Adminhtml\Profile\Edit" name="orderexport_profile_edit"/>
+            <block class="Xtento\OrderExport\Block\Adminhtml\Profile\Edit\DefaultTemplatePopup" name="default_template_popup" template="Xtento_OrderExport::profile/default_template_popup.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Xtento\OrderExport\Block\Adminhtml\Profile\Edit\Tabs" name="orderexport_profile_edit_tabs">
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">general</argument>
+                    <argument name="block" xsi:type="string">Xtento\OrderExport\Block\Adminhtml\Profile\Edit\Tab\General</argument>
+                </action>
+                <block class="Magento\Backend\Block\Widget\Tab" name="orderexport.destination">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Export Destinations</argument>
+                        <argument name="url" xsi:type="url" path="*/*/destination">
+                            <param name="ajax_enabled">1</param>
+                            <param name="_current">1</param>
+                        </argument>
+                        <argument name="class" xsi:type="string">ajax</argument>
+                    </arguments>
+                </block>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">destination</argument>
+                    <argument name="block" xsi:type="string">orderexport.destination</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">output</argument>
+                    <argument name="block" xsi:type="string">Xtento\OrderExport\Block\Adminhtml\Profile\Edit\Tab\Output</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">filters</argument>
+                    <argument name="block" xsi:type="string">Xtento\OrderExport\Block\Adminhtml\Profile\Edit\Tab\Filters</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">manual</argument>
+                    <argument name="block" xsi:type="string">Xtento\OrderExport\Block\Adminhtml\Profile\Edit\Tab\Manual</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">automatic</argument>
+                    <argument name="block" xsi:type="string">Xtento\OrderExport\Block\Adminhtml\Profile\Edit\Tab\Automatic</argument>
+                </action>
+                <block class="Magento\Backend\Block\Widget\Tab" name="orderexport.log">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Profile Execution Log</argument>
+                        <argument name="url" xsi:type="url" path="*/*/log">
+                            <param name="ajax_enabled">1</param>
+                            <param name="_current">1</param>
+                        </argument>
+                        <argument name="class" xsi:type="string">ajax</argument>
+                    </arguments>
+                </block>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">execution_log</argument>
+                    <argument name="block" xsi:type="string">orderexport.log</argument>
+                </action>
+                <block class="Magento\Backend\Block\Widget\Tab" name="orderexport.history">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Profile Export History</argument>
+                        <argument name="url" xsi:type="url" path="*/*/history">
+                            <param name="ajax_enabled">1</param>
+                            <param name="_current">1</param>
+                        </argument>
+                        <argument name="class" xsi:type="string">ajax</argument>
+                    </arguments>
+                </block>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">export_history</argument>
+                    <argument name="block" xsi:type="string">orderexport.history</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
+
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            %!uniqueid!%
+ * Last Modified: 2019-01-08T14:27:58+00:00
+ * File:          view/adminhtml/layout/xtento_orderexport_profile_edit.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

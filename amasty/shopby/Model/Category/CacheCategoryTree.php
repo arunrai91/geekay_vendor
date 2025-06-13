@@ -55,6 +55,11 @@ class CacheCategoryTree
      */
     private $facetProvider;
 
+    /**
+     * @var CategoryTree|null
+     */
+    private ?CategoryTree $currentCategoryTree = null;
+
     public function __construct(
         CacheInterface $cache,
         Serializer $serializer,
@@ -76,10 +81,15 @@ class CacheCategoryTree
      */
     public function get(Category $filter): CategoryTree
     {
+        if ($this->currentCategoryTree !== null) {
+            return $this->currentCategoryTree;
+        }
+
         $cacheKey = $this->getCacheKey($filter);
         $result = $this->cache->load($cacheKey);
         if ($result) {
-            return $this->getCategoryTreeObject($this->serializer->unserialize($result), $filter);
+            $this->currentCategoryTree = $this->getCategoryTreeObject($this->serializer->unserialize($result), $filter);
+            return $this->currentCategoryTree;
         }
         $treeData = $this->extendedCategoryCollection->getCategoryTreeData($filter);
         $this->cache->save(
@@ -89,7 +99,9 @@ class CacheCategoryTree
             self::LIFETIME
         );
 
-        return $this->getCategoryTreeObject($treeData, $filter);
+        $this->currentCategoryTree = $this->getCategoryTreeObject($treeData, $filter);
+
+        return $this->currentCategoryTree;
     }
 
     /**
@@ -119,7 +131,7 @@ class CacheCategoryTree
                 continue;
             }
             $categoryData[CategoryDataInterface::COUNT] = $optionsFacetedData[$categoryId]['count'];
-            $categories[] = $this->categoryDataFactory->create(['data' => $categoryData]);
+            $categories[$categoryId] = $this->categoryDataFactory->create(['data' => $categoryData]);
         }
         $categoryTree->setCount(count($categories));
         $categoryTree->setStartPath($treeData['startPath']);
@@ -132,5 +144,10 @@ class CacheCategoryTree
     {
         return self::CACHE_TAG . '|s=' . $filter->getStoreId() . '|cat='
             . $this->extendedCategoryCollection->getStartCategory($filter)->getId();
+    }
+
+    public function getCurrentCategoryTree(): ?CategoryTree
+    {
+        return $this->currentCategoryTree;
     }
 }

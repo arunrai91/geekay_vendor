@@ -180,10 +180,10 @@ trait ObjectCreatorTrait
     {
         if ($mock) {
             /** @var Rule|MockObject $rule */
-            $rule = $this->createPartialMock(
-                Rule::class,
-                ['getDiscountStep', 'getSimpleAction', 'getDiscountQty', 'getDiscountAmount', 'getAmrulesRule']
-            );
+            $rule = $this->getMockBuilder(Rule::class)
+                ->disableOriginalConstructor()
+                ->addMethods(['getDiscountQty', 'getDiscountStep', 'getDiscountAmount', 'getSimpleAction', 'getAmrulesRule'])
+                ->getMock();
 
             $rule->expects($this->any())->method('getDiscountStep')->will($this->returnValue(static::RULE_DISCOUNT_STEP));
             $rule->expects($this->any())->method('getSimpleAction')->will($this->returnValue(static::RULE_SIMPLE_ACTION));

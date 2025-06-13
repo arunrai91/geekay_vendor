@@ -40,7 +40,7 @@ class SpecialPriceValidator implements SkipItemValidatorInterface
         ?StoreManagerInterface $storeManager, // @deprecated
         ?Session $customerSession, // @deprecated
         ConfigModel $configModel,
-        QuoteStorage $quoteStorage = null // TODO: move to not optional argument and remove OM
+        ?QuoteStorage $quoteStorage = null // TODO: move to not optional argument and remove OM
     ) {
         $this->configModel = $configModel;
         $this->quoteStorage = $quoteStorage ?? ObjectManager::getInstance()->get(QuoteStorage::class);

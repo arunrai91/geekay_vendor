@@ -64,7 +64,7 @@ class CleanExpiredOrders
             $orders->getSelect()->where(
                 new \Zend_Db_Expr('TIME_TO_SEC(TIMEDIFF(CURRENT_TIMESTAMP, `updated_at`)) >= ' . $lifetime * 60)
             );
-            $orders->setOrder('entity_id','desc');
+
             foreach ($orders->getAllIds() as $entityId) {
                 $this->orderManagement->cancel((int) $entityId);
             }

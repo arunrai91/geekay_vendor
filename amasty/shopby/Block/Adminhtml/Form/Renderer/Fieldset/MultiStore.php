@@ -7,9 +7,9 @@
 
 namespace Amasty\Shopby\Block\Adminhtml\Form\Renderer\Fieldset;
 
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Renderer\Fieldset\Element;
 use Amasty\ShopbyBase\Model\FilterSetting\StoreSettingResolver;
 use Magento\Backend\Block\Template\Context;
-use Magento\Backend\Block\Widget\Form\Renderer\Fieldset\Element;
 use Magento\Framework\Data\Form\Element\Factory;
 use Magento\Store\Model\Store;
 
@@ -23,7 +23,7 @@ class MultiStore extends Element
     /**
      * @var Factory
      */
-    protected $elementFactory;
+    private $elementFactory;
 
     /**
      * @var StoreSettingResolver

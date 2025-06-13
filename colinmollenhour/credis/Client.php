@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Credis_Client (a fork of Redisent)
  *

@@ -4,10 +4,10 @@
     "require": {
         "php": ">=7.3",
         "amasty/amcart": ">=1.17.0",
-        "amasty/base": ">=1.17.0"
+        "amasty/base": ">=1.19.1"
     },
     "type": "magento2-module",
-    "version": "1.20.0",
+    "version": "1.20.1",
     "license": [
         "proprietary"
     ],

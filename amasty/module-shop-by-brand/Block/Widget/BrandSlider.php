@@ -30,7 +30,7 @@ class BrandSlider extends BrandListAbstract implements BlockInterface
     /**
      * @var  array|null
      */
-    protected $items;
+    private ?array $items = null;
 
     public function getCacheKeyInfo()
     {
@@ -106,7 +106,7 @@ class BrandSlider extends BrandListAbstract implements BlockInterface
     {
         if ($this->items === null) {
             $storeId = (int) $this->_storeManager->getStore()->getId();
-            $this->items = $this->brandListDataProvider->getList(
+            $this->items = $this->getBrandListDataProvider()->getList(
                 $storeId,
                 $this->getItemsFilter(),
                 $this->getData('sort_by') ?? SliderSort::NAME
@@ -161,7 +161,7 @@ class BrandSlider extends BrandListAbstract implements BlockInterface
         return (string)$this->getData(FilterItems::HIDED_BRANDS);
     }
 
-    protected function getConfigValuesPath(): string
+    public function getConfigValuesPath(): string
     {
         return self::CONFIG_VALUES_PATH;
     }

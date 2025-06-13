@@ -32,6 +32,13 @@
                     <label>Log Actions For All Admin Users</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="log_admin_users" translate="label" type="multiselect" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Admin Users To Log Actions For</label>
+                    <source_model>Amasty\AdminActionsLog\Model\OptionSource\Users</source_model>
+                    <depends>
+                        <field id="log_all_admins">0</field>
+                    </depends>
+                </field>
                 <field id="exclude_logging" translate="label comment" type="multiselect" sortOrder="45" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Exclude Entities from Logging</label>
                     <frontend_model>AdminActionsLogExcludeLoggingPromo</frontend_model>
@@ -43,13 +50,6 @@
                     <frontend_model>AdminActionsLogExcludeLoggingPromo</frontend_model>
                     <source_model>Amasty\AdminActionsLog\Model\OptionSource\LogEntryTypes</source_model>
                     <can_be_empty>1</can_be_empty>
-                </field>
-                <field id="log_admin_users" translate="label" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Admin Users To Log Actions For</label>
-                    <source_model>Amasty\AdminActionsLog\Model\OptionSource\Users</source_model>
-                    <depends>
-                        <field id="log_all_admins">0</field>
-                    </depends>
                 </field>
                 <group id="auto_cleaning" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Log Auto-Cleaning</label>

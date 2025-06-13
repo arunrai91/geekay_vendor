@@ -22,17 +22,17 @@ class Image extends \Magento\Ui\Component\Listing\Columns\Column
     /**
      * @var OptionSettingRepositoryInterface
      */
-    protected $brandRepository;
+    private OptionSettingRepositoryInterface $brandRepository;
 
     /**
      * @var ImageHelper
      */
-    protected $imageHelper;
+    private ImageHelper $imageHelper;
 
     /**
      * @var UrlInterface
      */
-    protected $urlBuilder;
+    private UrlInterface $urlBuilder;
 
     public function __construct(
         ContextInterface $context,
@@ -88,7 +88,7 @@ class Image extends \Magento\Ui\Component\Listing\Columns\Column
      *
      * @return null|string
      */
-    protected function getAlt($row)
+    public function getAlt($row)
     {
         return $row['title'];
     }
@@ -97,10 +97,15 @@ class Image extends \Magento\Ui\Component\Listing\Columns\Column
      * @param \Amasty\ShopbyBase\Api\Data\OptionSettingInterface $brand
      * @return null|string
      */
-    protected function getImage(\Amasty\ShopbyBase\Api\Data\OptionSettingInterface $brand)
+    public function getImage(\Amasty\ShopbyBase\Api\Data\OptionSettingInterface $brand)
     {
         return $brand->getImageUrl()
             ? $brand->getImageUrl()
             : $this->imageHelper->getDefaultPlaceholderUrl();
+    }
+
+    public function getImageHelper(): ImageHelper
+    {
+        return $this->imageHelper;
     }
 }

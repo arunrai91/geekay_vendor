@@ -12,11 +12,12 @@ use Amasty\ShopbyBase\Model\FilterSetting\IsAddNofollow;
 use Amasty\ShopbyBase\Model\Integration\Shopby\GetSelectedFiltersSettings;
 use Amasty\ShopbyBase\Model\Integration\Shopby\IsBrandPage;
 use Amasty\ShopbyBase\Model\Integration\ShopbySeo\GetConfigProvider;
+use Amasty\ShopbyBase\Model\Integration\ShopbySeo\Request\GetRobotsRegistry;
 use Amasty\ShopbyBase\Test\Unit\Traits;
 use Amasty\ShopbySeo\Model\ConfigProvider;
+use Amasty\ShopbySeo\Model\Request\RobotsRegistry;
 use Amasty\ShopbySeo\Model\Source\IndexMode;
 use Amasty\ShopbySeo\Model\Source\RelNofollow;
-use Magento\Framework\Registry;
 
 /**
  * Class IsAddNofollowTest
@@ -50,11 +51,19 @@ class IsAddNofollowTest extends \PHPUnit\Framework\TestCase
         $configProvider->expects($this->any())->method('isEnableRelNofollow')->willReturn($enableRelNofollow);
         $getConfigProvider->expects($this->any())->method('execute')->willReturn($configProvider);
 
+        $getRobotsRegistry = $this->createMock(GetRobotsRegistry::class);
+        $robotsRegistry = $this->createMock(RobotsRegistry::class);
+        $robotsRegistry->expects($this->any())->method('get')->willReturn($isPageNofollow);
+        $getRobotsRegistry->expects($this->any())->method('execute')->willReturn($robotsRegistry);
+
         $getSelectedFiltersSettings = $this->createMock(GetSelectedFiltersSettings::class);
         $isBrandPage = $this->createMock(IsBrandPage::class);
-        $registry = $this->createMock(Registry::class);
-        $registry->expects($this->any())->method('registry')->willReturn($isPageNofollow);
-        $model = new IsAddNofollow($getConfigProvider, $getSelectedFiltersSettings, $isBrandPage, $registry);
+        $model = new IsAddNofollow(
+            $getConfigProvider,
+            $getSelectedFiltersSettings,
+            $isBrandPage,
+            $getRobotsRegistry
+        );
 
         $actualResult = $model->execute($relNofollow, $followMode);
         $this->assertEquals($expectedResult, $actualResult);

@@ -87,8 +87,7 @@ class Cancel extends \CyberSource\Core\Action\CsrfIgnoringAction
 
             $order = $this->orderRepository->get($this->checkoutSession->getLastOrderId());
 
-            #if ($order->getState() == \Magento\Sales\Model\Order::STATE_PENDING_PAYMENT) {
-            if (in_array($order->getState(),['pending_payment','canceled'])) {
+            if ($order->getState() == \Magento\Sales\Model\Order::STATE_PENDING_PAYMENT) {
                 $order->cancel();
                 $this->orderRepository->save($order);
 

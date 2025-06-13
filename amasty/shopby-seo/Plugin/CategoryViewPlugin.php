@@ -8,16 +8,16 @@
 namespace Amasty\ShopbySeo\Plugin;
 
 use Amasty\ShopbySeo\Helper\Meta;
+use Magento\Framework\App\ActionInterface;
 use Magento\Framework\View\Result\Page;
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\Controller\ResultInterface;
 
 class CategoryViewPlugin
 {
     /**
-     * @var  Meta
+     * @var Meta
      */
-    protected $metaHelper;
+    private $metaHelper;
 
     public function __construct(Meta $metaHelper)
     {
@@ -25,11 +25,13 @@ class CategoryViewPlugin
     }
 
     /**
-     * @param Action $subject
+     * @param ActionInterface $subject
      * @param Page $result
      * @return ResultInterface
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function afterExecute(Action $subject, $result)
+    public function afterExecute(ActionInterface $subject, $result)
     {
         if ($result instanceof Page) {
             $this->metaHelper->setPageTags($result->getConfig());

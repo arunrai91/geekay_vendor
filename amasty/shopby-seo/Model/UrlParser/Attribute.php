@@ -23,12 +23,12 @@ class Attribute
     /**
      * @var  Data
      */
-    protected $seoHelper;
+    private $seoHelper;
 
     /**
      * @var string
      */
-    protected $aliasDelimiter;
+    private $aliasDelimiter;
 
     /**
      * @var AliasesParserRecursive

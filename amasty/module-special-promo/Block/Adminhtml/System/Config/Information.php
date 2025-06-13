@@ -65,8 +65,8 @@ class Information extends Fieldset
         Session $authSession,
         Js $jsHelper,
         array $data = [],
-        Manager $moduleManager = null, // TODO move to not optional
-        ProductMetadataInterface $productMetadata = null, // TODO move to not optional
+        ?Manager $moduleManager = null, // TODO move to not optional
+        ?ProductMetadataInterface $productMetadata = null, // TODO move to not optional
         array $suggestModules = []
     ) {
         parent::__construct($context, $authSession, $jsHelper, $data);

@@ -14,8 +14,8 @@ class MetaTitle extends Source\AbstractFilterDataPosition implements \Magento\Fr
     /**
      * @return void
      */
-    protected function _setLabel()
+    public function initLabel()
     {
-        $this->_label = __('Meta-Title');
+        $this->setLabel(__('Meta-Title'));
     }
 }

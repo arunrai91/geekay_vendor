@@ -21,6 +21,7 @@ use Magento\Catalog\Model\Category as CategoryModel;
 use Magento\Catalog\Model\ResourceModel\Category\Collection as CategoryCollection;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Category\Flat\Collection as CategoryFlatCollection;
+use Magento\Catalog\Model\ResourceModel\Category\Flat\CollectionFactory as CategoryFlatCollectionFactory;
 use Magento\Framework\App\CacheInterface;
 use Magento\Framework\App\ProductMetadata;
 use Magento\Framework\App\ProductMetadataInterface;
@@ -40,6 +41,11 @@ class ExtendedCategoryCollection
      * @var CategoryCollectionFactory
      */
     private $categoryCollectionFactory;
+
+    /**
+     * @var CategoryFlatCollectionFactory
+     */
+    private CategoryFlatCollectionFactory $categoryFlatCollectionFactory;
 
     /**
      * @var CategoryRepositoryInterface
@@ -83,6 +89,7 @@ class ExtendedCategoryCollection
 
     public function __construct(
         CategoryCollectionFactory $categoryCollectionFactory,
+        CategoryFlatCollectionFactory $categoryFlatCollectionFactory,
         CategoryRepositoryInterface $categoryRepository,
         CategoryManager $categoryManager,
         CategoryHelper $categoryHelper,
@@ -93,6 +100,7 @@ class ExtendedCategoryCollection
         Serializer $serializer
     ) {
         $this->categoryCollectionFactory = $categoryCollectionFactory;
+        $this->categoryFlatCollectionFactory = $categoryFlatCollectionFactory;
         $this->categoryRepository = $categoryRepository;
         $this->categoryManager = $categoryManager;
         $this->categoryHelper = $categoryHelper;
@@ -116,7 +124,7 @@ class ExtendedCategoryCollection
         $collection = $this->getExtendedCategoryCollection($filter);
         $currentCategoryParents = $filter->getLayer()->getCurrentCategory()->getParentIds();
         foreach ($collection as $category) {
-            $isAllowed = $this->isAllowedOnEnterprise($category);
+            $isAllowed = $category->getIsActive() && $this->isAllowedOnEnterprise($category);
             if (!$isAllowed
                 || (
                     !$filter->isRenderAllTree()
@@ -133,7 +141,8 @@ class ExtendedCategoryCollection
                 CategoryDataInterface::PARENT_PATH => $category->getParentPath(),
                 CategoryDataInterface::LABEL => $this->escaper->escapeHtml($category->getName()),
                 CategoryDataInterface::ID => (int)$category->getId(),
-                CategoryDataInterface::PERMISSIONS => $category->getPermissions() ?? []
+                CategoryDataInterface::PERMISSIONS => $category->getPermissions() ?? [],
+                CategoryDataInterface::REQUEST_PATH => $category->getRequestPath()
             ];
             $categories[] = $categoryData;
         }
@@ -158,7 +167,7 @@ class ExtendedCategoryCollection
         $excludedCategoryIds = $this->getExcludedCategoryIds($filter);
         if ($excludedCategoryIds && in_array($startCategory->getId(), $excludedCategoryIds)) {
             /** @var CategoryCollection $emptyCollection */
-            $emptyCollection = $startCategory->getCollection();
+            $emptyCollection = $this->categoryCollectionFactory->create();
             $emptyCollection->getSelect()->where('null');
 
             return $emptyCollection;
@@ -167,9 +176,15 @@ class ExtendedCategoryCollection
         $minLevel = $startCategory->getLevel();
         $maxLevel = $minLevel + $filter->getCategoriesTreeDept();
 
-        /** @var CategoryCollection|CategoryFlatCollection $collection */
-        $collection = $startCategory->getCollection();
-        $isFlat = $collection instanceof CategoryFlatCollection;
+        $isFlat = false;
+        if ($startCategory->getUseFlatResource()) {
+            /** @var CategoryFlatCollection $collection */
+            $collection = $this->categoryFlatCollectionFactory->create();
+            $isFlat = true;
+        } else {
+            /** @var CategoryCollection $collection */
+            $collection = $this->categoryCollectionFactory->create();
+        }
         $mainTablePrefix = $isFlat ? 'main_table.' : '';
         $collection->addAttributeToSelect('name')
             ->addAttributeToFilter($mainTablePrefix . 'is_active', 1)
@@ -187,6 +202,7 @@ class ExtendedCategoryCollection
         if (!$filter->isRenderAllTree()) {
             $collection->addFieldToFilter($mainTablePrefix . 'level', ['lteq' => $maxLevel]);
         }
+        $collection->addUrlRewriteToResult();
 
         $mainTablePrefix = $isFlat ? 'main_table.' : 'e.';
         $collection->getSelect()->joinLeft(

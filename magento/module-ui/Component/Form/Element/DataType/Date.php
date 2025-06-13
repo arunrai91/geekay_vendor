@@ -124,8 +124,7 @@ class Date extends AbstractDataType
     {
         try {
             $date = $this->convertDateFormat($date);
-            #$dateObj = $this->localeDate->date($date, $this->getLocale(), false, false);
-            $dateObj = $this->localeDate->date($date, $this->getLocale(), true);
+            $dateObj = $this->localeDate->date($date, $this->getLocale(), false, false);
             $dateObj->setTime($hour, $minute, $second);
             //convert store date to default date in UTC timezone without DST
             if ($setUtcTimeZone) {

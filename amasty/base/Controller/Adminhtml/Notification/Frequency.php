@@ -9,6 +9,7 @@ namespace Amasty\Base\Controller\Adminhtml\Notification;
 
 use Amasty\Base\Model\Config;
 use Magento\Backend\App\Action;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Redirect;
 
 class Frequency extends Action
@@ -23,12 +24,18 @@ class Frequency extends Action
      */
     private $frequency;
 
+    /**
+     * @var RequestInterface
+     */
+    private $request;
+
     public function __construct(
         Action\Context $context,
         Config $config,
         \Amasty\Base\Model\Source\Frequency $frequency
     ) {
         parent::__construct($context);
+        $this->request = $context->getRequest();
         $this->config = $config;
         $this->frequency = $frequency;
     }
@@ -38,7 +45,7 @@ class Frequency extends Action
      */
     public function execute()
     {
-        $action = $this->getRequest()->getParam('action');
+        $action = $this->request->getParam('action');
 
         switch ($action) {
             case 'less':
@@ -55,9 +62,7 @@ class Frequency extends Action
                 );
         }
 
-        $resultRedirect = $this->resultRedirectFactory->create();
-
-        return $resultRedirect->setRefererUrl();
+        return $this->resultRedirectFactory->create()->setRefererUrl();
     }
 
     protected function _isAllowed()
@@ -67,7 +72,7 @@ class Frequency extends Action
         );
     }
 
-    protected function decreaseFrequency()
+    private function decreaseFrequency()
     {
         $currentValue = $this->config->getCurrentFrequencyValue();
         $allValues = $this->frequency->toOptionArray();
@@ -91,7 +96,7 @@ class Frequency extends Action
         );
     }
 
-    protected function increaseFrequency()
+    private function increaseFrequency()
     {
         $currentValue = $this->config->getCurrentFrequencyValue();
         $allValues = $this->frequency->toOptionArray();

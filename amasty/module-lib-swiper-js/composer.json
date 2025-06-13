@@ -3,11 +3,11 @@
     "description": "Lib Swiper Js by Amasty",
     "require": {
         "php": ">=7.3",
-        "amasty/base": ">=1.14.6"
+        "amasty/base": ">=1.19.1"
     },
     "homepage": "https://amasty.com/",
     "type": "magento2-module",
-    "version": "9.1.1",
+    "version": "9.2.0",
     "license": "proprietary",
     "autoload": {
         "files": [

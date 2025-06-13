@@ -7,14 +7,16 @@
 
 namespace Amasty\Shopby\Model\Layer\Filter\IsNew;
 
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+
 class Helper
 {
     /**
-     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     * @var TimezoneInterface
      */
-    protected $localeDate;
+    private TimezoneInterface $localeDate;
 
-    public function __construct(\Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate)
+    public function __construct(TimezoneInterface $localeDate)
     {
         $this->localeDate = $localeDate;
     }

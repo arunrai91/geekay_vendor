@@ -16,8 +16,6 @@ use Amasty\Shopby\Model\Layer\Filter\Category as CategoryFilter;
 use Amasty\ShopbyBase\Model\FilterSetting\IsMultiselect;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\Framework\App\Helper\Context;
-use Magento\Framework\Registry;
-use Amasty\ShopbyBase\Helper\Data as BaseData;
 
 class UrlBuilder extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -25,11 +23,6 @@ class UrlBuilder extends \Magento\Framework\App\Helper\AbstractHelper
      * @var FilterSetting
      */
     private $filterSettingHelper;
-
-    /**
-     * @var Registry
-     */
-    private $registry;
 
     /**
      * @var FilterInterface
@@ -62,7 +55,6 @@ class UrlBuilder extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function __construct(
         Context $context,
-        Registry $registry,
         FilterSetting $filterSettingHelper,
         Category $categoryHelper,
         UrlBuilderInterface $urlBuilder,
@@ -70,7 +62,6 @@ class UrlBuilder extends \Magento\Framework\App\Helper\AbstractHelper
         array $excludedSingleSelectCategoryActions = []
     ) {
         parent::__construct($context);
-        $this->registry = $registry;
         $this->filterSettingHelper = $filterSettingHelper;
         $this->categoryHelper = $categoryHelper;
         $this->amUrlBuilder = $urlBuilder;
@@ -155,19 +146,13 @@ class UrlBuilder extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function buildQuery(FilterInterface $filter, $resultValue)
     {
-        $query = $this->registry->registry(BaseData::SHOPBY_SEO_PARSED_PARAMS);
-        if (!is_array($query)) {
-            $query = [];
-        }
-        $query[$filter->getRequestVar()] = $resultValue;
-
-        return $query;
+        return [$filter->getRequestVar() => $resultValue];
     }
 
     /**
      * @return array
      */
-    protected function getCurrentValues()
+    private function getCurrentValues()
     {
         $filterCode = $this->filter->getRequestVar();
 
@@ -197,7 +182,7 @@ class UrlBuilder extends \Magento\Framework\App\Helper\AbstractHelper
      * @param array $currentValues
      * @return string|null
      */
-    protected function calculateResultValue($optionValue, array $currentValues)
+    private function calculateResultValue($optionValue, array $currentValues)
     {
         if ($optionValue === null || is_array($optionValue)) {
             return null;

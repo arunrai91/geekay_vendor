@@ -39,9 +39,11 @@ class Deprecation implements EventSubscriberInterface
             return;
         }
 
-        foreach (array_count_values($messages) as $msg => $count) {
-            $msg = $count > 1 ? "{$count}x {$msg}" : $msg;
-            $this->output->notification($msg);
+        foreach (array_count_values($messages) as $message => $count) {
+            if ($count > 1) {
+                $message = $count . 'x ' . $message;
+            }
+            $this->output->notification($message);
         }
         $this->output->writeln('');
     }

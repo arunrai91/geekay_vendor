@@ -22,11 +22,12 @@ class Bootstrap implements EventSubscriberInterface
 
     public function loadBootstrap(SuiteEvent $event): void
     {
-        $settings  = $event->getSettings();
-        $bootstrap = $settings['bootstrap'] ?? '';
-        if ($bootstrap === '') {
+        $settings = $event->getSettings();
+
+        if (!isset($settings['bootstrap'])) {
             return;
         }
-        Configuration::loadBootstrap($bootstrap, $settings['path']);
+
+        Configuration::loadBootstrap($settings['bootstrap'], $settings['path']);
     }
 }

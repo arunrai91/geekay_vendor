@@ -50,7 +50,7 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $this->product = $this->createMock(ProductModel::class);
         $this->collection = $this->createMock(Collection::class);
         $resource = $this->getMockBuilder(\Magento\Framework\Model\ResourceModel\Db\AbstractDb::class)
-            ->setMethods(['getAttributeRawValue', 'getAttribute', 'getFrontendInput'])
+            ->addMethods(['getAttributeRawValue', 'getAttribute', 'getFrontendInput'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 

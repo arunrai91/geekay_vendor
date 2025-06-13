@@ -61,7 +61,7 @@ class Product
         StoreManagerInterface $storeManager,
         AdapterFactory $adapterFactory,
         SharedCatalog $sharedCatalog,
-        SortOrderBuilder $sortOrderBuilder = null
+        ?SortOrderBuilder $sortOrderBuilder = null
     ) {
         $this->config = $config;
         $this->requestBuilderFactory = $requestBuilderFactory;

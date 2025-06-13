@@ -156,6 +156,7 @@ Price,Price
 "Custom Fields","Custom Fields"
 "Invalid field","Invalid field"
 "Unknown condition operator","Unknown condition operator"
+"Group Validator %1 must implement %2 interface","Group Validator %1 must implement %2 interface"
 "No additional discounts (including coupons)
                             can be applied to products from bundle pack.","No additional discounts (including coupons)
                             can be applied to products from bundle pack."

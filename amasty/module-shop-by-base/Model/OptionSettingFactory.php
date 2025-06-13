@@ -8,20 +8,18 @@
 namespace Amasty\ShopbyBase\Model;
 
 use Amasty\ShopbyBase\Api\Data\OptionSettingInterface;
+use Magento\Framework\ObjectManagerInterface;
 
 class OptionSettingFactory
 {
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
-    protected $_objectManager;
+    private ObjectManagerInterface $objectManager;
 
-    /**
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     */
-    public function __construct(\Magento\Framework\ObjectManagerInterface $objectManager)
+    public function __construct(ObjectManagerInterface $objectManager)
     {
-        $this->_objectManager = $objectManager;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -33,6 +31,6 @@ class OptionSettingFactory
      */
     public function create(array $arguments = [])
     {
-        return $this->_objectManager->create(OptionSettingInterface::class, $arguments);
+        return $this->objectManager->create(OptionSettingInterface::class, $arguments);
     }
 }

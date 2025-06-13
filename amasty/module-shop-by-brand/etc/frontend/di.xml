@@ -148,4 +148,13 @@
             <argument name="shopBySeoConfig" xsi:type="object">AmastyWrapper\ShopbySeo\Helper\Config</argument>
         </arguments>
     </type>
+
+    <type name="Amasty\ElasticSearch\Model\Search\GetRequestQuery\GetAggregations">
+        <plugin name="Amasty_ShopbyBrand::SetBrandBucketSize"
+                type="Amasty\ShopbyBrand\Plugin\ElasticSearch\Model\Search\GetRequestQuery\GetAggregations\SetBrandBucketSize" />
+    </type>
+    <type name="Magento\Elasticsearch\SearchAdapter\Query\Builder\Aggregation">
+        <plugin name="Amasty_ShopbyBrand::SetBrandBucketSize"
+                type="Amasty\ShopbyBrand\Plugin\Elasticsearch\SearchAdapter\Query\Builder\Aggregation\SetBrandBucketSize" />
+    </type>
 </config>

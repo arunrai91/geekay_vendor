@@ -13,7 +13,8 @@
             "AMASTY_BANNERS_LITE_BANNER_DATA_SALESRULE_ID": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "AMASTY_BANNERS_LITE_BANNER_DATA_SALESRULE_ID_BANNER_TYPE": true
         }
     },
     "amasty_banners_lite_rule": {

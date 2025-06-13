@@ -170,7 +170,7 @@ class RelevanceRule extends \Magento\Framework\Model\AbstractModel implements Re
      * @param array|null $conditions
      * @return string
      */
-    public function getConditionsSerialized(array $conditions = null)
+    public function getConditionsSerialized(?array $conditions = null)
     {
         if ($conditions === null) {
             $catalogRule = $this->getCatalogRule();

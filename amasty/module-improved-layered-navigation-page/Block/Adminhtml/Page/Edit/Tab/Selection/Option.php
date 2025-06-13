@@ -21,19 +21,19 @@ class Option extends Widget implements RendererInterface
     protected $_template = 'attribute/option.phtml';
 
     /**
-     * @var AbstractAttribute
+     * @var AbstractAttribute|null
      */
-    protected $_eavAttribute;
+    private ?AbstractAttribute $eavAttribute = null;
 
     /**
-     * @var  int
+     * @var int|null
      */
-    protected $_attributeIdx;
+    private ?int $attributeIdx = null;
 
     /**
      * @var  mixed
      */
-    protected $_attributeValue;
+    private $attributeValue;
 
     public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
@@ -49,11 +49,11 @@ class Option extends Widget implements RendererInterface
     {
         $block = $this->getLayout()
             ->createBlock(\Amasty\ShopbyPage\Block\Adminhtml\Page\Edit\Tab\Selection\Value::class)
-            ->setEavAttributeValue($this->_attributeValue)
-            ->setEavAttributeIdx($this->_attributeIdx);
+            ->setEavAttributeValue($this->attributeValue)
+            ->setEavAttributeIdx($this->attributeIdx);
 
-        if ($this->_eavAttribute) {
-            $block->setEavAttribute($this->_eavAttribute);
+        if ($this->eavAttribute) {
+            $block->setEavAttribute($this->eavAttribute);
         }
 
         return $block->toHtml();
@@ -65,7 +65,7 @@ class Option extends Widget implements RendererInterface
      */
     public function setEavAttribute(AbstractAttribute $attribute)
     {
-        $this->_eavAttribute = $attribute;
+        $this->eavAttribute = $attribute;
         return $this;
     }
 
@@ -75,7 +75,7 @@ class Option extends Widget implements RendererInterface
      */
     public function setEavAttributeIdx($idx)
     {
-        $this->_attributeIdx = $idx;
+        $this->attributeIdx = (int)$idx;
         return $this;
     }
 
@@ -85,7 +85,7 @@ class Option extends Widget implements RendererInterface
      */
     public function setEavAttributeValue($value)
     {
-        $this->_attributeValue = $value;
+        $this->attributeValue = $value;
         return $this;
     }
 }

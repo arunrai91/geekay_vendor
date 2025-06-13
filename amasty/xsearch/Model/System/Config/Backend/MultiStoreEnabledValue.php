@@ -23,7 +23,7 @@ class MultiStoreEnabledValue extends \Magento\Framework\App\Config\Value
     /**
      * @var ModuleManager
      */
-    private $moduleManager;
+    private ModuleManager $moduleManager;
 
     public function __construct(
         ModuleManager $moduleManager,
@@ -31,8 +31,8 @@ class MultiStoreEnabledValue extends \Magento\Framework\App\Config\Value
         Registry $registry,
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);

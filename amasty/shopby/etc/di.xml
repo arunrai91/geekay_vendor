@@ -227,25 +227,9 @@
         </arguments>
     </type>
 
-    <type name="Magento\CatalogSearch\Model\Adapter\Mysql\Aggregation\DataProvider">
-        <plugin name="Amasty_Shopby::stockAndRatingAggregation"
-                type="Amasty\Shopby\Plugin\CatalogSearch\Model\Adapter\Mysql\Aggregation\DataProvider\GetDataSet"/>
-    </type>
-
     <type name="Magento\CatalogSearch\Model\Search\IndexBuilder">
         <plugin name="Amasty_Shopby::ApplyCustomFiltersToBaseSearchSelect"
                 type="Amasty\Shopby\Plugin\CatalogSearch\Model\Search\IndexBuilder\ApplyCustomFilters"/>
-    </type>
-
-    <!-- Mysql mapper used in Magento 2.3.x. Remove after end of support 2.3 -->
-    <type name="Magento\Framework\Search\Adapter\Mysql\Mapper">
-        <plugin name="Amasty_Shopby::resolve_stock_filter"
-                type="Amasty\Shopby\Plugin\Framework\Search\Adapter\Mysql\MapperPlugin"/>
-    </type>
-
-    <type name="Magento\CatalogSearch\Model\Adapter\Mysql\Filter\Preprocessor">
-        <plugin name="Amasty_Shopby::PrepareWhereCauseForCustomFilters"
-                type="Amasty\Shopby\Plugin\CatalogSearch\Model\Adapter\Mysql\Filter\Preprocessor"/>
     </type>
 
     <type name="Amasty\Shopby\Model\ResourceModel\Fulltext\Collection">
@@ -323,17 +307,6 @@
             <argument name="defaultStockProvider" xsi:type="object">amInventoryDefaultStockProvider</argument>
             <argument name="stockIndexTableNameResolver"
                       xsi:type="object">amInventoryStockIndexTableNameResolver</argument>
-        </arguments>
-    </type>
-
-    <type name="Amasty\Shopby\Model\Search\DataProvider\Aggregation\CustomFilterPool">
-        <arguments>
-            <argument name="operationPool" xsi:type="array">
-                <item name="stock_status" xsi:type="object">Amasty\Shopby\Model\Search\DataProvider\Aggregation\CustomFilterPool\StockStatus</item>
-                <item name="rating_summary" xsi:type="object">Amasty\Shopby\Model\Search\DataProvider\Aggregation\CustomFilterPool\Rating</item>
-                <item name="am_is_new" xsi:type="object">Amasty\Shopby\Model\Search\DataProvider\Aggregation\CustomFilterPool\IsNew</item>
-                <item name="am_on_sale" xsi:type="object">Amasty\Shopby\Model\Search\DataProvider\Aggregation\CustomFilterPool\OnSale</item>
-            </argument>
         </arguments>
     </type>
 
@@ -425,11 +398,5 @@
     <type name="Magento\Framework\Search\Request\Config\FilesystemReader">
         <plugin name="Amasty_Shopby::PriceCustomAlgorithm"
                 type="Amasty\Shopby\Plugin\Framework\Search\Request\Config\FilesystemReader\CustomAlgorithmModifier"/>
-    </type>
-    <type name="Amasty\Shopby\Model\Source\ChildrenCategoriesBlock\Categories">
-        <arguments>
-            <argument name="source"
-                      xsi:type="object">Amasty\Base\Model\Source\ActiveWithEmptyOptionCategory</argument>
-        </arguments>
     </type>
 </config>

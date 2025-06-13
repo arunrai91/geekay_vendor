@@ -33,7 +33,7 @@ class Comment extends CodeceptionStep
 
     public function run(?ModuleContainer $container = null): void
     {
-        // no-op
+        // don't do anything, let's rest
     }
 
     public function getPrefix(): string

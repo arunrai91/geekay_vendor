@@ -13,6 +13,9 @@ use Amasty\BannersLite\Api\Data\BannerInterface;
 use Amasty\BannersLite\Api\Data\BannerRuleInterface;
 use Amasty\BannersLite\Model\BannerFactory;
 use Amasty\BannersLite\Model\BannerRuleFactory;
+use Magento\Framework\App\Area;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\State;
 use Magento\Framework\EntityManager\MetadataPool;
 use Magento\Framework\EntityManager\Operation\ExtensionInterface;
 use Magento\SalesRule\Api\Data\RuleInterface as SalesRuleInterface;
@@ -44,18 +47,25 @@ class ReadHandler implements ExtensionInterface
      */
     private $bannerRuleFactory;
 
+    /**
+     * @var State
+     */
+    private State $appState;
+
     public function __construct(
         BannerRepositoryInterface $bannerRepository,
         MetadataPool $metadataPool,
         BannerFactory $bannerFactory,
         BannerRuleRepositoryInterface $bannerRuleRepository,
-        BannerRuleFactory $bannerRuleFactory
+        BannerRuleFactory $bannerRuleFactory,
+        ?State $appState = null // TODO move to not optional
     ) {
         $this->bannerRepository = $bannerRepository;
         $this->metadataPool = $metadataPool;
         $this->bannerFactory = $bannerFactory;
         $this->bannerRuleRepository = $bannerRuleRepository;
         $this->bannerRuleFactory = $bannerRuleFactory;
+        $this->appState = $appState ?? ObjectManager::getInstance()->get(State::class);
     }
 
     /**
@@ -69,6 +79,9 @@ class ReadHandler implements ExtensionInterface
      */
     public function execute($entity, $arguments = [])
     {
+        if ($this->appState->getAreaCode() === Area::AREA_FRONTEND) {
+            return $entity;
+        }
         $linkField = $this->metadataPool->getMetadata(SalesRuleInterface::class)->getLinkField();
         $ruleLinkId = $entity->getDataByKey($linkField);
 

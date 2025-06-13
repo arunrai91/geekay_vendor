@@ -48,8 +48,8 @@ class CronExpr extends Value
         TypeListInterface $cacheTypeList,
         ValueFactory $configValueFactory,
         LoggerInterface $logger,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         $runModelPath = '',
         array $data = []
     ) {

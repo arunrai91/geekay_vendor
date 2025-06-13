@@ -7,17 +7,18 @@
 
 namespace Amasty\ShopbyPage\Block\Adminhtml\Page\Edit\Tab;
 
-use Amasty\ShopbyPage\Controller\RegistryConstants;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form as WidgetForm;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Element\ElementCreator;
 use Amasty\ShopbyPage\Model\Config\Source\Position as SourcePosition;
-use Magento\Backend\Block\Widget\Form\Generic;
+use Amasty\ShopbyPage\Model\Page\ImagesManager;
+use Amasty\ShopbyPage\Model\Request\Page\Registry as PageRegistry;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Data\FormFactory;
-use Magento\Framework\Registry;
 use Magento\Catalog\Model\Category\Attribute\Source\Page as CategoryAttributeSourcePage;
 use Magento\Framework\Api\ExtensibleDataObjectConverter;
 
-class Text extends Generic implements TabInterface
+class Text extends WidgetForm implements TabInterface
 {
     /**
      * @var CategoryAttributeSourcePage
@@ -39,21 +40,35 @@ class Text extends Generic implements TabInterface
      */
     private $wysiwygConfig;
 
+    /**
+     * @var PageRegistry
+     */
+    private PageRegistry $pageRegistry;
+
+    /**
+     * @var ImagesManager
+     */
+    private ImagesManager $imagesManager;
+
     public function __construct(
-        Context $context,
-        Registry $registry,
-        FormFactory $formFactory,
         CategoryAttributeSourcePage $categoryAttributeSourcePage,
         ExtensibleDataObjectConverter $extensibleDataObjectConverter,
         SourcePosition $sourcePosition,
         \Magento\Cms\Model\Wysiwyg\Config $wysiwygConfig,
+        ImagesManager $imagesManager,
+        PageRegistry $pageRegistry,
+        FormFactory $formFactory,
+        ElementCreator $creator,
+        Context $context,
         array $data = []
     ) {
         $this->categoryAttributeSourcePage = $categoryAttributeSourcePage;
         $this->extensibleDataObjectConverter = $extensibleDataObjectConverter;
         $this->sourcePosition = $sourcePosition;
         $this->wysiwygConfig = $wysiwygConfig;
-        parent::__construct($context, $registry, $formFactory, $data);
+        $this->imagesManager = $imagesManager;
+        $this->pageRegistry = $pageRegistry;
+        parent::__construct($formFactory, $creator, $context, $data);
     }
 
     /**
@@ -92,19 +107,14 @@ class Text extends Generic implements TabInterface
         return false;
     }
 
-    /**
-     * Prepare form
-     *
-     * @return $this
-     */
-    protected function _prepareForm()
+    public function prepareForm(): Text
     {
         /** @var \Magento\Framework\Data\Form $form */
-        $form = $this->_formFactory->create();
+        $form = $this->getDataFormFactory()->create();
         $form->setHtmlIdPrefix('amasty_shopbypage_');
 
         /** @var \Amasty\ShopbyPage\Api\Data\PageInterface $model */
-        $model = $this->_coreRegistry->registry(RegistryConstants::PAGE);
+        $model = $this->pageRegistry->get();
 
         $fieldset = $form->addFieldset(
             'page_fieldset',
@@ -149,14 +159,14 @@ class Text extends Generic implements TabInterface
         );
 
         $categoryImage = '';
-        if ($model->getImageUrl()) {
+        if ($model->getImage() && ($imageUrl = $this->imagesManager->getImageUrl($model->getImage()))) {
             $categoryImage = '
             <div>
             <br>
             <input type="checkbox" id="image_delete" name="image_delete" value="1" />
             <label for="image_delete">' . __('Delete Image') . '</label>
             <br>
-            <br><img src="' . $model->getImageUrl() . '" alt="' . __('Current Image') . '" /></div>';
+            <br><img src="' . $imageUrl . '" alt="' . __('Current Image') . '" /></div>';
         }
 
         $fieldset->addField(
@@ -194,7 +204,7 @@ class Text extends Generic implements TabInterface
         );
 
         $this->setForm($form);
-        parent::_prepareForm();
+        parent::prepareForm();
 
         return $this;
     }

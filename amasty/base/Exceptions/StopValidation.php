@@ -12,7 +12,7 @@ class StopValidation extends \Exception
     /**
      * @var array|bool
      */
-    protected $validateResult;
+    private $validateResult;
 
     /**
      * @param array|bool $validateResult

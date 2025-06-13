@@ -22,12 +22,12 @@ interface VisitHistoryManagerInterface
      *
      * @param string|null $sessionId
      */
-    public function endVisit(string $sessionId = null): void;
+    public function endVisit(?string $sessionId = null): void;
 
     /**
      * Clear whole Visit History storage.
      *
      * @param int|null $period
      */
-    public function clear(int $period = null): void;
+    public function clear(?int $period = null): void;
 }

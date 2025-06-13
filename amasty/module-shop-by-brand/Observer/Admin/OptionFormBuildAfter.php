@@ -15,7 +15,6 @@ use Amasty\ShopbyBrand\Model\ConfigProvider;
 use Magento\Catalog\Model\Category\Attribute\Source\Page;
 use Magento\Cms\Model\Wysiwyg\Config;
 use Magento\Config\Model\Config\Source\Yesno as YesNoSource;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Data\Form;
 use Magento\Framework\Event\ObserverInterface;
 
@@ -53,13 +52,13 @@ class OptionFormBuildAfter implements ObserverInterface
         ConfigProvider $configProvider,
         Config $wysiwygConfig,
         UrlResolver $optionsUrlResolver,
-        YesNoSource $yesnoSource = null// TODO move to not optional
+        YesNoSource $yesnoSource
     ) {
         $this->page = $page;
         $this->wysiwygConfig = $wysiwygConfig;
         $this->configProvider = $configProvider;
         $this->optionsUrlResolver = $optionsUrlResolver;
-        $this->yesnoSource = $yesnoSource ?? ObjectManager::getInstance()->get(YesNoSource::class);
+        $this->yesnoSource = $yesnoSource;
     }
 
     /**

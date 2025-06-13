@@ -104,7 +104,7 @@ class AdditionalBatchDataMapper
     {
         /** @var DataMapperInterface|StockStatus $mapper */
         foreach ($this->getDataMappersForStore($storeId) as $mapper) {
-            if (method_exists($mapper, 'preloadCacheData')) {
+            if (method_exists($mapper, 'clearCacheData')) {
                 $mapper->clearCacheData();
             }
         }

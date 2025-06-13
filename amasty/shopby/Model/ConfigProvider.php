@@ -32,6 +32,7 @@ class ConfigProvider extends \Amasty\Base\Model\ConfigProviderAbstract
     public const CATEGORY_FILTER_POSITION = 'category_filter/position';
     public const AJAX_ENABLED = 'general/ajax_enabled';
     public const UNFOLDED_OPTIONS_STATE = 'general/unfolded_options_state';
+    public const CHILDREN_CATEGORIES_INFINITY_LOOP = 'children_categories/infinity_loop';
 
     /**
      * @var string
@@ -68,7 +69,7 @@ class ConfigProvider extends \Amasty\Base\Model\ConfigProviderAbstract
         return $this->isSetFlag(self::KEEP_SINGLE_CHOICE_VISIBLE);
     }
 
-    public function isStockFilterEnabled(int $storeId = null): bool
+    public function isStockFilterEnabled(?int $storeId = null): bool
     {
         return $this->isSetFlag(self::STOCK_FILTER_ENABLED, $storeId);
     }
@@ -103,7 +104,7 @@ class ConfigProvider extends \Amasty\Base\Model\ConfigProviderAbstract
         return $this->getValue('stock_filter');
     }
 
-    public function isStockByReservedQty(int $storeId = null): bool
+    public function isStockByReservedQty(?int $storeId = null): bool
     {
         return $this->isSetFlag('stock_filter/use_salable_qty', $storeId);
     }
@@ -177,5 +178,10 @@ class ConfigProvider extends \Amasty\Base\Model\ConfigProviderAbstract
     public function getUnfoldedCount(): int
     {
         return (int)$this->getValue(self::UNFOLDED_OPTIONS_STATE);
+    }
+
+    public function isCategoryInfinityLoop(): bool
+    {
+        return $this->isSetFlag(self::CHILDREN_CATEGORIES_INFINITY_LOOP);
     }
 }

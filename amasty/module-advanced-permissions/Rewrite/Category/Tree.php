@@ -45,7 +45,7 @@ class Tree extends \Magento\Catalog\Block\Adminhtml\Category\Tree
         \Amasty\Rolepermissions\Helper\Data $helper,
         \Magento\Framework\Json\DecoderInterface $jsonDecoder,
         array $data = [],
-        ProductMetadataInterface $productMetadata = null //ToDo: move to not optional
+        ?ProductMetadataInterface $productMetadata = null //ToDo: move to not optional
     ) {
         $this->helper = $helper;
         $this->jsonDecoder = $jsonDecoder;

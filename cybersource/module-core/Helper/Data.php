@@ -62,7 +62,6 @@ class Data extends AbstractDataBuilder
         'total_tax_amount',
         'sa_type',
         'method_name',
-        'payment_method',
         'authorize',
         'capture'
     ];

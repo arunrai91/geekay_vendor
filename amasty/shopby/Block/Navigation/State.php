@@ -36,22 +36,22 @@ class State extends \Magento\LayeredNavigation\Block\Navigation\State
     /**
      * @var FilterSetting
      */
-    protected $filterSettingHelper;
+    private $filterSettingHelper;
 
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
-    protected $managerInterface;
+    private $managerInterface;
 
     /**
      * @var PriceCurrencyInterface
      */
-    protected $priceCurrency;
+    private $priceCurrency;
 
     /**
      * @var ShopbyHelper
      */
-    protected $helper;
+    private $helper;
 
     /**
      * @var BlockFactory
@@ -199,7 +199,7 @@ class State extends \Magento\LayeredNavigation\Block\Navigation\State
      * @param Item $filter
      * @return string
      */
-    protected function viewExtendedLabel($filter)
+    private function viewExtendedLabel($filter)
     {
         if ($filter->getFilter()->getRequestVar() == \Amasty\Shopby\Model\Source\DisplayMode::ATTRUBUTE_PRICE) {
             $currencyRate = (float) $filter->getFilter()->getCurrencyRate();
@@ -226,13 +226,10 @@ class State extends \Magento\LayeredNavigation\Block\Navigation\State
         $arguments = $filterItem->getLabel()->getArguments();
         $filter = $filterItem->getFilter();
         $filterSetting = $this->filterResolver->resolveByFilter($filter);
-        $stepSlider = $filterSetting->getSliderStep();
 
         if (!isset($arguments[1])) {
             $arguments[1] = "";
         }
-
-        $currencySymbol = $this->escapeHtml($filter->getCurrencySymbol());
 
         $arguments[0] = preg_replace("/[^,.0-9]/", '', $arguments[0]);
         $arguments[1] = preg_replace("/[^,.0-9]/", '', $arguments[1]);

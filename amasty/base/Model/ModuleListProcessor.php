@@ -89,7 +89,7 @@ class ModuleListProcessor
      * @param string $moduleCode
      * @return array
      */
-    protected function getModuleInfo(string $moduleCode): array
+    private function getModuleInfo(string $moduleCode): array
     {
         $module = $this->moduleInfoProvider->getModuleInfo($moduleCode);
 
@@ -123,10 +123,9 @@ class ModuleListProcessor
 
     /**
      * @param string $moduleName
-     *
      * @return string
      */
-    protected function replaceAmastyText($moduleName)
+    private function replaceAmastyText($moduleName)
     {
         return str_replace(['for Magento 2', 'by Amasty'], '', $moduleName);
     }

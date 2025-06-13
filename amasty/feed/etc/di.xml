@@ -319,4 +319,13 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Amasty\Feed\Model\Rule\FilterProvider">
+        <arguments>
+            <argument name="filterTypes" xsi:type="array">
+                <item name="exclude" xsi:type="object">Amasty\Feed\Model\Rule\Filters\ExcludeFilter</item>
+                <item name="condition" xsi:type="object">Amasty\Feed\Model\Rule\Filters\ConditionFilter</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

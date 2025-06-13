@@ -3,12 +3,12 @@
     "description": "Admin Actions Log by Amasty",
     "require": {
         "php": ">=7.3",
-        "amasty/base": ">=1.17.0",
+        "amasty/base": ">=1.18.1",
         "amasty/geoip": "*",
         "d4h/finediff": "*"
     },
     "type": "magento2-module",
-    "version": "2.5.0",
+    "version": "2.6.0",
     "license": [
         "proprietary"
     ],

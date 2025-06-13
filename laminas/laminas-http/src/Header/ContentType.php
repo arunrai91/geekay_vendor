@@ -189,6 +189,7 @@ class ContentType implements HeaderInterface
     /**
      * Set additional content-type parameters
      *
+     * @param  array $parameters
      * @return $this
      */
     public function setParameters(array $parameters)

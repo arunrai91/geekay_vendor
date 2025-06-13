@@ -10,9 +10,9 @@ namespace Amasty\Shopby\Block\Product\ProductList;
 use Amasty\Shopby\Helper\Data;
 use Amasty\Shopby\Model\Config\MobileConfigResolver;
 use Amasty\ShopbyBase\Model\Detection\MobileDetect;
+use Amasty\ShopbyBase\Model\Request\Registry as ShopbyBaseRegistry;
 use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework\Module\Manager;
-use Magento\Framework\Registry;
 use Amasty\Shopby\Model\Layer\FilterList;
 use \Magento\Framework\DataObject\IdentityInterface;
 use \Magento\Catalog\Model\Product\ProductList\ToolbarMemorizer;
@@ -38,11 +38,6 @@ class Ajax extends \Magento\Framework\View\Element\Template implements IdentityI
     private $layer;
 
     /**
-     * @var Registry
-     */
-    private $registry;
-
-    /**
      * @var Manager
      */
     private $moduleManager;
@@ -62,25 +57,30 @@ class Ajax extends \Magento\Framework\View\Element\Template implements IdentityI
      */
     private $mobileConfigResolver;
 
+    /**
+     * @var ShopbyBaseRegistry
+     */
+    private ShopbyBaseRegistry $shopbyBaseRegistry;
+
     public function __construct(
         Context $context,
         Resolver $layerResolver,
         Data $helper,
-        Registry $registry,
         Manager $moduleManager,
         ToolbarMemorizer $toolbarMemorizer,
         MobileDetect $mobileDetect,
         MobileConfigResolver $mobileConfigResolver,
+        ShopbyBaseRegistry $shopbyBaseRegistry,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->layer = $layerResolver->get();
         $this->helper = $helper;
-        $this->registry = $registry;
         $this->moduleManager = $moduleManager;
         $this->toolbarMemorizer = $toolbarMemorizer;
         $this->mobileDetect = $mobileDetect;
         $this->mobileConfigResolver = $mobileConfigResolver;
+        $this->shopbyBaseRegistry = $shopbyBaseRegistry;
     }
 
     /**
@@ -124,7 +124,7 @@ class Ajax extends \Magento\Framework\View\Element\Template implements IdentityI
      *
      * @return array
      */
-    protected function getActiveFilters()
+    private function getActiveFilters()
     {
         $filters = $this->layer->getState()->getFilters();
         if (!is_array($filters)) {
@@ -150,7 +150,7 @@ class Ajax extends \Magento\Framework\View\Element\Template implements IdentityI
 
     public function isCategorySingleSelect(): int
     {
-        $allFilters = $this->registry->registry(FilterList::ALL_FILTERS_KEY, []);
+        $allFilters = $this->shopbyBaseRegistry->registry(FilterList::ALL_FILTERS_KEY, []);
         foreach ($allFilters as $filter) {
             if ($filter instanceof \Amasty\Shopby\Model\Layer\Filter\Category) {
                 return (int) !$filter->isMultiselect();

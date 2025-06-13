@@ -275,12 +275,6 @@ define([
                             item.value = self.normalizePrice(item.value);
                         }
 
-                        if (!ajaxOptions.isCategorySingleSelect
-                            && item.name === 'amshopby[cat][]'
-                            && +item.value === +ajaxOptions.currentCategoryId
-                        ) {
-                            return;// continue
-                        }
                         normalizedData.push(item);
 
                         if (ajaxOptions.isCategorySingleSelect === 1

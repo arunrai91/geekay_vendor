@@ -29,7 +29,7 @@ class Quote extends Template
         Template\Context $context,
         CartRepositoryInterface $cartRepository,
         array $data = [],
-        ConfigProvider $configProvider = null // TODO move to not optional
+        ?ConfigProvider $configProvider = null // TODO move to not optional
     ) {
         parent::__construct($context, $data);
         $this->cartRepository = $cartRepository;

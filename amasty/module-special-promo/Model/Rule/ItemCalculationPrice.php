@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace Amasty\Rules\Model\Rule;
 
+use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Type;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Quote\Model\Quote\Item\AbstractItem;
@@ -47,7 +50,7 @@ class ItemCalculationPrice
     public function __construct(
         \Magento\SalesRule\Model\Validator $validator,
         ?TaxConfig $taxConfig = null, // TODO Move to not optional
-        PriceCurrencyInterface $priceCurrency = null // TODO Move to not optional
+        ?PriceCurrencyInterface $priceCurrency = null // TODO Move to not optional
     ) {
         $this->validator = $validator;
         $this->taxConfig = $taxConfig ?? ObjectManager::getInstance()->get(TaxConfig::class);
@@ -206,8 +209,13 @@ class ItemCalculationPrice
         }
 
         try {
-            //final price without price of custom options.
-            $basePrice = $item->getProduct()->getPriceModel()->getBasePrice($item->getProduct(), $item->getQty());
+            $product = $this->getProduct($item);
+            if ($product->getTypeId() === Type::TYPE_BUNDLE) {
+                $basePrice = $product->getPriceInfo()->getPrice('final_price')->getValue();
+            } else {
+                //final price without price of custom options.
+                $basePrice = $product->getPriceModel()->getBasePrice($product, $item->getQty());
+            }
             if ($this->taxConfig->discountTax($item->getStore()->getId())
                 && !$this->taxConfig->priceIncludesTax($item->getStore()->getId())
             ) {
@@ -237,8 +245,13 @@ class ItemCalculationPrice
         }
 
         try {
-            //final price without price of custom options.
-            $basePrice = $item->getProduct()->getPriceModel()->getBasePrice($item->getProduct(), $item->getQty());
+            $product = $this->getProduct($item);
+            if ($product->getTypeId() === Type::TYPE_BUNDLE) {
+                $basePrice = $product->getPriceInfo()->getPrice('final_price')->getValue();
+            } else {
+                //final price without price of custom options.
+                $basePrice = $product->getPriceModel()->getBasePrice($product, $item->getQty());
+            }
             if ($this->taxConfig->discountTax($item->getStore()->getId())
                 && !$this->taxConfig->priceIncludesTax($item->getStore()->getId())
             ) {
@@ -300,5 +313,15 @@ class ItemCalculationPrice
     public function _resetState(): void
     {
         $this->priceSelector = self::DEFAULT_PRICE;
+    }
+
+    private function getProduct(AbstractItem $item): Product
+    {
+        $product = $item->getProduct();
+        if ($product->getTypeId() === Configurable::TYPE_CODE) {
+            $product = current($item->getChildren())->getProduct();
+        }
+
+        return $product;
     }
 }

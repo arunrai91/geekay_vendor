@@ -35,8 +35,8 @@ class IsAvailableForSorting
 
     public function __construct(
         ?CatalogConfig $catalogConfig, // @deprecated
-        MethodProvider $methodProvider = null,
-        EavConfig $eavConfig = null
+        ?MethodProvider $methodProvider = null,
+        ?EavConfig $eavConfig = null
     ) {
         $this->methodProvider = $methodProvider ?? ObjectManager::getInstance()->get(MethodProvider::class);
         $this->eavConfig = $eavConfig ?? ObjectManager::getInstance()->get(EavConfig::class);

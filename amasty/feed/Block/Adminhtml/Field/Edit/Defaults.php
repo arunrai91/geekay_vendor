@@ -47,7 +47,7 @@ class Defaults extends Generic
         FormProcessorFactory $formProcessorFactory,
         ConditionProvider $conditionProvider,
         array $data = [],
-        MagentoVersion $magentoVersion = null // TODO move to not optional
+        ?MagentoVersion $magentoVersion = null // TODO move to not optional
     ) {
         parent::__construct($context, $registry, $formFactory, $data);
         $this->formProcessor = $formProcessorFactory->create();

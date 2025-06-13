@@ -23,7 +23,6 @@ use ReflectionIntersectionType;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionUnionType;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,10 +42,6 @@ use function str_replace;
  * * `codecept dry-run tests/acceptance/MyCest.php`
  *
  */
-#[AsCommand(
-    name: 'dry-run',
-    description: 'Prints step-by-step scenario-driven test or a feature'
-)]
 class DryRun extends Command
 {
     use Shared\ConfigTrait;
@@ -54,10 +49,12 @@ class DryRun extends Command
 
     protected function configure(): void
     {
-        $this->setDefinition([
-            new InputArgument('suite', InputArgument::REQUIRED, 'suite to scan for feature files'),
-            new InputArgument('test', InputArgument::OPTIONAL, 'tests to be loaded'),
-        ]);
+        $this->setDefinition(
+            [
+                new InputArgument('suite', InputArgument::REQUIRED, 'suite to scan for feature files'),
+                new InputArgument('test', InputArgument::OPTIONAL, 'tests to be loaded'),
+            ]
+        );
         parent::configure();
     }
 

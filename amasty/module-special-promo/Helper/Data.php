@@ -106,26 +106,26 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             self::TYPE_EXPENCIVE => __('The Most Expensive'),
             self::TYPE_AMOUNT => __('Get $Y for each $X spent'),
 
-            self::TYPE_EACH_N => __('Percent Discount: each 2-d, 4-th, 6-th with 15% 0ff'),
-            self::TYPE_EACH_N_FIXDISC => __('Fixed Discount: each 3-d, 6-th, 9-th with $15 0ff'),
-            self::TYPE_EACH_N_FIXED => __('Fixed Price: each 5th, 10th, 15th for $49'),
+            self::TYPE_EACH_N => __('Percent Discount: each 2nd, 4th, 6th with N% Off'),
+            self::TYPE_EACH_N_FIXDISC => __('Fixed Discount: each 3rd, 6th, 9th with $X Off'),
+            self::TYPE_EACH_N_FIXED => __('Fixed Price: each 5th 10th, 15th for $X'),
 
             self::TYPE_EACH_M_AFT_N_PERC =>
-                __('Percent Discount: each 1st, 3rd, 5th with 15% 0ff after 5 items added to the cart'),
+                __('Percent Discount: each 1st, 3rd, 5th with N% Off after X items added to the cart'),
             self::TYPE_EACH_M_AFT_N_DISC =>
-                __('Fixed Discount: each 3d, 7th, 11th with $15 0ff after 5 items added to the cart'),
+                __('Fixed Discount: each 3rd, 7th, 11th with $X Off after Y items added to the cart'),
             self::TYPE_EACH_M_AFT_N_FIX =>
-                __('Fixed Price: each 5th, 7th, 9th for $89.99 after 5 items added to the cart'),
+                __('Fixed Price: each 5th, 7th, 9th for $X after Y items added to the cart'),
 
-            self::TYPE_GROUP_N => __('Fixed Price: Each 5 items for $50'),
-            self::TYPE_GROUP_N_DISC => __('Percent Discount: Each 5 items with 10% off'),
+            self::TYPE_GROUP_N => __('Fixed Price: Each X items for $50'),
+            self::TYPE_GROUP_N_DISC => __('Percent Discount: Each X items with N% off'),
 
             self::TYPE_XN_PERCENT => __('Percent Discount: Buy X get Y Free'),
             self::TYPE_XN_FIXDISC => __('Fixed Discount:  Buy X get Y with $10 Off'),
             self::TYPE_XN_FIXED => __('Fixed Price: Buy X get Y for $9.99'),
 
-            self::TYPE_TIERED_WHOLE_CART => __('For Each 100$ Spent, get Whole Cart 10% Cheaper'),
-            self::TYPE_TIERED_XN => __('For Each 10$ Spent on X, get Y 5% Cheaper'),
+            self::TYPE_TIERED_WHOLE_CART => __('For Each $X Spent, get Whole Cart N% Cheaper'),
+            self::TYPE_TIERED_XN => __('For Each $10 Spent on X, get item Y 5% Cheaper'),
 
             self::TYPE_AFTER_N_DISC => __('Percent Discount'),
             self::TYPE_AFTER_N_FIXDISC => __('Fixed Discount'),
@@ -285,19 +285,19 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             self::TYPE_EXPENCIVE => __('The Most Expensive'),
             self::TYPE_AMOUNT => __('Get $Y for each $X spent'),
 
-            self::TYPE_EACH_N => __('Percent Discount: each 2-d, 4-th, 6-th with 15% 0ff'),
-            self::TYPE_EACH_N_FIXDISC => __('Fixed Discount: each 3-d, 6-th, 9-th with $15 0ff'),
-            self::TYPE_EACH_N_FIXED => __('Fixed Price: each 5th, 10th, 15th for $49'),
+            self::TYPE_EACH_N => __('Percent Discount: each 2nd, 4th, 6th with N% Off'),
+            self::TYPE_EACH_N_FIXDISC => __('Fixed Discount: each 3rd, 6th, 9th with $X Off'),
+            self::TYPE_EACH_N_FIXED => __('Fixed Price: each 5th 10th, 15th for $X'),
 
             self::TYPE_EACH_M_AFT_N_PERC =>
-                __('Percent Discount: each 1st, 3rd, 5th with 15% 0ff after 5 items added to the cart'),
+                __('Percent Discount: each 1st, 3rd, 5th with N% Off after X items added to the cart'),
             self::TYPE_EACH_M_AFT_N_DISC =>
-                __('Fixed Discount: each 3d, 7th, 11th with $15 0ff after 5 items added to the cart'),
+                __('Fixed Discount: each 3rd, 7th, 11th with $X Off after Y items added to the cart'),
             self::TYPE_EACH_M_AFT_N_FIX =>
-                __('Fixed Price: each 5th, 7th, 9th for $89.99 after 5 items added to the cart'),
+                __('Fixed Price: each 5th, 7th, 9th for $X after Y items added to the cart'),
 
-            self::TYPE_GROUP_N => __('Fixed Price: Each 5 items for $50'),
-            self::TYPE_GROUP_N_DISC => __('Percent Discount: Each 5 items with 10% off'),
+            self::TYPE_GROUP_N => __('Fixed Price: Each X items for $50'),
+            self::TYPE_GROUP_N_DISC => __('Percent Discount: Each X items with N% off'),
 
             self::TYPE_XY_PERCENT => __('Percent Discount: Buy X get Y Free'),
             self::TYPE_XY_FIXDISC => __('Fixed Discount:  Buy X get Y with $10 Off'),
@@ -307,8 +307,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             self::TYPE_XN_FIXDISC => __('Fixed Discount:  Buy X get N with $10 Off'),
             self::TYPE_XN_FIXED => __('Fixed Price: Buy X get N for $9.99'),
 
-            self::TYPE_TIERED_WHOLE_CART => __('For Each 100$ Spent, get Whole Cart 10% Cheaper'),
-            self::TYPE_TIERED_XN => __('For Each 10$ Spent on X, get Y 5% Cheaper'),
+            self::TYPE_TIERED_WHOLE_CART => __('For Each $X Spent, get Whole Cart N% Cheaper'),
+            self::TYPE_TIERED_XN => __('For Each $10 Spent on X, get item Y 5% Cheaper'),
 
             self::TYPE_AFTER_N_DISC => __('Percent Discount'),
             self::TYPE_AFTER_N_FIXDISC => __('Fixed Discount'),

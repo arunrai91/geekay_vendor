@@ -14,10 +14,8 @@ use Amasty\ShopbyBrand\Model\Brand\BrandListDataProvider;
 use Amasty\ShopbyBase\Model\OptionSetting;
 use Amasty\ShopbyBrand\Model\Source\BrandsDisplay;
 use Magento\Framework\App\Http\Context as HttpContext;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\DataObject\IdentityInterface;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Eav\Model\Entity\Attribute\Option;
@@ -29,7 +27,7 @@ abstract class BrandListAbstract extends \Magento\Framework\View\Element\Templat
     /**
      * @var DataHelper
      */
-    protected $helper;
+    private DataHelper $helper;
 
     /**
      * @var UrlBuilderInterface
@@ -44,7 +42,7 @@ abstract class BrandListAbstract extends \Magento\Framework\View\Element\Templat
     /**
      * @var BrandListDataProvider
      */
-    protected $brandListDataProvider;
+    private BrandListDataProvider $brandListDataProvider;
 
     /**
      * @var Attribute
@@ -57,22 +55,21 @@ abstract class BrandListAbstract extends \Magento\Framework\View\Element\Templat
     private $httpContext;
 
     public function __construct(
-        Context $context,
         DataPersistorInterface $dataPersistor,
         DataHelper $helper,
         UrlBuilderInterface $amUrlBuilder,
         BrandListDataProvider $brandListDataProvider,
         Attribute $brandAttribute,
-        array $data = [],
-        HttpContext $httpContext = null// TODO move to not optional
+        HttpContext $httpContext,
+        Context $context,
+        array $data = []
     ) {
         $this->helper = $helper;
         $this->amUrlBuilder = $amUrlBuilder;
         $this->dataPersistor = $dataPersistor;
         $this->brandListDataProvider = $brandListDataProvider;
         $this->brandAttribute = $brandAttribute;
-        // OM for backward compatibility
-        $this->httpContext = $httpContext ?? ObjectManager::getInstance()->get(HttpContext::class);
+        $this->httpContext = $httpContext;
 
         parent::__construct($context, $data);
     }
@@ -162,7 +159,7 @@ abstract class BrandListAbstract extends \Magento\Framework\View\Element\Templat
         }
     }
 
-    abstract protected function getConfigValuesPath(): string;
+    abstract public function getConfigValuesPath(): string;
 
     public function isDisplayZero(): bool
     {
@@ -173,5 +170,15 @@ abstract class BrandListAbstract extends \Magento\Framework\View\Element\Templat
     public function getBrandsDisplay(): array
     {
         return explode(',', (string)$this->getData('brands_display'));
+    }
+
+    public function getHelper(): DataHelper
+    {
+        return $this->helper;
+    }
+
+    public function getBrandListDataProvider(): BrandListDataProvider
+    {
+        return $this->brandListDataProvider;
     }
 }

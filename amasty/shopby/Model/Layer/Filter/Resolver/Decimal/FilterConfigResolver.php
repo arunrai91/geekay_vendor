@@ -101,11 +101,6 @@ class FilterConfigResolver
         return $config;
     }
 
-    /**
-     * @param $min
-     * @param $sliderMin
-     * @return mixed
-     */
     private function getMin(float $min, float $sliderMin): float
     {
         if ($sliderMin) {
@@ -115,12 +110,6 @@ class FilterConfigResolver
         return $min;
     }
 
-    /**
-     * @param $min
-     * @param $max
-     * @param $sliderMax
-     * @return mixed
-     */
     private function getMax(float $min, float $max, float $sliderMax): float
     {
         if ($sliderMax) {

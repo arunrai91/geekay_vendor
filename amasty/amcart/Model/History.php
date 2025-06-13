@@ -75,8 +75,8 @@ class History extends AbstractExtensibleModel implements HistoryInterface
         AttributeValueFactory $customAttributeFactory,
         RuleQuoteRepositoryInterface $ruleQuoteRepository,
         StoreManagerInterface $storeManager,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(

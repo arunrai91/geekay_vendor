@@ -21,7 +21,7 @@ class IndexMode implements \Magento\Framework\Option\ArrayInterface
     public function toOptionArray()
     {
         $options = [];
-        foreach ($this->_getOptions() as $optionValue => $optionLabel) {
+        foreach ($this->getOptions() as $optionValue => $optionLabel) {
             $options[] = ['value'=>$optionValue, 'label'=>$optionLabel];
         }
         return $options;
@@ -34,13 +34,13 @@ class IndexMode implements \Magento\Framework\Option\ArrayInterface
      */
     public function toArray()
     {
-        return $this->_getOptions();
+        return $this->getOptions();
     }
 
     /**
      * @return array
      */
-    protected function _getOptions()
+    private function getOptions()
     {
         $options = [
             self::MODE_NEVER => __('Never'),

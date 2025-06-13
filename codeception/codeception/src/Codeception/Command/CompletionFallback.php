@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace Codeception\Command;
 
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(
-    name: '_completion',
-    description: 'BASH completion hook.',
-    hidden: true
-)]
 class CompletionFallback extends Command
 {
+    public function __construct()
+    {
+        parent::__construct('_completion');
+    }
+
     protected function configure(): void
     {
-        $this->setHelp(<<<END
+        $this
+            ->setDescription('BASH completion hook.')
+            ->setHidden(true) // Hide from listing
+            ->setHelp(<<<END
 To enable BASH completion, install optional stecman/symfony-console-completion first:
 
     <comment>composer require stecman/symfony-console-completion</comment>

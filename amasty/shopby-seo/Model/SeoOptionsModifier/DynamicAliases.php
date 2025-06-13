@@ -55,7 +55,7 @@ class DynamicAliases implements SeoModifierInterface
         }
     }
 
-    private function loadDynamicAliases(int $storeId = null): array
+    private function loadDynamicAliases(?int $storeId = null): array
     {
         $seoAttributeCodes = $this->seoHelper->getSeoSignificantAttributeCodes();
 

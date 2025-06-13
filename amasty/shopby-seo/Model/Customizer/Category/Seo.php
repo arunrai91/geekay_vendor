@@ -234,7 +234,7 @@ class Seo implements CustomizerInterface
                     foreach ($this->excludedParams as $param) {
                         unset($params[$param]);
                     }
-                    if (isset($params[self::PAGE_PARAM_NAME]) && $params[self::PAGE_PARAM_NAME] <= 1) {
+                    if (isset($params[self::PAGE_PARAM_NAME]) && (int)$params[self::PAGE_PARAM_NAME] <= 1) {
                         unset($params[self::PAGE_PARAM_NAME]);
                     }
                     if ($params) {
@@ -282,7 +282,7 @@ class Seo implements CustomizerInterface
     /**
      * @return string
      */
-    protected function getFirstAttributeValueUrl(): string
+    private function getFirstAttributeValueUrl(): string
     {
         $appliedFilters = $this->filtersResolver->getAppliedFilters();
         $brandAttrCode = $this->baseHelper->getBrandAttributeCode();
@@ -311,7 +311,7 @@ class Seo implements CustomizerInterface
         );
     }
 
-    protected function getAttributeValueUrl(string $attributeCode): ?string
+    private function getAttributeValueUrl(string $attributeCode): ?string
     {
         $appliedFilter = $this->filtersResolver->getFilterByCode($attributeCode);
         if ($appliedFilter === null) {

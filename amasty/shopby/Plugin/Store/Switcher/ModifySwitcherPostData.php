@@ -14,7 +14,6 @@ use Amasty\Shopby\Plugin\Store\ViewModel\SwitcherUrlProvider\ModifyUrlData;
 use Amasty\ShopbyBase\Api\UrlBuilderInterface;
 use Amasty\ShopbyBase\Helper\Data;
 use Magento\Framework\App\ActionInterface;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Data\Helper\PostHelper;
@@ -72,19 +71,19 @@ class ModifySwitcherPostData
         EncoderInterface $encoder,
         PostHelper $postHelper,
         StoreManagerInterface $storeManager,
-        DataPersistorInterface $dataPersistor = null, // TODO move to not optional
-        Emulation $emulation = null, // TODO move to not optional
-        Registry $registry = null, // TODO move to not optional
-        RequestInterface $request = null // TODO move to not optional
+        DataPersistorInterface $dataPersistor,
+        Emulation $emulation,
+        Registry $registry,
+        RequestInterface $request
     ) {
         $this->urlBuilder = $urlBuilder;
         $this->encoder = $encoder;
         $this->postHelper = $postHelper;
         $this->storeManager = $storeManager;
-        $this->dataPersistor = $dataPersistor ?? ObjectManager::getInstance()->get(DataPersistorInterface::class);
-        $this->emulation = $emulation ?? ObjectManager::getInstance()->get(Emulation::class);
-        $this->registry = $registry ?? ObjectManager::getInstance()->get(Registry::class);
-        $this->request = $request ?? ObjectManager::getInstance()->get(RequestInterface::class);
+        $this->dataPersistor = $dataPersistor;
+        $this->emulation = $emulation;
+        $this->registry = $registry;
+        $this->request = $request;
     }
 
     /**

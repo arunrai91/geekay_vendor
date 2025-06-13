@@ -10,18 +10,24 @@ namespace Amasty\ShopbyPage\Controller\Adminhtml\Page;
 use \Magento\Backend\App\Action;
 use Amasty\ShopbyPage\Api\Data\PageInterfaceFactory;
 use Amasty\ShopbyPage\Api\PageRepositoryInterface;
+use Magento\Framework\App\RequestInterface;
 
 class Delete extends Action
 {
     /**
      * @var PageInterfaceFactory
      */
-    protected $pageDataFactory;
+    private PageInterfaceFactory $pageDataFactory;
 
     /**
      * @var PageRepositoryInterface
      */
-    protected $pageRepository;
+    private PageRepositoryInterface $pageRepository;
+
+    /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
 
     public function __construct(
         Action\Context $context,
@@ -30,6 +36,7 @@ class Delete extends Action
     ) {
         $this->pageDataFactory = $pageDataFactory;
         $this->pageRepository = $pageRepository;
+        $this->request = $context->getRequest();
         parent::__construct($context);
     }
 
@@ -48,7 +55,7 @@ class Delete extends Action
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('id');
+        $id = $this->request->getParam('id');
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($id) {

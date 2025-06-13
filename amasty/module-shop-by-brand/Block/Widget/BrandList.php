@@ -24,7 +24,7 @@ class BrandList extends BrandListAbstract implements BlockInterface
     /**
      * @var  array|null
      */
-    protected $items;
+    private ?array $items = null;
 
     public function getCacheKeyInfo()
     {
@@ -104,7 +104,11 @@ class BrandList extends BrandListAbstract implements BlockInterface
     {
         if ($this->items === null) {
             $storeId = (int) $this->_storeManager->getStore()->getId();
-            $this->items = $this->brandListDataProvider->getList($storeId, $this->getItemsFilter(), SliderSort::NAME);
+            $this->items = $this->getBrandListDataProvider()->getList(
+                $storeId,
+                $this->getItemsFilter(),
+                SliderSort::NAME
+            );
         }
 
         return $this->items;
@@ -127,7 +131,7 @@ class BrandList extends BrandListAbstract implements BlockInterface
      * @param array $items
      * @return array
      */
-    protected function items2letters($items)
+    private function items2letters($items)
     {
         $letters = [];
         foreach ($items as $item) {
@@ -212,7 +216,7 @@ class BrandList extends BrandListAbstract implements BlockInterface
      * @return bool|\Magento\Framework\View\Element\BlockInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function getSearchBrandBlock()
+    private function getSearchBrandBlock()
     {
         $block = $this->getLayout()->getBlock('ambrands.search');
         if (!$block) {
@@ -225,7 +229,7 @@ class BrandList extends BrandListAbstract implements BlockInterface
 
     public function isTooltipEnabled(): bool
     {
-        $setting = $this->helper->getModuleConfig('general/tooltip_enabled');
+        $setting = $this->getHelper()->getModuleConfig('general/tooltip_enabled');
 
         return in_array(Tooltip::ALL_BRAND_PAGE, explode(',', $setting));
     }
@@ -233,7 +237,7 @@ class BrandList extends BrandListAbstract implements BlockInterface
     public function getTooltipAttribute(BrandDataInterface $item): string
     {
         if ($this->isTooltipEnabled()) {
-            $result = $this->helper->generateToolTipContent($item);
+            $result = $this->getHelper()->generateToolTipContent($item);
         }
 
         return $result ?? '';
@@ -274,7 +278,7 @@ class BrandList extends BrandListAbstract implements BlockInterface
         return (bool) $this->getData('show_count');
     }
 
-    protected function getConfigValuesPath(): string
+    public function getConfigValuesPath(): string
     {
         return self::CONFIG_VALUES_PATH;
     }

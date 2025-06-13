@@ -41,7 +41,7 @@ class Stock extends AbstractFilter implements CustomFilterInterface
     /**
      * @var ScopeConfigInterface
      */
-    protected $scopeConfig;
+    private ScopeConfigInterface $scopeConfig;
 
     /**
      * @var SearchInterface

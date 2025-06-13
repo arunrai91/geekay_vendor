@@ -128,4 +128,13 @@
 
     <preference for="Amasty\Mostviewed\Model\Customer\CustomerGroupContextInterface"
                 type="Amasty\Mostviewed\Model\Customer\Frontend\CustomerGroupContext"/>
+
+    <type name="Amasty\Mostviewed\Model\Validation\Group\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                    <item name="active_validator" xsi:type="object">Amasty\Mostviewed\Model\Validation\Group\Validators\ActiveValidator</item>
+                    <item name="customer_group_validator" xsi:type="object">Amasty\Mostviewed\Model\Customer\GroupValidator</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

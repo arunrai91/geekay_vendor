@@ -10,7 +10,7 @@ namespace Amasty\Shopby\Block\Product\ProductList;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Model\Category;
 use Magento\Framework\View\Element\Template;
-use Amasty\Shopby\Model\Source\ChildrenCategoriesBlock\Categories;
+use Amasty\Shopby\Model\ConfigProvider;
 use Amasty\Shopby\Model\Source\ChildrenCategoriesBlock\DisplayMode;
 
 class ChildrenCategoryList extends Template
@@ -49,17 +49,16 @@ class ChildrenCategoryList extends Template
     private $request;
 
     /**
-     * ChildrenCategoryList constructor.
-     * @param Template\Context $context
-     * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Amasty\Shopby\Helper\Category $categoryHelper
-     * @param array $data
+     * @var ConfigProvider
      */
+    private $configProvider;
+
     public function __construct(
         Template\Context $context,
         \Magento\Framework\Registry $coreRegistry,
         \Amasty\Shopby\Helper\Category $categoryHelper,
         \Magento\Catalog\Model\ResourceModel\Category\Collection $categoryCollection,
+        ConfigProvider $configProvider,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -67,6 +66,7 @@ class ChildrenCategoryList extends Template
         $this->categoryHelper = $categoryHelper;
         $this->categoryCollection = $categoryCollection;
         $this->request = $context->getRequest();
+        $this->configProvider = $configProvider;
     }
 
     /**
@@ -108,7 +108,7 @@ class ChildrenCategoryList extends Template
                 if ($this->getData('attributes_to_select')) {
                     $collection->addAttributeToSelect($this->getData('attributes_to_select'));
                 }
-            } elseif (is_array($collection) && !empty($collection)) {
+            } elseif (is_array($collection) && count($collection)) {
                 $this->categoryCollection->loadProductCount($collection);
             }
 
@@ -195,5 +195,11 @@ class ChildrenCategoryList extends Template
     public function getCurrentCategory(): CategoryInterface
     {
         return $this->registry->registry('current_category');
+    }
+
+    public function isCategoryInfinityLoop(): bool
+    {
+        return $this->configProvider->isCategoryInfinityLoop()
+            && count($this->getChildrenCategories()) >= $this->getItemsCountPerSlide() * 2;
     }
 }

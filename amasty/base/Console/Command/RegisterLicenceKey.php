@@ -24,7 +24,7 @@ class RegisterLicenceKey extends Command
 
     public function __construct(
         CommandRegisterLicenceKey $registerLicenceKey,
-        string $name = null
+        ?string $name = null
     ) {
         parent::__construct($name);
         $this->registerLicenceKey = $registerLicenceKey;

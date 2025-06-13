@@ -10,24 +10,30 @@ declare(strict_types=1);
 
 namespace Amasty\ElasticSearch\Model\Config\Backend;
 
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Value;
+use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\Indexer\IndexerRegistry;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Registry;
 
 class InvalidateCatalogSearchIndex extends Value
 {
     /**
      * @var IndexerRegistry
      */
-    private $indexerRegistry;
+    private IndexerRegistry $indexerRegistry;
 
     public function __construct(
         IndexerRegistry $indexerRegistry,
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\App\Config\ScopeConfigInterface $config,
-        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        Context $context,
+        Registry $registry,
+        ScopeConfigInterface $config,
+        TypeListInterface $cacheTypeList,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);

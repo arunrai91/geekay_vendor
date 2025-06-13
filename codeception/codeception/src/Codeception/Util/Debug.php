@@ -28,12 +28,15 @@ class Debug
      */
     public static function debug(mixed $message): void
     {
-        self::$output?->debug($message);
+        if (!self::$output instanceof Output) {
+            return;
+        }
+        self::$output->debug($message);
     }
 
     public static function isEnabled(): bool
     {
-        return self::$output instanceof Output;
+        return (bool)self::$output;
     }
 
     public static function pause(array $vars = []): void
@@ -45,34 +48,33 @@ class Debug
         $pauseShell = new PauseShell();
         $psy = $pauseShell->getShell();
         $psy->setScopeVariables($vars);
-
-        foreach (debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 3) as $backtraceStep) {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 3);
+        foreach ($backtrace as $backtraceStep) {
             $class = $backtraceStep['class'] ?? null;
             $fn = $backtraceStep['function'] ?? null;
-
-            if (
-                ($class === self::class && $fn === 'pause') ||
-                ($fn === 'codecept_pause' && !$class) ||
-                !isset($backtraceStep['object'])
-            ) {
+            if ($class === Debug::class && $fn === 'pause') {
                 continue;
             }
-
+            if ($fn === 'codecept_pause' && !$class) {
+                continue;
+            }
+            if (!isset($backtraceStep['object'])) {
+                continue;
+            }
             $pauseShell->addMessage('Use $this-> to access current object');
             $psy->setBoundObject($backtraceStep['object']);
             break;
         }
-
         $psy->run();
     }
 
     public static function confirm($question)
     {
         if (!self::$output instanceof Output) {
-            return null;
+            return;
         }
 
-        return (new QuestionHelper())
-            ->ask(new ArgvInput(), self::$output, new ConfirmationQuestion($question));
+        $questionHelper = new QuestionHelper();
+        return $questionHelper->ask(new ArgvInput(), self::$output, new ConfirmationQuestion($question));
     }
 }

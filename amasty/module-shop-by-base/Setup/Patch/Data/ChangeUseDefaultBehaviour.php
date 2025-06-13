@@ -53,7 +53,7 @@ class ChangeUseDefaultBehaviour implements DataPatchInterface
     {
         $connection = $this->optionResource->getConnection();
         $tableName = $this->optionResource->getTable('amasty_amshopby_option_setting');
-        $storeIds = $this->fetchStoreIds($connection, $tableName);
+        $storeIds = $this->fetchStoreIds();
 
         if (!$storeIds) {
             return;

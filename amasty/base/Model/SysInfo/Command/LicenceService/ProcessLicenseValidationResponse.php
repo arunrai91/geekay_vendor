@@ -65,7 +65,7 @@ class ProcessLicenseValidationResponse
         LicenseValidationRepository $licenseValidationRepository,
         Converter $converter,
         DefaultResponseProvider $defaultResponseProvider,
-        RegisterLicenceKey $registerLicenceKeyCommand = null
+        ?RegisterLicenceKey $registerLicenceKeyCommand = null
     ) {
         $this->dateTime = $dateTime;
         $this->scheduleConfigFactory = $scheduleConfigFactory;

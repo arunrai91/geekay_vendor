@@ -16,17 +16,17 @@ class Swatch extends Template
     /**
      * @var  Item
      */
-    protected $filter;
+    private $filter;
 
     /**
      * @var \Magento\Swatches\Helper\Data
      */
-    protected $swatchHelper;
+    private $swatchHelper;
 
     /**
      * @var \Magento\Swatches\Helper\Media
      */
-    protected $mediaHelper;
+    private $mediaHelper;
 
     /**
      * @var \Amasty\Shopby\Helper\Data
@@ -122,7 +122,7 @@ class Swatch extends Template
         return $swatches;
     }
 
-    protected function getFilterAppliedValues(): array
+    private function getFilterAppliedValues(): array
     {
         $filterAppliedValues = $this->filter->getValue();
         if (!is_array($filterAppliedValues)) {
@@ -135,7 +135,7 @@ class Swatch extends Template
     /**
      * @return Attribute
      */
-    protected function getEavAttribute(): Attribute
+    private function getEavAttribute(): Attribute
     {
         return $this->filter->getFilter()->getAttributeModel();
     }

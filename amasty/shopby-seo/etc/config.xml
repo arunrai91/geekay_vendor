@@ -17,6 +17,7 @@
                 <mode>1</mode>
                 <special_char>_</special_char>
                 <option_separator>-</option_separator>
+                <ignored_urls>knowledge-base</ignored_urls>
             </url>
             <robots>
                 <control_robots>1</control_robots>
@@ -27,6 +28,7 @@
                 <category>category_brand_filter</category>
                 <root>root_pure</root>
                 <brand>brand_current</brand>
+                <add_canonical_for_noindex>0</add_canonical_for_noindex>
             </canonical>
             <other>
                 <prev_next>0</prev_next>

@@ -7,7 +7,9 @@
 
 namespace Amasty\ShopbyBase\Block\Adminhtml\Form\Renderer\Fieldset;
 
-class Element extends \Magento\Backend\Block\Widget\Form\Renderer\Fieldset\Element
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Renderer\Fieldset\Element as WidgetElement;
+
+class Element extends WidgetElement
 {
     public const SCOPE_LABEL = '[STORE VIEW]';
 
@@ -30,7 +32,7 @@ class Element extends \Magento\Backend\Block\Widget\Form\Renderer\Fieldset\Eleme
     public function usedDefault()
     {
         $isDefault = $this->getDataObject()->getData($this->getElement()->getName().'_use_default');
-        if ($isDefault === null || $this->getDataObject()->getStoreId() == 0) {
+        if ($isDefault === null) {
             $isDefault = true;
         }
 

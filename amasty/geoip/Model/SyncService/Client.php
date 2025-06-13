@@ -86,8 +86,8 @@ class Client
         LocationFactory $locationFactory,
         RegisteredInstanceRepository $registeredInstanceRepository,
         SerializerInterface $serializer,
-        Domain $domainCollector = null, // TODO move to not optional
-        AddInstanceIdHeader $addInstanceIdHeader = null // TODO move to not optional
+        ?Domain $domainCollector = null, // TODO move to not optional
+        ?AddInstanceIdHeader $addInstanceIdHeader = null // TODO move to not optional
     ) {
         $this->httpClient = $curl;
         $this->blockFactory = $blockFactory;
@@ -130,6 +130,11 @@ class Client
         $response = $this->httpClient->getBody();
 
         return $this->convertResponse($this->serializer->unserialize($response));
+    }
+
+    public function _resetState(): void
+    {
+        $this->shopDomain = null;
     }
 
     private function getClientMessage(): Phrase

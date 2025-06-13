@@ -180,9 +180,10 @@ interface FilterSettingInterface
     public function getShowIconsOnProduct();
 
     /**
+     * @param string $currencySymbol
      * @return string
      */
-    public function getUnitsLabel();
+    public function getUnitsLabel($currencySymbol = '');
 
     /**
      * @return int

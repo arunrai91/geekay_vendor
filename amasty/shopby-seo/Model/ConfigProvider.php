@@ -104,4 +104,34 @@ class ConfigProvider extends ConfigProviderAbstract
     {
         return (string) $this->getValue(self::GROUP_URL . 'filter_word', $storeId);
     }
+
+    public function isNeedAddCanonicalForNoindexPages(?int $storeId = null): bool
+    {
+        return $this->isSetFlag(self::GROUP_CANONICAL . 'add_canonical_for_noindex', $storeId);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getIgnoredUrls(): array
+    {
+        return $this->convertStringToArray(
+            (string)$this->getValue(self::GROUP_URL . 'ignored_urls')
+        );
+    }
+
+    /**
+     * @return string[]
+     */
+    private function convertStringToArray(string $value, string $separator = PHP_EOL): array
+    {
+        if (empty($value)) {
+            return [];
+        }
+
+        return array_filter(array_map(
+            'trim',
+            explode($separator, $value)
+        ));
+    }
 }

@@ -7,6 +7,8 @@
 
 namespace Amasty\Shopby\Model\Source;
 
+use Magento\Catalog\Model\ResourceModel\Eav\Attribute as EavAttributeResource;
+
 class DisplayMode implements \Magento\Framework\Option\ArrayInterface
 {
     public const MODE_DEFAULT = 0;
@@ -27,12 +29,12 @@ class DisplayMode implements \Magento\Framework\Option\ArrayInterface
     /**
      * @var string
      */
-    protected $attributeType = self::ATTRUBUTE_DEFAULT;
+    private $attributeType = self::ATTRUBUTE_DEFAULT;
 
     /**
-     * @var  \Magento\Catalog\Model\ResourceModel\Eav\Attribute
+     * @var EavAttributeResource|null
      */
-    protected $attribute;
+    private ?EavAttributeResource $attribute = null;
 
     /**
      * @param $attributeType
@@ -45,10 +47,10 @@ class DisplayMode implements \Magento\Framework\Option\ArrayInterface
     }
 
     /**
-     * @param \Magento\Catalog\Model\ResourceModel\Eav\Attribute $attribute
+     * @param EavAttributeResource $attribute
      * @return $this
      */
-    public function setAttribute(\Magento\Catalog\Model\ResourceModel\Eav\Attribute $attribute)
+    public function setAttribute(EavAttributeResource $attribute)
     {
         $this->setAttributeType($attribute->getBackendType());
         $this->attribute = $attribute;
@@ -100,7 +102,7 @@ class DisplayMode implements \Magento\Framework\Option\ArrayInterface
     /**
      * @return array
      */
-    protected function getOptions()
+    private function getOptions()
     {
         $options = [
             "" => "",

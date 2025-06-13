@@ -229,23 +229,17 @@ final class DisplayCachedMessagesTest extends AbstractRulesetTestCase
      */
     public static function dataSelectiveDisplayOfMessages()
     {
-        $data = [
-            'Explain mode' => [
+        return [
+            'Explain mode'               => [
                 'configArgs' => ['-e'],
             ],
-            'Quiet mode'   => [
+            'Quiet mode'                 => [
                 'configArgs' => ['-q'],
             ],
-        ];
-
-        // Setting the `--generator` arg is only supported when running `phpcs`.
-        if (PHP_CODESNIFFER_CBF === false) {
-            $data['Documentation is requested'] = [
+            'Documentation is requested' => [
                 'configArgs' => ['--generator=text'],
-            ];
-        }
-
-        return $data;
+            ],
+        ];
 
     }//end dataSelectiveDisplayOfMessages()
 

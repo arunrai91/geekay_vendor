@@ -39,6 +39,7 @@ class Extensions extends Field
     public const LAST_VERSION = 'last_version';
     public const HAS_UPDATE = 'has_update';
     public const UPDATE_URL = 'update_url';
+    public const MODULE_URL = 'module_url';
     public const IS_SOLUTION = 'is_solution';
     public const PLAN_LABEL = 'plan_label';
     public const UPGRADE_URL = 'upgrade_url';
@@ -94,7 +95,7 @@ class Extensions extends Field
         ModuleTitlesResolver $moduleTitlesResolver,
         ActiveSolutionsProvider $activeSolutionsProvider,
         array $data = [],
-        GetCurrentLicenseValidation $currentLicenseValidation = null
+        ?GetCurrentLicenseValidation $currentLicenseValidation = null
     ) {
         parent::__construct($context, $data);
         $this->moduleListProcessor = $moduleListProcessor;
@@ -157,6 +158,7 @@ class Extensions extends Field
             $item[self::LAST_VERSION] = $module['lastVersion'];
             $item[self::HAS_UPDATE] = $module['hasUpdate'];
             $item[self::UPDATE_URL] = $this->prepareUpdateUrl($module['url']);
+            $item[self::MODULE_URL] = $module['url'];
             $item[self::IS_SOLUTION] = $isSolution;
             $item[self::PLAN_LABEL] = $planLabel;
             $item[self::UPGRADE_URL] = $isSolution ? $activeSolutions[$moduleCode]['upgrade_url'] : '';

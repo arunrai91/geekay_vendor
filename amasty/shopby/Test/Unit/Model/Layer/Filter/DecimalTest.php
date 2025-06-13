@@ -90,11 +90,11 @@ class DecimalTest extends \PHPUnit\Framework\TestCase
         $this->decimalFilterSettingResolver = $this->createMock(DecimalFilterSettingResolver::class);
         $this->decimalFilterConfigResolver = $this->createMock(FilterConfigResolver::class);
         $filterItemFactory = $this->getMockBuilder(\Magento\Catalog\Model\Layer\Filter\ItemFactory::class)
-            ->setMethods(['create'])
+            ->onlyMethods(['create'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $filterItem = $this->getMockBuilder(\Magento\Catalog\Model\Layer\Filter\Item::class)
-            ->setMethods(['setFilter', 'setLabel', 'setValue', 'setCount'])
+            ->addMethods(['setFilter', 'setLabel', 'setValue', 'setCount'])
             ->disableOriginalConstructor()
             ->getMock();
         $attributeModel = $this->createMock(\Magento\Catalog\Model\ResourceModel\Eav\Attribute::class);
@@ -107,7 +107,8 @@ class DecimalTest extends \PHPUnit\Framework\TestCase
         $priceCurrency = $this->createMock(\Magento\Framework\Pricing\PriceCurrencyInterface::class);
         $currency = $this->createMock(Currency::class);
         $messageManager = $this->getMockBuilder(\Magento\Framework\Message\ManagerInterface::class)
-            ->setMethods(['hasMessages', 'addErrorMessage'])
+            ->addMethods(['hasMessages'])
+            ->onlyMethods(['addErrorMessage'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 

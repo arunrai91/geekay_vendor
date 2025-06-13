@@ -8,7 +8,9 @@
 namespace Amasty\Shopby\Controller\Adminhtml\Category\Image;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\Model\Session;
 use Magento\Catalog\Controller\Adminhtml\Category;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Backend\App\Action\Context as ActionContext;
 use Magento\Catalog\Model\ImageUploader;
@@ -16,22 +18,28 @@ use Magento\Catalog\Model\ImageUploader;
 class Upload extends Action
 {
     /**
-     * @var \Magento\Catalog\Model\ImageUploader
+     * @var ImageUploader
      */
-    protected $imageUploader;
+    private ImageUploader $imageUploader;
 
     /**
-     * Upload constructor.
-     *
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Catalog\Model\ImageUploader $imageUploader
+     * @var RequestInterface
      */
+    private RequestInterface $request;
+
+    /**
+     * @var Session
+     */
+    private Session $session;
+
     public function __construct(
         ActionContext $context,
         ImageUploader $imageUploader
     ) {
         parent::__construct($context);
         $this->imageUploader = $imageUploader;
+        $this->request = $context->getRequest();
+        $this->session = $context->getSession();
     }
 
     /**
@@ -42,15 +50,15 @@ class Upload extends Action
     public function execute()
     {
         try {
-            $files = $this->getRequest()->getFiles();
+            $files = $this->request->getFiles();
             $result = $this->imageUploader->saveFileToTmpDir(key((array)$files));
 
             $result['cookie'] = [
-                'name' => $this->_getSession()->getName(),
-                'value' => $this->_getSession()->getSessionId(),
-                'lifetime' => $this->_getSession()->getCookieLifetime(),
-                'path' => $this->_getSession()->getCookiePath(),
-                'domain' => $this->_getSession()->getCookieDomain(),
+                'name' => $this->session->getName(),
+                'value' => $this->session->getSessionId(),
+                'lifetime' => $this->session->getCookieLifetime(),
+                'path' => $this->session->getCookiePath(),
+                'domain' => $this->session->getCookieDomain(),
             ];
         } catch (\Exception $e) {
             $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];

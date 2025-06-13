@@ -17,7 +17,6 @@ use Amasty\Shopby\Model\Category\CategoryTree;
 use Amasty\Shopby\Model\Category\ExtendedCategoryCollection;
 use Amasty\Shopby\Model\ConfigProvider;
 use Amasty\Shopby\Model\Layer\Filter\Category\FacetProvider;
-use Amasty\Shopby\Model\Layer\Filter\Item\CategoryExtendedDataBuilder;
 use Amasty\Shopby\Model\Layer\Filter\Resolver\FilterRequestDataResolver;
 use Amasty\Shopby\Model\Layer\Filter\Resolver\FilterSettingResolver;
 use Amasty\Shopby\Model\ResourceModel\Fulltext\Collection as ShopbyFulltextCollection;
@@ -111,6 +110,11 @@ class Category extends AbstractFilter implements CustomFilterInterface
      */
     private $extendedCategoryCollection;
 
+    /**
+     * @var CategoryCollectionFactory
+     */
+    private CategoryCollectionFactory $categoryCollectionFactory;
+
     public function __construct(
         FilterItemFactory $filterItemFactory,
         StoreManagerInterface $storeManager,
@@ -126,6 +130,7 @@ class Category extends AbstractFilter implements CustomFilterInterface
         FacetProvider $facetProvider,
         CacheCategoryTree $cacheCategoryTree,
         ExtendedCategoryCollection $extendedCategoryCollection,
+        CategoryCollectionFactory $categoryCollectionFactory,
         array $data = []
     ) {
         parent::__construct(
@@ -146,6 +151,7 @@ class Category extends AbstractFilter implements CustomFilterInterface
         $this->facetProvider = $facetProvider;
         $this->cacheCategoryTree = $cacheCategoryTree;
         $this->extendedCategoryCollection = $extendedCategoryCollection;
+        $this->categoryCollectionFactory = $categoryCollectionFactory;
     }
 
     /**
@@ -159,7 +165,9 @@ class Category extends AbstractFilter implements CustomFilterInterface
         if ($this->filterRequestDataResolver->isApplied($this)) {
             return $this;
         }
-        $categoryId = $this->filterRequestDataResolver->getFilterParam($this) ?: $request->getParam('id');
+
+        $categoryValueFromParam = $this->filterRequestDataResolver->getFilterParam($this);
+        $categoryId = $categoryValueFromParam ?: $request->getParam('id');
         if (empty($categoryId)) {
             return $this;
         }
@@ -167,16 +175,16 @@ class Category extends AbstractFilter implements CustomFilterInterface
         $categoryIds = explode(',', $categoryId);
         $categoryIds = array_unique($categoryIds);
         $category = $this->dataProvider->getCategory();
-        if ($this->isMultiselect() && $request->getParam('id') != $categoryId) {
+        if ($this->isMultiselect() && $categoryValueFromParam) {
             $categoryIds = $this->excludeCategoriesFromFilter($categoryIds);
             if (empty($categoryIds)) {
                 return $this;
             }
 
             $this->filterRequestDataResolver->setCurrentValue($this, $categoryIds);
-            $child = $category->getCollection()
-                ->addFieldToFilter($category->getIdFieldName(), ['in' => $categoryIds])
-                ->addAttributeToSelect('name');
+            $child = $this->categoryCollectionFactory->create();
+            $child->addFieldToFilter($category->getIdFieldName(), ['in' => $categoryIds]);
+            $child->addAttributeToSelect('name');
             $categoriesInState = [];
             foreach ($categoryIds as $categoryId) {
                 if ($currentCategory = $child->getItemById($categoryId)) {
@@ -358,7 +366,7 @@ class Category extends AbstractFilter implements CustomFilterInterface
         return strcmp($a['label'], $b['label']);
     }
 
-    protected function getFacetedData(): array
+    private function getFacetedData(): array
     {
         return $this->facetProvider->getFacetedData($this);
     }

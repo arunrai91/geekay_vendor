@@ -84,7 +84,7 @@ class Click implements HttpGetActionInterface
         SessionManagerInterface $sessionManager,
         LoggerInterface $logger,
         FormKeyValidator $formKeyValidator,
-        DateTime $dateTime = null
+        ?DateTime $dateTime = null
     ) {
         $this->request = $request;
         $this->response = $response;

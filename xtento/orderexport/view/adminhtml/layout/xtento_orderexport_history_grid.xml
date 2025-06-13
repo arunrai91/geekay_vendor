@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <update handle="xtento_orderexport_history_grid_block"/>
+    <container name="root" label="Root">
+        <block class="Xtento\OrderExport\Block\Adminhtml\History" name="adminhtml.orderexport.history.grid.container"/>
+    </container>
+</layout>
+
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            %!uniqueid!%
+ * Last Modified: 2016-03-02T21:07:01+00:00
+ * File:          view/adminhtml/layout/xtento_orderexport_history_grid.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

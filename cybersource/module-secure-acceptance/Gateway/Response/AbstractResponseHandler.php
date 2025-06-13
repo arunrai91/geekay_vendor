@@ -14,7 +14,6 @@ abstract class AbstractResponseHandler
     const TRANSACTION_ID = "transaction_id";
     const REASON_CODE = "reason_code";
     const DECISION = "decision";
-    const PAYER_AUTHENTICATION_ECI ="payer_authentication_eci";
     const MERCHANT_REFERENCE_CODE = "req_reference_number";
     const TOKEN_DATA = "token_data";
     const CARD_NUMBER = 'req_card_number';
@@ -103,13 +102,6 @@ abstract class AbstractResponseHandler
         $payment->setAdditionalInformation(self::REASON_CODE, $cyberSourceResponse[self::REASON_CODE]);
         $payment->setAdditionalInformation(self::DECISION, $cyberSourceResponse[self::DECISION]);
         $payment->setAdditionalInformation(self::MERCHANT_REFERENCE_CODE, $cyberSourceResponse[self::MERCHANT_REFERENCE_CODE]);
-
-    #arunendra
-        if(isset($cyberSourceResponse[self::PAYER_AUTHENTICATION_ECI])) {
-        $payment->setAdditionalInformation(self::PAYER_AUTHENTICATION_ECI, $cyberSourceResponse[self::PAYER_AUTHENTICATION_ECI]);
-        } else {
-            $payment->setAdditionalInformation(self::PAYER_AUTHENTICATION_ECI, '');
-        }
 
         $maskedPan = $cyberSourceResponse[self::CARD_NUMBER] ?? '';
         $payment->setAdditionalInformation('cardNumber', substr($maskedPan, 0, 6) . str_repeat('x', strlen($maskedPan) - 10) . substr($maskedPan, -4));

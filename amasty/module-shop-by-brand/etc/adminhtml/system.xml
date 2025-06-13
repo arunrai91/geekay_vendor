@@ -30,6 +30,12 @@
                     <comment>Select a CMS page where the All Brands List will be shown. Please make sure the CMS page is enabled (Content -> Elements -> Pages).</comment>
                     <source_model>Amasty\ShopbyBrand\Model\Source\Page</source_model>
                 </field>
+                <field id="brand_bucket_size" translate="label comment" type="text" sortOrder="35"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Search Engine Bucket Size</label>
+                    <comment>Indicate how many brands will be handled by the search engine for the display on the frontend. Increasing the bucket size might influence the website’s performance.</comment>
+                    <validate>required-entry validate-number validate-greater-than-zero</validate>
+                </field>
                 <field id="menu_item_label" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Brands Item Label</label>
                     <comment>Used in top menu and account links.</comment>

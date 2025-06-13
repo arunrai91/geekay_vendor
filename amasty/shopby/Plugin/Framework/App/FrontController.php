@@ -79,7 +79,7 @@ class FrontController
     /**
      * @return bool
      */
-    protected function isCategorySingleSelect()
+    private function isCategorySingleSelect()
     {
         if ($this->isCategorySingleSelect === null) {
             $this->isCategorySingleSelect = !$this->isMultiSelectAllowed();

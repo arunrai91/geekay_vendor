@@ -15,7 +15,6 @@ use Amasty\ShopbySeo\Helper\Url as UrlHelper;
 use Amasty\ShopbySeo\Model\Attribute\GetAttributeCodesSeoByDefault;
 use Amasty\ShopbySeo\Model\ConfigProvider;
 use Amasty\ShopbySeo\Model\Source\GenerateSeoUrl;
-use Magento\Catalog\Setup\CategorySetup;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ObjectManager;
@@ -23,7 +22,6 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManager;
 use Magento\UrlRewrite\Model\UrlFinderInterface;
-use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 
 /**
  * @deprecared usage of helpers is deprecated
@@ -109,8 +107,8 @@ class Data extends AbstractHelper
         Config $configHelper,
         UrlFinderInterface $urlFinder,
         Serializer $serializer,
-        array $skipRequestIdentifiers = [],
-        ?GetAttributeCodesSeoByDefault $getAttributeCodesSeoByDefault = null
+        GetAttributeCodesSeoByDefault $getAttributeCodesSeoByDefault,
+        array $skipRequestIdentifiers = []
     ) {
         parent::__construct($context);
         $this->settingCollectionFactory = $settingCollectionFactory;
@@ -119,8 +117,7 @@ class Data extends AbstractHelper
         $this->urlFinder = $urlFinder;
         $this->skipRequestIdentifiers = array_merge($this->skipRequestIdentifiers, $skipRequestIdentifiers);
         $this->serializer = $serializer;
-        $this->getAttributeCodesSeoByDefault = $getAttributeCodesSeoByDefault
-            ?? ObjectManager::getInstance()->get(GetAttributeCodesSeoByDefault::class);
+        $this->getAttributeCodesSeoByDefault = $getAttributeCodesSeoByDefault;
     }
 
     public function getSeoSignificantAttributeCodes(): array
@@ -296,7 +293,7 @@ class Data extends AbstractHelper
      *
      * @param RequestInterface $request
      * @param bool $allowEmptyModuleName = false
-     * @return bool;
+     * @return bool
      */
     public function isAllowedRequest(RequestInterface $request, $allowEmptyModuleName = false)
     {

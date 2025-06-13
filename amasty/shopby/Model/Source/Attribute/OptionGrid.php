@@ -14,19 +14,15 @@ use Magento\Eav\Model\Config as EavConfig;
 class OptionGrid implements ArrayInterface
 {
     /**
-     * @var array
+     * @var array|null
      */
-    protected $options;
+    private ?array $options = null;
 
     /**
      * @var Option
      */
-    protected $option;
+    private Option $option;
 
-    /**
-     * OptionGrid constructor.
-     * @param Option $option
-     */
     public function __construct(Option $option)
     {
         $this->option = $option;

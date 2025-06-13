@@ -1,6 +1,7 @@
 parameters:
     checkExplicitMixedMissingReturn: true
     checkPhpDocMissingReturn: true
+    reportUnmatchedIgnoredErrors: false
     scanDirectories:
         - %rootDir%/../../../dev/tests/static/framework/tests/unit/testsuite/Magento
         - %rootDir%/../../../dev/tests/integration/framework/tests/unit/testsuite/Magento
@@ -17,6 +18,25 @@ parameters:
             message: '#^Access to constant (XML_PATH_TYPE|TYPE_TAG_MANAGER) on an unknown class Magento\\GoogleTagManager\\Helper\\Data\.#'
             paths:
                 - Block/Product/ProductList/Ajax.php
+        -
+            message: '#^Parameter.*has invalid type Amasty\\Mage24Fix\\.*\.#'
+            paths:
+                - Plugin/Catalog/Block/Product/View/BlockHtmlTitlePlugin.php
+        -
+            message: '#^Parameter.*has invalid type Amasty\\ElasticSearch\\.*\.#'
+            paths:
+                - Plugin/Elasticsearch/Model/Adapter/AdditionalBatchDataMapper.php
+                - Plugin/Elasticsearch/SearchAdapter/Mapper.php
+        -
+            message: '#^Parameter.*has invalid type Magento\\Elasticsearch\\SearchAdapter\\Mapper\.#'
+            paths:
+                - Plugin/Elasticsearch/SearchAdapter/Mapper.php
+        -
+            message: '#^Parameter.*has invalid type Mirasvit\\SearchElastic\\Adapter\\Mapper\.#'
+            paths:
+                - Plugin/Elasticsearch/SearchAdapter/Mapper.php
+        - '#Constructor of class [a-zA-Z0-9\\_]+ has an unused parameter#'
+
 services:
     -
         class: Magento\PhpStan\Reflection\Php\DataObjectClassReflectionExtension

@@ -7,7 +7,7 @@ namespace Codeception\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final readonly class Examples
+final class Examples
 {
     public function __construct(mixed ...$values)
     {

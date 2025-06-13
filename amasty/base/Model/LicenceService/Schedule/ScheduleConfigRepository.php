@@ -43,12 +43,12 @@ class ScheduleConfigRepository
     private $scheduleFactory;
 
     public function __construct(
-        FlagRepository $flagRepository = null, //@deprecated
-        SerializerInterface $serializer = null, //@deprecated
+        FlagRepository $flagRepository, //@deprecated
+        SerializerInterface $serializer, //@deprecated
         DataObjectHelper $dataObjectHelper,
         ScheduleConfigFactory $scheduleConfigFactory,
-        Repository $scheduleRepository = null,
-        ScheduleFactory $scheduleFactory = null
+        ?Repository $scheduleRepository = null,
+        ?ScheduleFactory $scheduleFactory = null
     ) {
         $this->dataObjectHelper = $dataObjectHelper;
         $this->scheduleConfigFactory = $scheduleConfigFactory;

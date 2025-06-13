@@ -138,7 +138,7 @@ class Full
         \Magento\Framework\Indexer\ConfigInterface $indexerConfig,
         \Amasty\Xsearch\Model\Indexer\Category\Fulltext\Action\IndexIteratorFactory $indexIteratorFactory,
         CategoryRepositoryInterface $categoryRepository,
-        Config $configProvider = null
+        ?Config $configProvider = null
     ) {
         $this->resource = $resource;
         $this->connection = $resource->getConnection();

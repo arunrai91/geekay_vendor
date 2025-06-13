@@ -34,7 +34,7 @@ class Category
     public function __construct(
         ?CollectionFactory $collectionFactory, //@deprecated
         ?StoreManager $storeManager, //@deprecated
-        CategoryFactory $category = null
+        ?CategoryFactory $category = null
     ) {
         $this->categorySourceFactory = $category ?? ObjectManager::getInstance()
             ->get(CategoryFactory::class);

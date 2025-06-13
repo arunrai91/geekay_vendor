@@ -2,10 +2,6 @@
 
 namespace Codeception\PHPUnit;
 
-/**
- * @method static void _setUpBeforeClass()
- * @method static void _tearDownAfterClass()
- */
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void

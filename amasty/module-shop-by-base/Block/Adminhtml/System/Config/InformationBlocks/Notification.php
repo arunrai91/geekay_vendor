@@ -38,7 +38,7 @@ class Notification extends Template
     public function __construct(
         Template\Context $context,
         MessageValidatorInterface $messageValidator,
-        string $notificationText = null,
+        ?string $notificationText = null,
         array $data = [],
         bool $isEscapeNeed = true
     ) {

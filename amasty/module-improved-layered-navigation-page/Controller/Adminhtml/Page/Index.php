@@ -16,14 +16,14 @@ class Index extends Action
     /**
      * @var PageFactory
      */
-    protected $_resultPageFactory;
+    private PageFactory $resultPageFactory;
 
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
-        $this->_resultPageFactory = $resultPageFactory;
+        $this->resultPageFactory = $resultPageFactory;
     }
 
     /**
@@ -44,7 +44,7 @@ class Index extends Action
     public function execute()
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-        $resultPage = $this->_resultPageFactory->create();
+        $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('page');
         $resultPage->addBreadcrumb(__('CMS'), __('CMS'));
         $resultPage->addBreadcrumb(

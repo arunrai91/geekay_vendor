@@ -29,9 +29,9 @@ class CacheStorage
     private $instanceHashFactory;
 
     public function __construct(
-        FlagRepository $flagRepository = null, //@deprecated
-        Repository $instanceHashRepository = null,
-        InstanceHashFactory $instanceHashFactory = null
+        ?FlagRepository $flagRepository = null, //@deprecated
+        ?Repository $instanceHashRepository = null,
+        ?InstanceHashFactory $instanceHashFactory = null
     ) {
         $this->instanceHashRepository = $instanceHashRepository
             ?? ObjectManager::getInstance()->get(Repository::class);

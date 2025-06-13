@@ -30,10 +30,7 @@ trait IgnoreIfMetadataBlocked
 
         if ($this->getMetadata()->getSkip() !== null) {
             $skipMessage = (string)$this->getMetadata()->getSkip();
-            if (
-                version_compare(PHPUnitVersion::series(), '10.0', '<')
-                && class_exists(SkippedTestError::class)
-            ) {
+            if (PHPUnitVersion::series() < 10) {
                 $skippedTestError = new SkippedTestError($skipMessage);
             } else {
                 $skippedTestError = new SkippedWithMessageException($skipMessage);

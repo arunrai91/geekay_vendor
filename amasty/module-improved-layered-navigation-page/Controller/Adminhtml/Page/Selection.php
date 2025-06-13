@@ -7,49 +7,55 @@
 
 namespace Amasty\ShopbyPage\Controller\Adminhtml\Page;
 
+use Amasty\ShopbyPage\Model\Request\Page\SelectionAttributeRegistry;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Catalog\Model\Config as CatalogConfig;
 use Magento\Catalog\Model\Product;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\Registry as CoreRegistry;
-use Amasty\ShopbyPage\Controller\RegistryConstants;
 use Magento\Framework\Exception\LocalizedException;
 
 class Selection extends Action
 {
     /**
-     * @var CoreRegistry
-     */
-    protected $_coreRegistry = null;
-
-    /**
      * @var CatalogConfig
      */
-    protected $_catalogConfig;
+    private CatalogConfig $catalogConfig;
 
     /**
      * @var PageFactory
      */
-    protected $_resultPageFactory;
+    private PageFactory $resultPageFactory;
 
     /**
      * @var JsonFactory
      */
-    protected $_resultJsonFactory;
+    private JsonFactory $resultJsonFactory;
+
+    /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
+    /**
+     * @var SelectionAttributeRegistry
+     */
+    private SelectionAttributeRegistry $selectionAttributeRegistry;
 
     public function __construct(
-        Context $context,
         PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory,
         CatalogConfig $catalogConfig,
-        CoreRegistry $registry
+        SelectionAttributeRegistry $selectionAttributeRegistry,
+        Context $context
     ) {
-        $this->_resultPageFactory = $resultPageFactory;
-        $this->_resultJsonFactory = $resultJsonFactory;
-        $this->_catalogConfig = $catalogConfig;
-        $this->_coreRegistry = $registry;
+        $this->resultPageFactory = $resultPageFactory;
+        $this->resultJsonFactory = $resultJsonFactory;
+        $this->catalogConfig = $catalogConfig;
+        $this->selectionAttributeRegistry = $selectionAttributeRegistry;
+        $this->request = $context->getRequest();
         parent::__construct($context);
     }
 
@@ -70,22 +76,22 @@ class Selection extends Action
     {
         try {
             $attribute = $this->loadAttribute();
-            $attributeIdx = $this->getRequest()->getParam('idx');
+            $attributeIdx = $this->request->getParam('idx');
             if (isset($attributeIdx)) {
                 $attributeIdx = (int) $attributeIdx;
             }
 
-            $this->_coreRegistry->register(RegistryConstants::ATTRIBUTE, $attribute);
-            $this->_coreRegistry->register(RegistryConstants::ATTRIBUTE_IDX, $attributeIdx);
+            $this->selectionAttributeRegistry->setAttribute($attribute);
+            $this->selectionAttributeRegistry->setAttributeIdx($attributeIdx);
 
-            return $this->_resultPageFactory->create();
+            return $this->resultPageFactory->create();
         } catch (LocalizedException $e) {
             $response = ['error' => true, 'message' => $e->getMessage()];
         } catch (\Exception $e) {
             $response = ['error' => true, 'message' => $e->getMessage() . __('We can\'t fetch attribute options.')];
         }
 
-        $resultJson = $this->_resultJsonFactory->create();
+        $resultJson = $this->resultJsonFactory->create();
         $resultJson->setData($response);
         return $resultJson;
     }
@@ -96,8 +102,8 @@ class Selection extends Action
      */
     private function loadAttribute()
     {
-        $attributeId = (int) $this->getRequest()->getParam('id');
-        $attribute = $this->_catalogConfig->getAttribute(Product::ENTITY, $attributeId);
+        $attributeId = (int) $this->request->getParam('id');
+        $attribute = $this->catalogConfig->getAttribute(Product::ENTITY, $attributeId);
 
         if (!$attribute->getId()) {
             throw new LocalizedException(__('Attribute does n\'t exists'));

@@ -7,11 +7,13 @@
 
 namespace Amasty\Feed\Exceptions;
 
+use Exception;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Phrase;
 
 class LockProcessException extends LocalizedException
 {
-    public function __construct(\Magento\Framework\Phrase $phrase = null, \Exception $cause = null, $code = 0)
+    public function __construct(?Phrase $phrase = null, ?Exception $cause = null, $code = 0)
     {
         if (!$phrase) {
             $phrase = __('Feed generation is currently unavailable as the indexing process is in progress. '

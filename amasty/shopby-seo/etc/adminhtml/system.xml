@@ -80,6 +80,16 @@
                     <label/>
                     <frontend_model>Amasty\ShopbySeo\Block\System\Config\SeparatorChecker</frontend_model>
                 </field>
+                <field id="ignored_urls" translate="label comment" type="textarea" sortOrder="40"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Ignore URLs with Pass Info Request</label>
+                    <comment>URLs with a Path Info that starts with the specified value will be excluded from SEO processing by the module.
+                        For example, in the URL https://faq-and-product-questions-m2.magento-demo.amasty.com/knowledge-base/do-you-provide-the-same-day-delivery-to-new-york/, to exclude Knowledge Base URLs from processing, enter 'knowledge-base' in the setting.
+                        Specify each on a new line.</comment>
+                    <depends>
+                        <field id="mode">1</field>
+                    </depends>
+                </field>
             </group>
             <group id="robots" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
                    showInStore="1">
@@ -130,6 +140,13 @@
                        showInWebsite="1" showInStore="1">
                     <label>"all-product" Page</label>
                     <source_model>Amasty\ShopbySeo\Model\Source\Canonical\Root</source_model>
+                </field>
+                <field id="add_canonical_for_noindex" translate="label comment" type="select" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Add Canonical URL for Noindex Pages</label>
+                    <comment>If enabled, canonical URLs will be added to the NOINDEX pages.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_model>Amasty\ShopByCanonicalManagement\AddCanonicalForNoindexPromo</frontend_model>
                 </field>
             </group>
             <group id="other" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1"

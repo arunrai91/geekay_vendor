@@ -55,8 +55,8 @@ class Query extends Template
         ?CollectionFactory $userSearchCollection, // TODO remove
         QueryInfo $queryInfo,
         array $data = [],
-        UserSearch $searchResource = null, // TODO move to not optional
-        DataFilterProvider $dataFilterProvider = null
+        ?UserSearch $searchResource = null, // TODO move to not optional
+        ?DataFilterProvider $dataFilterProvider = null
     ) {
         parent::__construct($context, $data);
         $this->jsonEncoder = $jsonEncoder;

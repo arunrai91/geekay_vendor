@@ -8,7 +8,9 @@
 namespace Amasty\Feed\Model\Field;
 
 use Amasty\Feed\Model\Config\Source\CustomFieldType;
+use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
 
 /**
  * Class Conditions
@@ -51,8 +53,8 @@ class Condition extends AbstractModel
         \Amasty\Feed\Model\Rule\RuleFactory $ruleFactory,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         $data = []
     ) {
         $this->jsonHelper = $jsonHelper;

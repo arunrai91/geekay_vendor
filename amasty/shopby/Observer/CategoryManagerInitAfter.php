@@ -7,29 +7,26 @@
 
 namespace Amasty\Shopby\Observer;
 
+use Amasty\Shopby\Model\Request\IsAllProductsRegistry;
 use Magento\Framework\Event\ObserverInterface;
-use Amasty\ShopbyBase\Helper\Data;
 
 class CategoryManagerInitAfter implements ObserverInterface
 {
     /**
-     * @var \Magento\Framework\Registry
+     * @var IsAllProductsRegistry
      */
-    protected $coreRegistry;
+    private IsAllProductsRegistry $isAllProductsRegistry;
 
-    public function __construct(
-        \Magento\Framework\Registry $registry
-    ) {
-        $this->coreRegistry = $registry;
+    public function __construct(IsAllProductsRegistry $isAllProductsRegistry)
+    {
+        $this->isAllProductsRegistry = $isAllProductsRegistry;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        if (!$this->coreRegistry->registry(Data::SHOPBY_CATEGORY_INDEX)) {
-            $this->coreRegistry->register(Data::SHOPBY_CATEGORY_INDEX, true);
-        }
+        $this->isAllProductsRegistry->setIsAllProducts(true);
     }
 }

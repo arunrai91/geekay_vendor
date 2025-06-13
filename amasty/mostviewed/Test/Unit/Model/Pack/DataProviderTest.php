@@ -53,7 +53,8 @@ class DataProviderTest extends \PHPUnit\Framework\TestCase
         $dataPersistor = $this->createMock(DataPersistorInterface::class);
         $pool = $this->createMock(PoolInterface::class);
         $productCollection = $this->getMockBuilder(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class)
-            ->setMethods(['create', 'addIdFilter', 'addAttributeToSelect', 'getItems'])
+            ->addMethods(['addIdFilter', 'addAttributeToSelect', 'getItems'])
+            ->onlyMethods(['create'])
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 

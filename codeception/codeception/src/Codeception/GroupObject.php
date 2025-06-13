@@ -20,12 +20,14 @@ abstract class GroupObject extends Extension
 
     public static function getSubscribedEvents(): array
     {
-        $groupEvents = static::$group
-            ? [
+        $inheritedEvents = parent::getSubscribedEvents();
+        $events = [];
+        if (static::$group) {
+            $events = [
                 Events::TEST_BEFORE . '.' . static::$group => '_before',
-                Events::TEST_AFTER  . '.' . static::$group => '_after',
-            ]
-            : [];
-        return array_merge($groupEvents, parent::getSubscribedEvents());
+                Events::TEST_AFTER . '.' . static::$group => '_after',
+            ];
+        }
+        return array_merge($events, $inheritedEvents);
     }
 }

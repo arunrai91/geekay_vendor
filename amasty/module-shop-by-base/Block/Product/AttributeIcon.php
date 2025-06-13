@@ -67,7 +67,7 @@ class AttributeIcon extends Template
         parent::_construct();
 
         if (!$this->hasData('cache_lifetime')) {
-            $this->setData('cache_lifetime', 86400);
+            $this->setData('cache_lifetime', null);
         }
     }
 

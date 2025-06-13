@@ -57,4 +57,9 @@
             <argument name="replacedMetaData" xsi:type="object">replacedDataFromAmastyMetaModuleForShopby</argument>
         </arguments>
     </type>
+
+    <type name="Magento\Catalog\Helper\Category">
+        <plugin name="Amasty_ShopbyBase::ResolveCanonicalUrl"
+                type="Amasty\ShopbyBase\Plugin\Catalog\Helper\Category\ResolveCanonicalUrl" sortOrder="999"/>
+    </type>
 </config>

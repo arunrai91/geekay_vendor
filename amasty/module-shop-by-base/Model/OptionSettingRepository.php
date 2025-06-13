@@ -16,7 +16,6 @@ use Amasty\ShopbyBase\Helper\FilterSetting;
 use Amasty\ShopbyBase\Model\ResourceModel\OptionSetting as OptionSettingResource;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Store\Model\Store;
 
@@ -37,17 +36,10 @@ class OptionSettingRepository implements OptionSettingRepositoryInterface
      */
     private $collectionFactory;
 
-    /**
-     * @param OptionSettingResource $resource
-     * @param OptionSettingFactory $factory
-     * @param OptionSettingResource\CollectionFactory $collectionFactory
-     * @param Option\CollectionFactory|null $optionCollectionFactory @deprecated
-     */
     public function __construct(
         OptionSettingResource $resource,
         OptionSettingFactory $factory,
-        ResourceModel\OptionSetting\CollectionFactory $collectionFactory,
-        Option\CollectionFactory $optionCollectionFactory = null
+        ResourceModel\OptionSetting\CollectionFactory $collectionFactory
     ) {
         $this->resource = $resource;
         $this->factory = $factory;
@@ -97,6 +89,15 @@ class OptionSettingRepository implements OptionSettingRepositoryInterface
                 }
 
                 $model->setData($key . '_use_default', $isDefault);
+            }
+        } elseif ($storeId == Store::DEFAULT_STORE_ID) {
+            if ($model->getTitle() !== null) {
+                //for $storeId == 0
+                $model->setData('title_use_default', false);
+            }
+            if ($model->getMetaTitle() !== null) {
+                //for $storeId == 0
+                $model->setData('meta_title_use_default', false);
             }
         }
 

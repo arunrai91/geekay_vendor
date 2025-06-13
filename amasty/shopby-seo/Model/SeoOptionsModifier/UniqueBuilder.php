@@ -10,10 +10,8 @@ declare(strict_types=1);
 
 namespace Amasty\ShopbySeo\Model\SeoOptionsModifier;
 
-use Amasty\ShopbySeo\Helper\Data;
 use Amasty\ShopbySeo\Model\ConfigProvider;
 use Magento\Catalog\Model\Product\Url as ProductUrl;
-use Magento\Framework\App\ObjectManager;
 
 class UniqueBuilder
 {
@@ -41,13 +39,11 @@ class UniqueBuilder
     private $configProvider;
 
     public function __construct(
-        ?Data $seoHelper, // @deprecated
         ProductUrl $productUrl,
-        ConfigProvider $configProvider = null // TODO move to not optional
+        ?ConfigProvider $configProvider
     ) {
         $this->productUrl = $productUrl;
-        //OM for backward compatibility
-        $this->configProvider = $configProvider ?? ObjectManager::getInstance()->get(ConfigProvider::class);
+        $this->configProvider = $configProvider;
     }
 
     /**
@@ -71,7 +67,7 @@ class UniqueBuilder
 
         if ($forceUniqueValue || !$this->configProvider->isIncludeAttributeName()) {
             $i = 0;
-            while (in_array($unique, $this->cache, true)) {
+            while ($this->checkIfNotUnique($unique, $optionId)) {
                 if (isset($this->urlUniqueCounter[$formattedValue])) {
                     $i = $this->urlUniqueCounter[$formattedValue];
                 }
@@ -83,6 +79,18 @@ class UniqueBuilder
         $this->cache[$optionId] = $unique;
 
         return (string)$unique;
+    }
+
+    /**
+     * @param string $value
+     * @param int|string $optionId
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function checkIfNotUnique(string $value, $optionId): bool
+    {
+        return in_array($value, $this->cache, true);
     }
 
     public function clear(): void

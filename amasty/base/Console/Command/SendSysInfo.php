@@ -24,7 +24,7 @@ class SendSysInfo extends Command
 
     public function __construct(
         CommandSendSysInfo $sendSysInfo,
-        string $name = null
+        ?string $name = null
     ) {
         parent::__construct($name);
         $this->sendSysInfo = $sendSysInfo;

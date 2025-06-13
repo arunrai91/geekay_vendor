@@ -53,8 +53,6 @@ class Canonical extends Fieldset
         $comment = '<p>';
         $comment .= $this->getCanonicalSettingComment();
         $comment .= '</p><p>';
-        $comment .= __('Canonical link is not visible for NOINDEX pages.');
-        $comment .= '</p><p>';
         $comment .= __(
             'Need help with the setting?' .
             ' Please consult the <a target="_blank" href="%1">user guide</a> to configure properly.',

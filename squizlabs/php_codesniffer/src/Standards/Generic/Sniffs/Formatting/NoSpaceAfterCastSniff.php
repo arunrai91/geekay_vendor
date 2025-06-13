@@ -13,11 +13,10 @@
 namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-class NoSpaceAfterCastSniff implements Sniff, DeprecatedSniff
+class NoSpaceAfterCastSniff implements Sniff
 {
 
 
@@ -57,42 +56,6 @@ class NoSpaceAfterCastSniff implements Sniff, DeprecatedSniff
         }
 
     }//end process()
-
-
-    /**
-     * Provide the version number in which the sniff was deprecated.
-     *
-     * @return string
-     */
-    public function getDeprecationVersion()
-    {
-        return 'v3.4.0';
-
-    }//end getDeprecationVersion()
-
-
-    /**
-     * Provide the version number in which the sniff will be removed.
-     *
-     * @return string
-     */
-    public function getRemovalVersion()
-    {
-        return 'v4.0.0';
-
-    }//end getRemovalVersion()
-
-
-    /**
-     * Provide a custom message to display with the deprecation.
-     *
-     * @return string
-     */
-    public function getDeprecationMessage()
-    {
-        return 'Use the Generic.Formatting.SpaceAfterCast sniff with the $spacing property set to 0 instead.';
-
-    }//end getDeprecationMessage()
 
 
 }//end class

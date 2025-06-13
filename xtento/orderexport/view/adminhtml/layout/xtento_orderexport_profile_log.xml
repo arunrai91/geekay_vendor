@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <update handle="xtento_orderexport_log_grid_block"/>
+    <container name="root" label="Root">
+        <block class="Xtento\OrderExport\Block\Adminhtml\Log" name="adminhtml.orderexport.log.grid.container">
+            <action method="removeButton">
+                <argument name="buttonId" xsi:type="string">add</argument>
+            </action>
+            <referenceBlock name="adminhtml.block.orderexport.log.grid">
+                <arguments>
+                    <argument name="grid_url" xsi:type="url" path="*/profile/log">
+                        <param name="_current">1</param>
+                    </argument>
+                </arguments>
+            </referenceBlock>
+            <referenceBlock name="adminhtml.orderexport.log.grid.column.actions">
+                <arguments>
+                    <argument name="actions" xsi:type="array">
+                        <item name="download" xsi:type="array">
+                            <item name="target" xsi:type="string">_blank</item>
+                        </item>
+                    </argument>
+                </arguments>
+            </referenceBlock>
+            <referenceBlock name="adminhtml.orderexport.log.grid.columnSet">
+                <arguments>
+                    <argument name="rowUrl" xsi:type="null"/>
+                </arguments>
+            </referenceBlock>
+            <referenceBlock name="adminhtml.orderexport.log.grid.massaction" remove="true"/>
+        </block>
+    </container>
+</layout>
+
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            %!uniqueid!%
+ * Last Modified: 2016-03-02T21:07:01+00:00
+ * File:          view/adminhtml/layout/xtento_orderexport_profile_log.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

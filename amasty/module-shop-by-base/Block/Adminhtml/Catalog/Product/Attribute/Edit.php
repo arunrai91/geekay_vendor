@@ -50,7 +50,7 @@ class Edit extends \Magento\Backend\Block\Template
      */
     public function getAttributeCode(): string
     {
-        /** @var $attribute \Magento\Catalog\Model\ResourceModel\Eav\Attribute */
+        /** @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute $attribute */
         $attribute = $this->coreRegistry->registry('entity_attribute');
 
         return $attribute && $attribute->getAttributeCode() ? $attribute->getAttributeCode() : '';

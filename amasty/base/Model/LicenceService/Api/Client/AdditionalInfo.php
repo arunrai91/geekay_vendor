@@ -12,6 +12,7 @@ namespace Amasty\Base\Model\LicenceService\Api\Client;
 
 use Amasty\Base\Model\LicenceService\Request\Url\Builder;
 use Amasty\Base\Model\SimpleDataObject;
+use Amasty\Base\Model\SimpleDataObjectFactory;
 use Amasty\Base\Model\SysInfo\RegisteredInstanceRepository;
 use Amasty\Base\Utils\Http\Curl;
 use Amasty\Base\Utils\Http\CurlFactory;
@@ -37,19 +38,23 @@ class AdditionalInfo
      */
     private $urlBuilder;
 
+    /**
+     * @var SimpleDataObjectFactory
+     */
+    private $simpleDataObjectFactory;
+
     public function __construct(
         CurlFactory $curlFactory,
         RegisteredInstanceRepository $registeredInstanceRepository,
-        Builder $urlBuilder
+        Builder $urlBuilder,
+        SimpleDataObjectFactory $simpleDataObjectFactory
     ) {
         $this->curlFactory = $curlFactory;
         $this->registeredInstanceRepository = $registeredInstanceRepository;
         $this->urlBuilder = $urlBuilder;
+        $this->simpleDataObjectFactory = $simpleDataObjectFactory;
     }
 
-    /**
-     * @return string[]
-     */
     public function requestAdditionalInfo(array $params): SimpleDataObject
     {
         $curl = $this->createCurl();
@@ -93,10 +98,10 @@ class AdditionalInfo
     }
 
     /**
-     * @return string[]
+     * @return SimpleDataObject
      */
-    private function generateEmptyResponse(): array
+    private function generateEmptyResponse(): SimpleDataObject
     {
-        return [''];
+        return $this->simpleDataObjectFactory->create();
     }
 }

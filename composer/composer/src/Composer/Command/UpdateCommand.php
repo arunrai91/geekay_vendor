@@ -280,7 +280,7 @@ EOT
 
         $result = $install->run();
 
-        if ($result === 0 && !$input->getOption('lock')) {
+        if ($result === 0) {
             $bumpAfterUpdate = $input->getOption('bump-after-update');
             if (false === $bumpAfterUpdate) {
                 $bumpAfterUpdate = $composer->getConfig()->get('bump-after-update');

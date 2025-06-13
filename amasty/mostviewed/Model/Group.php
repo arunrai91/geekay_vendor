@@ -426,6 +426,10 @@ class Group extends AbstractGroup implements GroupInterface
                     }
                     break;
                 case RuleIndex::WHERE_SHOW:
+                    if ($this->getBlockPosition() == BlockPosition::CUSTOM) {
+                        $this->currentConditions = null;
+                        break;
+                    }
                     if ($this->getCategoryIds()) {
                         foreach (explode(',', $this->getCategoryIds()) as $categoryId) {
                             $matchedProducts['categories'][$categoryId][] = $storeId;

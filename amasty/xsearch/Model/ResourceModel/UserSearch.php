@@ -38,10 +38,10 @@ class UserSearch extends AbstractDb
     }
 
     public function requestAnalyticsData(
-        string $fromDate = null,
-        string $toDate = null,
-        string $dateFormat = null,
-        int $limit = null
+        ?string $fromDate = null,
+        ?string $toDate = null,
+        ?string $dateFormat = null,
+        ?int $limit = null
     ): ?array {
         $filters = $this->prepareDateFilter($fromDate, $toDate);
 
@@ -58,8 +58,8 @@ class UserSearch extends AbstractDb
     }
 
     public function getUniqueUsersTotal(
-        string $fromDate = null,
-        string $toDate = null
+        ?string $fromDate = null,
+        ?string $toDate = null
     ): int {
         $filters = $this->prepareDateFilter($fromDate, $toDate);
 
@@ -73,10 +73,10 @@ class UserSearch extends AbstractDb
     }
 
     public function getProductClickUsers(
-        string $fromDate = null,
-        string $toDate = null,
-        string $dateFormat = null,
-        int $limit = null
+        ?string $fromDate = null,
+        ?string $toDate = null,
+        ?string $dateFormat = null,
+        ?int $limit = null
     ): ?array {
         $filters = $this->prepareDateFilter($fromDate, $toDate);
         $filters[] = 'product_click IS NOT NULL';
@@ -90,8 +90,8 @@ class UserSearch extends AbstractDb
     }
 
     public function getProductClickUsersTotal(
-        string $fromDate = null,
-        string $toDate = null
+        ?string $fromDate = null,
+        ?string $toDate = null
     ): int {
         $rows = $this->getProductClickUsers($fromDate, $toDate);
         $row = current($rows);
@@ -116,8 +116,8 @@ class UserSearch extends AbstractDb
     private function fetchAnalitics(
         array $columns,
         array $filters = [],
-        string $dateFormat = null,
-        int $limit = null
+        ?string $dateFormat = null,
+        ?int $limit = null
     ): ?array {
         $select = $this->getConnection()->select()
             ->from($this->getMainTable(), $columns);

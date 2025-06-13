@@ -31,7 +31,7 @@ class Attributes extends Select
         Data $xSearchHelper,
         Context $context,
         array $data = [],
-        CustomSearchAttributes $customSearchAttributes = null
+        ?CustomSearchAttributes $customSearchAttributes = null
     ) {
         parent::__construct($context, $data);
         $this->xSearchHelper = $xSearchHelper;

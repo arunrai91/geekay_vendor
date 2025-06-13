@@ -7,20 +7,20 @@
 
 namespace Amasty\ShopbyPage\Block\Adminhtml\Page\Edit\Tab;
 
-use Magento\Backend\Block\Widget\Form\Generic;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form as WidgetForm;
+use Amasty\ShopbyBase\Block\Adminhtml\Widget\Form\Element\ElementCreator;
+use Amasty\ShopbyPage\Model\Request\Page\Registry as PageRegistry;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Data\FormFactory;
-use Magento\Framework\Registry;
 use Amasty\ShopbyPage\Model\Config\Source\Attribute as SourceAttribute;
-use Amasty\ShopbyPage\Controller\RegistryConstants;
 use Magento\Catalog\Model\Config as CatalogConfig;
 use Magento\Catalog\Model\Product;
 
 /**
  * @api
  */
-class Selection extends Generic implements TabInterface
+class Selection extends WidgetForm implements TabInterface
 {
     /**
      * @var  SourceAttribute
@@ -33,24 +33,23 @@ class Selection extends Generic implements TabInterface
     private $catalogConfig;
 
     /**
-     * @param Context $context
-     * @param Registry $registry
-     * @param FormFactory $formFactory
-     * @param SourceAttribute $sourceAttribute
-     * @param CatalogConfig $catalogConfig
-     * @param array $data
+     * @var PageRegistry
      */
+    private PageRegistry $pageRegistry;
+
     public function __construct(
-        Context $context,
-        Registry $registry,
-        FormFactory $formFactory,
         SourceAttribute $sourceAttribute,
         CatalogConfig $catalogConfig,
+        FormFactory $formFactory,
+        ElementCreator $creator,
+        PageRegistry $pageRegistry,
+        Context $context,
         array $data = []
     ) {
         $this->sourceAttribute = $sourceAttribute;
         $this->catalogConfig = $catalogConfig;
-        parent::__construct($context, $registry, $formFactory, $data);
+        $this->pageRegistry = $pageRegistry;
+        parent::__construct($formFactory, $creator, $context, $data);
     }
 
     /**
@@ -89,18 +88,13 @@ class Selection extends Generic implements TabInterface
         return false;
     }
 
-    /**
-     * Prepare form
-     *
-     * @return $this
-     */
-    protected function _prepareForm()
+    public function prepareForm(): Selection
     {
         /** @var \Magento\Framework\Data\Form $form */
-        $form = $this->_formFactory->create();
+        $form = $this->getDataFormFactory()->create();
 
         /** @var \Amasty\ShopbyPage\Api\Data\PageInterface $model */
-        $model = $this->_coreRegistry->registry(RegistryConstants::PAGE);
+        $model = $this->pageRegistry->get();
 
         $conditions = $model->getConditions();
 
@@ -131,13 +125,13 @@ class Selection extends Generic implements TabInterface
                 'values'   => ['0' => __('Select attribute')] + $attributes,
                 'label'    => __('Filter'),
                 'title'    => __('Filter'),
-                'onchange' => 'window.amastyShopbyPageSelection.add(\'add_selection_fieldset\', this.value); 
+                'onchange' => 'window.amastyShopbyPageSelection.add(\'add_selection_fieldset\', this.value);
                                 this.value=0; return;'
             ]
         );
 
         $this->setForm($form);
-        parent::_prepareForm();
+        parent::prepareForm();
 
         return $this;
     }

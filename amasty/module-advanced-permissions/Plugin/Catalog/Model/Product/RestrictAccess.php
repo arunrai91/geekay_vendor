@@ -55,5 +55,7 @@ class RestrictAccess
                 );
             }
         }
+
+        return $product;
     }
 }

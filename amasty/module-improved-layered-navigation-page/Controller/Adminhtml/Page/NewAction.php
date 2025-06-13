@@ -8,12 +8,26 @@
 namespace Amasty\ShopbyPage\Controller\Adminhtml\Page;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Forward;
+use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Registry as CoreRegistry;
 use Amasty\ShopbyPage\Controller\RegistryConstants;
 
 class NewAction extends Action
 {
+    /**
+     * @var ResultFactory
+     */
+    private ResultFactory $controllerResultFactory;
+
+    public function __construct(Context $context)
+    {
+        parent::__construct($context);
+        $this->controllerResultFactory = $context->getResultFactory();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,11 +39,12 @@ class NewAction extends Action
     /**
      * Edit page
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Forward
      */
     public function execute()
     {
-        // phpcs:ignore Magento2.Legacy.ObsoleteResponse.ForwardResponseMethodFound
-        $this->_forward('edit');
+        /** @var Forward $resultForward */
+        $resultForward = $this->controllerResultFactory->create(ResultFactory::TYPE_FORWARD);
+        return $resultForward->forward('edit');
     }
 }

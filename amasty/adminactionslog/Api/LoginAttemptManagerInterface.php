@@ -14,5 +14,5 @@ interface LoginAttemptManagerInterface
 {
     public function saveAttempt(?string $username, int $status): void;
 
-    public function clear(int $period = null): void;
+    public function clear(?int $period = null): void;
 }

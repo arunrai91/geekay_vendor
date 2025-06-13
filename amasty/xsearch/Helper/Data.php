@@ -141,7 +141,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function highlight($text, $query)
     {
-        if ($query) {
+        if ($query && $text) {
             preg_match_all('~\w+~u', $query, $matches);
 
             if ($matches && isset($matches[0])) {

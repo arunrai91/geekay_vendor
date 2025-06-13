@@ -41,7 +41,12 @@ class LogDetailsFormatter
     {
         $logEntry = $this->logEntryRepository->getById($logEntryId);
 
-        return array_map(function ($logDetail) {
+        return array_map($this->getFormatterCallback(), $logEntry->getLogDetails());
+    }
+
+    protected function getFormatterCallback(): callable
+    {
+        return function ($logDetail) {
             $diffString = $this->diffFinder->render(
                 (string)$logDetail->getOldValue(),
                 (string)$logDetail->getNewValue()
@@ -52,7 +57,7 @@ class LogDetailsFormatter
                 LogDetail::OLD_VALUE => $this->removeDiffTags($diffString, self::TAG_INS),
                 LogDetail::NEW_VALUE => $this->removeDiffTags($diffString, self::TAB_DEL),
             ];
-        }, $logEntry->getLogDetails());
+        };
     }
 
     private function removeDiffTags(string $text, string $tagName): string

@@ -18,6 +18,7 @@ trait Namespaces
      */
     protected function breakParts(string $class): array
     {
+        // removing leading slashes and dots first
         $class = str_replace('/', '\\', ltrim($class, './\\'));
         return explode('\\', $class);
     }
@@ -30,13 +31,17 @@ trait Namespaces
 
     protected function getNamespaceString(string $class): string
     {
-        return implode('\\', $this->getNamespaces($class));
+        $namespaces = $this->getNamespaces($class);
+        return implode('\\', $namespaces);
     }
 
     protected function getNamespaceHeader(string $class): string
     {
         $str = $this->getNamespaceString($class);
-        return $str ? "\nnamespace {$str};\n" : '';
+        if (!$str) {
+            return "";
+        }
+        return "\nnamespace {$str};\n";
     }
 
     protected function getNamespaces(string $class): array

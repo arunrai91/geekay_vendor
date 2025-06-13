@@ -8,20 +8,21 @@
 namespace Amasty\ShopbyBase\Model;
 
 use Amasty\ShopbyBase\Api\Data\FilterSettingInterface;
+use Magento\Framework\ObjectManagerInterface;
 
 class FilterSettingFactory
 {
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
-    protected $_objectManager;
+    private ObjectManagerInterface $objectManager;
 
     /**
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param ObjectManagerInterface $objectManager
      */
-    public function __construct(\Magento\Framework\ObjectManagerInterface $objectManager)
+    public function __construct(ObjectManagerInterface $objectManager)
     {
-        $this->_objectManager = $objectManager;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -33,6 +34,6 @@ class FilterSettingFactory
      */
     public function create(array $arguments = [])
     {
-        return $this->_objectManager->create(FilterSettingInterface::class, $arguments);
+        return $this->objectManager->create(FilterSettingInterface::class, $arguments);
     }
 }

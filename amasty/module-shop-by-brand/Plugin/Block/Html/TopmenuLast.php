@@ -14,7 +14,7 @@ class TopmenuLast extends \Amasty\ShopbyBrand\Plugin\Block\Html\Topmenu
     /**
      * @return int
      */
-    protected function getPosition()
+    public function getPosition()
     {
         return TopmenuSource::DISPLAY_LAST;
     }

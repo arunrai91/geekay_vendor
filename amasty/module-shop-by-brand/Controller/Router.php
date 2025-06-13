@@ -11,7 +11,6 @@ use Amasty\ShopbyBase\Model\Redirect\NonSlash as NonSlashRedirectManager;
 use Amasty\ShopbyBrand\Model\ConfigProvider;
 use Amasty\ShopbyBrand\Model\UrlBuilder\Adapter;
 use Amasty\ShopbyBrand\Model\UrlParser\MatchBrandParams;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Module\Manager;
 
@@ -27,16 +26,6 @@ class Router implements \Magento\Framework\App\RouterInterface
      */
 
     private $response;
-
-    /**
-     * @var  Manager
-     */
-    private $moduleManager;
-
-    /**
-     * @var  \Magento\Framework\Registry
-     */
-    private $registry;
 
     /**
      * @var string
@@ -76,27 +65,22 @@ class Router implements \Magento\Framework\App\RouterInterface
     public function __construct(
         \Magento\Framework\App\ActionFactory $actionFactory,
         \Magento\Framework\App\ResponseInterface $response,
-        \Magento\Framework\Registry $registry,
         \Magento\Framework\UrlInterface $urlBuilder,
-        \Magento\Framework\Module\Manager $moduleManager,
         \Amasty\ShopbyBrand\Helper\Data $brandHelper,
         \Amasty\ShopbyBase\Helper\PermissionHelper $permissionHelper,
         ConfigProvider $configProvider,
-        NonSlashRedirectManager $nonSlashRedirectManager = null,
-        MatchBrandParams $matchBrandParams = null // TODO move to not optional
+        NonSlashRedirectManager $nonSlashRedirectManager,
+        ?MatchBrandParams $matchBrandParams
     ) {
         $this->actionFactory = $actionFactory;
         $this->response = $response;
-        $this->moduleManager = $moduleManager;
-        $this->registry = $registry;
         $this->brandCode = $brandHelper->getBrandAttributeCode();
         $this->urlBuilder = $urlBuilder;
         $this->brandHelper = $brandHelper;
         $this->permissionHelper = $permissionHelper;
         $this->configProvider = $configProvider;
-        $this->nonSlashRedirectManager = $nonSlashRedirectManager
-            ?? ObjectManager::getInstance()->get(NonSlashRedirectManager::class);
-        $this->matchBrandParams = $matchBrandParams ?? ObjectManager::getInstance()->get(MatchBrandParams::class);
+        $this->nonSlashRedirectManager = $nonSlashRedirectManager;
+        $this->matchBrandParams = $matchBrandParams;
     }
 
     /**

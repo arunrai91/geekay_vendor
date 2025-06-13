@@ -73,12 +73,12 @@ class BlockHtmlTitlePlugin
      */
     private function generateLogoHtml(): string
     {
-        /** @var AttributeIcon $block */
         $attributeCodes = $this->getAttributeCodes();
         if (!$attributeCodes) {
             return '';
         }
 
+        /** @var AttributeIcon $block */
         $block = $this->blockFactory->createBlock(
             AttributeIcon::class,
             [

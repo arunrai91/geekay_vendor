@@ -1,6 +1,4 @@
 "Category Filter Settings","Category Filter Settings"
-"Manage Group Attributes","Manage Group Attributes"
-"Add New Group","Add New Group"
 "Display Mode","Display Mode"
 "Add From-To Widget","Add From-To Widget"
 "Range Algorithm","Range Algorithm"
@@ -214,6 +212,10 @@ General,General
 "Enable the setting to display the titles of the subcategories.","Enable the setting to display the titles of the subcategories."
 "Enable Slider","Enable Slider"
 "Items per Slide","Items per Slide"
+"Enable Infinity Loop","Enable Infinity Loop"
+"Enable continuous loop mode. Because of the nature of how the loop mode works (it will rearrange slides),
+                        the total number of slides must be >= slidesPerView*2; otherwise, this mode will not function properly.","Enable continuous loop mode. Because of the nature of how the loop mode works (it will rearrange slides),
+                        the total number of slides must be >= slidesPerView*2; otherwise, this mode will not function properly."
 "Category Meta Tags","Category Meta Tags"
 "Please open Stores -> Attributes -> Product -> [open attribute] -> Properties ->
 [open attribute option settings] in order to define Meta-Title, Meta-Description and Meta-Keywords for your filter options.","Please open Stores -> Attributes -> Product -> [open attribute] -> Properties ->

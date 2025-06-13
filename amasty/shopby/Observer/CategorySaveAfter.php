@@ -22,7 +22,7 @@ class CategorySaveAfter implements ObserverInterface
     /**
      * @var CacheInterface
      */
-    protected $cache;
+    private CacheInterface $cache;
 
     public function __construct(
         CacheInterface $cache

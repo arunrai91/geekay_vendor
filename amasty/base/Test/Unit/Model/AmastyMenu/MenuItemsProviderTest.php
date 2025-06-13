@@ -62,7 +62,7 @@ class MenuItemsProviderTest extends TestCase
         $this->defaultMenuMock = $this->createMock(Menu::class);
 
         $iteratorFactoryMock = $this->createMock(IteratorFactory::class);
-        $iteratorFactoryMock->expects($this->any())->method('create')->willReturn($this->iteratorMock);
+        $iteratorFactoryMock->method('create')->willReturn($this->iteratorMock);
 
         $menuConfigMock = $this->createMock(Config::class);
         $menuConfigMock->expects($this->once())->method('getMenu')->willReturn($this->defaultMenuMock);
@@ -85,17 +85,15 @@ class MenuItemsProviderTest extends TestCase
      */
     public function testGet(Item $menuItemMock, array $configData, array $expectedItemsData): void
     {
-        $this->iteratorMock->expects($this->any())->method('valid')->willReturn(true, false);
-        $this->iteratorMock->expects($this->any())->method('current')->willReturn($menuItemMock);
-        $this->configItemsProviderMock->expects($this->any())->method('getConfigItems')->willReturn($configData);
+        $this->iteratorMock->method('valid')->willReturn(true, false);
+        $this->iteratorMock->method('current')->willReturn($menuItemMock);
+        $this->configItemsProviderMock->method('getConfigItems')->willReturn($configData);
 
-        $index = 0;
+        $returnMap = [];
         foreach ($expectedItemsData as $expectedItemData) {
-            $this->menuItemFactoryMock->expects($this->at($index++))->method('create')->with(
-                ['data' => $expectedItemData]
-            );
+            $returnMap[] =  ['data' => $expectedItemData];
         }
-
+        $this->menuItemFactoryMock->method('create')->willReturnMap($returnMap);
         $this->menuItemsProvider->get();
     }
 

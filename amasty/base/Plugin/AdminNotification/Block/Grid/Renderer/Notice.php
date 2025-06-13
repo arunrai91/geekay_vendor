@@ -8,18 +8,16 @@
 namespace Amasty\Base\Plugin\AdminNotification\Block\Grid\Renderer;
 
 use Magento\AdminNotification\Block\Grid\Renderer\Notice as NativeNotice;
+use Magento\Framework\DataObject;
 
 class Notice
 {
-    public function aroundRender(
-        NativeNotice $subject,
-        \Closure $proceed,
-        \Magento\Framework\DataObject $row
-    ) {
-        $result = $proceed($row);
-
-        $amastyLogo = '';
-        $amastyImage = '';
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function afterRender(NativeNotice $subject, string $result, DataObject $row): string
+    {
+        $amastyLogo = $amastyImage = '';
         if ($row->getData('is_amasty')) {
             if ($row->getData('image_url')) {
                 $amastyImage = ' style="background: url(' . $row->getData("image_url") . ') no-repeat;"';
@@ -27,8 +25,7 @@ class Notice
                 $amastyLogo = ' amasty-grid-logo';
             }
         }
-        $result = '<div class="ambase-grid-message' . $amastyLogo . '"' . $amastyImage . '>' . $result . '</div>';
 
-        return  $result;
+        return '<div class="ambase-grid-message' . $amastyLogo . '"' . $amastyImage . '>' . $result . '</div>';
     }
 }

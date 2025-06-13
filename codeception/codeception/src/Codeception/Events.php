@@ -20,6 +20,7 @@ final class Events
 
     /**
      * The <b>MODULE_INIT</b> event occurs before modules are initialized.
+     *
      * The event listener method receives a {@link \Codeception\Event\SuiteEvent} instance.
      *
      * @var string
@@ -29,6 +30,7 @@ final class Events
     /**
      * The <b>SUITE_INIT</b> event occurs when suite is initialized.
      * Modules are created and initialized, but Actor class is not loaded.
+     *
      * The event listener method receives a {@link \Codeception\Event\SuiteEvent} instance.
      *
      * @var string
@@ -37,6 +39,7 @@ final class Events
 
     /**
      * The <b>SUITE_BEFORE</b> event occurs before suite is executed.
+     *
      * The event listener method receives a {@link \Codeception\Event\SuiteEvent} instance.
      *
      * @var string
@@ -45,6 +48,7 @@ final class Events
 
     /**
      * The <b>SUITE_AFTER</b> event occurs after suite has been executed.
+     *
      * The event listener method receives a {@link \Codeception\Event\SuiteEvent} instance.
      *
      * @var string
@@ -81,6 +85,7 @@ final class Events
 
     /**
      * The <b>TEST_FAIL</b> event occurs whenever test has failed.
+     *
      * The event listener method receives a {@link \Codeception\Event\FailEvent} instance.
      *
      * @var string
@@ -89,6 +94,7 @@ final class Events
 
     /**
      * The <b>TEST_ERROR</b> event occurs whenever test got an error while being executed.
+     *
      * The event listener method receives a {@link \Codeception\Event\FailEvent} instance.
      *
      * @var string
@@ -126,6 +132,7 @@ final class Events
     /**
      * The <b>TEST_USELESS</b> event occurs whenever test does not execute any assertions
      * or when it calls expectNotToPerformAssertions and then performs some assertion.
+     *
      * The event listener method receives a {@link \Codeception\Event\FailEvent} instance.
      *
      * @var string

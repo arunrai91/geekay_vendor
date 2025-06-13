@@ -68,7 +68,7 @@ class Connection extends AbstractFeed
         EncryptorInterface $encryptor,
         Random $random,
         FeedRepositoryInterface $feedRepository,
-        MagentoVersion $magentoVersion = null // TODO move to not optional
+        ?MagentoVersion $magentoVersion = null // TODO move to not optional
     ) {
         parent::__construct($context);
         $this->ftp = $ftp;

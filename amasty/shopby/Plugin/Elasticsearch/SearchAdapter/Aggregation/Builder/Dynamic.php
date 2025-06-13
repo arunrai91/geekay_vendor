@@ -16,27 +16,25 @@ class Dynamic
 {
     /**
      * @param GetAggregations $subject
-     * @param \Closure $closure
      * @param RequestBucketInterface $bucket
      * @param array $dimensions
      * @param array $elasticResponse
      * @return array
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function aroundGetDynamicBucket(
+    public function afterGetDynamicBucket(
         GetAggregations $subject, // @phpstan-ignore class.notFound
-        \Closure $closure,
+        array $resultData,
         RequestBucketInterface $bucket,
         array $dimensions,
         array $elasticResponse
     ) {
-        $resultData = $closure($bucket, $dimensions, $elasticResponse);
         return $this->addSliderData($resultData, $elasticResponse['aggregations'][$bucket->getName()]);
     }
 
     /**
      * @param DynamicBuilder|\Mirasvit\SearchElastic\Adapter\Aggregation\DynamicBucket $builder
-     * @param \Closure $closure
+     * @param array $resultData
      * @param RequestBucketInterface $bucket
      * @param array $dimensions
      * @param array $queryResult
@@ -44,15 +42,14 @@ class Dynamic
      * @return array
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function aroundBuild(
+    public function afterBuild(
         $builder,
-        \Closure $closure,
+        array $resultData,
         RequestBucketInterface $bucket,
         array $dimensions,
         array $queryResult,
         DataProviderInterface $dataProvider
     ) {
-        $resultData = $closure($bucket, $dimensions, $queryResult, $dataProvider);
         return $this->addSliderData($resultData, $queryResult['aggregations'][$bucket->getName()] ?? null);
     }
 

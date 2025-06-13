@@ -18,17 +18,18 @@ use Amasty\ShopbyBase\Model\Category\Manager as CategoryManager;
 use Amasty\ShopbyBase\Model\Customizer\Category;
 use Amasty\ShopbyBase\Model\Customizer\Category\CustomizerInterface;
 use Amasty\ShopbyBase\Model\FilterSetting\IsMultiselect;
+use Amasty\ShopbyBase\Model\Request\Registry as ShopbyBaseRegistry;
 use Amasty\ShopbyPage\Api\Data\PageInterface;
 use Amasty\ShopbyPage\Api\PageRepositoryInterface;
-use Amasty\ShopbyPage\Model\Config\Source\Robots;
 use Amasty\ShopbyPage\Model\Page as PageEntity;
 use Amasty\ShopbyBase\Model\Meta\GetReplacedMetaData;
+use Amasty\ShopbyPage\Model\Page\ImagesManager;
+use Amasty\ShopbyPage\Model\Request\Page\Registry as PageRegistry;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Model\Config as CatalogConfig;
 use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Page\Config as PageConfig;
 use Magento\Store\Model\ScopeInterface;
@@ -49,11 +50,6 @@ class Page implements CustomizerInterface
      * @var PageRepositoryInterface
      */
     private $pageRepository;
-
-    /**
-     * @var Registry
-     */
-    private $registry;
 
     /**
      * @var ShopbyHelper
@@ -91,14 +87,23 @@ class Page implements CustomizerInterface
     private $pageConfig;
 
     /**
-     * @var Robots
+     * @var PageRegistry
      */
-    private $robotsConfig;
+    private PageRegistry $pageRegistry;
+
+    /**
+     * @var ShopbyBaseRegistry
+     */
+    private ShopbyBaseRegistry $shopbyBaseRegistry;
+
+    /**
+     * @var ImagesManager
+     */
+    private ImagesManager $imagesManager;
 
     public function __construct(
         PageRepositoryInterface $pageRepository,
         CatalogConfig $catalogConfig,
-        Registry $registry,
         Request $amshopbyRequest,
         ScopeConfigInterface $scopeConfig,
         ShopbyHelper $shopbyHelper,
@@ -107,11 +112,12 @@ class Page implements CustomizerInterface
         IsMultiselect $isMultiselect,
         GetReplacedMetaData $getReplacedMetaData,
         PageConfig $pageConfig,
-        Robots $robotsConfig
+        ImagesManager $imagesManager,
+        PageRegistry $pageRegistry,
+        ShopbyBaseRegistry $shopbyBaseRegistry
     ) {
         $this->pageRepository = $pageRepository;
         $this->catalogConfig = $catalogConfig;
-        $this->registry = $registry;
         $this->amshopbyRequest = $amshopbyRequest;
         $this->shopbyHelper = $shopbyHelper;
         $this->scopeConfig = $scopeConfig;
@@ -120,7 +126,9 @@ class Page implements CustomizerInterface
         $this->isMultiselect = $isMultiselect;
         $this->getReplacedMetaData = $getReplacedMetaData;
         $this->pageConfig = $pageConfig;
-        $this->robotsConfig = $robotsConfig;
+        $this->imagesManager = $imagesManager;
+        $this->pageRegistry = $pageRegistry;
+        $this->shopbyBaseRegistry = $shopbyBaseRegistry;
     }
 
     /**
@@ -135,7 +143,8 @@ class Page implements CustomizerInterface
                 if ($this->matchCurrentFilters($pageData)) {
                     $pageData = $this->preparePageData($pageData);
                     $this->modifyCategory($pageData, $category);
-                    $this->registry->register(PageEntity::MATCHED_PAGE, $pageData);
+                    $this->pageRegistry->set($pageData);
+                    $this->shopbyBaseRegistry->register(PageEntity::MATCHED_PAGE, $pageData);
                     break;
                 }
             }
@@ -360,7 +369,7 @@ class Page implements CustomizerInterface
     }
 
     /**
-     * @param PageInterface|PageEntity $page
+     * @param PageInterface $page
      * @param $pageValue
      * @param $categoryValue
      * @param null $delimiter
@@ -450,7 +459,10 @@ class Page implements CustomizerInterface
         }
 
         if ($page->getImage()) {
-            $category->setData(CategoryManager::CATEGORY_SHOPBY_IMAGE_URL, $page->getImageUrl());
+            $category->setData(
+                CategoryManager::CATEGORY_SHOPBY_IMAGE_URL,
+                $this->imagesManager->getImageUrl($page->getImage())
+            );
         }
 
         if ($page->getTopBlockId()) {

@@ -51,7 +51,7 @@ class RegisterLicenceKey
         RequestManager $requestManager,
         Provider $domainProvider,
         Converter $converter,
-        ProcessReRegistration $processReRegistration = null
+        ?ProcessReRegistration $processReRegistration = null
     ) {
         $this->registeredInstanceRepository = $registeredInstanceRepository;
         $this->requestManager = $requestManager;
@@ -75,6 +75,8 @@ class RegisterLicenceKey
 
         if (!$force) {
             $storedDomains = $this->domainProvider->getStoredDomains();
+            $this->normalizeDomains($currentDomains);
+            $this->normalizeDomains($storedDomains);
             $domains = array_diff($currentDomains, $storedDomains);
             if (!$domains) {
                 return;
@@ -114,6 +116,17 @@ class RegisterLicenceKey
         if ($force || $oldKey) {
             $this->processReRegistration->execute($registeredInstance->getCurrentInstance());
         }
+    }
+
+    /**
+     * @param string[] $domains
+     * @return void
+     */
+    private function normalizeDomains(array &$domains): void
+    {
+        $domains = array_map(static function ($domain) {
+            return ltrim($domain, 'w.');
+        }, $domains);
     }
 
     /**

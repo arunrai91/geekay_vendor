@@ -7,12 +7,15 @@
 
 namespace Amasty\ElasticSearch\Model\Search;
 
+use Amasty\ElasticSearch\Exception\SystemPackageNotInstalled;
 use Amasty\ElasticSearch\Model\Client\ClientRepositoryInterface;
 use Amasty\ElasticSearch\Model\Search\GetResponse\GetAggregations;
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Elastic\Elasticsearch\Exception\ClientResponseException as Elastic8400Exception;
+use Elasticsearch\Common\Exceptions\BadRequest400Exception as Elastic7400Exception;
 use Magento\Framework\Registry as CoreRegistry;
 use Magento\Framework\Search\AdapterInterface;
 use Magento\Framework\Search\RequestInterface;
+use OpenSearch\Exception\BadRequestHttpException as OpenSearch400Exception;
 
 class Adapter implements AdapterInterface
 {
@@ -69,7 +72,7 @@ class Adapter implements AdapterInterface
     /**
      * @param RequestInterface $request
      * @return \Magento\Framework\Search\Response\QueryResponse|mixed
-     * @throws \Elasticsearch\Common\Exceptions\Missing404Exception
+     * @throws SystemPackageNotInstalled
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function query(RequestInterface $request)
@@ -83,7 +86,7 @@ class Adapter implements AdapterInterface
         try {
             $requestQuery = $this->getRequestQuery->execute($request);
             $elasticResponse = $client->search($requestQuery);
-        } catch (BadRequest400Exception $e) {
+        } catch (Elastic8400Exception | Elastic7400Exception | OpenSearch400Exception $e) {
             $this->logger->logError($e->getMessage());
             return $this->getElasticResponse->execute([], [], 0);
         } catch (\Exception $e) {
@@ -105,7 +108,7 @@ class Adapter implements AdapterInterface
     /**
      * @param RequestInterface $request
      * @return array
-     * @throws \Elasticsearch\Common\Exceptions\Missing404Exception
+     * @throws \Amasty\ElasticSearch\Exception\Missing404Exception
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function queryAdvancedSearchProduct(RequestInterface $request)

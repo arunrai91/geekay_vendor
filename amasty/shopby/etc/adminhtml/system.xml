@@ -154,7 +154,19 @@
                         <field id="slider_enabled">1</field>
                     </depends>
                 </field>
-                <field id="categories" translate="label" type="multiselect" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" >
+                <field id="infinity_loop" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Infinity Loop</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[Enable continuous loop mode. Because of the nature of how the loop mode works (it will rearrange slides),
+                        the total number of slides must be >= slidesPerView*2; otherwise, this mode will not function properly.]]>
+                    </comment>
+                    <depends>
+                        <field id="display_mode" separator=",">1,2</field>
+                        <field id="slider_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="categories" translate="label" type="multiselect" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" >
                     <label>Categories</label>
                     <source_model>Amasty\Base\Model\Source\ActiveWithEmptyOptionCategory</source_model>
                     <depends>

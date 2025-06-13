@@ -313,6 +313,7 @@
         <arguments>
             <argument name="directSaveAttrs" xsi:type="array">
                 <item name="attribute_set_id" xsi:type="string">attribute_set_id</item>
+                <item name="category_ids" xsi:type="string">category_ids</item>
             </argument>
         </arguments>
     </type>
@@ -458,10 +459,6 @@
     <type name="Magento\Inventory\Model\SourceItem\Command\SourceItemsSave">
         <plugin name="Amasty_AdminActionsLog::saveSourceItem"
                 type="Amasty\AdminActionsLog\Plugin\Inventory\Model\SourceItem\Command\SourceItemsSavePlugin"/>
-    </type>
-
-    <type name="Magento\Catalog\Model\Product\Action">
-        <plugin name="Amasty_AdminActionsLog::processMassStatus" type="Amasty\AdminActionsLog\Plugin\Catalog\Model\Product\ActionPlugin"/>
     </type>
 
     <type name="Amasty\AdminActionsLog\Restoring\RestoreValidatorProvider">

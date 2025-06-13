@@ -13,7 +13,6 @@ namespace Amasty\Shopby\Model\Inventory;
 use Amasty\Shopby\Model\ConfigProvider;
 use Amasty\Shopby\Model\ResourceModel\GetInStockProductIds;
 use Amasty\Shopby\Model\ResourceModel\GetMsiInStockProductIds;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Module\Manager;
 
 class Resolver
@@ -45,13 +44,12 @@ class Resolver
         Manager $moduleManager,
         GetInStockProductIds $getInStockProductIds,
         GetMsiInStockProductIds $getMsiInStockProductIds,
-        ConfigProvider $configProvider = null // TODO not optional
+        ConfigProvider $configProvider
     ) {
         $this->moduleManager = $moduleManager;
         $this->getInStockProductIds = $getInStockProductIds;
         $this->getMsiInStockProductIds = $getMsiInStockProductIds;
-        // OM is temporary for backward compatibility
-        $this->configProvider = $configProvider ?? ObjectManager::getInstance()->get(ConfigProvider::class);
+        $this->configProvider = $configProvider;
     }
 
     /**

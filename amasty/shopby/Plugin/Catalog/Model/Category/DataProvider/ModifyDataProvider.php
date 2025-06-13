@@ -40,20 +40,20 @@ class ModifyDataProvider
 
     /**
      * @param NativeDataProvider $subject
-     * @param array $data
+     * @param array $meta
      *
      * @return array
      */
-    public function afterGetMeta(NativeDataProvider $subject, $data)
+    public function afterGetMeta(NativeDataProvider $subject, $meta)
     {
         if (!isset($meta['display_settings']['children']['content']['arguments']['data']['config']['notice'])) {
             $category = $subject->getCurrentCategory();
             foreach ($this->pool->getModifiersInstances() as $modifier) {
                 $modifier->setCategory($category);
-                $data = $modifier->modifyMeta($data);
+                $meta = $modifier->modifyMeta($meta);
             }
         }
 
-        return $data;
+        return $meta;
     }
 }

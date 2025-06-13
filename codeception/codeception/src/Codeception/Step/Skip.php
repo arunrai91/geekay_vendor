@@ -16,10 +16,7 @@ class Skip extends CodeceptionStep
     {
         $skipMessage = $this->getAction();
 
-        if (
-            version_compare(PHPUnitVersion::series(), '10.0', '<')
-            && class_exists(SkippedTestError::class)
-        ) {
+        if (PHPUnitVersion::series() < 10) {
             throw new SkippedTestError($skipMessage);
         }
 

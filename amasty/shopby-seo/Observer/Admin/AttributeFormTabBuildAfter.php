@@ -25,24 +25,24 @@ use Magento\Framework\View\LayoutInterface;
 class AttributeFormTabBuildAfter implements ObserverInterface
 {
     /**
-     * @var  GenerateSeoUrl
+     * @var GenerateSeoUrl
      */
-    protected $generateSeoUrl;
+    private $generateSeoUrl;
 
     /**
-     * @var  IndexMode
+     * @var IndexMode
      */
-    protected $indexMode;
+    private $indexMode;
 
     /**
-     * @var  Attribute
+     * @var Attribute
      */
-    protected $attribute;
+    private $attribute;
 
     /**
      * @var RelNofollow
      */
-    protected $relNofollow;
+    private $relNofollow;
 
     /**
      * @var BaseHelper

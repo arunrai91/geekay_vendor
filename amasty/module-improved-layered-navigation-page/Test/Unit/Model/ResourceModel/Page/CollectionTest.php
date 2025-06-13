@@ -46,7 +46,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $storeManager->expects($this->any())->method('getStores')->willReturn([ 'default' => $store ]);
 
         $collection = $this->createPartialMock(Collection::class, []);
-        $this->setProperty($collection, '_storeManager', $storeManager, Collection::class);
+        $this->setProperty($collection, 'storeManager', $storeManager, Collection::class);
 
         $result = $this->invokeMethod($collection, 'getStoreDataForItem', [$data]);
 

@@ -233,7 +233,7 @@ class PageTest extends \PHPUnit\Framework\TestCase
     public function testGetModifiedCategoryData()
     {
         $page = $this->createMock(PageInterface::class);
-        $page->expects($this->any())->method('getPosition')->will($this->onConsecutiveCalls('replace', 'after'));
+        $page->expects($this->any())->method('getPosition')->will($this->onConsecutiveCalls('replace', 'after', 'before'));
         $this->assertEquals(1, $this->invokeMethod($this->model, 'getModifiedCategoryData', [$page, 1, 2, null]));
         $this->assertEquals(1, $this->invokeMethod($this->model, 'getModifiedCategoryData', [$page, 1, 2, '-']));
         $this->assertEquals('1-2', $this->invokeMethod($this->model, 'getModifiedCategoryData', [$page, 1, 2, '-']));

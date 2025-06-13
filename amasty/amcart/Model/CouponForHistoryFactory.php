@@ -71,7 +71,7 @@ class CouponForHistoryFactory
         \Amasty\Base\Model\Serializer $serializer,
         \Magento\Customer\Model\ResourceModel\Group\CollectionFactory $groupCollectionFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        EventManagerInterface $eventManager = null
+        ?EventManagerInterface $eventManager = null
     ) {
         $this->date = $date;
         $this->dateTime = $dateTime;

@@ -60,6 +60,7 @@ $products = $block->getProducts();
                                         <form class="amasty-xsearch-form"
                                               data-role="tocart-form"
                                               action="<?= $escaper->escapeHtml($product['cart_post_params']['action']); ?>"
+                                              aria-label="<?= $escaper->escapeHtmlAttr($block->stripTags($product['name'])); ?>"
                                               method="post">
                                             <?php foreach ($product['options_data'] as $optionItem): ?>
                                                 <input type="hidden"

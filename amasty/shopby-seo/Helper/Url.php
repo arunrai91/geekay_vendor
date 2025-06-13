@@ -7,17 +7,17 @@
 
 namespace Amasty\ShopbySeo\Helper;
 
+use Amasty\Shopby\Model\Layer\FilterList;
 use Amasty\ShopbyBase\Helper\Data as BaseHelper;
+use Amasty\ShopbyBase\Model\Request\Registry as ShopbyBaseRegistry;
 use Amasty\ShopbySeo\Helper\Url as UrlHelper;
 use Amasty\ShopbySeo\Model\ConfigProvider;
 use Amasty\ShopbySeo\Model\SeoOptions;
 use Amasty\ShopbySeo\Model\UrlParser\Utils\SpecialCharReplacer;
 use Amasty\ShopbySeo\Model\UrlRewrite\IsExist as IsUrlRewriteExist;
-use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Store\Model\ScopeInterface;
 
@@ -121,11 +121,6 @@ class Url extends AbstractHelper
     private $seoOptions;
 
     /**
-     * @var CategoryRepositoryInterface
-     */
-    private $categoryRepository;
-
-    /**
      * @var IsUrlRewriteExist|null
      */
     private $isUrlRewriteExist;
@@ -139,6 +134,11 @@ class Url extends AbstractHelper
      * @var SpecialCharReplacer
      */
     private $specialCharReplacer;
+
+    /**
+     * @var ShopbyBaseRegistry
+     */
+    private ShopbyBaseRegistry $shopbyBaseRegistry;
 
     /**
      * @var array
@@ -159,10 +159,10 @@ class Url extends AbstractHelper
         \Amasty\ShopbySeo\Helper\Config $config,
         DataPersistorInterface $dataPersistor,
         SeoOptions $seoOptions,
-        ?CategoryRepositoryInterface $categoryRepository, // TODO: remove
-        IsUrlRewriteExist $isUrlRewriteExist = null, // TODO move to not optional
-        ConfigProvider $configProvider = null,
-        SpecialCharReplacer $specialCharReplacer = null
+        IsUrlRewriteExist $isUrlRewriteExist,
+        ConfigProvider $configProvider,
+        SpecialCharReplacer $specialCharReplacer,
+        ShopbyBaseRegistry $shopbyBaseRegistry
     ) {
         parent::__construct($context);
         $this->helper = $helper;
@@ -172,10 +172,10 @@ class Url extends AbstractHelper
         $this->config = $config;
         $this->dataPersistor = $dataPersistor;
         $this->seoOptions = $seoOptions;
-        $this->isUrlRewriteExist = $isUrlRewriteExist ?? ObjectManager::getInstance()->get(IsUrlRewriteExist::class);
-        $this->configProvider = $configProvider ?? ObjectManager::getInstance()->get(ConfigProvider::class);
-        $this->specialCharReplacer =
-            $specialCharReplacer ?? ObjectManager::getInstance()->get(SpecialCharReplacer::class);
+        $this->isUrlRewriteExist = $isUrlRewriteExist;
+        $this->configProvider = $configProvider;
+        $this->specialCharReplacer = $specialCharReplacer;
+        $this->shopbyBaseRegistry = $shopbyBaseRegistry;
     }
 
     /**
@@ -479,7 +479,7 @@ class Url extends AbstractHelper
     private function getFilterPositions()
     {
         if ($this->filterPositions === null) {
-            $allFilters = $this->coreRegistry->registry(\Amasty\Shopby\Model\Layer\FilterList::ALL_FILTERS_KEY);
+            $allFilters = $this->shopbyBaseRegistry->registry(FilterList::ALL_FILTERS_KEY);
 
             if (!$allFilters) {
                 return null;

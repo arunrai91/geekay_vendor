@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="page.content">
+            <block before="page_main_actions" class="Xtento\OrderExport\Block\Adminhtml\Widget\Menu" name="orderexport.menu"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Xtento\OrderExport\Block\Adminhtml\Destination\Edit" name="orderexport_destination_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Xtento\OrderExport\Block\Adminhtml\Destination\Edit\Tabs" name="orderexport_destination_edit_tabs">
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">general</argument>
+                    <argument name="block" xsi:type="string">Xtento\OrderExport\Block\Adminhtml\Destination\Edit\Tab\Configuration</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
+
+<!--
+/**
+ * Product:       Xtento_OrderExport
+ * ID:            %!uniqueid!%
+ * Last Modified: 2016-01-05T16:05:19+00:00
+ * File:          view/adminhtml/layout/xtento_orderexport_destination_edit.xml
+ * Copyright:     Copyright (c) XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

@@ -11,22 +11,15 @@ declare(strict_types=1);
 namespace Amasty\ShopbyBrand\Plugin\Shopby\Model\Layer\Filter\Resolver\FilterRequestDataResolver;
 
 use Amasty\Shopby\Model\Layer\Filter\Resolver\FilterRequestDataResolver as FilterDataResolver;
-use Amasty\ShopbyBase\Helper\FilterSetting;
-use Amasty\ShopbyBrand\Helper\Content;
 use Amasty\ShopbyBrand\Model\BrandResolver;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 
 class HideBrandFilterOnBrandPage
 {
     /**
-     * @var  Content
-     */
-    protected $contentHelper;
-
-    /**
      * @var BrandResolver
      */
-    private $brandResolver;
+    private BrandResolver $brandResolver;
 
     public function __construct(BrandResolver $brandResolver)
     {

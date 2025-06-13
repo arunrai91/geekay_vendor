@@ -41,8 +41,8 @@ class Total extends \Magento\Rule\Model\Condition\Combine
         \Amasty\RulesPro\Helper\Calculator $calculator,
         \Magento\Rule\Model\Condition\Context $context,
         array $data = [],
-        CacheInterface $cache = null, // TODO: move to not optional argument and remove OM
-        Serializer $serializer = null // TODO: move to not optional argument and remove OM
+        ?CacheInterface $cache = null, // TODO: move to not optional argument and remove OM
+        ?Serializer $serializer = null // TODO: move to not optional argument and remove OM
     ) {
         $this->calculator = $calculator;
         $this->cache = $cache ?? ObjectManager::getInstance()->get(CacheInterface::class);

@@ -45,7 +45,7 @@ class Information extends Fieldset
         \Magento\Framework\View\Helper\Js $jsHelper,
         \Magento\Framework\Module\Manager $moduleManager,
         array $data = [],
-        ProductMetadataInterface $productMetadata = null // TODO move to not optional
+        ?ProductMetadataInterface $productMetadata = null // TODO move to not optional
     ) {
         parent::__construct($context, $authSession, $jsHelper, $data);
         $this->moduleManager = $moduleManager;

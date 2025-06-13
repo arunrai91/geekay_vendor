@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Amasty Team
- * @copyright Copyright (c) 2023 Amasty (https://www.amasty.com)
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
  * @package Lib Swiper Js by Amasty
  */
 

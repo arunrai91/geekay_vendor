@@ -8,33 +8,27 @@
 namespace Amasty\Base\Plugin\AdminNotification\Block\Grid\Renderer;
 
 use Magento\AdminNotification\Block\Grid\Renderer\Actions as NativeActions;
+use Magento\Framework\DataObject;
+use Magento\Framework\UrlInterface;
 
 class Actions
 {
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     private $urlBuilder;
 
     public function __construct(
-        \Magento\Framework\UrlInterface $urlBuilder
+        UrlInterface $urlBuilder
     ) {
         $this->urlBuilder = $urlBuilder;
     }
 
     /**
-     * @param NativeActions $subject
-     * @param \Closure $proceed
-     * @param \Magento\Framework\DataObject $row
-     *
-     * @return string
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function aroundRender(
-        NativeActions $subject,
-        \Closure $proceed,
-        \Magento\Framework\DataObject $row
-    ) {
-        $result = $proceed($row);
+    public function afterRender(NativeActions $subject, string $result, DataObject $row): string
+    {
         if ($row->getData('is_amasty')) {
             $result .= sprintf(
                 '<a class="action" href="%s" title="%2$s">%2$s</a>',
@@ -56,6 +50,6 @@ class Actions
             );
         }
 
-        return  $result;
+        return $result;
     }
 }
